@@ -3,9 +3,9 @@
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
+| Mario Ortiz Lopo | m.ortizl.2023@alumnos.urjc.es | marioortiz-6 |
+| Pablo Sánchez Martín | p.sanchezm.2023@alumnos.urjc.es | psmURJC |
+| Javier Hérnandez Campano | j.hernandezca.2023@alumnos.urjc.es | javier0004 |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
 ---
@@ -13,43 +13,63 @@
 ## 🎭 **Preparación: Definición del Proyecto**
 
 ### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
+Aplicación web para una *agencia* de viajes que ofrece paquetes turísticos organizados (tours) a distintos destinos, mostrando información de cada tour (precio por persona, duración, ubicación y características del alojamiento) y permitiendo a los usuarios buscar, filtrar y solicitar presupuestos online. Pertenece al sector turístico y facilita al usuario comparar destinos y tours de forma rápida, así como contactar con la agencia para gestionar su viaje. [themewagon.github](https://themewagon.github.io/pacific/destination.html)
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
+1. *Usuario*
+2. *Destino*
+3. *Tour* (Paquete turístico)
+4. *Reserva / Solicitud de Presupuesto*
+5. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.) [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+6. *Alojamiento* (info resumida del hotel/apartamento asociado al tour)
+
 
 **Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
+- *Usuario - Reserva*: Un usuario puede crear múltiples reservas/solicitudes de presupuesto; cada reserva pertenece a un único usuario (1:N).
+- *Tour - Reserva*: Una reserva está asociada a un único tour; un tour puede tener muchas reservas (1:N).
+- *Destino - Tour*: Un destino (ej. “Banaue, Ifugao, Philippines”) puede tener múltiples tours; cada tour pertenece a un destino (1:N). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+- *Tour - Categoría de Experiencia*: Un tour puede clasificarse en varias experiencias (Adventure, Beach, Nature, etc.) y cada experiencia agrupa múltiples tours (N:M). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+- *Tour - Alojamiento*: Un tour está asociado a uno o varios alojamientos (por ejemplo, según tipo de habitación); un alojamiento puede pertenecer a distintos tours (N:M).
+- *Usuario - Valoración (opcional)*: Un usuario puede dejar varias valoraciones sobre tours; cada valoración pertenece a un usuario y a un tour (1:N respecto a Usuario y 1:N respecto a Tour).
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
 
-* **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
-  - No es dueño de ninguna entidad
+* *Usuario Anónimo*:  
+  - Permisos:  
+    - Visualizar listado de tours y destinos (catálogo público). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Buscar y filtrar tours por destino, fechas y rango de precio.  
+    - Ver detalles básicos del tour (precio por persona, duración, ubicación, características).  
+    - Enviar formulario de contacto genérico o “Ask For A Quote” sin cuenta (según diseño). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+  - No es dueño de ninguna entidad.
 
-* **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
+* *Usuario Registrado*:  
+  - Permisos:  
+    - Todo lo del usuario anónimo.  
+    - Gestionar su perfil (datos personales, preferencias de viaje).  
+    - Crear y gestionar sus propias reservas/solicitudes de presupuesto de tours.  
+    - Consultar el historial de reservas y estado (pendiente, confirmada, cancelada).  
+    - Crear valoraciones/comentarios sobre tours (si se implementa módulo de opiniones).  
+  - Es dueño de:  
+    - Su Perfil de Usuario.  
+    - Sus propias Reservas/Solicitudes de Presupuesto.  
+    - Sus propias Valoraciones/Comentarios.
 
-* **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
-
-### **Imágenes**
-Indicar qué entidades tendrán asociadas una o varias imágenes:
-
-- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
-- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
-- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
+* *Administrador*:  
+  - Permisos:  
+    - Gestión completa (CRUD) de Tours (precio, duración, imágenes, descripción, servicios, etc.). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Gestión de Destinos (alta, baja, modificación de destinos y sus imágenes). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Gestión de Categorías de Experiencia (Adventure, Beach, Nature, etc.). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Gestión de Alojamientos asociados a los tours.  
+    - Gestión de Usuarios (activar/desactivar cuentas, ver datos básicos y reservas).  
+    - Gestión y revisión de Reservas/Solicitudes (cambio de estado, anulación, confirmación).  
+    - Moderación de valoraciones/comentarios (aprobar, eliminar, marcar como inapropiados).  
+    - Visualización de estadísticas generales (número de reservas por destino, tours más populares, ingresos estimados).  
+  - Es dueño de:  
+    - Tours, Destinos, Categorías y Alojamientos.  
+    - Puede gestionar (no “poseer”) todas las Reservas y Usuarios.
 
 ---
 
