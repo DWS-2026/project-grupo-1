@@ -8,7 +8,7 @@
 | Javier Hérnandez Campano | j.hernandezca.2023@alumnos.urjc.es | javier0004 |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
----
+--- 
 
 ## 🎭 **Preparación: Definición del Proyecto**
 
