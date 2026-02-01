@@ -4,7 +4,7 @@
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
 | Mario Ortiz Lopo | m.ortizl.2023@alumnos.urjc.es | marioortiz-6 |
-| Pablo Sánchez Martín | p.sanchezm.2023@alumnos.urjc.es | Olbap00 |
+| Pablo Sánchez Martín | p.sanchezm.2023@alumnos.urjc.es | psmURJC |
 | Javier Hérnandez Campano | j.hernandezca.2023@alumnos.urjc.es | javier0004 |
 | [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
@@ -20,18 +20,16 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 
 1. *Usuario*
 2. *Destino*
-3. *Tour* (Paquete turístico)
-4. *Reserva / Solicitud de Presupuesto*
-5. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.) [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-6. *Alojamiento* (info resumida del hotel/apartamento asociado al tour)
+3. *Reserva / Solicitud de Presupuesto*
+4. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.) [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+5. *Hotel* (1 por destino)
 
 
 **Relaciones entre entidades:**
 - *Usuario - Reserva*: Un usuario puede crear múltiples reservas/solicitudes de presupuesto; cada reserva pertenece a un único usuario (1:N).
-- *Tour - Reserva*: Una reserva está asociada a un único tour; un tour puede tener muchas reservas (1:N).
-- *Destino - Tour*: Un destino (ej. “Banaue, Ifugao, Philippines”) puede tener múltiples tours; cada tour pertenece a un destino (1:N). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-- *Tour - Categoría de Experiencia*: Un tour puede clasificarse en varias experiencias (Adventure, Beach, Nature, etc.) y cada experiencia agrupa múltiples tours (N:M). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-- *Tour - Alojamiento*: Un tour está asociado a uno o varios alojamientos (por ejemplo, según tipo de habitación); un alojamiento puede pertenecer a distintos tours (N:M).
+- *Destino - Reserva*: una reserva está asociada a uno o más destinos; un destino puede tener muchas reservas (1:N). Un tour se compone de 1 o más destinos (ej: si 2 destinos: destino1-hotel1, destino2-hotel2).
+- *Destino - Categoría de Experiencia*: Un destino puede clasificarse en varias experiencias; cada experiencia agrupa múltiples destinos (NM).
+- *Destino - Hotel*: Cada destino tiene exactamente un hotel asociado (1-1).
 - *Usuario - Valoración (opcional)*: Un usuario puede dejar varias valoraciones sobre tours; cada valoración pertenece a un usuario y a un tour (1:N respecto a Usuario y 1:N respecto a Tour).
 
 ### **Permisos de los Usuarios**
@@ -60,15 +58,14 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 * *Administrador*:  
   - Permisos:  
     - Gestión completa (CRUD) de Tours (precio, duración, imágenes, descripción, servicios, etc.). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-    - Gestión de Destinos (alta, baja, modificación de destinos y sus imágenes). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-    - Gestión de Categorías de Experiencia (Adventure, Beach, Nature, etc.). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
-    - Gestión de Alojamientos asociados a los tours.  
-    - Gestión de Usuarios (activar/desactivar cuentas, ver datos básicos y reservas).  
-    - Gestión y revisión de Reservas/Solicitudes (cambio de estado, anulación, confirmación).  
-    - Moderación de valoraciones/comentarios (aprobar, eliminar, marcar como inapropiados).  
-    - Visualización de estadísticas generales (número de reservas por destino, tours más populares, ingresos estimados).  
+    - Gestión de Hoteles (alta, baja, modificación; un hotel por destino).
+    - Gestión de Categorías de Experiencia (Adventure, Beach, Nature, etc.).
+    - Gestión de Usuarios (activar/desactivar cuentas, ver datos básicos y reservas).
+    - Gestión y revisión de Reservas/Solicitudes (cambio de estado, anulación, confirmación).
+    - Moderación de valoraciones/comentarios (aprobar, eliminar).
+    - Visualización de estadísticas (número de reservas por destino, destinos más populares, ingresos estimados).
   - Es dueño de:  
-    - Tours, Destinos, Categorías y Alojamientos.  
+    - Destinos, Categorías y Hoteles.  
     - Puede gestionar (no “poseer”) todas las Reservas y Usuarios.
 
 ---
