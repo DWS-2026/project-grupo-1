@@ -394,7 +394,7 @@
 
 /*** Single Page Hero Header Start ***/
 .bg-breadcrumb {
-    background: linear-gradient(rgba(19, 53, 123, 0.5), rgba(19, 53, 123, 0.5)), url(../img/breadcrumb-bg.jpg);
+    background: linear-gradient(rgba(123, 19, 81, 0.5), rgba(123, 19, 62, 0.5)), url(../img/breadcrumb-bg.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -502,7 +502,7 @@
 
 .blog .blog-item .blog-img:hover .blog-img-inner .blog-icon {
     height: 100%;
-    background: rgba(19, 53, 123, .6);
+    background: rgba(241, 6, 6, 0.6);
     opacity: 1;
 }
 
@@ -532,7 +532,7 @@
 
 /*** Subscribe Start ***/
 .subscribe {
-    background: linear-gradient(rgba(19, 53, 123, .6), rgba(19, 53, 123, .6)), url(../img/subscribe-img.jpg);
+    background: linear-gradient(rgba(255, 0, 0, 0.6), rgba(255, 0, 0, 0.6)), url(../img/subscribe-img.jpg);
     background-attachment: fixed;
     background-position: center center;
     background-repeat: no-repeat;
@@ -592,3 +592,5 @@
     background: var(--bs-dark) !important;
 }
 /*** copyright end ***/
+
+
