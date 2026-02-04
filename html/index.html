@@ -40,16 +40,16 @@
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
-                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
+                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Registrate</small></a>
+                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Incio de sesión</small></a>
                         <div class="dropdown">
-                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> My Dashboard</small></a>
+                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
                             <div class="dropdown-menu rounded">
-                                <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                                <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Mensajes</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notificaciones</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Configuración de cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
                             </div>
                         </div>
                     </div>
@@ -79,12 +79,24 @@
                     <div class="navbar-nav ms-auto py-0">
                         <a href="index.html" class="nav-item nav-link active">Home</a>
                         <a href="packages.html" class="nav-item nav-link">Tours</a>
-                        <a href="contact.html" class="nav-item nav-link">Ask for a Quote</a>
-                        <a href="login.html" class="nav-item nav-link">Login</a>
-                        <a href="register.html" class="nav-item nav-link">Register</a>
-                        <a href="profile.html" class="nav-item nav-link">My Profile</a>
-                        <a href="guides.html" class="nav-item nav-link">Guides</a>
-                        <a href="about.html" class="nav-item nav-link">about</a>
+                        <a href="contact.html" class="nav-item nav-link">Pídenos un presupuesto</a>
+                        <a href="login.html" class="nav-item nav-link">Inicio de sesión</a>
+                        <a href="register.html" class="nav-item nav-link">Registrarse</a>
+                        <a href="profile.html" class="nav-item nav-link">Mi perfil</a>
+                        <a href="guides.html" class="nav-item nav-link">Guías</a>
+                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                        <a href="#"
+                            class="nav-item nav-link position-relative"
+                            data-bs-toggle="modal"
+                            data-bs-target="#cartModal">
+                            🛒
+                            <span id="cart-count"
+                                    class="position-absolute badge rounded-pill bg-danger"
+                                    style="top: 10%; right: -10%; transform: translate(50%, 50%);">
+                            0
+                            </span>
+                        </a>
+
                     </div>
                     <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
                 </div>
@@ -103,12 +115,12 @@
                             <img src="../img/carousel-2.jpg" class="img-fluid" alt="Image">
                             <div class="carousel-caption">
                                 <div class="p-3" style="max-width: 900px;">
-                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore The World</h4>
-                                    <h1 class="display-2 text-capitalize text-white mb-4">Let's The World Together!</h1>
-                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                                    <h1 class="display-2 text-capitalize text-white mb-4">Descubre tu próximo destino</h1>
+                                    <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote experiencias inolvidables y aventuras únicas. 
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Discover Tours</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Descubre todos los viajes</a>
                                     </div>
                                 </div>
                             </div>
@@ -117,12 +129,12 @@
                             <img src="../img/carousel-1.jpg" class="img-fluid" alt="Image">
                             <div class="carousel-caption">
                                 <div class="p-3" style="max-width: 900px;">
-                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore The World</h4>
-                                    <h1 class="display-2 text-capitalize text-white mb-4">Find Your Perfect Tour At Travel</h1>
-                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                                    <h1 class="display-2 text-capitalize text-white mb-4">Encuentra tu viaje perfecto</h1>
+                                    <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote experiencias inolvidables y aventuras únicas.
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Discover Tours</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Descubre todos los viajes</a>
                                     </div>
                                 </div>
                             </div>
@@ -131,12 +143,12 @@
                             <img src="../img/carousel-3.jpg" class="img-fluid" alt="Image">
                             <div class="carousel-caption">
                                 <div class="p-3" style="max-width: 900px;">
-                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explore The World</h4>
-                                    <h1 class="display-2 text-capitalize text-white mb-4">You Like To Go?</h1>
-                                    <p class="mb-5 fs-5">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                                    <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                                    <h1 class="display-2 text-capitalize text-white mb-4">¿A dónde quieres ir?</h1>
+                                    <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote experiencias inolvidables y aventuras únicas.
                                     </p>
                                     <div class="d-flex align-items-center justify-content-center">
-                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Discover Tours</a>
+                                        <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5" href="packages.html">Descubre todos los viajes</a>
                                     </div>
                                 </div>
                             </div>
@@ -159,8 +171,8 @@
                 <div class="position-relative rounded-pill w-100 mx-auto p-5" style="background: rgba(220,53,69,0.75);">
                     <form action="packages.html" class="m-0">
                         <div class="position-relative">
-                            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" name="q" placeholder="Search destination (e.g., Italy, Greece)">
-                            <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Search</button>
+                            <input class="form-control border-0 rounded-pill w-100 py-3 ps-4 pe-5" type="text" name="q" placeholder="Buscar destinos (e.g., Italia, Grecia, Japón...)">
+                            <button type="submit" class="btn btn-primary rounded-pill py-2 px-4 position-absolute me-2" style="top: 50%; right: 46px; transform: translateY(-50%);">Buscar</button>
                         </div>
                     </form>
 
@@ -179,31 +191,31 @@
                         </div>
                     </div>
                     <div class="col-lg-7" style="background: linear-gradient(rgba(255, 255, 255, .8), rgba(255, 255, 255, .8)), url(img/about-img-1.png);">
-                        <h5 class="section-about-title pe-3">About Us</h5>
-                        <h1 class="mb-4">Welcome to <span class="text-primary">Travela</span></h1>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, dolorum, doloribus sunt dicta, officia voluptatibus libero necessitatibus natus impedit quam ullam assumenda? Id atque iste consectetur. Commodi odit ab saepe!</p>
-                        <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium quos voluptatem suscipit neque enim, doloribus ipsum rem eos distinctio, dignissimos nisi saepe nulla? Libero numquam perferendis provident placeat molestiae quia?</p>
+                        <h5 class="section-about-title pe-3">Sobre nosotros</h5>
+                        <h1 class="mb-4">Bienvenidos a <span class="text-primary">Travela</span></h1>
+                        <p class="mb-4">En Travela creemos que cada viaje debe ser inolvidable. Nuestra misión es hacer que viajar sea sencillo, emocionante y accesible para todos. Desde planificar tu itinerario hasta encontrar las mejores experiencias, estamos aquí para acompañarte en cada paso del camino.</p>
+                        <p class="mb-4">Fundada por un equipo de apasionados por los viajes, Travela se compromete a ayudar a los aventureros a descubrir nuevos destinos, culturas y recuerdos que perduren toda la vida. ¡Únete a nosotros y explora el mundo con confianza y facilidad!</p>
                         <div class="row gy-2 gx-4 mb-4">
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>First Class Flights</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Vuelos de primera clase</p>
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Handpicked Hotels</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Hoteles ya seleccionados</p>
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>5 Star Accommodations</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Calidad 5 estrellas</p>
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Latest Model Vehicles</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Alquiler de vehiculos de última gama</p>
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>150 Premium City Tours</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Más de 150 tours de la mayor calidad</p>
                             </div>
                             <div class="col-sm-6">
-                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>24/7 Service</p>
+                                <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Servicio 24/7</p>
                             </div>
                         </div>
-                        <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="packages.html">View Tours</a>
+                        <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="packages.html">Buscar tours</a>
                     </div>
                 </div>
             </div>
@@ -214,8 +226,8 @@
         <div class="container-fluid bg-light service py-5">
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Searvices</h5>
-                    <h1 class="mb-0">Our Services</h1>
+                    <h5 class="section-title px-3">Servicios</h5>
+                    <h1 class="mb-0">Nuestros Servicios</h1>
                 </div>
                 <div class="row g-4">
                     <div class="col-lg-6">
@@ -224,7 +236,7 @@
                                 <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
                                     <div class="service-content text-end">
                                         <h5 class="mb-4">WorldWide Tours</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <p class="mb-0">Explora destinos increíbles alrededor del mundo con nuestros tours personalizados. Desde las ciudades más vibrantes hasta los paisajes naturales más espectaculares, te ofrecemos experiencias únicas que recordarás toda la vida.
                                         </p>
                                     </div>
                                     <div class="service-icon p-4">
@@ -235,8 +247,8 @@
                             <div class="col-12">
                                 <div class="service-content-inner d-flex align-items-center  bg-white border border-primary rounded p-4 pe-0">
                                     <div class="service-content text-end">
-                                        <h5 class="mb-4">Hotel Reservation</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Reservas de hoteles</h5>
+                                        <p class="mb-0">Encuentra y reserva los mejores alojamientos adaptados a tu presupuesto y estilo de viaje. Trabajamos con hoteles de calidad y confiables para garantizar tu comodidad en cada destino.
                                         </p>
                                     </div>
                                     <div class="service-icon p-4">
@@ -247,8 +259,8 @@
                             <div class="col-12">
                                 <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
                                     <div class="service-content text-end">
-                                        <h5 class="mb-4">Travel Guides</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Guías de viaje</h5>
+                                        <p class="mb-0">Descubre los secretos de cada lugar con nuestras guías expertas. Desde recomendaciones de restaurantes hasta actividades imperdibles, nuestros consejos harán que cada viaje sea auténtico y memorable.
                                         </p>
                                     </div>
                                     <div class="service-icon p-4">
@@ -259,8 +271,8 @@
                             <div class="col-12">
                                 <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
                                     <div class="service-content text-end">
-                                        <h5 class="mb-4">Event Management</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Eventos</h5>
+                                        <p class="mb-0">Organizamos eventos y experiencias especiales durante tus viajes, desde bodas y celebraciones hasta conferencias y actividades corporativas. Nos encargamos de cada detalle para que tú solo disfrutes.
                                         </p>
                                     </div>
                                     <div class="service-icon p-4">
@@ -279,7 +291,7 @@
                                     </div>
                                     <div class="service-content">
                                         <h5 class="mb-4">WorldWide Tours</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <p class="mb-0">Explora el mundo con nuestros tours diseñados para viajeros curiosos y aventureros. Desde las ciudades más emblemáticas hasta rincones poco conocidos, cada recorrido está pensado para ofrecer experiencias auténticas y memorables. 
                                         </p>
                                     </div>
                                 </div>
@@ -290,8 +302,8 @@
                                         <i class="fa fa-hotel fa-4x text-primary"></i>
                                     </div>
                                     <div class="service-content">
-                                        <h5 class="mb-4">Hotel Reservation</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Reservas de hoteles</h5>
+                                        <p class="mb-0">Reserva tu estancia ideal en segundos. Desde hoteles boutique hasta resorts de lujo, tenemos opciones perfectas para cada presupuesto y estilo.
                                         </p>
                                     </div>
                                 </div>
@@ -302,8 +314,8 @@
                                         <i class="fa fa-user fa-4x text-primary"></i>
                                     </div>
                                     <div class="service-content">
-                                        <h5 class="mb-4">Travel Guides</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Guías de viaje</h5>
+                                        <p class="mb-0">Conéctate con el destino como un local. Nuestras guías te muestran los lugares escondidos, actividades imperdibles y consejos prácticos para aprovechar al máximo tu viaje.Con nuestros consejos y recomendaciones, podrás vivir cada lugar como un local.
                                         </p>
                                     </div>
                                 </div>
@@ -314,8 +326,8 @@
                                         <i class="fa fa-cog fa-4x text-primary"></i>
                                     </div>
                                     <div class="service-content">
-                                        <h5 class="mb-4">Event Management</h5>
-                                        <p class="mb-0">Dolor sit amet consectetur adipisicing elit. Non alias eum, suscipit expedita corrupti officiis debitis possimus nam laudantium beatae quidem dolore consequuntur voluptate rem reiciendis, omnis sequi harum earum.
+                                        <h5 class="mb-4">Eventos</h5>
+                                        <p class="mb-0">Transformamos tus ideas en experiencias inolvidables. Ya sea una reunión corporativa o una celebración especial, nos encargamos de la planificación y ejecución de cada detalle.Nuestro objetivo es que cada evento sea memorable y perfectamente adaptado a tus necesidades.
                                         </p>
                                     </div>
                                 </div>
@@ -324,7 +336,7 @@
                     </div>
                     <div class="col-12">
                         <div class="text-center">
-                            <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Service More</a>
+                            <a class="btn btn-primary rounded-pill py-3 px-5 mt-2" href="">Más servicios</a>
                         </div>
                     </div>
                 </div>
@@ -336,9 +348,9 @@
         <div class="container-fluid blog py-5">
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Our Blog</h5>
-                    <h1 class="mb-4">Popular Travel Blogs</h1>
-                    <p class="mb-0">Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti deserunt tenetur sapiente atque. Magni non explicabo beatae sit, vel reiciendis consectetur numquam id similique sunt error obcaecati ducimus officia maiores.
+                    <h5 class="section-title px-3">Nuestro blog</h5>
+                    <h1 class="mb-4">Tours más populares</h1>
+                    <p class="mb-0">Descubre nuestras historias de viaje más leídas y favoritas. Desde aventuras en destinos exóticos hasta guías prácticas para organizar tu próximo viaje, nuestros blogs están llenos de inspiración, consejos útiles y experiencias reales. Explora, aprende y déjate inspirar para tu próxima aventura.
                     </p>
                 </div>
                 <div class="row g-4 justify-content-center">
@@ -352,16 +364,16 @@
                                     </div>
                                 </div>
                                 <div class="blog-info d-flex align-items-center border border-start-0 border-end-0">
-                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>28 Jan 2050</small>
+                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>28 enero 2019</small>
                                     <a href="#" class="btn-hover flex-fill text-center text-white border-end py-2"><i class="fa fa-thumbs-up text-primary me-2"></i>1.7K</a>
                                     <a href="#" class="btn-hover flex-fill text-center text-white py-2"><i class="fa fa-comments text-primary me-2"></i>1K</a>
                                 </div>
                             </div>
                             <div class="blog-content border border-top-0 rounded-bottom p-4">
-                                <p class="mb-3">Posted By: Royal Hamblin </p>
-                                <a href="#" class="h4">Adventures Trip</a>
-                                <p class="my-3">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
+                                <p class="mb-3">Comentario de: Mario Ortiz </p>
+                                <a href="#" class="h4">Viajes al pasado</a>
+                                <p class="my-3">Un verdadero lujo poder viajar a las ciudades más antiguas del mundo con tan buenos guías.</p>
+                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Leer más</a>
                             </div>
                         </div>
                     </div>
@@ -375,16 +387,16 @@
                                     </div>
                                 </div>
                                 <div class="blog-info d-flex align-items-center border border-start-0 border-end-0">
-                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>28 Jan 2050</small>
+                                    <small class="flex-fill text-center border-end py-2"><i class="fa fa-calendar-alt text-primary me-2"></i>4 abril 2022</small>
                                     <a href="#" class="btn-hover flex-fill text-center text-white border-end py-2"><i class="fa fa-thumbs-up text-primary me-2"></i>1.7K</a>
                                     <a href="#" class="btn-hover flex-fill text-center text-white py-2"><i class="fa fa-comments text-primary me-2"></i>1K</a>
                                 </div>
                             </div>
                             <div class="blog-content border border-top-0 rounded-bottom p-4">
-                                <p class="mb-3">Posted By: Royal Hamblin </p>
-                                <a href="#" class="h4">Adventures Trip</a>
-                                <p class="my-3">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
+                                <p class="mb-3">Comentario de: Pablo Sánchez </p>
+                                <a href="#" class="h4">Viajes a otros mundos</a>
+                                <p class="my-3">Un viaje a las zonas más misteriosas del planeta.</p>
+                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Leer más</a>
                             </div>
                         </div>
                     </div>
@@ -404,10 +416,10 @@
                                 </div>
                             </div>
                             <div class="blog-content border border-top-0 rounded-bottom p-4">
-                                <p class="mb-3">Posted By: Royal Hamblin </p>
-                                <a href="#" class="h4">Adventures Trip</a>
-                                <p class="my-3">Tempor erat elitr rebum at clita. Diam dolor diam ipsum sit diam amet diam eos</p>
-                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Read More</a>
+                                <p class="mb-3">Comentario de: Javier Hérnandez </p>
+                                <a href="#" class="h4">Viaje a las montañas</a>
+                                <p class="my-3">Otra manera de conectar con la naturaleza y dejar atrás el miedo.</p>
+                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Leer más</a>
                             </div>
                         </div>
                     </div>
@@ -421,8 +433,8 @@
         <div class="container-fluid contact bg-light py-5">
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Contact Us</h5>
-                    <h1 class="mb-0">Contact For Any Query</h1>
+                    <h5 class="section-title px-3">Contactanos</h5>
+                    <h1 class="mb-0">¿Tienes alguna duda?</h1>
                 </div>
                 <div class="row g-5 align-items-center">
                     <div class="col-lg-4">
@@ -430,11 +442,11 @@
                             <div class="text-center mb-4">
                                 <i class="fa fa-map-marker-alt fa-3x text-primary"></i>
                                 <h4 class="text-primary"><Address></Address></h4>
-                                <p class="mb-0">123 ranking Street, <br> New York, USA</p>
+                                <p class="mb-0">Calle Principal 123, <br> Madrid, España</p>
                             </div>
                             <div class="text-center mb-4">
                                 <i class="fa fa-phone-alt fa-3x text-primary mb-3"></i>
-                                <h4 class="text-primary">Mobile</h4>
+                                <h4 class="text-primary">Número de teléfono</h4>
                                 <p class="mb-0">+012 345 67890</p>
                                 <p class="mb-0">+012 345 67890</p>
                             </div>
@@ -448,36 +460,36 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <h2 class="mb-3">Send us a message</h2>
-                        <h4 class="lh-base mb-4">Receive messages instantly with our PHP and Ajax contact form - available in the <a href="https://htmlcodex.com/downloading/?item=3232">Pro Version</a> only.</h4>
+                        <h2 class="mb-3">Envíanos un mensaje</h2>
+                        <h4 class="lh-base mb-4">Recibe mensajes instantáneamente con nuestro formulario de contacto. Disponible solo en la <a href="https://htmlcodex.com/downloading/?item=3232">Versión Pro</a>.</h4>
                         <form>
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="text" class="form-control border-0" id="name" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
+                                        <label for="name">Nombre</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="email" class="form-control border-0" id="email" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
+                                        <label for="email">Correo electrónico</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <input type="text" class="form-control border-0" id="subject" placeholder="Subject">
-                                        <label for="subject">Subject</label>
+                                        <label for="subject">Duda</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <textarea class="form-control border-0" placeholder="Leave a message here" id="message" style="height: 160px"></textarea>
-                                        <label for="message">Message</label>
+                                        <label for="message">Descripción</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Enviar mensaje</button>
                                 </div>
                             </div>
                         </form>
@@ -498,13 +510,13 @@
         <div class="container-fluid subscribe py-5">
             <div class="container text-center py-5">
                 <div class="mx-auto text-center" style="max-width: 900px;">
-                    <h5 class="subscribe-title px-3">Subscribe</h5>
-                    <h1 class="text-white mb-4">Our Newsletter</h1>
-                    <p class="text-white mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum tempore nam, architecto doloremque velit explicabo? Voluptate sunt eveniet fuga eligendi! Expedita laudantium fugiat corrupti eum cum repellat a laborum quasi.
+                    <h5 class="subscribe-title px-3">Síguenos</h5>
+                    <h1 class="text-white mb-4">Nuestras noticias</h1>
+                    <p class="text-white mb-5">Recibe las últimas noticias, ofertas exclusivas y consejos de viaje directamente en tu correo. No te pierdas nuestras guías, promociones especiales y novedades del mundo del turismo.
                     </p>
                     <div class="position-relative mx-auto">
-                        <input class="form-control border-primary rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 px-4 mt-2 me-2">Subscribe</button>
+                        <input class="form-control border-primary rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Introduce tu correo electrónico">
+                        <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 px-4 mt-2 me-2">Suscríbete</button>
                     </div>
                 </div>
             </div>
@@ -517,8 +529,8 @@
                 <div class="row g-5">
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Get In Touch</h4>
-                            <a href=""><i class="fas fa-home me-2"></i> 123 Street, New York, USA</a>
+                            <h4 class="mb-4 text-white">Contacto</h4>
+                            <a href=""><i class="fas fa-home me-2"></i> Calle principal 123, New York, USA</a>
                             <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
                             <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
                             <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +012 345 67890</a>
@@ -533,24 +545,24 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Company</h4>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> About</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Careers</a>
+                            <h4 class="mb-4 text-white">Empresa</h4>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Preguntas</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Viajes</a>
                             <a href=""><i class="fas fa-angle-right me-2"></i> Blog</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Press</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Gift Cards</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Magazine</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Prensa</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Tarjetas regalo</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Nuestra revista</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Support</h4>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Contact</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Legal Notice</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Privacy Policy</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Terms and Conditions</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Sitemap</a>
-                            <a href=""><i class="fas fa-angle-right me-2"></i> Cookie policy</a>
+                            <h4 class="mb-4 text-white">Soporte</h4>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Contactanos</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Información legal</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Política de privacidad</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Términos y condiciones</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Nuestras oficinas</a>
+                            <a href=""><i class="fas fa-angle-right me-2"></i> Política de cookies</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
@@ -558,7 +570,7 @@
                             <div class="row gy-3 gx-2 mb-4">
 
                             </div>
-                            <h4 class="text-white mb-3">Payments</h4>
+                            <h4 class="text-white mb-3">Pagos</h4>
                             <div class="footer-bank-card">
                                 <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
                                 <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
@@ -604,6 +616,37 @@
 
         <!-- Template Javascript -->
         <!--<script src="js/main.js"></script>-->
+
+        <!-- MODAL CARRITO -->
+        <div class="modal fade" id="cartModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🛒 Tu carrito</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul id="cart-items" class="list-group mb-3"></ul>
+                        <h5 class="text-end">
+                            Total: €<span id="cart-total">0</span>
+                        </h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="checkout.html" class="btn btn-success">
+                            Continuar compra
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/cart.js"></script>
+        
+
     </body>
 
 </html>

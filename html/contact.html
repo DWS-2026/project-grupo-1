@@ -41,16 +41,16 @@
                 </div>
                 <div class="col-lg-4 text-center text-lg-end">
                     <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
-                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
+                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Registrate</small></a>
+                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Incio de sesión</small></a>
                         <div class="dropdown">
-                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> My Dashboard</small></a>
+                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
                             <div class="dropdown-menu rounded">
-                                <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                                <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Mensajes</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notificaciones</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Configuración de cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
                             </div>
                         </div>
                     </div>
@@ -78,29 +78,39 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Home</a>
+                        <a href="index.html" class="nav-item nav-link active">Home</a>
                         <a href="packages.html" class="nav-item nav-link">Tours</a>
-                        <a href="contact.html" class="nav-item nav-link active">Ask for a Quote</a>
-                        <a href="login.html" class="nav-item nav-link">Login</a>
-                        <a href="register.html" class="nav-item nav-link">Register</a>
-                        <a href="profile.html" class="nav-item nav-link">My Profile</a>
-                        <a href="guides.html" class="nav-item nav-link">Guides</a>
-                        <a href="about.html" class="nav-item nav-link">about</a>
+                        <a href="contact.html" class="nav-item nav-link">Pídenos un presupuesto</a>
+                        <a href="login.html" class="nav-item nav-link">Inicio de sesión</a>
+                        <a href="register.html" class="nav-item nav-link">Registrarse</a>
+                        <a href="profile.html" class="nav-item nav-link">Mi perfil</a>
+                        <a href="guides.html" class="nav-item nav-link">Guías</a>
+                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                        <a href="#"
+                            class="nav-item nav-link position-relative"
+                            data-bs-toggle="modal"
+                            data-bs-target="#cartModal">
+                            🛒
+                            <span id="cart-count"
+                                    class="position-absolute badge rounded-pill bg-danger"
+                                    style="top: 10%; right: -10%; transform: translate(50%, 50%);">
+                            0
+                            </span>
+                        </a>
                     </div>
                     <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
                 </div>
             </nav>
-        </div>
         <!-- Navbar & Hero End -->
 
         <!-- Header Start -->
         <div class="container-fluid bg-breadcrumb">
             <div class="container text-center py-5" style="max-width: 900px;">
-                <h3 class="text-white display-3 mb-4">Ask for a Quote</h3>
+                <h3 class="text-white display-3 mb-4">Pídenos un presupuesto</h3>
                 <ol class="breadcrumb justify-content-center mb-0">
                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                     <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
-                    <li class="breadcrumb-item active text-white">Ask for a Quote</li>
+                    <li class="breadcrumb-item active text-white">Pídenos un presupuesto</li>
                 </ol>
             </div>
         </div>
@@ -110,8 +120,8 @@
         <div class="container-fluid contact bg-light py-5">
             <div class="container py-5">
                 <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Ask for a Quote</h5>
-                    <h1 class="mb-0">Request Your Travel Budget</h1>
+                    <h5 class="section-title px-3">Pídenos un presupuesto</h5>
+                    <h1 class="mb-0">Solicita tu presupuesto de viaje</h1>
                 </div>
 
                 <div class="row g-5 align-items-center">
@@ -138,35 +148,35 @@
                         </div>
                     </div>
                     <div class="col-lg-8">
-                        <h2 class="mb-3">Send us a message</h2>
+                        <h2 class="mb-3">Envianos tu mensaje</h2>
                         <form>
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="text" class="form-control border-0" id="name" placeholder="Your Name">
-                                        <label for="name">Your Name</label>
+                                        <label for="name">Nombre</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="email" class="form-control border-0" id="email" placeholder="Your Email">
-                                        <label for="email">Your Email</label>
+                                        <label for="email">Correo electrónico</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <input type="text" class="form-control border-0" id="destination" placeholder="Destination or Tour">
-                                        <label for="destination">Destination or Tour</label>
+                                        <label for="destination">Destino de viaje</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
                                         <textarea class="form-control border-0" placeholder="Dates, number of people, preferences..." id="details" style="height: 160px"></textarea>
-                                        <label for="details">Travel Details</label>
+                                        <label for="details">Detalles del viaje</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Enviar mensaje</button>
                                 </div>
                             </div>
                         </form>
@@ -188,12 +198,12 @@
             <div class="container text-center py-5">
                 <div class="mx-auto text-center" style="max-width: 900px;">
                     <h5 class="subscribe-title px-3">Subscribe</h5>
-                    <h1 class="text-white mb-4">Our Newsletter</h1>
-                    <p class="text-white mb-5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum tempore nam, architecto doloremque velit explicabo? Voluptate sunt eveniet fuga eligendi! Expedita laudantium fugiat corrupti eum cum repellat a laborum quasi.
+                    <h1 class="text-white mb-4">Nuestras noticias</h1>
+                    <p class="text-white mb-5">Recibe las últimas noticias, ofertas exclusivas y consejos de viaje directamente en tu correo. No te pierdas nuestras guías, promociones especiales y novedades del mundo del turismo.
                     </p>
                     <div class="position-relative mx-auto">
-                        <input class="form-control border-primary rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
-                        <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 px-4 mt-2 me-2">Subscribe</button>
+                        <input class="form-control border-primary rounded-pill w-100 py-3 ps-4 pe-5" type="text" placeholder="Correo electrónico">
+                        <button type="button" class="btn btn-primary rounded-pill position-absolute top-0 end-0 py-2 px-4 mt-2 me-2">Suscríbete</button>
                     </div>
                 </div>
             </div>
@@ -203,11 +213,11 @@
         <!-- Footer Start -->
         <div class="container-fluid footer py-5">
             <div class="container py-5">
-                <div class="row g-5">
+                <div class="row g-5">Nuestras noticias
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Get In Touch</h4>
-                            <a href=""><i class="fas fa-home me-2"></i> 123 Street, New York, USA</a>
+                            <h4 class="mb-4 text-white">Contacto</h4>
+                            <a href=""><i class="fas fa-home me-2"></i> Calle Principal 123, Madrid, España</a>
                             <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
                             <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
                             <a href="" class="mb-3"><i class="fas fa-print me-2"></i> +012 345 67890</a>
@@ -222,33 +232,24 @@
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Company</h4>
+                            <h4 class="mb-4 text-white">Empresa</h4>
                             <a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a>
                             <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
-                            <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Ask for a Quote</a>
+                            <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Pídenos un presupuesto</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item d-flex flex-column">
-                            <h4 class="mb-4 text-white">Support</h4>
-                            <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact</a>
-                            <a href="login.html"><i class="fas fa-angle-right me-2"></i> Login</a>
-                            <a href="register.html"><i class="fas fa-angle-right me-2"></i> Register</a>
+                            <h4 class="mb-4 text-white">Pagos</h4>
+                            <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contactanos</a>
+                            <a href="login.html"><i class="fas fa-angle-right me-2"></i> Incio de sesión</a>
+                            <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
                         </div>
                     </div>
                     <div class="col-md-6 col-lg-6 col-xl-3">
                         <div class="footer-item">
                             <div class="row gy-3 gx-2 mb-4">
 
-                            </div>
-                            <h4 class="text-white mb-3">Payments</h4>
-                            <div class="footer-bank-card">
-                                <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
-                                <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
-                                <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
-                                <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
-                                <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
-                                <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
                             </div>
                         </div>
                     </div>
@@ -287,6 +288,35 @@
 
         <!-- Template Javascript -->
         <!--<script src="js/main.js"></script>-->
+
+                <!-- MODAL CARRITO -->
+        <div class="modal fade" id="cartModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🛒 Tu carrito</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul id="cart-items" class="list-group mb-3"></ul>
+                        <h5 class="text-end">
+                            Total: €<span id="cart-total">0</span>
+                        </h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="checkout.html" class="btn btn-success">
+                            Continuar compra
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../js/cart.js"></script>
     </body>
 
 </html>

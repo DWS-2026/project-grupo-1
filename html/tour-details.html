@@ -58,16 +58,16 @@
             </div>
             <div class="col-lg-4 text-center text-lg-end">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
-                    <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Register</small></a>
-                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Login</small></a>
+                    <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Registrate</small></a>
+                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Inicio de sesión</small></a>
                     <div class="dropdown">
-                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> My Dashboard</small></a>
+                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
                         <div class="dropdown-menu rounded">
-                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> My Profile</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Inbox</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notifications</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Account Settings</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Log Out</a>
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Mensajes</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notificaciones</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Configuración de cuenta</a>
+                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
                         </div>
                     </div>
                 </div>
@@ -87,14 +87,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="index.html" class="nav-item nav-link">Home</a>
-                    <a href="packages.html" class="nav-item nav-link">Tours</a>
-                    <a href="contact.html" class="nav-item nav-link">Ask for a Quote</a>
-                    <a href="login.html" class="nav-item nav-link">Login</a>
-                    <a href="register.html" class="nav-item nav-link">Register</a>
-                    <a href="profile.html" class="nav-item nav-link">My Profile</a>
-                    <a href="guides.html" class="nav-item nav-link">Guides</a>
-                    <a href="about.html" class="nav-item nav-link">about</a>
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
+                        <a href="packages.html" class="nav-item nav-link">Tours</a>
+                        <a href="contact.html" class="nav-item nav-link">Pídenos un presupuesto</a>
+                        <a href="login.html" class="nav-item nav-link">Inicio de sesión</a>
+                        <a href="register.html" class="nav-item nav-link">Registrarse</a>
+                        <a href="profile.html" class="nav-item nav-link">Mi perfil</a>
+                        <a href="guides.html" class="nav-item nav-link">Guías</a>
+                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                        <a href="#"
+                            class="nav-item nav-link position-relative"
+                            data-bs-toggle="modal"
+                            data-bs-target="#cartModal">
+                            🛒
+                            <span id="cart-count"
+                                    class="position-absolute badge rounded-pill bg-danger"
+                                    style="top: 10%; right: -10%; transform: translate(50%, 50%);">
+                            0
+                            </span>
+                        </a>
                 </div>
                 <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
             </div>
@@ -102,11 +113,11 @@
     </div>
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
-            <h3 class="text-white display-3 mb-4">Mediterranean Adventure</h3>
+            <h3 class="text-white display-3 mb-4">Aventura por el Mediterráneo</h3>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
-                <li class="breadcrumb-item active text-white">Details</li>
+                <li class="breadcrumb-item active text-white">Detalles</li>
             </ol>    
         </div>
     </div>
@@ -120,33 +131,33 @@
                         <img src="../img/showcase-9.webp" class="img-fluid rounded w-100" alt="Mediterranean Adventure" style="min-height: 400px; object-fit: cover;">
                         <div class="bg-white border border-top-0 rounded-bottom p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12 Days</span>
-                                <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124 reviews)</span>
+                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12 Días</span>
+                                <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124 reseñas)</span>
                             </div>
-                            <h2 class="mb-3">Mediterranean Adventure</h2>
-                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Italy, Greece &amp; Turkey</p>
+                            <h2 class="mb-3">Aventura por el Mediterráneo</h2>
+                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Italia, Grecia y Turquía</p>
                         </div>
                     </div>
 
                     <div class="mb-5">
-                        <h4 class="mb-3 text-primary font-weight-bold">Tour Overview</h4>
-                        <p class="mb-4">Embark on an unforgettable journey through the heart of the Mediterranean, where ancient civilizations left their mark on stunning landscapes. This comprehensive tour takes you from the romantic canals of Venice to the sun-soaked islands of Santorini, culminating in the magical city of Istanbul where East meets West.</p>
+                        <h4 class="mb-3 text-primary font-weight-bold">Descripción</h4>
+                        <p class="mb-4">Emprende un viaje inolvidable por el corazón del Mediterráneo, donde las antiguas civilizaciones dejaron su huella en paisajes impresionantes. Este completo recorrido te lleva desde los románticos canales de Venecia hasta las soleadas islas de Santorini, culminando en la mágica ciudad de Estambul, donde Oriente se encuentra con Occidente</p>
                         
                         <div class="bg-light p-4 rounded mb-4">
-                            <h5 class="mb-3">Tour Highlights</h5>
+                            <h5 class="mb-3">Puntos destacados del tour</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> 4-Star Boutique Hotels</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Expert Local Guides</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Daily Breakfast Included</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Hoteles de 4 estrellas</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Guías expertos de la zona</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Desayuno diario incluido</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Small Group (Max 16)</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> UNESCO World Heritage Sites</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Cultural Experiences</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Grupos pequeños (Max 16)</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Sitios del Patrimonio Mundial de la UNESCO</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Experiencias culturales</li>
                                     </ul>
                                 </div>
                             </div>
@@ -154,69 +165,70 @@
                     </div>
 
                     <div class="mb-5">
-                        <h4 class="mb-4 text-primary font-weight-bold">Day-by-Day Itinerary</h4>
+                        <h4 class="mb-4 text-primary font-weight-bold">Itinerario día a día</h4>
                         
                         <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Day 1: Arrival in Venice</h5>
-                            <p class="text-muted">Welcome to the enchanting city of canals. Upon arrival, check into your waterfront hotel and enjoy a welcome dinner featuring fresh seafood and local Venetian specialties.</p>
+                            <h5 class="fw-bold">Día 1: Llegada a Venecia</h5>
+                                <p class="text-muted">Bienvenido a la encantadora ciudad de los canales. Al llegar, regístrate en tu hotel frente al agua y disfruta de una cena de bienvenida con mariscos frescos y especialidades locales venecianas.</p>
                         </div>
 
                         <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Day 2: Venice City Tour</h5>
-                            <p class="text-muted">Explore St. Mark's Square, visit the magnificent Basilica, and take a gondola ride through the romantic canals. Afternoon visit to Murano Island.</p>
+                            <h5 class="fw-bold">Día 2: Recorrido por Venecia</h5>
+                            <p class="text-muted">Explora la Plaza de San Marcos, visita la magnífica Basílica y realiza un paseo en góndola por los románticos canales. Por la tarde, visita a la isla de Murano.</p>
                         </div>
 
                         <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Day 3: Florence Discovery</h5>
-                            <p class="text-muted">Travel to Florence, the cradle of Renaissance. Visit the Uffizi Gallery, admire Michelangelo's David, and climb to the top of the Duomo.</p>
+                            <h5 class="fw-bold">Día 3: Descubriendo Florencia</h5>
+                            <p class="text-muted">Viaje a Florencia, la cuna del Renacimiento. Visita la Galería Uffizi, admira el David de Miguel Ángel y sube hasta la cima del Duomo.</p>
                         </div>
 
                         <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Days 4-5: Rome Exploration</h5>
-                            <p class="text-muted">Two full days in the Eternal City. Visit the Colosseum, Roman Forum, Vatican City with the Sistine Chapel, and authentic cooking class.</p>
-                        </div>
-                        
-                        <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Days 6-8: Santorini Paradise</h5>
-                            <p class="text-muted">Flight to Greece. Explore blue-domed churches, stunning sunsets in Oia, wine tasting, and volcanic beaches.</p>
+                            <h5 class="fw-bold">Días 4-5: Explorando Roma</h5>
+                            <p class="text-muted">Dos días completos en la Ciudad Eterna. Visita el Coliseo, el Foro Romano, la Ciudad del Vaticano con la Capilla Sixtina, y participa en una auténtica clase de cocina.</p>
                         </div>
 
                         <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Days 9-11: Istanbul Adventure</h5>
-                            <p class="text-muted">Fly to Istanbul. Visit Hagia Sophia, Blue Mosque, Grand Bazaar, and enjoy a Bosphorus cruise at sunset.</p>
+                            <h5 class="fw-bold">Días 6-8: Paraíso en Santorini</h5>
+                            <p class="text-muted">Vuelo a Grecia. Explora iglesias de cúpulas azules, disfruta de los impresionantes atardeceres en Oia, cata de vinos y playas volcánicas.</p>
                         </div>
 
-                        <div class="border-start border-2 border-primary ps-4">
-                            <h5 class="fw-bold">Day 12: Departure</h5>
-                            <p class="text-muted">Transfer to Istanbul Airport for your departure flight.</p>
+                        <div class="border-start border-2 border-primary ps-4 mb-4">
+                            <h5 class="fw-bold">Días 9-11: Aventura en Estambul</h5>
+                            <p class="text-muted">Vuelo a Estambul. Visita Hagia Sophia, la Mezquita Azul, el Gran Bazar y disfruta de un crucero por el Bósforo al atardecer.</p>
                         </div>
+
+                        <div class="border-start border-2 border-primary ps-4 mb-4">
+                            <h5 class="fw-bold">Día 12: Salida</h5>
+                            <p class="text-muted">Traslado al aeropuerto de Estambul para tu vuelo de regreso.</p>
+                        </div>
+
                     </div>
 
                     <div class="row mb-5">
                         <div class="col-md-6">
-                            <h5 class="mb-3 text-success"><i class="fa fa-check me-2"></i>What's Included</h5>
+                            <h5 class="mb-3 text-success"><i class="fa fa-check me-2"></i>Incluye</h5>
                             <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Round-trip flights between destinations</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> 11 nights accommodation (4-star)</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Daily breakfast</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Professional English guides</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> All entrance fees</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Vuelos de ida y vuelta entre destinos</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Alojamiento de 11 noches (4 estrellas)</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Desayuno diario</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Guías profesionales en inglés</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Todas las entradas a monumentos</li>
                             </ul>
                         </div>
                         <div class="col-md-6">
-                            <h5 class="mb-3 text-danger"><i class="fa fa-times me-2"></i>Not Included</h5>
+                            <h5 class="mb-3 text-danger"><i class="fa fa-times me-2"></i>No Incluye</h5>
                             <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> International flights</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Lunch and dinner (unless specified)</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Personal expenses</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Travel insurance</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Tips for guides</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Vuelos internacionales</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Comidas de almuerzo y cena (a menos que se especifique)</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Gastos personales</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Seguro de viaje</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Propinas para guías</li>
                             </ul>
                         </div>
                     </div>
 
                     <div class="mb-5">
-                        <h4 class="mb-4 text-primary font-weight-bold">Photo Gallery</h4>
+                        <h4 class="mb-4 text-primary font-weight-bold">Galería de fotos</h4>
                         <div class="row g-3">
                             <div class="col-4">
                                 <img src="../img/destination-1.webp" class="img-fluid gallery-img w-100" alt="Gallery">
@@ -245,20 +257,20 @@
                     
                     <div class="tour-price-box p-4 rounded border mb-4">
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h3 class="text-primary mb-0">$3,299</h3>
-                            <span class="text-muted">/ per person</span>
+                            <h3 class="text-primary mb-0">3,299€</h3>
+                            <span class="text-muted"> por persona</span>
                         </div>
                         
                         <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> 12 Days</li>
-                            <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Max People: 16</li>
-                            <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Italy, Greece, Turkey</li>
-                            <li class="list-group-item"><i class="fa fa-globe text-primary me-2"></i> English</li>
+                            <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> 12 días</li>
+                            <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Personas máximas: 16</li>
+                            <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Italia, Grecia, Turquía</li>
+                            <li class="list-group-item"><i class="fa fa-globe text-primary me-2"></i> Español</li>
                         </ul>
 
                         <div class="d-grid gap-2">
-                            <a href="contact.html" class="btn btn-primary rounded-pill py-3">Book This Tour</a>
-                            <a href="tel:+1234567890" class="btn btn-outline-primary rounded-pill py-3">Call to Book</a>
+                            <a href="contact.html" class="btn btn-primary rounded-pill py-3">Reservar este tour</a>
+                            <a href="tel:+1234567890" class="btn btn-outline-primary rounded-pill py-3">Llamar para reservar</a>
                         </div>
                     </div>
 
@@ -271,8 +283,8 @@
             <div class="row g-5">
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Get In Touch</h4>
-                        <a href=""><i class="fas fa-home me-2"></i> 123 Street, New York, USA</a>
+                        <h4 class="mb-4 text-white">Contacto</h4>
+                        <a href=""><i class="fas fa-home me-2"></i> Calle principal 123, Madrid, España</a>
                         <a href=""><i class="fas fa-envelope me-2"></i> info@example.com</a>
                         <a href=""><i class="fas fa-phone me-2"></i> +012 345 67890</a>
                         <div class="d-flex align-items-center">
@@ -286,22 +298,22 @@
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Company</h4>
+                        <h4 class="mb-4 text-white">Empresa</h4>
                         <a href="index.html"><i class="fas fa-angle-right me-2"></i> Home</a>
                         <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
-                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Ask for a Quote</a>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Pídenos un presupuesto</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item d-flex flex-column">
-                        <h4 class="mb-4 text-white">Support</h4>
-                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contact</a>
-                        <a href="login.html"><i class="fas fa-angle-right me-2"></i> Login</a>
+                        <h4 class="mb-4 text-white">Soporte</h4>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contactanos</a>
+                        <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
                     </div>
                 </div>
                 <div class="col-md-6 col-lg-6 col-xl-3">
                     <div class="footer-item">
-                        <h4 class="text-white mb-3">Payments</h4>
+                        <h4 class="text-white mb-3">Pagos</h4>
                         <div class="footer-bank-card">
                             <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
                             <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
@@ -326,10 +338,36 @@
             </div>
         </div>
     </div>
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+    
+            <!-- MODAL CARRITO -->
+        <div class="modal fade" id="cartModal" tabindex="-1">
+            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">🛒 Tu carrito</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul id="cart-items" class="list-group mb-3"></ul>
+                        <h5 class="text-end">
+                            Total: €<span id="cart-total">0</span>
+                        </h5>
+                    </div>
+
+                    <div class="modal-footer">
+                        <a href="checkout.html" class="btn btn-success">
+                            Continuar compra
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/cart.js"></script>
 
 </body>
 </html>
