@@ -607,3 +607,8 @@
 
 
 
+.blog-img img {
+    width: 100%;
+    height: 230px;      /* ajusta este valor a tu gusto */
+    object-fit: cover; /* recorta sin deformar */
+}
