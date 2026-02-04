@@ -594,3 +594,16 @@
 /*** copyright end ***/
 
 
+.packages-img {
+    height: 250px; /* Puedes ajustar la altura que quieras */
+    overflow: hidden;
+}
+
+.packages-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Esto asegura que la imagen llene la caja sin deformarse */
+}
+
+
+
