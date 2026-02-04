@@ -1,64 +1,281 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Carrito de la compra</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bootstrap CSS -->
+<head>
+    <meta charset="utf-8">
+    <title>Apex Expeditions - Carrito</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+
+    <style>
+        /* Ajustes suaves para que el carrito no quede “vacío” */
+        .cart-card {
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, .08);
+            border: 1px solid rgba(0, 0, 0, .05);
+        }
+
+        .cart-table thead th {
+            font-weight: 600;
+        }
+
+        .cart-total {
+            background: rgba(220, 53, 69, 0.07);
+            border: 1px solid rgba(220, 53, 69, 0.25);
+            border-radius: 14px;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container py-5">
-
-    <!-- Título -->
-    <div class="row mb-4">
-        <div class="col text-center">
-            <h1 class="fw-bold">🛒 Carrito de la compra</h1>
-            <p class="text-muted">Revisa los tours seleccionados</p>
+<!-- Topbar Start -->
+<div class="container-fluid bg-primary px-5 d-none d-lg-block">
+    <div class="row gx-0">
+        <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+            <div class="d-inline-flex align-items-center" style="height: 45px;">
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-twitter fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-instagram fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href="#"><i class="fab fa-youtube fw-normal"></i></a>
+            </div>
         </div>
-    </div>
-
-    <!-- Tabla del carrito -->
-    <div class="row">
-        <div class="col-12">
-            <div class="table-responsive">
-                <table class="table align-middle">
-                    <thead class="table-light">
-                        <tr>
-                            <th>Tour</th>
-                            <th>Duración</th>
-                            <th>Precio</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <strong>Aventura por el Mediterráneo</strong><br>
-                                <small class="text-muted">Italia, Grecia y Turquía</small>
-                            </td>
-                            <td>12 días</td>
-                            <td>3.299€</td>
-                            <td class="text-center">
-                                <a href="#" class="btn btn-sm btn-outline-danger">
-                                    <i class="fa fa-trash me-1"></i> Eliminar
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        <div class="col-lg-4 text-center text-lg-end">
+            <div class="d-inline-flex align-items-center" style="height: 45px;">
+                <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Registrate</small></a>
+                <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Inciar sesión</small></a>
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
+                    <div class="dropdown-menu rounded">
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi cuenta</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-comment-alt me-2"></i> Mensajes</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-bell me-2"></i> Notificaciones</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-cog me-2"></i> Configuración de cuenta</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+</div>
+<!-- Topbar End -->
 
-    <!-- Total y botones -->
+<!-- Navbar Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+        <a href="index.html" class="navbar-brand p-0">
+            <h1 class="m-0 text-white d-flex align-items-center">
+                <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3" style="max-height: 80px; padding: 7px 6px;">
+                Apex Expeditions
+            </h1>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="index.html" class="nav-item nav-link">Home</a>
+                <a href="packages.html" class="nav-item nav-link">Tours</a>
+                <a href="contact.html" class="nav-item nav-link">Pídenos un presupuesto</a>
+                <a href="login.html" class="nav-item nav-link">Inicio de sesión</a>
+                <a href="register.html" class="nav-item nav-link">Registrarse</a>
+                <a href="profile.html" class="nav-item nav-link">Mi perfil</a>
+                <a href="guides.html" class="nav-item nav-link">Guías</a>
+                <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                <a href="carrito.html" class="nav-item nav-link active"><i class="fa fa-shopping-cart me-1"></i> Carrito</a>
+            </div>
+            <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
+        </div>
+    </nav>
+</div>
+<!-- Navbar End -->
 
-    <a href="packages.html" class="btn btn-primary rounded-pill py-3">
-        <i class="fa fa-arrow-left me-2"></i> Volver a tours
-    </a>
+<!-- Breadcrumb Start -->
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">Carrito de la compra</h3>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
+            <li class="breadcrumb-item active text-white">Carrito</li>
+        </ol>
+    </div>
+</div>
+<!-- Breadcrumb End -->
 
-    <div class="row mt-4 align-items-cen
+<!-- Cart Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5" style="max-width: 1100px;">
+
+        <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+            <h5 class="section-title px-3">Carrito</h5>
+            <h1 class="mb-0">Revisa tus tours seleccionados</h1>
+            <p class="mt-3 mb-0 text-muted">
+                Este paso simula una pre-reserva antes de enviar la solicitud de presupuesto.
+            </p>
+        </div>
+
+        <div class="cart-card p-4 p-md-5">
+            <div class="table-responsive">
+                <table class="table align-middle cart-table mb-0">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Tour</th>
+                        <th>Duración</th>
+                        <th>Precio por persona</th>
+                        <th class="text-center">Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <strong>Mediterranean Adventure</strong><br>
+                            <small class="text-muted"><i class="fa fa-map-marker-alt text-primary me-1"></i>Italia, Grecia y Turquía</small>
+                        </td>
+                        <td><i class="fa fa-calendar-alt text-primary me-2"></i>12 días</td>
+                        <td class="fw-bold">3.299 €</td>
+                        <td class="text-center">
+                            <a href="#" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                <i class="fa fa-eye me-1"></i> Ver detalle
+                            </a>
+                            <a href="#" class="btn btn-sm btn-outline-danger rounded-pill px-3 ms-2">
+                                <i class="fa fa-trash me-1"></i> Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row mt-5 g-4 align-items-center">
+                <div class="col-md-6">
+                    <a href="packages.html" class="btn btn-outline-primary rounded-pill py-3 px-4">
+                        <i class="fa fa-arrow-left me-2"></i> Seguir explorando tours
+                    </a>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="cart-total p-4 text-md-end">
+                        <h4 class="fw-bold mb-2">Total estimado</h4>
+                        <p class="fs-2 text-primary fw-bold mb-3">3.299 €</p>
+                        <a href="contact.html" class="btn btn-primary rounded-pill py-3 px-5">
+                            <i class="fa fa-file-alt me-2"></i> Solicitar presupuesto
+                        </a>
+                        <p class="text-muted mt-3 mb-0" style="font-size: 0.95rem;">
+                            Se enviará una solicitud de presupuesto (no es pago).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<!-- Cart End -->
+
+<!-- Footer Start -->
+<div class="container-fluid footer py-5">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Contacto</h4>
+                    <a href="#"><i class="fas fa-home me-2"></i> Calle principal 123, New York, USA</a>
+                    <a href="#"><i class="fas fa-envelope me-2"></i> info@example.com</a>
+                    <a href="#"><i class="fas fa-phone me-2"></i> +012 345 67890</a>
+                    <a href="#" class="mb-3"><i class="fas fa-print me-2"></i> +012 345 67890</a>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-share fa-2x text-white me-2"></i>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Empresa</h4>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Preguntas</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Viajes</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Blog</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Prensa</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Tarjetas regalo</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Nuestra revista</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Soporte</h4>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Contactanos</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Información legal</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Política de privacidad</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Términos y condiciones</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Nuestras oficinas</a>
+                    <a href="#"><i class="fas fa-angle-right me-2"></i> Política de cookies</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item">
+                    <h4 class="text-white mb-3">Pagos</h4>
+                    <div class="footer-bank-card">
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Footer End -->
+
+<!-- Copyright Start -->
+<div class="container-fluid copyright text-body py-4">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6 text-center text-md-end mb-md-0">
+                <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Your Site Name</a>, All right reserved.
+            </div>
+            <div class="col-md-6 text-center text-md-start">
+                Designed By <a class="text-white" href="https://htmlcodex.com">HTML Codex</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Copyright End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+<!-- JavaScript Libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
