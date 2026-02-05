@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Perfil de Administrador">
+    <meta name="author" content="">
+
+    <title>SB Admin 2 - Perfil de Administrador</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <div id="topbar"></div>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Perfil de Administrador</h1>
+                    </div>
+
+                    <div class="row">
+
+                        <!-- Información del Perfil -->
+                        <div class="col-lg-4">
+
+                            <div class="card shadow mb-4">
+                                <div class="card-body text-center">
+                                    <img class="img-profile rounded-circle mb-3"
+                                        src="img/undraw_profile.svg" alt="Foto de Perfil" style="width: 150px;">
+                                    <h4 class="font-weight-bold">Juan Pérez</h4>
+                                    <p class="text-muted">Administrador Principal</p>
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-user-edit"></i> Editar Perfil</a>
+                                </div>
+                            </div>
+
+                            <!-- Información de Contacto -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Información de Contacto</h6>
+                                </div>
+                                <div class="card-body">
+                                    <p><i class="fas fa-envelope"></i> correo@empresa.com</p>
+                                    <p><i class="fas fa-phone"></i> +34 600 123 456</p>
+                                    <p><i class="fas fa-map-marker-alt"></i> Ciudad, País</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Estadísticas y Actividad -->
+                        <div class="col-lg-8">
+
+                            <!-- Estadísticas -->
+                            <div class="row">
+
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-primary shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Usuarios
+                                                Registrados</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1,200</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <div class="card border-left-success shadow h-100 py-2">
+                                        <div class="card-body">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ventas
+                                                Totales</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$45,000</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Actividad Reciente -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Actividad Reciente</h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><i class="fas fa-user-plus text-success"></i> Nuevo usuario registrado: María López</li>
+                                        <li class="list-group-item"><i class="fas fa-file-alt text-info"></i> Reporte generado: Ventas Mensuales</li>
+                                        <li class="list-group-item"><i class="fas fa-user-edit text-warning"></i> Perfil actualizado: Carlos García</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-primary"></i> Tarea completada: Actualización de base de datos</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <div id="footer"></div>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div id="logout-modal"></div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+        fetch("./components/sidebar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("sidebar").innerHTML = data);
+
+        fetch("./components/topbar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("topbar").innerHTML = data);
+
+        fetch("./components/footer.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+        
+        fetch("./components/logout-modal.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("logout-modal").innerHTML = data);
+    </script>
+
+</body>
+
+</html>
