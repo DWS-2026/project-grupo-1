@@ -280,8 +280,7 @@ Por último, redacté gran parte del README, añadiendo imágenes y descripcione
 ## 🛠 **Práctica 2: Web con HTML generado en servidor**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
-> Vídeo mostrando las principales funcionalidades de la aplicación web.
+📹 **[Enlace al vídeo en YouTube](https://youtu.be/NM7fwv_d4dY)**
 
 ### **Navegación y Capturas de Pantalla**
 
