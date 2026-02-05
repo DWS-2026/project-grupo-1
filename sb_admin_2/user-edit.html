@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>SB Admin 2 - Edit User</title>
+
+    <!-- Custom fonts -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+
+    <!-- Custom styles -->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar"></div>
+
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <div id="content">
+
+                <!-- Topbar -->
+                <div id="topbar"></div>
+
+                <!-- Page Content -->
+                <div class="container-fluid">
+
+                    <h1 class="h3 mb-4 text-gray-800">Editar Usuario</h1>
+
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Datos del usuario</h6>
+                        </div>
+
+                        <div class="card-body">
+
+                            <form>
+
+                                <div class="form-group">
+                                    <label>Nombre completo</label>
+                                    <input type="text" class="form-control" value="Laura Méndez">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" class="form-control" value="laura@email.com">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Fecha de registro</label>
+                                    <input type="date" class="form-control" value="2024-01-15">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Estado del usuario</label>
+                                    <select class="form-control">
+                                        <option selected>Activo</option>
+                                        <option>Inactivo</option>
+                                        <option>Bloqueado</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Dinero gastado (€)</label>
+                                    <input type="number" class="form-control" value="215.40">
+                                </div>
+
+                                <hr>
+
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save"></i> Guardar cambios
+                                </button>
+
+                                <a href="users.html" class="btn btn-secondary">
+                                    Cancelar
+                                </a>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div id="footer"></div>
+
+        </div>
+    </div>
+
+    <!-- Scroll button -->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <div id="logout-modal"></div>
+
+    <!-- Scripts -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <script>
+        fetch("./components/sidebar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("sidebar").innerHTML = data);
+
+        fetch("./components/topbar.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("topbar").innerHTML = data);
+
+        fetch("./components/footer.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("footer").innerHTML = data);
+
+        fetch("./components/logout-modal.html")
+            .then(res => res.text())
+            .then(data => document.getElementById("logout-modal").innerHTML = data);
+    </script>
+
+</body>
+
+</html>
