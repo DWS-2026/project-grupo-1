@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Perfil de Usuario</title>
+
+    <!-- Fonts -->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+</head>
+
+<body id="page-top">
+
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <div id="sidebar"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <div id="content">
+
+            <!-- Topbar -->
+            <div id="topbar"></div>
+
+            <div class="container-fluid">
+
+                <h1 class="h3 mb-4 text-gray-800">Perfil de Usuario</h1>
+
+                <div class="row">
+
+                    <!-- FOTO + INFO BASICA -->
+                    <div class="col-xl-4 col-lg-5">
+
+                        <div class="card shadow mb-4 text-center">
+
+                            <div class="card-body">
+
+                                <img class="img-profile rounded-circle mb-3"
+                                     src="img/undraw_profile.svg"
+                                     style="width:120px">
+
+                                <h4 class="font-weight-bold">Laura Méndez</h4>
+                                <p class="text-muted">Cliente Premium</p>
+
+                                <hr>
+
+                                <p><i class="fas fa-envelope"></i> laura@email.com</p>
+                                <p><i class="fas fa-phone"></i> +34 612 345 678</p>
+                                <p><i class="fas fa-map-marker-alt"></i> Madrid, España</p>
+
+                                <button class="btn btn-primary btn-sm">
+                                    Editar perfil
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- INFORMACION DETALLADA -->
+                    <div class="col-xl-8 col-lg-7">
+
+                        <!-- Datos personales -->
+                        <div class="card shadow mb-4">
+
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    Información personal
+                                </h6>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row mb-2">
+                                    <div class="col-md-4 font-weight-bold">Nombre completo</div>
+                                    <div class="col-md-8">Laura Méndez García</div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-md-4 font-weight-bold">Fecha registro</div>
+                                    <div class="col-md-8">15 Enero 2024</div>
+                                </div>
+
+                                <div class="row mb-2">
+                                    <div class="col-md-4 font-weight-bold">Estado cuenta</div>
+                                    <div class="col-md-8">
+                                        <span class="badge badge-success">Activa</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Estadísticas -->
+                        <div class="card shadow mb-4">
+
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">
+                                    Estadísticas del usuario
+                                </h6>
+                            </div>
+
+                            <div class="card-body">
+
+                                <div class="row text-center">
+
+                                    <div class="col-md-4">
+                                        <h4 class="font-weight-bold">12</h4>
+                                        <p>Pedidos realizados</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h4 class="font-weight-bold">215,40 €</h4>
+                                        <p>Total gastado</p>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <h4 class="font-weight-bold">Premium</h4>
+                                        <p>Tipo usuario</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div id="footer"></div>
+
+    </div>
+
+</div>
+
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<div id="logout-modal"></div>
+
+<!-- Scripts -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="js/sb-admin-2.min.js"></script>
+
+<script>
+    fetch("./components/sidebar.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("sidebar").innerHTML = data);
+
+    fetch("./components/topbar.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("topbar").innerHTML = data);
+
+    fetch("./components/footer.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("footer").innerHTML = data);
+
+    fetch("./components/logout-modal.html")
+        .then(res => res.text())
+        .then(data => document.getElementById("logout-modal").innerHTML = data);
+</script>
+
+</body>
+</html>
