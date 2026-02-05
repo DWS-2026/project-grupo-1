@@ -91,11 +91,11 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 > "Página de inicio que muestra tantos los servicios que ofrecemos como la calidad de estos. Incluye una barra de navegación y acceso a registro/login para usuarios no autenticados."
 
 #### **2. Tours disponibles / Packages**
-![Página Principal](images/home-page.png)
+![Página Principal](img/home-page.png)
 
 > "Página donde el usuario puede observar los distintos viajes que ofrecemos, asi como su información más relevante resumida (destino principal, precio, duración, número de viajeros posibles, etc). La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **3. Descripción de un tour específico / tour-details**
+#### **3. Descripción de un tour específico / Tour-details**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que se muestran todos los detalles del producto seleccionado en tours. En esta página, específica para cada producto, podremos añadir el producto al carrito o reservarlo tanto online como por llamada telefónica, también podremos leer la toda la información sobre el producto y las reseñas que han dejado otros usuarios sobre este. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
