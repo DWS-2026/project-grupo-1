@@ -259,7 +259,13 @@ Finalmente, he desarrollado plantillas desde cero para las páginas que no inclu
 
 #### **Alumno 4 - Andrés Sánchez Nogales**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado de traducir los distintos archivos de la página, así como de darles imágenes a estos. A su vez, completé aquellos archivos a los que les faltaba algún campo por cubrir. 
+
+Primeramente me encargué de crear el carrito, el cual diseñé primero usando JavaScript, y una vez viendo que este no podía ser usado, diseñé otro (esta vez sin emplear JavaScript) empleando los botones requeridos en el archivo tour-details.html y luego creando y diseñando el archivo carrito.html. Eliminé alguna funcionalidad innecesaria en packages.html. 
+
+También me encargué de solucionar diversos problemas que iban surgiendo a lo largo del diseño: botones o algunos dropdowns no funcionaban, redireccionamiento de botones erróneos, descolocamientos de textos o imágenes, etc.
+
+Por último, redacté gran parte del README, añadiendo imágenes y descripciones de cada archivo de la web, siguiendo el flujo de funcionamiento.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
