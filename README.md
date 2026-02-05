@@ -77,11 +77,19 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
-Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
+![Diagrama de flujo fase 1.png](Diagrama%20de%20flujo%20fase%201.png)
 
-![Diagrama de Navegación](images/navigation-diagram.png)
-
-> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
+> Descripción: El flujo de la aplicación comienza en la zona pública, donde el usuario puede acceder a la web desde cualquier página principal a través de la barra de navegación. Desde la navbar se puede ir libremente a la página de inicio, al listado de paquetes turísticos, a la sección de guías, a los servicios ofrecidos, a la página “sobre nosotros”, al formulario de contacto y al carrito de la compra. Esta navegación es bidireccional, permitiendo moverse entre estas secciones sin restricciones.
+>
+> Desde la página de paquetes, el usuario puede consultar más información sobre un tour concreto, lo que le lleva a la página de detalle del tour. En esta página se muestra la información completa del viaje seleccionado y desde ella se habilitan varias acciones clave. El usuario puede añadir una opinión sobre el tour, accediendo a la página de añadir reseña, desde la cual, una vez enviada la opinión, se regresa de nuevo a la página de detalles del tour. También es posible añadir el tour directamente al carrito de la compra.
+>
+>El carrito actúa como punto intermedio en el proceso de compra. Desde él, el usuario puede volver a consultar el detalle del tour, seguir explorando otros paquetes turísticos o continuar con el proceso de pago. Si decide pagar, el flujo conduce a la página de checkout, donde se finaliza la compra, y posteriormente a la página de factura, que confirma el pago realizado.
+>
+>En paralelo, el usuario puede acceder a la zona de autenticación desde la barra de navegación. Desde ahí puede iniciar sesión, registrarse como nuevo usuario o recuperar su contraseña en caso de olvido. Una vez que el inicio de sesión es correcto, el usuario accede a su perfil de cliente, desde donde gestiona su información personal. Además, desde la página de login existe la posibilidad de acceder al panel de administración si se trata de un usuario con permisos de administrador.
+>
+>El panel de administración comienza con el inicio de sesión del administrador y da acceso al dashboard principal, desde el cual se gestionan las diferentes áreas del sistema. El administrador puede administrar usuarios, consultar y editar sus perfiles, gestionar los tours disponibles (verlos, editarlos o añadir nuevos), y moderar las reseñas realizadas por los clientes. Desde la sección de reseñas, el administrador también puede acceder al detalle del tour asociado a cada opinión para tener una visión completa del contenido que se está gestionando.
+>
+>Finalmente, el sistema contempla el manejo de errores de navegación. Si el usuario introduce una URL que no corresponde a ninguna página existente, el flujo redirige a la página 404, informando de que la ruta solicitada no se encuentra disponible.
 
 ### **Capturas de Pantalla y Descripción de Páginas**
 
