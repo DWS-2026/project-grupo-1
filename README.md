@@ -249,17 +249,17 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 ---
 
-#### **Alumno 4 - [Nombre Completo]**
+#### **Alumno 4 - Andrés Sánchez Nogales**
 
 [Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Creación de un carrito para gestionar las compras(descartado)](https://github.com/DWS-2026/project-grupo-1/commit/3119a02e87639263196816fa396f108408459eef)  | [cart.js](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
+|2| [Nuevo carrito (sin js) y arreglos de reedireciones](https://github.com/DWS-2026/project-grupo-1/commit/2a5fac0010f3889b6bdc20b232353529cf1448e1)  | [carrito.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
+|3| [dashboard arreglada, imagenes packages ajustadas,  tour-details acabado](https://github.com/DWS-2026/project-grupo-1/commit/d0c307ff1b4d760c264121acc86d001926feaf09)  | [img](https://github.com/DWS-2026/project-grupo-1/tree/main/img)   |
+|4| [arreglo invoice y carrito, decoración](https://github.com/DWS-2026/project-grupo-1/commit/f877cb3bbc59372740a4170b9efed9ac75692d97)  | [carrito.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
+|5| [Fotos de cada página añadidas + correcciones + descripciones](https://github.com/DWS-2026/project-grupo-1/commit/5278b92d5a436490f1e7707ac74d4648e65bd8e8)  | [README.md](https://github.com/DWS-2026/project-grupo-1/blob/main/README.md)   |
 
 ---
 
