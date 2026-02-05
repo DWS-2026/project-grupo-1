@@ -86,7 +86,7 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](images/home-page.png)
+![Página Principal](images/index.png)
 
 > "Página de inicio que muestra tantos los servicios que ofrecemos como la calidad de estos. Incluye una barra de navegación y acceso a registro/login para usuarios no autenticados."
 
@@ -100,62 +100,62 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 > "Página en la que se muestran todos los detalles del producto seleccionado en tours. En esta página, específica para cada producto, podremos añadir el producto al carrito o reservarlo tanto online como por llamada telefónica, también podremos leer la toda la información sobre el producto y las reseñas que han dejado otros usuarios sobre este. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **4. Carrito de compra / carrito**
+#### **4. Carrito de compra / Carrito**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que podremos observar todos los productos que hemos añadido al carrito. Nos permite volver a la página de estos productos para observar de nuevo sus detalles, volver a la página tours para seguir explorando el resto de productos y proceder al pago de los productos seleccionados. Podremos acceder a esta página desde cualquier página que tenga incluida barra de navegación. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **5. Zona de pago / checkout**
+#### **5. Zona de pago / Checkout**
 ![Página Principal](images/home-page.png)
 
   > "Página en la que podremos proceder al pago de los prodcutos seleccionados. En esta página se rellenarán los campos indicados (bancarios) para realizar el pago final de los productos."
 
-#### **6. Factura / invoice**
+#### **6. Factura / Invoice**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que podremos observar el recibo de pago de la compra realizada. En esta página podremos observar todos los detalles de la compra: precio final, detalles de la agencia, quien ha realizado el pago y productos adquiridos (en este caso, packs de tours de viajes). También podremos volver a la página principal."
 
-#### **7. Guías / guides**
+#### **7. Guías / Guides**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que podremos observar a nuestros guías más relevantes. Los usuarios pueden observar a nuestros guías más relevantes asi como su especialización, además, se incluyen sus redes sociales por si se les desea contactar o pedir recomendaciones. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **8. Sobre nosotros / about**
+#### **8. Sobre nosotros / About**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que podremos observar información relevante a la empresa. Los usuarios pueden observar información sobre nosotros y las tareas principales de la empresa, además de las garantías incluidas en todos nuestros productos. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **9. Contacto / contact**
+#### **9. Contacto / Contact**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que se indicará como contactar con el servicio al cliente de la empresa. Los usuarios que tengan cualquier duda en lo relativo a los productos o hayan tenido cualquier problema técnico, nos podrán contactar rellenando los formularios indicados en esta página. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **10. Inicio de sesión / login**
+#### **10. Inicio de sesión / Login**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que se indicará como iniciar sesión en la web para poder acceder a todos los servicios ofrecidos. En caso de tener una cuenta registrada, se podrá navegar a una página para la creación de esta, también se podrá proceder a la recuperación de contraseña en caso de haberla olvidado o haber tenido cualquier problema relativo a esta. También se podrá acceder a la págino de incio de sesión como administrador. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **11. Registro / register**
+#### **11. Registro / Register**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que se podrá proceder a la creación de una nueva cuenta. Una vez rellenados todos los campos requeridos y haber aceptados los términos y condiciones, se redirigirá añ usuario a la página de incio de sesión. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **12. Inicio de sesión para administrador / admin-login**
+#### **12. Inicio de sesión para administrador / Admin-login**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que los administradores podrán iniciar sesión. Una vez rellenados los campos se podrá acceder al panel de administrador, también se ofrece la posibilidad de volver al incio de sesión para usuarios comunes. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **13. Recuperación de contraseña / forgot-password**
+#### **13. Recuperación de contraseña / Forgot-password**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que podremos recuperar la contraseña en caso de haberla perdido o tener cualquier problema relativo a esta. Se nos pedirá introducir nuestro correo asociado a la cuenta, una vez hecho esto se nos enviare un mensaje a nuestro correo electrónico. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **14. Mi perfil / profile**
+#### **14. Mi perfil / Profile**
 ![Página Principal](images/home-page.png)
 
 > "Página en la que se podrá observar la información de la cuenta con la que nos encontramos registrados. En todas las páginas de esta web (salvo chekout e invoice) se podrá acceder a través del boton "Mi perfil", ubicado en la dropbar "Opciones" situada en parte superior de estas. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **14. Error 404 / 404**
+#### **15. Error 404 / 404**
 ![Página Principal](images/home-page.png)
 
 > "Página a la que será redirigido el usuario en caso de acceder a una página que no existe o a la que el servidor no puede acceder. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
