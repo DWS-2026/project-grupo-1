@@ -182,17 +182,42 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - [Nombre Completo]**
+#### **Alumno 1 - Mario Ortiz Lopo**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+# Tareas principales del proyecto
+
+1. **Desarrollo de la interfaz de administración**
+   - Implementación de funcionalidades para la edición de entidades: **tours**, **reviews** y **usuarios**.
+
+2. **Estilizado de la interfaz**
+   - Modificación del fichero `sb-admin-2.min.css` para dar estilo consistente a todas las pantallas.
+
+3. **Pantallas de inicio de sesión**
+   - Creación y estilizado de la pantalla de **login normal** y **login de administrador**.
+
+4. **Configuración de navegación**
+   - Implementación de la navegación en toda la interfaz de administración y parte de la interfaz de usuario.
+
+5. **Gestión de imágenes**
+   - Incorporación de imágenes en las pantallas según los requisitos visuales.
+
+6. **Modularización de la interfaz**
+   - Separación de secciones HTML en **componentes reutilizables**, almacenados en `sb_admin_2/components`.
+
+7. **Traducción de contenidos**
+   - Traducción al español de todos los ficheros de la interfaz de administración.
+
+8. **Video-presentación de la práctica**
+   - Grabación de un video que muestre el funcionamiento y desarrollo del proyecto.
+
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1 - fba03fc0fb4412db80ccea64ba54ba52cf4a29bd| [Reducción de código repetido a través de creación de componentes: - Se ha creado la carpeta components que aloja los componentes html que se repetirán en los distintos ficheros de la interfaz administrador - se ha modificado index.html, haciendo uso de estos componentes a través de código js](https://github.com/DWS-2026/project-grupo-1/commit/fba03fc)  | [sb_admin_2/components/sidebar.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/components/sidebar.html)   |
+|2 - 0ef97f5e21a62d0746203b1454de9efec8f303aa| [Utilización de los componentes: - Se han modificado los ficheros html para hacer uso de los componentes y evitar la repetición de código.](https://github.com/DWS-2026/project-grupo-1/commit/0ef97f5)  | [sb_admin_2/index.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/index.html)   |
+|3 - 6513f94cf3e6155d167859d18068aa8cc8523f24| [Descripción commit 3](https://github.com/DWS-2026/project-grupo-1/commit/6513f94)  | [html/login.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/login.html)   |
+|4 - f7be73236e75b734b277db982e26c098360f36a9| [Añadida sección tours en panel de administración: - Se ha cambiado el nombre al fichero tables.html por users.html. - Se ha añadido el fichero tours.html que contiene un listado de los tours disponibles y sus datos. - Se ha arreglado la navegación con el sidebar](https://github.com/DWS-2026/project-grupo-1/commit/f7be732)  | [sb_admin_2/charts.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/charts.html)   |
+|5 - ed2bef70abc1f06adf84308ce7b440285fcaaf07| [Actualizado el archivo css: Se ha actualizado el archivo sb-admin-2.min.css modificando los colores principales para aportar coherencia respecto al resto de pantallas](https://github.com/DWS-2026/project-grupo-1/commit/ed2bef7)  | [sb_admin_2/utilities-animation.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/utilities-animation.html)   |
 
 ---
 
