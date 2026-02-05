@@ -155,12 +155,30 @@ Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicac
 
 > "Página en la que se podrá observar la información de la cuenta con la que nos encontramos registrados. En todas las páginas de esta web (salvo checkout e invoice) se podrá acceder a través del botón "Mi perfil", ubicado en la dropbar "Opciones" situada en parte superior de estas. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
-#### **15. Error 404 / 404**
-![Página Principal](img/error%20404.png)
+#### **15. Panel de control para administradores / Index**
+![Página Principal](img/index_admin.png)
 
-> "Página a la que será redirigido el usuario en caso de acceder a una página que no existe o a la que el servidor no puede acceder. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
+> "Panel de control para administradores desde donde se puede acceder al resto de funcionalidades."
 
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
+#### **16. Perfil de administrador / Profile**
+![Página Principal](img/profile_admin.png)
+
+> "En esta página cada administrador podrá acceder a información relativa a su cuenta, además de poder editarla."
+
+#### **17. Usuarios / Users**
+![Página Principal](img/users_admin.png)
+
+> "Desde esta página los administradores podrán acceder al listado de todos los perfiles de usuario registrados de la web, así como acceder y editar los datos de estos."
+
+#### **18. Tours disponibles / Tours**
+![Página Principal](img/tours_admin.png)
+
+> "Desde esta página los administradores podrán gestionar todos los packs de tours disponibles en la web, pudiendo modificarlos y borrarlos."
+
+#### **19. Reseñas / Reviews**
+![Página Principal](img/reviews_admin.png)
+
+> "Desde esta página los administradores tendrán acceso a todas las reviews enviadas por los usuarios, pudiendo editarlas y borrarlas."
 
 ### **Participación de Miembros en la Práctica 1**
 
