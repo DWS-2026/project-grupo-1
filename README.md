@@ -251,17 +251,22 @@ Finalmente, he desarrollado plantillas desde cero para las páginas que no inclu
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 – Javier Hernández Campano**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado principalmente de la integración funcional y mejora del flujo de navegación de la aplicación, así como de la refactorización y corrección de errores en múltiples páginas del proyecto. Mi trabajo se ha centrado en asegurar una experiencia de usuario coherente, fluida y sin errores de navegación entre las distintas secciones de la web.
 
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+He integrado y unificado la navbar en todas las páginas, corrigiendo duplicidades, enlaces incorrectos y problemas de navegación. Además, he desarrollado y mejorado el flujo completo de compra, conectando correctamente el carrito con el proceso de checkout y la generación de la factura. También he creado e integrado la página de error 404 para gestionar rutas inexistentes.
+
+Por otro lado, he realizado tareas de mantenimiento y limpieza del proyecto, reorganizando archivos obsoletos de la plantilla original, actualizando contenidos visuales (como imágenes de guías), corrigiendo textos y mejorando elementos de interfaz como botones y redirecciones. Finalmente, he documentado el funcionamiento general del proyecto mediante la integración del diagrama de flujo.
+
+| Nº | Commits | Files |
+|:--:|:--------|:------|
+| 1  | [Refactor completo de la navbar e integración global](https://github.com/DWS-2026/project-grupo-1/commit/0b29350) | about.html, contact.html, guides.html, index.html, packages.html, profile.html, register.html, tour-details.html |
+| 2 | [Cambio global del estilo: color principal a rojo](https://github.com/DWS-2026/project-grupo-1/commit/5d0de9f) | css/style.css, css/bootstrap.min.css, about.html, blog.html, contact.html, guides.html, index.html |
+|3| [Activación del flujo de compra desde el carrito](https://github.com/DWS-2026/project-grupo-1/commit/0076964) | carrito.html |
+| 4  | [Creación de la página de error 404](https://github.com/DWS-2026/project-grupo-1/commit/e1fdbcf) | 404.html |
+| 5  | [Integración del diagrama de flujo y actualización del README](https://github.com/DWS-2026/project-grupo-1/commit/92a1de7) | README.md, Diagrama de flujo fase 1.png |
+
 
 ---
 
