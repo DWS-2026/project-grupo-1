@@ -13,7 +13,8 @@
 ## 🎭 **Preparación: Definición del Proyecto**
 
 ### **Descripción del Tema**
-Aplicación web para una *agencia* de viajes que ofrece paquetes turísticos organizados (tours) a distintos destinos, mostrando información de cada tour (precio por persona, duración, ubicación y características del alojamiento) y permitiendo a los usuarios buscar, filtrar y solicitar presupuestos online. Pertenece al sector turístico y facilita al usuario comparar destinos y tours de forma rápida, así como contactar con la agencia para gestionar su viaje. [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+Aplicación web para una agencia de viajes que ofrece paquetes turísticos organizados (tours) a los destinos más raros y únicos del mundo (otros planetas, otrás épocas e incluso futuros apocalípticos), mostrando información de cada tour (precio por persona, duración, ubicación y características del alojamiento) y permitiendo a los usuarios reservar tours de manera online y por llamada, además de poder seleccionarlos para su posterior compra. Pertenece al sector turístico y facilita al usuario comparar destinos y tours de forma rápida, así como contactar con la agencia para gestionar su viaje.
+
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
@@ -21,7 +22,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 1. *Usuario*
 2. *Destino*
 3. *Reserva / Solicitud de Presupuesto*
-4. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.) [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+4. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.)
 5. *Hotel* (1 por destino)
 
 
@@ -37,10 +38,10 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 
 * *Usuario Anónimo*:  
   - Permisos:  
-    - Visualizar listado de tours y destinos (catálogo público). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Visualizar listado de tours y destinos (catálogo público). 
     - Buscar y filtrar tours por destino, fechas y rango de precio.  
     - Ver detalles básicos del tour (precio por persona, duración, ubicación, características).  
-    - Enviar formulario de contacto genérico o “Ask For A Quote” sin cuenta (según diseño). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Enviar formulario de contacto genérico o “Ask For A Quote” sin cuenta (según diseño). 
   - No es dueño de ninguna entidad.
 
 * *Usuario Registrado*:  
@@ -57,7 +58,7 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 
 * *Administrador*:  
   - Permisos:  
-    - Gestión completa (CRUD) de Tours (precio, duración, imágenes, descripción, servicios, etc.). [themewagon.github](https://themewagon.github.io/pacific/destination.html)
+    - Gestión completa (CRUD) de Tours (precio, duración, imágenes, descripción, servicios, etc.).
     - Gestión de Hoteles (alta, baja, modificación; un hotel por destino).
     - Gestión de Categorías de Experiencia (Adventure, Beach, Nature, etc.).
     - Gestión de Usuarios (activar/desactivar cuentas, ver datos básicos y reservas).
