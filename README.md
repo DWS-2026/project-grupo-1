@@ -225,7 +225,7 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 |2| [Utilización de los componentes](https://github.com/DWS-2026/project-grupo-1/commit/0ef97f5)  | [sb_admin_2/index.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/index.html)   |
 |3| [Actualizada interfaz de administrador](https://github.com/DWS-2026/project-grupo-1/commit/6513f94)  | [html/login.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/login.html)   |
 |4| [Añadida sección tours en panel de administración](https://github.com/DWS-2026/project-grupo-1/commit/f7be732)  | [sb_admin_2/charts.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/charts.html)   |
-|5| [Actualizado el archivo css](https://github.com/DWS-2026/project-grupo-1/commit/ed2bef7)  | [sb_admin_2/utilities-animation.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/utilities-animation.html)   |
+|5| [Actualizado el archivo css](https://github.com/DWS-2026/project-grupo-1/commit/ed2bef7)  | [html/admin-login](https://github.com/DWS-2026/project-grupo-1/blob/main/html/admin-login.html)   |
 
 ---
 
