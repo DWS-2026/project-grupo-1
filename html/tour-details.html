@@ -1,36 +1,46 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
+
+    <!-- window title and icon -->
     <title>Travela - Tour: futuro</title>
     <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
+    <!-- google web fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+    <!-- icon font stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
+    <!-- css and bootstrap templates stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/style.css" rel="stylesheet">
-    
+
+
+    <!-- internal css start -->
     <style>
-        /* Custom tweaks for the details page */
+        /* details page start */
         .tour-price-box {
             background: #fff;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
+
         .list-group-item {
             border: none;
             padding: 10px 0;
             border-bottom: 1px solid #eee;
         }
+
         .list-group-item i {
             width: 25px;
         }
+
         .gallery-img {
             height: 150px;
             object-fit: cover;
@@ -38,12 +48,15 @@
             cursor: pointer;
             transition: transform 0.3s;
         }
+
         .gallery-img:hover {
             transform: scale(1.05);
         }
 
+        /* details page end */
 
-        /* Specific Styles for Review Page */
+
+        /* review page start */
         .total-like {
             border: 1px solid #e0e0e0;
             border-radius: 50px;
@@ -54,106 +67,153 @@
             font-size: 14px;
             color: #6c757d;
         }
+
         .progress {
             height: 10px;
             border-radius: 5px;
             background-color: #f0f0f0;
         }
+
         .review-img {
             width: 50px;
             height: 50px;
             object-fit: cover;
         }
+
         .graph-star-rating-header .star-rating {
             font-size: 18px;
         }
+
         .reviews-members .star-rating {
             font-size: 14px;
         }
 
+        .review-item {
+            border-bottom: 1px solid #f0f0f0;
+            padding-bottom: 25px;
+            margin-bottom: 30px;
+        }
 
+        .review-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
 
-    .review-item {
-        border-bottom: 1px solid #f0f0f0;
-        padding-bottom: 25px;
-        margin-bottom: 30px;
-    }
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #dc3545;
+            padding: 2px;
+        }
 
-    .review-item:last-child {
-        border-bottom: none;
-        margin-bottom: 0;
-    }
-
-.user-avatar {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #dc3545;
-        padding: 2px;
-    }
+        /* review page end */
     </style>
+    <!-- internal css end -->
 </head>
 
-<body>
 
+
+
+
+
+<body>
+    <!-- solid (top) navbar start  -->
     <div class="container-fluid bg-primary px-5 d-none d-lg-block">
         <div class="row gx-0">
+
+            <!-- fake social media start -->
             <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
-                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-twitter fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-facebook-f fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-linkedin-in fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-instagram fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i
+                            class="fab fa-youtube fw-normal"></i></a>
                 </div>
             </div>
+            <!-- fake social media end -->
+
+            <!-- user buttons start -->
             <div class="col-lg-4 text-center text-lg-end">
                 <div class="d-inline-flex align-items-center" style="height: 45px;">
-                    <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Regístrate</small></a>
-                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Inicio de sesión</small></a>
+                    <a href="register.html"><small class="me-3 text-light"><i
+                                class="fa fa-user me-2"></i>Regístrate</small></a>
+                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Inicio de
+                            sesión</small></a>
+
+                    <!-- options start -->
                     <div class="dropdown">
-                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
+                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i
+                                    class="fa fa-home me-2"></i> Opciones</small></a>
                         <div class="dropdown-menu rounded">
-            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi perfil</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi
+                                perfil</a>
+                            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
                         </div>
                     </div>
+                    <!-- options end -->
                 </div>
             </div>
+            <!-- user buttons end -->
+
         </div>
     </div>
+    <!-- solid (top) navbar end  -->
+
+
+    <!-- transparent navbar start  -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+
+            <!-- logo + name start -->
             <a href="index.html" class="navbar-brand p-0">
                 <h1 class="m-0 text-white d-flex align-items-center">
-                    <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3" style="max-height: 90px; padding: 8px;">
+                    <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
+                        style="max-height: 90px; padding: 8px;">
                     Apex Expeditions
                 </h1>
             </a>
+            <!-- logo + name end -->
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="fa fa-bars"></span>
             </button>
+
+            <!-- navigation buttons start -->
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
                     <a href="index.html" class="nav-item nav-link">Inicio</a>
-                        <a href="packages.html" class="nav-item nav-link">Tours</a>
-                        <a href="guides.html" class="nav-item nav-link">Guías</a>
-                        <a href="services.html" class="nav-item nav-link">Servicios</a>
-                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
-                                                <a href="carrito.html" class="nav-item nav-link position-relative">
-                            <i class="fa fa-shopping-cart fa-lg"></i>
-                            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                                  style="top: 65%;">
-                                1
-                            </span>
-                        </a>
+                    <a href="packages.html" class="nav-item nav-link">Tours</a>
+                    <a href="guides.html" class="nav-item nav-link">Guías</a>
+                    <a href="services.html" class="nav-item nav-link">Servicios</a>
+                    <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                    <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                    <a href="carrito.html" class="nav-item nav-link position-relative">
+                        <i class="fa fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                            style="top: 65%;">
+                            1
+                        </span>
+                    </a>
                 </div>
                 <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
             </div>
+            <!-- navigation buttons end -->
+
         </nav>
     </div>
+    <!-- transparent navbar end -->
+
+
+
+    <!-- banner + breadcrumbs start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
             <h3 class="text-white display-3 mb-4">Viaje al futuro</h3>
@@ -161,95 +221,171 @@
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
                 <li class="breadcrumb-item active text-white">Viaje al futuro</li>
-            </ol>    
+            </ol>
         </div>
     </div>
+    <!-- banner + breadcrumbs end -->
+
+
+
+    <!-- page content start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
             <div class="row g-5">
-                
                 <div class="col-lg-8">
-                    
+
+
+
+                    <!-- img + description start -->
                     <div class="mb-5 position-relative">
-                        <img src="../img/futuro1.7.jpg" class="img-fluid rounded w-100" alt="Mediterranean Adventure" style="min-height: 400px; object-fit: cover;">
+                        <img src="../img/futuro1.7.jpg" class="img-fluid rounded w-100" alt="Mediterranean Adventure"
+                            style="min-height: 400px; object-fit: cover;">
                         <div class="bg-white border border-top-0 rounded-bottom p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12 Días</span>
-                                <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124 reseñas)</span>
+                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12
+                                    Días</span>
+                                <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124
+                                    reseñas)</span>
                             </div>
                             <h2 class="mb-3">Viaje al futuro</h2>
-                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Lugar que tu selecciones en el futuro (no estan permitidos viajes al pasado)</p>
+                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Lugar que
+                                tu selecciones en el futuro (no estan permitidos viajes al pasado)</p>
                         </div>
                     </div>
+                    <!-- img + description end -->
 
+
+
+
+                    <!-- description + highlights start -->
                     <div class="mb-5">
+
+                        <!-- description start -->
                         <h4 class="mb-3 text-primary font-weight-bold">Descripción</h4>
-                        <p class="mb-4">Emprende un viaje inolvidable hacia el futuro, explorando ciudades futuristas y paisajes que desafían la imaginación. Desde rascacielos flotantes hasta parques tecnológicos interplanetarios, vivirás experiencias únicas con transporte ultrarrápido, gastronomía de vanguardia y aventuras que solo el mañana puede ofrecer. Sumérgete en un mundo donde la tecnología y la naturaleza conviven en perfecta armonía y cada destino es una ventana al futuro.</p>
-                        
+                        <p class="mb-4">Emprende un viaje inolvidable hacia el futuro, explorando ciudades futuristas y
+                            paisajes que desafían la imaginación. Desde rascacielos flotantes hasta parques tecnológicos
+                            interplanetarios, vivirás experiencias únicas con transporte ultrarrápido, gastronomía de
+                            vanguardia y aventuras que solo el mañana puede ofrecer. Sumérgete en un mundo donde la
+                            tecnología y la naturaleza conviven en perfecta armonía y cada destino es una ventana al
+                            futuro.</p>
+                        <!-- description end -->
+
+                        <!-- highlights start -->
                         <div class="bg-light p-4 rounded mb-4">
                             <h5 class="mb-3">Puntos destacados del tour</h5>
                             <div class="row">
                                 <div class="col-md-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Hoteles de 4 estrellas</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Guías temporales expertos</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Desayuno diario incluido</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Hoteles de
+                                            4 estrellas</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Guías
+                                            temporales expertos</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Desayuno
+                                            diario incluido</li>
                                     </ul>
                                 </div>
                                 <div class="col-md-6">
                                     <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Grupos pequeños (Max 15)</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Monumentos históricos futuristas</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Experiencias culturales</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Grupos
+                                            pequeños (Max 15)</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Monumentos
+                                            históricos futuristas</li>
+                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i>
+                                            Experiencias culturales</li>
                                     </ul>
                                 </div>
                             </div>
                         </div>
+                        <!-- highlights end -->
                     </div>
+                    <!-- description + highlights end -->
 
+
+
+                    <!--itinerary start -->
                     <div class="mb-5">
                         <h4 class="mb-4 text-primary font-weight-bold">Itinerario día a día</h4>
-                        
+
+                        <!-- day 1 start -->
                         <div class="border-start border-2 border-primary ps-4 mb-4">
                             <h5 class="fw-bold">Día 1: Bienvenida al Futuro</h5>
-                                <p class="text-muted">Llegada a la ciudad futurista de tu destino. Tras registrarte en un hotel inteligente con habitaciones automatizadas, disfruta de una cena de bienvenida con gastronomía molecular y vistas a rascacielos flotantes iluminados por luces holográficas.</p>
+                            <p class="text-muted">Llegada a la ciudad futurista de tu destino. Tras registrarte en un
+                                hotel inteligente con habitaciones automatizadas, disfruta de una cena de bienvenida con
+                                gastronomía molecular y vistas a rascacielos flotantes iluminados por luces
+                                holográficas.</p>
                         </div>
+                        <!-- day 1 end -->
 
+                        <!-- day 2 start -->
                         <div class="border-start border-2 border-primary ps-4 mb-4">
                             <h5 class="fw-bold">Día 2: Exploración Tecnológica y Aventuras Futuristas</h5>
-                            <p class="text-muted">Explora los principales hitos futuristas: transporte ultrarrápido, jardines verticales flotantes y museos interactivos de innovación. Vive experiencias de realidad aumentada y realidad virtual que te transportan a mundos del mañana. Finaliza el día con un paseo nocturno en drones turísticos que recorren la ciudad desde el cielo.</p>
+                            <p class="text-muted">Explora los principales hitos futuristas: transporte ultrarrápido,
+                                jardines verticales flotantes y museos interactivos de innovación. Vive experiencias de
+                                realidad aumentada y realidad virtual que te transportan a mundos del mañana. Finaliza
+                                el día con un paseo nocturno en drones turísticos que recorren la ciudad desde el cielo.
+                            </p>
                         </div>
+                        <!-- day 2 end -->
 
+                        <!-- day 3 start -->
                         <div class="border-start border-2 border-primary ps-4 mb-4">
                             <h5 class="fw-bold">Día 3: Descubrimiento Interplanetario y Regreso</h5>
-                            <p class="text-muted">Visita laboratorios de exploración espacial y colonias futuristas simuladas. Disfruta de un almuerzo con alimentos impresos en 3D y participa en actividades interactivas que muestran cómo será la vida en otros planetas. Por la tarde, traslado al aeropuerto o estación futurista para tu regreso a casa.</p>
+                            <p class="text-muted">Visita laboratorios de exploración espacial y colonias futuristas
+                                simuladas. Disfruta de un almuerzo con alimentos impresos en 3D y participa en
+                                actividades interactivas que muestran cómo será la vida en otros planetas. Por la tarde,
+                                traslado al aeropuerto o estación futurista para tu regreso a casa.</p>
                         </div>
+                        <!-- day 3 end -->
 
                     </div>
+                    <!--itinerary end -->
 
+
+                    <!-- included + not included start -->
                     <div class="row mb-5">
+
+                        <!-- included start -->
                         <div class="col-md-6">
                             <h5 class="mb-3 text-success"><i class="fa fa-check me-2"></i>Incluye</h5>
                             <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Transporte ultrarrápido entre destinos futuristas</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Alojamiento en hoteles inteligentes de 4 estrellas</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Desayuno futurista diario interactivo</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Guías especializados en tecnología futurista</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Acceso a todas las atracciones y simulaciones interplanetarias</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Transporte ultrarrápido
+                                    entre destinos futuristas</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Alojamiento en hoteles
+                                    inteligentes de 4 estrellas</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Desayuno futurista diario
+                                    interactivo</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Guías especializados en
+                                    tecnología futurista</li>
+                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Acceso a todas las
+                                    atracciones y simulaciones interplanetarias</li>
                             </ul>
                         </div>
+                        <!-- included end -->
+
+
+                        <!-- not included start -->
                         <div class="col-md-6">
                             <h5 class="mb-3 text-danger"><i class="fa fa-times me-2"></i>No Incluye</h5>
                             <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Vuelos internacionales hacia la ciudad futurista</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Comidas de almuerzo y cena (a menos que se especifique)</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Gastos personales y souvenirs tecnológicos</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Seguro de viaje futurista</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Vuelos internacionales
+                                    hacia la ciudad futurista</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Comidas de almuerzo y cena
+                                    (a menos que se especifique)</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Gastos personales y
+                                    souvenirs tecnológicos</li>
+                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Seguro de viaje futurista
+                                </li>
                                 <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Propinas para guías</li>
                             </ul>
                         </div>
-                    </div>
+                        <!-- not included start -->
 
+                    </div>
+                    <!-- included + not included end -->
+
+
+
+                    <!-- gallery start -->
                     <div class="mb-5">
                         <h4 class="mb-4 text-primary font-weight-bold">Galería de fotos</h4>
                         <div class="row g-3">
@@ -273,140 +409,190 @@
                             </div>
                         </div>
                     </div>
+                    <!-- gallery end -->
 
 
-                        <!-- reviews -->
-    <div class="tour-reviews mt-5">
-    <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
 
-    <div class="card border-0 shadow-sm p-4">
-        <div class="row mb-5">
-            <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
-                <div class="rating-number">4.5</div>
-                <div class="mb-2">
-                    <i class="fas fa-star text-primary"></i>
-                    <i class="fas fa-star text-primary"></i>
-                    <i class="fas fa-star text-primary"></i>
-                    <i class="fas fa-star text-primary"></i>
-                    <i class="fas fa-star-half-alt text-primary"></i>
+                    <!-- reviews section start -->
+                    <div class="tour-reviews mt-5">
+                        <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
+                        <div class="card border-0 shadow-sm p-4">
+
+                            <!-- star rating + graph start -->
+                            <div class="row mb-5">
+
+                                <!-- rating average start -->
+                                <div
+                                    class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
+                                    <div class="rating-number">4.5</div>
+                                    <div class="mb-2">
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star text-primary"></i>
+                                        <i class="fas fa-star-half-alt text-primary"></i>
+                                    </div>
+                                    <p class="text-muted mb-0">Basado en 24 opiniones</p>
+                                </div>
+                                <!-- rating average end -->
+
+                                <!-- graph start -->
+                                <div class="col-md-8">
+
+                                    <!-- 5 stars start -->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="text-muted me-2">5 <i class="fas fa-star text-warning"></i></span>
+                                        <div class="progress flex-grow-1 me-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
+                                                aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-muted">18</span>
+                                    </div>
+                                    <!-- 5 stars end -->
+
+                                    <!-- 4 stars start -->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="text-muted me-2">4 <i class="fas fa-star text-warning"></i></span>
+                                        <div class="progress flex-grow-1 me-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 20%"
+                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-muted">4</span>
+                                    </div>
+                                    <!-- 4 stars end -->
+
+                                    <!-- 3 stars start -->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="text-muted me-2">3 <i class="fas fa-star text-warning"></i></span>
+                                        <div class="progress flex-grow-1 me-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 5%"
+                                                aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-muted">1</span>
+                                    </div>
+                                    <!-- 3 stars end -->
+
+                                    <!-- 2 stars start -->
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="text-muted me-2">2 <i class="fas fa-star text-warning"></i></span>
+                                        <div class="progress flex-grow-1 me-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 5%"
+                                                aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-muted">1</span>
+                                    </div>
+                                    <!-- 2 stars end -->
+
+                                    <!-- 1 star start -->
+                                    <div class="d-flex align-items-center">
+                                        <span class="text-muted me-2">1 <i class="fas fa-star text-warning"></i></span>
+                                        <div class="progress flex-grow-1 me-3">
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"
+                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <span class="text-muted">0</span> <!-- 0 stars -->
+                                    </div>
+                                    <!-- 1 star end -->
+                                </div>
+                                <!-- graph end -->
+
+                            </div>
+                            <!-- star rating + graph end -->
+
+
+                            <!-- written review start -->
+                            <div class="review-list">
+
+                                <!-- review 1 (john) start -->
+                                <div class="review-item d-flex">
+                                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=random"
+                                        alt="User Avatar" class="user-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0">John Doe</h6>
+                                            <small class="text-muted">12 Oct, 2024</small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                        </div>
+                                        <p class="text-muted mb-2">Una experiencia inolvidable. La guía fue excelente y
+                                            los lugares visitados superaron mis expectativas. ¡Muy recomendado!</p>
+                                        <div class="total-like">
+                                            <a href="#" class="text-muted text-decoration-none"><i
+                                                    class="far fa-thumbs-up me-1"></i> 12</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- review 1 (john) end -->
+
+
+                                <!-- review 2 (ana) start -->
+                                <div class="review-item d-flex">
+                                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=random"
+                                        alt="User Avatar" class="user-avatar me-3">
+                                    <div class="flex-grow-1">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <h6 class="mb-0">Ana García</h6>
+                                            <small class="text-muted">05 Sep, 2024</small>
+                                        </div>
+                                        <div class="mb-2">
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="fas fa-star text-primary"></i>
+                                            <i class="far fa-star text-primary"></i>
+                                        </div>
+                                        <p class="text-muted mb-2">Todo muy bien organizado, aunque el transporte se
+                                            retrasó un poco. Por lo demás, el tour es fantástico.</p>
+                                        <div class="total-like">
+                                            <a href="#" class="text-muted text-decoration-none"><i
+                                                    class="far fa-thumbs-up me-1"></i> 5</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- review 2 (ana) end -->
+
+                            </div>
+                            <!-- written review end -->
+
+                            <!-- button load more start -->
+                            <div class="text-center mt-3">
+                                <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Ver más opiniones</a>
+                            </div>
+                            <!-- button load more end -->
+
+                        </div>
+                    </div>
+                    <!-- reviews section end -->
                 </div>
-                <p class="text-muted mb-0">Basado en 24 opiniones</p>
-            </div>
-            <div class="col-md-8">
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-muted me-2">5 <i class="fas fa-star text-warning"></i></span>
-                    <div class="progress flex-grow-1 me-3">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span class="text-muted">18</span>
-                </div>
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-muted me-2">4 <i class="fas fa-star text-warning"></i></span>
-                    <div class="progress flex-grow-1 me-3">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span class="text-muted">4</span>
-                </div>
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-muted me-2">3 <i class="fas fa-star text-warning"></i></span>
-                    <div class="progress flex-grow-1 me-3">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span class="text-muted">1</span>
-                </div>
-                <div class="d-flex align-items-center mb-2">
-                    <span class="text-muted me-2">2 <i class="fas fa-star text-warning"></i></span>
-                    <div class="progress flex-grow-1 me-3">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 5%" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span class="text-muted">1</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    <span class="text-muted me-2">1 <i class="fas fa-star text-warning"></i></span>
-                    <div class="progress flex-grow-1 me-3">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <span class="text-muted">0</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="review-list">
-            <div class="review-item d-flex">
-                <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="User Avatar" class="user-avatar me-3">
-                <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <h6 class="mb-0">John Doe</h6>
-                        <small class="text-muted">12 Oct, 2024</small>
-                    </div>
-                    <div class="mb-2">
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                    </div>
-                    <p class="text-muted mb-2">Una experiencia inolvidable. La guía fue excelente y los lugares visitados superaron mis expectativas. ¡Muy recomendado!</p>
-                    <div class="total-like">
-                        <a href="#" class="text-muted text-decoration-none"><i class="far fa-thumbs-up me-1"></i> 12</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="review-item d-flex">
-                <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=random" alt="User Avatar" class="user-avatar me-3">
-                <div class="flex-grow-1">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <h6 class="mb-0">Ana García</h6>
-                        <small class="text-muted">05 Sep, 2024</small>
-                    </div>
-                    <div class="mb-2">
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="fas fa-star text-primary"></i>
-                        <i class="far fa-star text-primary"></i>
-                    </div>
-                    <p class="text-muted mb-2">Todo muy bien organizado, aunque el transporte se retrasó un poco. Por lo demás, el tour es fantástico.</p>
-                    <div class="total-like">
-                        <a href="#" class="text-muted text-decoration-none"><i class="far fa-thumbs-up me-1"></i> 5</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="text-center mt-3">
-            <a href="#" class="btn btn-primary rounded-pill py-2 px-4">Ver más opiniones</a>
-        </div>
-        <div class="text-center mt-3">
-            <a href="add-review.html" class="btn btn-primary rounded-pill py-2 px-4">Deja tu opinión</a>
-        </div>
-    </div>
-</div>
 
 
-
-
-
-                </div>
-
-
-
+                <!-- tour info + buttons start -->
                 <div class="col-lg-4">
-                    
                     <div class="tour-price-box p-4 rounded border mb-4">
+
+                        <!-- tour info start -->
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <h3 class="text-primary mb-0">4349.00€</h3>
                             <span class="text-muted"> cada grupo de 3 personas</span>
                         </div>
-                        
+
                         <ul class="list-group list-group-flush mb-4">
                             <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> 3 días</li>
-                            <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Personas máximas: 15</li>
-                            <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Lugar que tu selecciones en el futuro</li>
+                            <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Personas
+                                máximas: 15</li>
+                            <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Lugar que
+                                tu selecciones en el futuro</li>
                             <li class="list-group-item"><i class="fa fa-globe text-primary me-2"></i> Español</li>
                         </ul>
+                        <!-- tour info end -->
 
+
+                        <!-- buttons start -->
                         <div class="d-grid gap-2">
                             <a href="carrito.html" class="btn btn-success rounded-pill py-3">
                                 <i class="fa fa-shopping-cart me-2"></i>
@@ -421,123 +607,118 @@
                                 Llamar para reservar
                             </a>
                         </div>
+                        <!-- buttons end -->
 
                     </div>
 
                 </div>
+                <!-- tour details + buttons start -->
+
             </div>
         </div>
-        </div>
-
-
-
- <!-- Footer Start -->
-<div class="container-fluid footer py-5">
-  <div class="container py-5">
-    <div class="row g-5">
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Contacto</h4>
-          <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
-          <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
-          <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
-          <div class="d-flex align-items-center">
-            <i class="fas fa-share fa-2x text-white me-2"></i>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Portal</h4>
-          <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
-          <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
-          <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Soporte</h4>
-          <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
-          <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
-          <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item">
-          <h4 class="text-white mb-3">Pagos</h4>
-          <div class="footer-bank-card">
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
-            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
-</div>
-<!-- Footer End -->
+    <!-- page content end -->
 
-<!-- Copyright Start -->
-<div class="container-fluid copyright text-body py-4">
-  <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-md-6 text-center text-md-end mb-md-0">
-        <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right reserved.
-      </div>
-      <div class="col-md-6 text-center text-md-start">
-        Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
-      </div>
+
+
+    <!-- footer start -->
+    <div class="container-fluid footer py-5">
+        <div class="container py-5">
+            <div class="row g-5">
+
+                <!-- contact + social media start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Contacto</h4>
+                        <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
+                        <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
+                        <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-share fa-2x text-white me-2"></i>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com"
+                                target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com"
+                                target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com"
+                                target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com"
+                                target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- contact + social media end -->
+
+
+                <!-- portal start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Portal</h4>
+                        <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
+                        <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
+                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
+                    </div>
+                </div>
+                <!-- portal end -->
+
+                <!-- support start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Soporte</h4>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
+                        <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
+                        <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
+                    </div>
+                </div>
+                <!-- support end -->
+
+                <!-- payment start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item">
+                        <h4 class="text-white mb-3">Pagos</h4>
+                        <div class="footer-bank-card">
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- payment start -->
+
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-<!-- Copyright End -->
+    <!--footer end -->
 
-
-
-    
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
-    
-        
-            <!-- MODAL CARRITO -->
-        <div class="modal fade" id="cartModal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">🛒 Tu carrito</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <ul id="cart-items" class="list-group mb-3"></ul>
-                        <h5 class="text-end">
-                            Total: €<span id="cart-total">0</span>
-                        </h5>
-                    </div>
-
-                    <div class="modal-footer">
-                        <a href="checkout.html" class="btn btn-success">
-                            Continuar compra
-                        </a>
-                    </div>
+    <!-- copyright start -->
+    <div class="container-fluid copyright text-body py-4">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-end mb-md-0">
+                    <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right
+                    reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-start">
+                    Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
                 </div>
             </div>
         </div>
+    </div>
+    <!-- copyright end -->
 
 
 
+    <!-- back to top -->
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
+
+
+
+    <!-- js libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
+
 </html>

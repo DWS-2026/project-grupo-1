@@ -1,20 +1,6 @@
 
-/*** Spinner Start ***/
-/*** Spinner ***/
-#spinner {
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .5s ease-out, visibility 0s linear .5s;
-    z-index: 99999;
-}
-
-#spinner.show {
-    transition: opacity .5s ease-out, visibility 0s linear 0s;
-    visibility: visible;
-    opacity: 1;
-}
-/*** Spinner End ***/
-
+/* SECTION BUTTONS START */
+/* button bottom right to return to top */
 .back-to-top {
     position: fixed;
     right: 30px;
@@ -28,32 +14,37 @@
     z-index: 99;
 }
 
-/*** Button Start ***/
+/* Base styling for buttons, setting font weight and transition speed */
 .btn {
     font-weight: 600;
     transition: .5s;
 }
 
+/* standard square button dimensions */
 .btn-square {
     width: 32px;
     height: 32px;
 }
 
+/* small square button dimensions */
 .btn-sm-square {
     width: 34px;
     height: 34px;
 }
 
+/* medium square button dimensions */
 .btn-md-square {
     width: 44px;
     height: 44px;
 }
 
+/* large square button dimensions */
 .btn-lg-square {
     width: 56px;
     height: 56px;
 }
 
+/* shared styles for all square button sizes: centering content and making them circular */
 .btn-square,
 .btn-sm-square,
 .btn-md-square,
@@ -66,33 +57,46 @@
     border-radius: 50%;
 }
 
+/* default state for primary buttons using box-shadow for potential hover effects */
 .btn.btn-primary {
     box-shadow: inset 0 0 0 0 var(--bs-primary);
 }
 
+/* hover state for primary buttons: fills the button with light color using inset shadow */
 .btn.btn-primary:hover {
     box-shadow: inset 300px 0 0 0 var(--bs-light) !important;
     color: var(--bs-primary) !important;
 }
 
+/* default state for light-colored buttons */
 .btn.btn-light {
     box-shadow: inset 0 0 0 0 var(--bs-primary);
 }
 
+/* default state for light-colored buttons */
 .btn.btn-light:hover {
     box-shadow: inset 300px 0 0 0 var(--bs-primary);
     color: var(--bs-light) !important;
 }
 
+/* base transition for hoverable buttons */
 .btn-hover {
     transition: 0.5s;
 }
 
+/* changes text color to secondary color on hover */
 .btn-hover:hover {
     color: var(--bs-secondary) !important;
 }
+/* SECTION BUTTONS END */
 
-/*** Section Title Start ***/
+
+
+
+
+
+/* SECTION TITLE START */
+/* Styles the main section headers, centering them and making them uppercase */
 .section-title {
     position: relative;
     display: inline-block;
@@ -100,6 +104,7 @@
     color: var(--bs-primary);
 }
 
+/* Creates a decorative horizontal line to the right of the section title */
 .section-title::before {
     content: "";
     width: 50px;
@@ -111,6 +116,7 @@
     border: 1px solid var(--bs-primary) !important;
 }
 
+/* Creates a decorative horizontal line to the left of the section title */
 .section-title::after {
     content: "";
     width: 50px;
@@ -121,38 +127,52 @@
     margin-left: -50px;
     border: 1px solid var(--bs-primary) !important;
 }
+/* SECTION TITLE END */
 
 
-/*** Topbar Start ***/
+
+
+
+
+/* SECTION TOPBAR START */
+/* Adds smooth transition to the container when fixed at the top */
 .fixed-top .container {
     transition: 0.5s;
 }
 
+/* Styles the top info bar with padding and primary background color */
 .topbar {
     padding: 2px 10px 2px 20px;
     background: var(--bs-primary) !important;
 }
 
+/* Sets transition effects for links and icons within the topbar */
 .topbar a,
 .topbar a i {
     transition: 0.5s;
 }
 
+/* Sets transition effects for links and icons within the topbar */
 .topbar a:hover,
 .topbar a i:hover {
     color: var(--bs-secondary) !important;
 }
 
-
+/* Hides the topbar on screens smaller than 768px (tablets/mobiles) */
 @media (max-width: 768px) {
     .topbar {
         display: none;    
     }
 }
-/*** Topbar End ***/
+/* SECTION TOPBAR END */
 
 
-/*** Navbar ***/
+
+
+
+
+/* SECTION NAVBAR START */
+/* Styles navigation links in the light navbar: fonts, padding, and white text color */
 .navbar-light .navbar-nav .nav-link {
     font-family: 'Roboto', sans-serif;
     position: relative;
@@ -164,33 +184,40 @@
     transition: .5s;
 }
 
+/* Adjusts padding and changes text color to dark when the navbar is sticky */
 .sticky-top.navbar-light .navbar-nav .nav-link {
     padding: 20px 15px;
     color: var(--bs-dark) !important;
 }
 
+/* Ensures nav links stay white on hover or when active in the non-sticky state */
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
     color: var(--bs-white) !important;
 }
 
+/* Styles the H1 brand text in the navbar to be white */
 .navbar-light .navbar-brand h1 {
     color: var(--bs-white);
 }
 
+/* Changes the H1 brand text to primary color when navbar is sticky */
 .sticky-top.navbar-light .navbar-brand h1 {
     color: var(--bs-primary);
 }
 
+/* Styles the brand logo image size */
 .navbar-light .navbar-brand img {
     max-height: 60px;
     transition: .5s;
 }
 
+/* Reduces brand logo size when navbar is sticky */
 .sticky-top.navbar-light .navbar-brand img {
     max-height: 45px;
 }
 
+/* Adds a FontAwesome arrow icon after dropdown toggles */
 .navbar .dropdown-toggle::after {
     border: none;
     content: "\f107";
@@ -200,6 +227,7 @@
     margin-left: 8px;
 }
 
+/* Styles dropdown menus for large screens: initially hidden with a 3D rotation effect */
 @media (min-width: 1200px) {
     .navbar .nav-item .dropdown-menu {
         display: block;
@@ -214,11 +242,13 @@
     }
 }
 
+/* Changes background and text color of dropdown items on hover */
 .dropdown .dropdown-menu a:hover {
     background: var(--bs-primary);
     color: var(--bs-white);
 }
 
+/* Reveals the dropdown menu on hover with a rotation animation */
 .navbar .nav-item:hover .dropdown-menu {
     transform: rotateX(0deg);
     visibility: visible;
@@ -227,44 +257,54 @@
     opacity: 1;
 }
 
+/* Styles for devices smaller than 992px (tablets/mobile) */
 @media (max-width: 991.98px) {
+    /* Sets the sticky navbar background to white on mobile */
     .sticky-top.navbar-light {
         position: relative;
         background: var(--bs-white);
     }
 
+    /* Changes brand text color to primary on mobile */
     .navbar-light .navbar-brand h1 {
         color: var(--bs-primary);
     }
 
+    /* Styles the mobile menu toggler button */
     .navbar.navbar-expand-lg .navbar-toggler {
         padding: 10px 20px;
         border: 1px solid var(--bs-primary);
         color: var(--bs-primary);
     }
 
+    /* Adds spacing and a border to the collapsed menu */
     .navbar-light .navbar-collapse {
         margin-top: 15px;
         border-top: 1px solid #DDDDDD;
     }
 
+    /* Adjusts padding and color for nav links on mobile */
     .navbar-light .navbar-nav .nav-link,
     .sticky-top.navbar-light .navbar-nav .nav-link {
         padding: 10px 0;
         color: var(--bs-dark) !important;
     }
 
+    /* Changes nav link color to primary on hover/active on mobile */
     .navbar-light .navbar-nav .nav-link:hover,
     .navbar-light .navbar-nav .nav-link.active  {
         color: var(--bs-primary) !important;
     }
 
+    /* Reduces logo size on mobile */
     .navbar-light .navbar-brand img {
         max-height: 45px;
     }
 }
 
+/* Reduces logo size on mobile */
 @media (min-width: 992px) {
+    /* Positions the navbar absolutely over the header transparently */
     .navbar-light {
         position: absolute;
         width: 100%;
@@ -274,11 +314,13 @@
         z-index: 999;
     }
     
+    /* Styles the navbar when it becomes fixed/sticky (light background) */
     .sticky-top.navbar-light {
         position: fixed;
         background: var(--bs-light);
     }
 
+    /* Creates an underline effect for nav links using pseudo-element */
     .navbar-light .navbar-nav .nav-link::before {
         position: absolute;
         content: "";
@@ -291,23 +333,33 @@
         z-index: -1;
     }
 
+    /* Expands the underline effect to fill the link background on hover */
     .navbar-light .navbar-nav .nav-link:hover::before,
     .navbar-light .navbar-nav .nav-link.active::before {
         height: calc(100% + 1px);
         left: 1px;
     }
 
+    /* Removes the underline/fill effect specifically for the contact nav item */
     .navbar-light .navbar-nav .nav-link.nav-contact::before {
         display: none;
     }
 }
+/* SECTION NAVBAR END */
 
-/*** Carousel Hero Header Start ***/
+
+
+
+
+
+/* CAROUSEL HEADER START */
+/* Removes default background from carousel control buttons */
 .carousel-header .carousel-control-prev,
 .carousel-header .carousel-control-next {
     background: transparent;
 }
 
+/* Styles the 'Previous' button in the carousel (rounded shape on right side) */
 .carousel-header .carousel-control-prev .carousel-control-prev-icon {
     position: absolute;
     top: 50%;
@@ -321,6 +373,7 @@
     background-size: 60% 60%;
 }
 
+/* Styles the 'Next' button in the carousel (rounded shape on left side) */
 .carousel-header .carousel-control-next .carousel-control-next-icon {
     position: absolute;
     top: 50%;
@@ -335,17 +388,20 @@
 
 }
 
+/* Hides carousel indicators (dots) */
 .carousel-header .carousel .carousel-indicators li,
 .carousel-header .carousel .carousel-indicators li,
 .carousel-header .carousel .carousel-indicators li {
     opacity: 0;
 }
 
+/* Sets minimum height for carousel items to cover full viewport height */
 .carousel-header .carousel-inner .carousel-item {
     position: relative;
     min-height: 100vh 
 }
 
+/* Ensures carousel images cover the entire area */
 .carousel-header .carousel-inner .carousel-item img {
     position: absolute;
     width: 100%;
@@ -353,6 +409,7 @@
     object-fit: cover;
 }
 
+/* Styles the text caption overlay with a dark gradient background */
 .carousel-header .carousel-inner .carousel-item .carousel-caption  {
     position: absolute;
     width: 100%;
@@ -368,31 +425,41 @@
     background-size: cover;
 }
 
+/* Adjustments for carousel on smaller screens (max 768px) */
 @media (max-width: 768px) {
+    /* Sets a fixed height for images and captions on mobile */
     .carousel-header .carousel-inner .carousel-item img,
     .carousel-header .carousel-inner .carousel-item .carousel-caption {
         height: 700px;
         margin-top: -100px;
     }
 
+    /* Sets fixed height for the carousel container header */
     .carousel-header {
         height: 700px !important;
     }
 
+    /* Hides carousel control icons on mobile */
     .carousel-header .carousel-control-prev .carousel-control-prev-icon,
     .carousel-header .carousel-control-next .carousel-control-next-icon {
         opacity: 0;
     }
     
+    /* Adjusts margin for search bar on mobile */
     .search-bar {
         margin-top: -100px;
         transition: 0.5s;
     }
 }
-/*** Carousel Hero Header End ***/
+/* CAROUSEL HEADER END */
 
 
-/*** Single Page Hero Header Start ***/
+
+
+
+
+/* SINGLE PAGE HERO HEADER START */
+/* Styles the breadcrumb/header area for single pages with a gradient and image */
 .bg-breadcrumb {
     background: linear-gradient(rgba(123, 19, 81, 0.5), rgba(123, 19, 62, 0.5)), url(../img/breadcrumb-bg.jpg);
     background-position: center center;
@@ -402,13 +469,19 @@
     padding: 150px 0 50px 0;
 }
 
+/* Colors the breadcrumb links */
 .bg-breadcrumb .breadcrumb-item a {
     color: var(--bs-secondary) !important;
 }
-/*** Single Page Hero Header End ***/
+/* SINGLE PAGE HERO HEADER END */
 
 
-/*** About Start ***/
+
+
+
+
+/* ABOUT START */
+/* Styles the title in the 'About' section */
 .about .container .section-about-title {
     position: relative;
     display: inline-block;
@@ -416,6 +489,7 @@
     color: var(--bs-primary);
 }
 
+/* Adds a decorative line to the right of the About title */
 .about .container .section-about-title::before {
     content: "";
     width: 50px;
@@ -426,37 +500,52 @@
     margin-right: -50px;
     border: 1px solid var(--bs-primary) !important;
 }
-/*** About End ***/
+/* ABOUT END */
 
 
-/*** Services Start ***/
+
+
+
+
+/* SERVICES START */
+/* Adds transition to the inner content of service items */
 .service .service-content-inner {
     transition: 0.5s;
 }
+
+/* Changes background to primary color on hover for service items */
 .service .service-content-inner:hover {
     position: relative;
     background: var(--bs-primary) !important;
 }
 
+/* Adds transitions for text and icons inside service items */
 .service .service-content-inner .service-content h5,
 .service .service-content-inner .service-content p,
 .service .service-content-inner .service-icon i {
     transition: 0.5s;
 }
 
+/* Changes text and icon colors to white when hovering over the service item */
 .service .service-content-inner:hover .service-content h5,
 .service .service-content-inner:hover .service-content p,
 .service .service-content-inner:hover .service-icon i {
     color: var(--bs-white) !important;
 }
-/*** Service End ***/
+/* SERVICES END */
 
 
-/*** Blog Start ***/
+
+
+
+
+/* BLOG START */
+/* Sets relative positioning for the blog image container */
 .blog .blog-item .blog-img {
     position: relative;
 }
 
+/* Styles the blog info overlay at the bottom of the image */
 .blog .blog-item .blog-img .blog-info {
     position: absolute;
     width: 100%;
@@ -467,12 +556,14 @@
     color: var(--bs-white);
 }
 
+/* Styles the inner image container with rounded top corners */
 .blog .blog-item .blog-img .blog-img-inner {
     position: relative;
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
 }
 
+/* Styles the icon overlay container, initially hidden (height 0) */
 .blog .blog-item .blog-img .blog-img-inner .blog-icon {
     position: absolute;
     width: 100%;
@@ -488,6 +579,7 @@
     transition: 0.5s;
 }
 
+/* Styles the links inside the blog icon overlay, initially transparent */
 .blog .blog-item .blog-img .blog-img-inner .blog-icon a {
     display: flex;
     align-items: center;
@@ -496,119 +588,111 @@
     transition: 0.5s;
 }
 
+/* Makes the icon links visible when hovering the blog image */
 .blog .blog-item .blog-img:hover .blog-img-inner .blog-icon a {
     opacity: 1;
 }
 
+/* Expands the icon overlay to full height with a red background on hover */
 .blog .blog-item .blog-img:hover .blog-img-inner .blog-icon {
     height: 100%;
     background: rgba(241, 6, 6, 0.6);
     opacity: 1;
 }
 
+/* Hides overflow for the inner blog image container */
 .blog .blog-item .blog-img .blog-img-inner {
     overflow: hidden;
 }
 
+/* Adds transition for the blog image itself */
 .blog .blog-item .blog-img .blog-img-inner img {
     transition: 0.5s;
 }
 
+/* Zooms in the image (scales up) when hovering over the blog item */
 .blog .blog-item .blog-img:hover .blog-img-inner img {
     transform: scale(1.2);
 }
-/*** Blog End ***/
+/* BLOG END */
 
-/*** Contact Start ***/
+
+
+
+
+
+/* CONTACT START */
+/* Resets shadow for primary buttons inside the contact form */
 .contact .container form .btn.btn-primary {
     box-shadow: inset 0 0 0 0 var(--bs-primary);
 }
 
+/* Adds a large inset shadow effect on hover for contact form buttons */
 .contact .container form .btn.btn-primary:hover {
     box-shadow: inset 1000px 0 0 0 var(--bs-light) !important;
     color: var(--bs-primary) !important;
 }
-/*** Contact End ***/
+/* CONTACT END */
 
-/*** Subscribe Start ***/
-.subscribe {
-    background: linear-gradient(rgba(255, 0, 0, 0.6), rgba(255, 0, 0, 0.6)), url(../img/subscribe-img.jpg);
-    background-attachment: fixed;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover;
-}
 
-.subscribe .subscribe-title {
-    position: relative;
-    display: inline-block;
-    text-transform: uppercase;
-    color: var(--bs-white);
-}
 
-.subscribe .subscribe-title::before {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    margin-right: -50px;
-    border: 1px solid var(--bs-white) !important;
-}
 
-.subscribe .subscribe-title::after {
-    content: "";
-    width: 50px;
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    margin-left: -50px;
-    border: 1px solid var(--bs-white) !important;
-}
-/*** Subscribe End ***/
 
-/*** Footer Start ***/
+
+/* FOOTER START */
+/* Sets the footer background color to dark */
 .footer {
     background: var(--bs-dark);
 }
+
+/* Styles links within footer items */
 .footer .footer-item a {
     line-height: 30px;
     color: var(--bs-white);
     transition: 0.5s;
 }
 
+/* Increases letter spacing and changes color to primary on hover for footer links */
 .footer .footer-item a:hover {
     letter-spacing: 2px;
     color: var(--bs-primary);
 }
+/* FOOTER END */
 
-/*** Footer End ***/
 
-/*** copyright Start ***/
+
+
+
+
+/* COPYRIGHT START */
+/* Styles the copyright section with a top border and dark background */
 .copyright {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     background: var(--bs-dark) !important;
 }
-/*** copyright end ***/
+/* COPYRIGHT END */
 
 
+
+
+
+/* Sets a fixed height for package image containers and hides overflow */
 .packages-img {
-    height: 250px; /* Puedes ajustar la altura que quieras */
+    height: 250px; 
     overflow: hidden;
 }
 
+/* Ensures package images fill their container without distortion */
 .packages-img img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Esto asegura que la imagen llene la caja sin deformarse */
+    object-fit: cover; 
 }
 
 
-
+/* Sets fixed dimensions and object-fit for blog images */
 .blog-img img {
     width: 100%;
-    height: 230px;      /* ajusta este valor a tu gusto */
-    object-fit: cover; /* recorta sin deformar */
+    height: 230px;      
+    object-fit: cover; 
 }

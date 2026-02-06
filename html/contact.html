@@ -1,291 +1,383 @@
 <!DOCTYPE html>
-<html lang="en">
-
-    <head>
-        <meta charset="utf-8">
-        <title>Apex - Contacto</title>
-        <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
-
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet"> 
-
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
-
-        <!-- Template Stylesheet -->
-        <link href="../css/style.css" rel="stylesheet">
-    </head>
-
-    <body>
-
-
-       <!-- Topbar Start -->
-        <div class="container-fluid bg-primary px-5 d-none d-lg-block">
-            <div class="row gx-0">
-                <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Regístrate</small></a>
-                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Iniciar sesión</small></a>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
-                            <div class="dropdown-menu rounded">
-            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi perfil</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Topbar End -->
-
-        <!-- Navbar & Hero Start -->
-        <div class="container-fluid position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <!-- Logo + nombre -->
-                    <h1 class="m-0 text-white d-flex align-items-center">
-                            <img src="../img/logo_apex.png" 
-                                alt="Logo" 
-                                class="bg-primary rounded me-3" 
-                                style="max-height: 80px; padding: 7px 6px;">
-                                
-                            Apex Expeditions
-                        </h1>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Inicio</a>
-                        <a href="packages.html" class="nav-item nav-link">Tours</a>
-                        <a href="guides.html" class="nav-item nav-link">Guías</a>
-                        <a href="services.html" class="nav-item nav-link">Servicios</a>
-                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
-                        <a href="contact.html" class="nav-item nav-link active">Contacto</a>
-                        <a href="carrito.html" class="nav-item nav-link position-relative">
-                            <i class="fa fa-shopping-cart fa-lg"></i>
-                            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                                  style="top: 65%;">
-                                1
-                            </span>
-                        </a>
-                    </div>
-                    <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
-                </div>
-            </nav>
-        </div>
-        <!-- Navbar & Hero End -->
-
-        <!-- Header Start -->
-        <div class="container-fluid bg-breadcrumb">
-            <div class="container text-center py-5" style="max-width: 900px;">
-                <h3 class="text-white display-3 mb-4">Contacto</h3>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
-                    <li class="breadcrumb-item active text-white">Contacto</li>
-                </ol>
-            </div>
-        </div>
-        <!-- Header End -->
+<html lang="es">
 
 
 
 
 
-        <!-- Contact Start -->
-        <div class="container-fluid contact bg-light py-5">
-            <div class="container py-5">
-                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Contacto</h5>
-                    <h1 class="mb-0">Soporte ante solicitudes de presupuesto, consultas adicionales sobre los tours ofrecidos, y demás.</h1>
-                </div>
 
-                <div class="row g-5 align-items-center">
-                    <div class="col-lg-4">
-                        <div class="bg-white rounded p-4">
-                            <div class="text-center mb-4">
-                                <i class="fa fa-map-marker-alt fa-3x text-primary"></i>
-                                <h4 class="text-primary"><Address></Address></h4>
-                                <p class="mb-0">C. Alcalá 245<br> 28027 Madrid</p>
-                            </div>
-                            <div class="text-center mb-4">
-                                <i class="fa fa-phone-alt fa-3x text-primary mb-3"></i>
-                                <h4 class="text-primary">Mobile</h4>
-                                <p class="mb-0">+34 622 714 908</p>
-                            </div>
-                           
-                            <div class="text-center">
-                                <i class="fa fa-envelope-open fa-3x text-primary mb-3"></i>
-                                <h4 class="text-primary">Email</h4>
-                                <p class="mb-0">contacto@apexexpeditions.com</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8">
-                        <h2 class="mb-3">Formulario de mensaje</h2>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control border-0" id="name" placeholder="Your Name">
-                                        <label for="name">Nombre</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control border-0" id="email" placeholder="Your Email">
-                                        <label for="email">Correo electrónico</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control border-0" id="destination" placeholder="Destination or Tour">
-                                        <label for="destination">Temática</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <div class="form-floating">
-                                        <textarea class="form-control border-0" placeholder="Dates, number of people, preferences..." id="details" style="height: 160px"></textarea>
-                                        <label for="details">Cuerpo</label>
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Enviar mensaje</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-12">
-                        <div class="rounded">
-                            <iframe class="rounded w-100" 
-                            style="height: 450px;" 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d730.8612430443014!2d-3.6597500756001318!3d40.43160995055997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422f4b1a1a0431%3A0x1c6abe1302a2215a!2sC.%20Alcal%C3%A1%2C%20245%2C%20Madrid!5e0!3m2!1ses!2ses!4v1770283610815!5m2!1ses!2ses" 
-                            loading="lazy" 
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
-                        </div>
-                    </div>
+<head>
+    <meta charset="utf-8">
+
+    <!-- window title and icon -->
+    <title>Apex - Contacto</title>
+    <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- seo optimization -->
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- google web fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- icon font stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- customized bootstrap stylesheet -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- external css -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+
+
+
+
+
+
+<body>
+    <!-- solid (top) navbar start -->
+    <div class="container-fluid bg-primary px-5 d-none d-lg-block">
+        <div class="row gx-0">
+
+            <!-- fake social media start -->
+            <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-twitter fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-facebook-f fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-linkedin-in fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-instagram fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i
+                            class="fab fa-youtube fw-normal"></i></a>
                 </div>
             </div>
+            <!-- fake social media end -->
+
+            <!-- user buttons start -->
+            <div class="col-lg-4 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a href="register.html"><small class="me-3 text-light"><i
+                                class="fa fa-user me-2"></i>Regístrate</small></a>
+                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Iniciar
+                            sesión</small></a>
+
+                    <!-- options start -->
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i
+                                    class="fa fa-home me-2"></i> Opciones</small></a>
+                        <div class="dropdown-menu rounded">
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi
+                                perfil</a>
+                            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
+                        </div>
+                    </div>
+                    <!-- options end -->
+
+                </div>
+            </div>
+            <!-- user buttons end -->
+
         </div>
-        <!-- Contact End -->
-
-
-
-
-  
-
-
-<!-- Footer Start -->
-<div class="container-fluid footer py-5">
-  <div class="container py-5">
-    <div class="row g-5">
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Contacto</h4>
-          <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
-          <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
-          <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
-          <div class="d-flex align-items-center">
-            <i class="fas fa-share fa-2x text-white me-2"></i>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Portal</h4>
-          <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
-          <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
-          <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Soporte</h4>
-          <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
-          <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
-          <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item">
-          <h4 class="text-white mb-3">Pagos</h4>
-          <div class="footer-bank-card">
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
-            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
-</div>
-<!-- Footer End -->
+    <!-- solid (top) navbar end -->
 
-<!-- Copyright Start -->
-<div class="container-fluid copyright text-body py-4">
-  <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-md-6 text-center text-md-end mb-md-0">
-        <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right reserved.
-      </div>
-      <div class="col-md-6 text-center text-md-start">
-        Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
-      </div>
+
+
+    <!-- transparent navbar start -->
+    <div class="container-fluid position-relative p-0">
+        <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+
+            <!-- logo + name start -->
+            <a href="" class="navbar-brand p-0">
+                <h1 class="m-0 text-white d-flex align-items-center">
+                    <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
+                        style="max-height: 80px; padding: 7px 6px;">
+
+                    Apex Expeditions
+                </h1>
+            </a>
+            <!-- logo + name start -->
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+
+            <!-- navigation buttons start -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="index.html" class="nav-item nav-link">Inicio</a>
+                    <a href="packages.html" class="nav-item nav-link">Tours</a>
+                    <a href="guides.html" class="nav-item nav-link">Guías</a>
+                    <a href="services.html" class="nav-item nav-link">Servicios</a>
+                    <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                    <a href="contact.html" class="nav-item nav-link active">Contacto</a>
+                    <a href="carrito.html" class="nav-item nav-link position-relative">
+                        <i class="fa fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                            style="top: 65%;">
+                            1
+                        </span>
+                    </a>
+                </div>
+                <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
+            </div>
+            <!-- navigation buttons end -->
+
+        </nav>
     </div>
-  </div>
-</div>
-<!-- Copyright End -->
+    <!-- transparent navbar start -->
 
 
 
+    <!-- banner + breadcrumbs start -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-5" style="max-width: 900px;">
+            <h3 class="text-white display-3 mb-4">Contacto</h3>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
+                <li class="breadcrumb-item active text-white">Contacto</li>
+            </ol>
+        </div>
+    </div>
+    <!-- banner + breadcrumbs start -->
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
 
-        
-        <!-- JavaScript Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <!--<script src="lib/easing/easing.min.js"></script>-->
-        <!--<script src="lib/waypoints/waypoints.min.js"></script>-->
-        
+    <!-- contact start -->
+    <div class="container-fluid contact bg-light py-5">
+        <div class="container py-5">
 
-        <!-- Template Javascript -->
-        <!--<script src="js/main.js"></script>-->
+            <!-- titles start -->
+            <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                <h5 class="section-title px-3">Contacto</h5>
+                <h1 class="mb-0">Soporte ante solicitudes de presupuesto, consultas adicionales sobre los tours
+                    ofrecidos, y demás.</h1>
+            </div>
+            <!-- titles end -->
 
-    </body>
+            <!-- actual content start -->
+            <div class="row g-5 align-items-center">
+
+                <!-- apex info start -->
+                <div class="col-lg-4">
+                    <div class="bg-white rounded p-4">
+
+                        <!-- apex address start -->
+                        <div class="text-center mb-4">
+                            <i class="fa fa-map-marker-alt fa-3x text-primary"></i>
+                            <h4 class="text-primary">
+                                <Address></Address>
+                            </h4>
+                            <p class="mb-0">C. Alcalá 245<br> 28027 Madrid</p>
+                        </div>
+                        <!-- apex address end -->
+
+                        <!-- apex mobile start -->
+                        <div class="text-center mb-4">
+                            <i class="fa fa-phone-alt fa-3x text-primary mb-3"></i>
+                            <h4 class="text-primary">Mobile</h4>
+                            <p class="mb-0">+34 622 714 908</p>
+                        </div>
+                        <!-- apex mobile end -->
+
+                        <!-- apex email start -->
+                        <div class="text-center">
+                            <i class="fa fa-envelope-open fa-3x text-primary mb-3"></i>
+                            <h4 class="text-primary">Email</h4>
+                            <p class="mb-0">contacto@apexexpeditions.com</p>
+                        </div>
+                        <!-- apex email end -->
+
+                    </div>
+                </div>
+                <!-- apex info end -->
+
+                <!-- form section start -->
+                <div class="col-lg-8">
+                    <h2 class="mb-3">Formulario de mensaje</h2>
+                    <form>
+
+                        <div class="row g-3">
+
+                            <!-- name start -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0" id="name" placeholder="Your Name">
+                                    <label for="name">Nombre</label>
+                                </div>
+                            </div>
+                            <!-- name end -->
+
+                            <!-- email start -->
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <input type="email" class="form-control border-0" id="email"
+                                        placeholder="Your Email">
+                                    <label for="email">Correo electrónico</label>
+                                </div>
+                            </div>
+                            <!-- email end -->
+
+                            <!-- theme start -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <input type="text" class="form-control border-0" id="destination"
+                                        placeholder="Destination or Tour">
+                                    <label for="destination">Temática</label>
+                                </div>
+                            </div>
+                            <!-- theme end -->
+
+                            <!-- body start -->
+                            <div class="col-12">
+                                <div class="form-floating">
+                                    <textarea class="form-control border-0"
+                                        placeholder="Dates, number of people, preferences..." id="details"
+                                        style="height: 160px"></textarea>
+                                    <label for="details">Cuerpo</label>
+                                </div>
+                            </div>
+                            <!-- body end -->
+
+                            <!-- send button start -->
+                            <div class="col-12">
+                                <button class="btn btn-primary w-100 py-3" type="submit">Enviar mensaje</button>
+                            </div>
+                            <!-- send button end -->
+
+                        </div>
+                    </form>
+                </div>
+                <!-- form section end -->
+
+                <!-- map start -->
+                <div class="col-12">
+                    <div class="rounded">
+                        <iframe class="rounded w-100" style="height: 450px;"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d730.8612430443014!2d-3.6597500756001318!3d40.43160995055997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd422f4b1a1a0431%3A0x1c6abe1302a2215a!2sC.%20Alcal%C3%A1%2C%20245%2C%20Madrid!5e0!3m2!1ses!2ses!4v1770283610815!5m2!1ses!2ses"
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+                <!-- map end -->
+
+            </div>
+            <!-- actual content end -->
+
+        </div>
+    </div>
+    <!-- contact end -->
+
+
+
+    <!-- footer start -->
+    <div class="container-fluid footer py-5">
+        <div class="container py-5">
+            <div class="row g-5">
+
+                <!-- contact + social media start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Contacto</h4>
+                        <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
+                        <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
+                        <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-share fa-2x text-white me-2"></i>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com"
+                                target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com"
+                                target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com"
+                                target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com"
+                                target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- contact + social media start -->
+
+                <!-- portal start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Portal</h4>
+                        <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
+                        <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
+                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
+                    </div>
+                </div>
+                <!-- portal end -->
+
+
+                <!-- support start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Soporte</h4>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
+                        <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
+                        <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
+                    </div>
+                </div>
+                <!-- portal end -->
+
+                <!-- payment start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item">
+                        <h4 class="text-white mb-3">Pagos</h4>
+                        <div class="footer-bank-card">
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- payment end -->
+
+            </div>
+        </div>
+    </div>
+    <!-- footer end -->
+
+
+
+    <!-- copyright start -->
+    <div class="container-fluid copyright text-body py-4">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-end mb-md-0">
+                    <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right
+                    reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-start">
+                    Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- copyright end -->
+
+
+
+    <!-- back to top -->
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
+
+
+
+    <!-- js libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </html>

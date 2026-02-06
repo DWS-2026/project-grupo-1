@@ -1,317 +1,419 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
-    <head>
-        <meta charset="utf-8">
-        <title>Apex - Servicios</title>
-        <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
-        <meta content="width=device-width, initial-scale=1.0" name="viewport">
-        <meta content="" name="keywords">
-        <meta content="" name="description">
+<head>
+    <meta charset="utf-8">
 
-        <!-- Google Web Fonts -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet"> 
+    <!-- window title and icon -->
+    <title>Apex - Servicios</title>
+    <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-        <!-- Icon Font Stylesheet -->
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- seo optimization -->
+    <meta content="" name="keywords">
+    <meta content="" name="description">
 
-        <!-- Customized Bootstrap Stylesheet -->
-        <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <!-- google web fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
 
-        <!-- Template Stylesheet -->
-        <link href="../css/style.css" rel="stylesheet">
-    </head>
+    <!-- icon font stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
-    <body>
+    <!-- customized bootstrap stylesheet -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- css and bootstrap templates stylesheet -->
+    <link href="../css/style.css" rel="stylesheet">
+</head>
 
 
-        <!-- Topbar Start -->
-        <div class="container-fluid bg-primary px-5 d-none d-lg-block">
-            <div class="row gx-0">
-                <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
-                        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end">
-                    <div class="d-inline-flex align-items-center" style="height: 45px;">
-                        <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Regístrate</small></a>
-                        <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Iniciar sesión</small></a>
-                        <div class="dropdown">
-                            <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i class="fa fa-home me-2"></i> Opciones</small></a>
-                            <div class="dropdown-menu rounded">
-                                <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi perfil</a>
-                                <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Topbar End -->
 
-        <!-- Navbar & Hero Start -->
-        <div class="container-fluid position-relative p-0">
-            <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
-                <a href="" class="navbar-brand p-0">
-                    <!-- Logo + nombre -->
-                    <h1 class="m-0 text-white d-flex align-items-center">
-                            <img src="../img/logo_apex.png" 
-                                alt="Logo" 
-                                class="bg-primary rounded me-3" 
-                                style="max-height: 80px; padding: 7px 6px;">
-                                
-                            Apex Expeditions
-                        </h1>
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-                    <span class="fa fa-bars"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarCollapse">
-                    <div class="navbar-nav ms-auto py-0">
-                        <a href="index.html" class="nav-item nav-link">Inicio</a>
-                        <a href="packages.html" class="nav-item nav-link">Tours</a>
-                        <a href="guides.html" class="nav-item nav-link">Guías</a>
-                        <a href="services.html" class="nav-item nav-link active">Servicios</a>
-                        <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
-                        <a href="contact.html" class="nav-item nav-link">Contacto</a>
-                        <a href="carrito.html" class="nav-item nav-link position-relative">
-                            <i class="fa fa-shopping-cart fa-lg"></i>
-                            <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
-                                  style="top: 65%;">
-                                1
-                            </span>
-                        </a>
-                    </div>
-                   <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
-                </div>
-            </nav>
-        </div>
-        <!-- Navbar & Hero End -->
 
-        <!-- Header Start -->
-        <div class="container-fluid bg-breadcrumb">
-            <div class="container text-center py-5" style="max-width: 900px;">
-                <h3 class="text-white display-3 mb-4">Servicios</h3>
-                <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                    <li class="breadcrumb-item active text-white">Servicios</li>
-                </ol>    
-            </div>
-        </div>
-        <!-- Header End -->
 
-               <!-- Services Start -->
-        <div class="container-fluid bg-light service py-5">
-            <div class="container py-5">
-                <div class="mx-auto text-center mb-5" style="max-width: 900px;">
-                    <h5 class="section-title px-3">Servicios</h5>
-                    <h1 class="mb-0">Nuestros servicios</h1>
-                </div>
-                <div class="row g-4">
-                    <div class="col-lg-6">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
-                                    <div class="service-content text-end">
-                                        <h5 class="mb-4">Planificación de Expediciones Imposibles</h5>
-                                        <p class="mb-0">Diseñamos itinerarios a destinos fuera de lo común: ciudades del futuro, mundos extremos y escenarios de ciencia ficción. Tú eliges el reto; nosotros trazamos el plan.
-                                        </p>
-                                    </div>
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-globe fa-4x text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center  bg-white border border-primary rounded p-4 pe-0">
-                                    <div class="service-content text-end">
-                                        <h5 class="mb-4">Alojamiento Temático y Logística Premium</h5>
-                                        <p class="mb-0">Hoteles incluidos (o no, según pack), transporte interno y puntos de encuentro optimizados. Dormir bien también es parte de la misión… incluso en otro planeta.
-                                        </p>
-                                    </div>
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-hotel fa-4x text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
-                                    <div class="service-content text-end">
-                                        <h5 class="mb-4">Guías Especializados y Experiencias Inmersivas</h5>
-                                        <p class="mb-0">Acompañamiento por guías expertos y actividades “roleplay” para que el viaje se sienta real: exploración, misiones, rutas secretas y momentos épicos listos para recordar (y grabar).
-                                        </p>
-                                    </div>
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-user fa-4x text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
-                                    <div class="service-content text-end">
-                                        <h5 class="mb-4">Seguridad y Entrenamiento de Supervivencia</h5>
-                                        <p class="mb-0">Briefing previo, equipo recomendado y protocolos para entornos hostiles (calor volcánico, zonas de reclusión, baja visibilidad o terrenos inestables). Viaja con emoción, pero con control.
-                                        </p>
-                                    </div>
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-cog fa-4x text-primary"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="row g-4">
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-globe fa-4x text-primary"></i>
-                                    </div>
-                                    <div class="service-content">
-                                        <h5 class="mb-4">Exploración Multidimensional</h5>
-                                        <p class="mb-0">Viajes a realidades alternativas, líneas temporales futuras y entornos que desafían las leyes conocidas. Para exploradores que quieren ir más allá de lo posible.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-hotel fa-4x text-primary"></i>
-                                    </div>
-                                    <div class="service-content">
-                                        <h5 class="mb-4">Bases Avanzadas y Refugios Estratégicos</h5>
-                                        <p class="mb-0">Alojamientos seguros en ubicaciones límite: bases lunares, refugios reforzados y zonas controladas. Diseñados para descansar y resistir en condiciones extremas.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-user fa-4x text-primary"></i>
-                                    </div>
-                                    <div class="service-content">
-                                        <h5 class="mb-4">Mentores de Misión y Líderes de Expedición</h5>
-                                        <p class="mb-0">Profesionales entrenados para liderar misiones complejas, tomar decisiones críticas y guiar al grupo en situaciones impredecibles con total seguridad.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
-                                    <div class="service-icon p-4">
-                                        <i class="fa fa-cog fa-4x text-primary"></i>
-                                    </div>
-                                    <div class="service-content">
-                                        <h5 class="mb-4">Gestión de Misiones Especiales</h5>
-                                        <p class="mb-0">Coordinación total de expediciones únicas: permisos especiales, control de riesgos, planificación de eventos narrativos y soporte 24/7 durante la misión.
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+<body>
+    <!-- solid (top) navbar start  -->
+    <div class="container-fluid bg-primary px-5 d-none d-lg-block">
+        <div class="row gx-0">
+
+            <!-- fake social media start -->
+            <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-twitter fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-facebook-f fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-linkedin-in fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                            class="fab fa-instagram fw-normal"></i></a>
+                    <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i
+                            class="fab fa-youtube fw-normal"></i></a>
                 </div>
             </div>
+            <!-- fake social media end -->
+
+            <!-- user buttons start -->
+            <div class="col-lg-4 text-center text-lg-end">
+                <div class="d-inline-flex align-items-center" style="height: 45px;">
+                    <a href="register.html"><small class="me-3 text-light"><i
+                                class="fa fa-user me-2"></i>Regístrate</small></a>
+                    <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Iniciar
+                            sesión</small></a>
+
+                    <!-- options start -->
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i
+                                    class="fa fa-home me-2"></i> Opciones</small></a>
+                        <div class="dropdown-menu rounded">
+                            <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi
+                                perfil</a>
+                            <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
+                        </div>
+                    </div>
+                    <!-- options end -->
+                </div>
+            </div>
+            <!-- user buttons end -->
+
         </div>
-        <!-- Services End -->
-
-
-<!-- Footer Start -->
-<div class="container-fluid footer py-5">
-  <div class="container py-5">
-    <div class="row g-5">
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Contacto</h4>
-          <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
-          <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
-          <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
-          <div class="d-flex align-items-center">
-            <i class="fas fa-share fa-2x text-white me-2"></i>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com" target="_blank"><i class="fab fa-twitter"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Portal</h4>
-          <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
-          <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
-          <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item d-flex flex-column">
-          <h4 class="mb-4 text-white">Soporte</h4>
-          <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
-          <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
-          <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
-        </div>
-      </div>
-
-      <div class="col-md-6 col-lg-6 col-xl-3">
-        <div class="footer-item">
-          <h4 class="text-white mb-3">Pagos</h4>
-          <div class="footer-bank-card">
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
-            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
-            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
-          </div>
-        </div>
-      </div>
-
     </div>
-  </div>
-</div>
-<!-- Footer End -->
+    <!-- solid (top) navbar end  -->
 
-<!-- Copyright Start -->
-<div class="container-fluid copyright text-body py-4">
-  <div class="container">
-    <div class="row g-4 align-items-center">
-      <div class="col-md-6 text-center text-md-end mb-md-0">
-        <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right reserved.
-      </div>
-      <div class="col-md-6 text-center text-md-start">
-        Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
-      </div>
+
+
+
+    <!-- transparent navbar start  -->
+    <div class="container-fluid position-relative p-0">
+        <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+            <a href="" class="navbar-brand p-0">
+
+                <!-- logo + name start -->
+                <h1 class="m-0 text-white d-flex align-items-center">
+                    <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
+                        style="max-height: 80px; padding: 7px 6px;">
+
+                    Apex Expeditions
+                </h1>
+            </a>
+            <!--logo + name end -->
+
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+                <span class="fa fa-bars"></span>
+            </button>
+
+            <!-- navigation buttons start -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <div class="navbar-nav ms-auto py-0">
+                    <a href="index.html" class="nav-item nav-link">Inicio</a>
+                    <a href="packages.html" class="nav-item nav-link">Tours</a>
+                    <a href="guides.html" class="nav-item nav-link">Guías</a>
+                    <a href="services.html" class="nav-item nav-link active">Servicios</a>
+                    <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                    <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                    <a href="carrito.html" class="nav-item nav-link position-relative">
+                        <i class="fa fa-shopping-cart fa-lg"></i>
+                        <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                            style="top: 65%;">
+                            1
+                        </span>
+                    </a>
+                </div>
+                <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
+            </div>
+            <!-- navigation buttons end -->
+        </nav>
     </div>
-  </div>
-</div>
-<!-- Copyright End -->
+    <!-- transparent navbar end -->
 
 
 
-        <!-- Back to Top -->
-        <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>   
+    <!-- banner + breadcrumbs start -->
+    <div class="container-fluid bg-breadcrumb">
+        <div class="container text-center py-5" style="max-width: 900px;">
+            <h3 class="text-white display-3 mb-4">Servicios</h3>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
+                <li class="breadcrumb-item active text-white">Servicios</li>
+            </ol>
+        </div>
+    </div>
+    <!-- banner + breadcrumbs start -->
 
-        
-        <!-- JavaScript Libraries -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-        <!--<script src="lib/easing/easing.min.js"></script>-->
-        <!--<script src="lib/waypoints/waypoints.min.js"></script>-->
 
-        <!-- Template Javascript -->
-        <!--<script src="js/main.js"></script>-->
-    </body>
+    <!-- services start -->
+    <div class="container-fluid bg-light service py-5">
+        <div class="container py-5">
+            <div class="mx-auto text-center mb-5" style="max-width: 900px;">
+                <h5 class="section-title px-3">Servicios</h5>
+                <h1 class="mb-0">Nuestros servicios</h1>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="row g-4">
+
+                        <!-- service 1x1 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                                <div class="service-content text-end">
+                                    <h5 class="mb-4">Planificación de Expediciones Imposibles</h5>
+                                    <p class="mb-0">Diseñamos itinerarios a destinos fuera de lo común: ciudades del
+                                        futuro, mundos extremos y escenarios de ciencia ficción. Tú eliges el reto;
+                                        nosotros trazamos el plan.
+                                    </p>
+                                </div>
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-globe fa-4x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 1x1 end -->
+
+
+                        <!-- service 2x1 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center  bg-white border border-primary rounded p-4 pe-0">
+                                <div class="service-content text-end">
+                                    <h5 class="mb-4">Alojamiento Temático y Logística Premium</h5>
+                                    <p class="mb-0">Hoteles incluidos (o no, según pack), transporte interno y puntos de
+                                        encuentro optimizados. Dormir bien también es parte de la misión… incluso en
+                                        otro planeta.
+                                    </p>
+                                </div>
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-hotel fa-4x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 2x1 end -->
+
+                        <!-- service 3x1 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                                <div class="service-content text-end">
+                                    <h5 class="mb-4">Guías Especializados y Experiencias Inmersivas</h5>
+                                    <p class="mb-0">Acompañamiento por guías expertos y actividades “roleplay” para que
+                                        el viaje se sienta real: exploración, misiones, rutas secretas y momentos épicos
+                                        listos para recordar (y grabar).
+                                    </p>
+                                </div>
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-user fa-4x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 3x1 end -->
+
+                        <!-- service 4x1 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 pe-0">
+                                <div class="service-content text-end">
+                                    <h5 class="mb-4">Seguridad y Entrenamiento de Supervivencia</h5>
+                                    <p class="mb-0">Briefing previo, equipo recomendado y protocolos para entornos
+                                        hostiles (calor volcánico, zonas de reclusión, baja visibilidad o terrenos
+                                        inestables). Viaja con emoción, pero con control.
+                                    </p>
+                                </div>
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-cog fa-4x text-primary"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 4x1 end -->
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row g-4">
+                        <!-- service 1x2 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-globe fa-4x text-primary"></i>
+                                </div>
+                                <div class="service-content">
+                                    <h5 class="mb-4">Exploración Multidimensional</h5>
+                                    <p class="mb-0">Viajes a realidades alternativas, líneas temporales futuras y
+                                        entornos que desafían las leyes conocidas. Para exploradores que quieren ir más
+                                        allá de lo posible.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 1x2 end -->
+
+
+                        <!-- service 2x2 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-hotel fa-4x text-primary"></i>
+                                </div>
+                                <div class="service-content">
+                                    <h5 class="mb-4">Bases Avanzadas y Refugios Estratégicos</h5>
+                                    <p class="mb-0">Alojamientos seguros en ubicaciones límite: bases lunares, refugios
+                                        reforzados y zonas controladas. Diseñados para descansar y resistir en
+                                        condiciones extremas.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 2x2 end -->
+
+
+                        <!-- service 3x2 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-user fa-4x text-primary"></i>
+                                </div>
+                                <div class="service-content">
+                                    <h5 class="mb-4">Mentores de Misión y Líderes de Expedición</h5>
+                                    <p class="mb-0">Profesionales entrenados para liderar misiones complejas, tomar
+                                        decisiones críticas y guiar al grupo en situaciones impredecibles con total
+                                        seguridad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 3x2 end -->
+
+
+                        <!-- service 4x2 start -->
+                        <div class="col-12">
+                            <div
+                                class="service-content-inner d-flex align-items-center bg-white border border-primary rounded p-4 ps-0">
+                                <div class="service-icon p-4">
+                                    <i class="fa fa-cog fa-4x text-primary"></i>
+                                </div>
+                                <div class="service-content">
+                                    <h5 class="mb-4">Gestión de Misiones Especiales</h5>
+                                    <p class="mb-0">Coordinación total de expediciones únicas: permisos especiales,
+                                        control de riesgos, planificación de eventos narrativos y soporte 24/7 durante
+                                        la misión.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- service 4x2 end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- services end -->
+
+
+    <!-- footer start -->
+    <div class="container-fluid footer py-5">
+        <div class="container py-5">
+            <div class="row g-5">
+
+                <!-- contact + social media start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Contacto</h4>
+                        <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
+                        <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
+                        <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-share fa-2x text-white me-2"></i>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com"
+                                target="_blank"><i class="fab fa-facebook-f"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com"
+                                target="_blank"><i class="fab fa-twitter"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com"
+                                target="_blank"><i class="fab fa-instagram"></i></a>
+                            <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com"
+                                target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- contact + social media end -->
+
+                <!-- portal start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Portal</h4>
+                        <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
+                        <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
+                        <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
+                    </div>
+                </div>
+                <!-- portal end -->
+
+                <!-- support start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item d-flex flex-column">
+                        <h4 class="mb-4 text-white">Soporte</h4>
+                        <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
+                        <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
+                        <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
+                    </div>
+                </div>
+                <!-- support end -->
+
+
+                <!-- payment start -->
+                <div class="col-md-6 col-lg-6 col-xl-3">
+                    <div class="footer-item">
+                        <h4 class="text-white mb-3">Pagos</h4>
+                        <div class="footer-bank-card">
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                            <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                            <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <!-- payment end -->
+
+            </div>
+        </div>
+    </div>
+    <!-- footer end -->
+
+    <!-- copyright start -->
+    <div class="container-fluid copyright text-body py-4">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6 text-center text-md-end mb-md-0">
+                    <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right
+                    reserved.
+                </div>
+                <div class="col-md-6 text-center text-md-start">
+                    Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- copyright end -->
+
+
+
+
+    <!-- back to top -->
+    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+            class="fa fa-arrow-up"></i></a>
+
+
+    <!-- js libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 
 </html>

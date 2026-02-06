@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
+
+
+
+
+
+
 <head>
     <meta charset="utf-8">
+
+    <!-- window title and icon -->
     <title>Apex - Recibo</title>
     <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+
+    <!-- google web fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet"> 
 
+    <!-- icon font stylesheet -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"/>
+   
+    <!-- customized bootstrap stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     
+    <!-- css external file -->
     <link href="../css/style.css" rel="stylesheet">
 
+    <!-- in-file css start -->
     <style type="text/css">
         body {
             margin-top: 20px;
@@ -52,27 +67,51 @@
             object-fit: contain;
         }
     </style>
+    <!-- in-file css end -->
+
 </head>
 
+
+
+
+
+
+
 <body>
+
+<!-- invoice start -->
 <div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-xl-9">
             <div class="card">
                 <div class="card-body p-5"> 
                     
+
+                    <!-- invoice head start -->
                     <div class="d-flex align-items-center justify-content-between mb-4 border-bottom pb-4">
+                        
+                        <!-- logo + name start -->
                         <div class="d-flex align-items-center">
                             <img src="../img/logo_apex.png" alt="Apex Logo" class="brand-logo me-3">
                             <h2 class="m-0 text-primary fw-bold" style="font-family: 'Jost', sans-serif;">Apex Expeditions</h2>
                         </div>
+                        <!-- logo + name end -->
+
+                        <!-- invoice status start -->
                         <div class="text-end">
                             <h5 class="text-muted mb-1">Recibo de Pago</h5>
                             <span class="badge bg-success rounded-pill px-3">PAGADO</span>
                         </div>
-                    </div>
+                        <!-- invoice status end -->
 
+                    </div>
+                    <!-- invoice head end -->
+
+
+                    <!-- parties involved details start -->
                     <div class="row mb-4">
+
+                        <!-- client info start -->
                         <div class="col-sm-6">
                             <h5 class="text-muted mb-3">Facturado a:</h5>
                             <h5 class="font-size-16 mb-2">Juan Pérez</h5>
@@ -81,7 +120,9 @@
                             <p class="mb-1 text-muted">juan.perez@email.com</p>
                             <p class="text-muted">+34 123 456 789</p>
                         </div>
+                        <!-- client info end -->
                         
+                        <!-- apex info start -->
                         <div class="col-sm-6 text-sm-end">
                             <h5 class="text-muted mb-3">Detalles de la Agencia:</h5>
                             <h5 class="font-size-16 mb-2">Apex Expeditions</h5>
@@ -89,11 +130,16 @@
                             <p class="mb-1 text-muted">Madrid, España</p>
                             <p class="mb-1 text-muted">info@apexexpeditions.com</p>
                         </div>
-                    </div>
+                        <!-- client info end -->
 
+                    </div>
+                    <!-- parties involved details end -->
+
+                    <!-- purchase summary section start -->
                     <div class="py-2">
                         <h5 class="font-size-15 fw-bold text-primary">Resumen del Pedido</h5>
 
+                        <!-- purchased tours table start -->
                         <div class="table-responsive">
                             <table class="table align-middle table-nowrap table-centered mb-0">
                                 <thead>
@@ -106,6 +152,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+
+                                    <!-- tour bought 1 start -->
                                     <tr>
                                         <th scope="row">01</th>
                                         <td>
@@ -118,6 +166,9 @@
                                         <td>1</td>
                                         <td class="text-end">4,349.00€ </td>
                                     </tr>
+                                    <!-- tour bought 1 end -->
+
+                                    <!-- insurance bought start -->
                                     <tr>
                                         <th scope="row">02</th>
                                         <td>
@@ -130,44 +181,69 @@
                                         <td>1</td>
                                         <td class="text-end">€ 50.00</td>
                                     </tr>
+                                    <!-- insurance bought end -->
                                     
+                                    <!-- pre-discount price start -->
                                     <tr>
                                         <th scope="row" colspan="4" class="text-end border-0">Subtotal</th>
                                         <td class="text-end border-0">4,349.00€</td>
                                     </tr>
+                                    <!-- pre-discount price end -->
+
+                                    <!-- discount start -->
                                     <tr>
                                         <th scope="row" colspan="4" class="border-0 text-end">
                                             Descuento :
                                         </th>
                                         <td class="border-0 text-end">- € 0.00</td>
                                     </tr>
+                                    <!-- discount end -->
+
+                                    <!-- taxes start -->
                                     <tr>
                                         <th scope="row" colspan="4" class="border-0 text-end">
                                             Impuestos (IVA) :
                                         </th>
                                         <td class="border-0 text-end">913.29€ </td>
                                     </tr>
+                                    <!-- taxes end -->
+
+                                    <!-- final price start -->
                                     <tr>
                                         <th scope="row" colspan="4" class="border-0 text-end">Total</th>
                                         <td class="border-0 text-end"><h4 class="m-0 fw-bold text-primary">5.262,29€</h4></td>
                                     </tr>
+                                    <!-- final price end -->
+
                                 </tbody>
                             </table>
                         </div>
+                        <!-- purchased tours table start -->
                         
+                        <!-- bottom buttons start -->
                         <div class="d-print-none mt-5">
-                            <div class="float-end">
+
+                            <!-- email button start -->
+                            <div class="float-end">                    
                                 <a href="#" class="btn btn-primary w-md shadow-sm">
                                     <i class="fa fa-paper-plane me-1"></i> Enviar por Correo
                                 </a>
                             </div>
+                            <!-- email button end -->
+
+                            <!-- return index button start -->
                             <div class="float-start">
                                 <a href="index.html" class="btn btn-outline-secondary">
                                     <i class="fa fa-arrow-left me-1"></i> Volver al Inicio
                                 </a>
                             </div>
+                            <!-- return index button end -->
+
                         </div>
+                        <!-- bottom buttons start -->
                     </div>
+                    <!-- purchase summary section end -->
+
                 </div>
             </div>
         </div>
