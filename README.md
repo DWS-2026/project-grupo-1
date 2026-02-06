@@ -31,7 +31,7 @@ Indicar las entidades principales que gestionará la aplicación y las relacione
 - *Destino - Reserva*: una reserva está asociada a uno o más destinos; un destino puede tener muchas reservas (1:N). Un tour se compone de 1 o más destinos (ej: si 2 destinos: destino1-hotel1, destino2-hotel2).
 - *Destino - Categoría de Experiencia*: Un destino puede clasificarse en varias experiencias; cada experiencia agrupa múltiples destinos (NM).
 - *Destino - Hotel*: Cada destino tiene exactamente un hotel asociado (1-1).
-- *Usuario - Valoración (opcional)*: Un usuario puede dejar varias valoraciones sobre tours; cada valoración pertenece a un usuario y a un tour (1:N respecto a Usuario y 1:N respecto a Tour).
+- *Usuario - Valoración: Un usuario puede dejar varias valoraciones sobre tours; cada valoración pertenece a un usuario y a un tour (1:N respecto a Usuario y 1:N respecto a Tour).
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
