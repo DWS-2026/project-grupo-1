@@ -64,13 +64,13 @@
         {{!-- navigation buttons start --}}
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
-                <a href="/" class="nav-item nav-link active">Inicio</a>
-                <a href="/packages" class="nav-item nav-link">Tours</a>
-                <a href="/guides" class="nav-item nav-link">Guías</a>
-                <a href="/services" class="nav-item nav-link">Servicios</a>
-                <a href="/about" class="nav-item nav-link">Sobre nosotros</a>
-                <a href="/contact" class="nav-item nav-link">Contacto</a>
-                <a href="/carrito" class="nav-item nav-link position-relative">
+                <a href="/" class="nav-item nav-link {{#home}}active{{/home}}">Inicio</a>
+                <a href="/packages" class="nav-item nav-link {{#packages}}active{{/packages}}">Tours</a>
+                <a href="/guides" class="nav-item nav-link {{#guides}}active{{/guides}}">Guías</a>
+                <a href="/services" class="nav-item nav-link {{#services}}active{{/services}}">Servicios</a>
+                <a href="/about" class="nav-item nav-link {{#about}}active{{/about}}">Sobre nosotros</a>
+                <a href="/contact" class="nav-item nav-link {{#contact}}active{{/contact}}">Contacto</a>
+                <a href="/carrito" class="nav-item nav-link {{#carrito}}active{{/carrito}}">
                     <i class="fa fa-shopping-cart fa-lg"></i>
                     <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger" style="top: 65%;">
               1
