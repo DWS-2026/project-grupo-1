@@ -2,41 +2,54 @@ package es.codeurjc.daw.library.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+
 
 @Controller
 public class WebController {
 
     @GetMapping("/")
-    public String index() {
+    public String index(Model model) {
+        model.addAttribute("home", true);
         return "user/index";
     }
 
     @GetMapping("/packages")
-    public String packages() {
+    public String packages(Model model) {
+        model.addAttribute("packages", true);
         return "user/packages";
     }
 
     @GetMapping("/guides")
-    public String guides() {
+    public String guides(Model model) {
+        model.addAttribute("guides", true);
         return "user/guides";
     }
 
     @GetMapping("/services")
-    public String services() {
+    public String services(Model model) {
+        model.addAttribute("services", true);
         return "user/services";
     }
+
     @GetMapping("/about")
-    public String about() {
+    public String about(Model model) {
+        model.addAttribute("about", true);
         return "user/about";
     }
+
     @GetMapping("/contact")
-    public String contact() {
+    public String contact(Model model) {
+        model.addAttribute("contact", true);
         return "user/contact";
     }
+
     @GetMapping("/carrito")
-    public String carrito() {
+    public String carrito(Model model) {
+        model.addAttribute("carrito", true);
         return "user/carrito";
     }
+
 
     @GetMapping("/register")
     public String register(){return "user/register";
@@ -50,6 +63,19 @@ public class WebController {
     public String profile(){return "user/profile";
     }
 
+    @GetMapping("/tour-details")
+    public String tour_details(){return "user/tour-details";
+    }
 
+    @GetMapping("/checkout")
+    public String checkout(){return "user/checkout";
+    }
 
+    @GetMapping("/invoice")
+    public String invoice(){return  "/user/invoice";
+    }
+
+   @GetMapping("/admin-login")
+    public String admin_login(){ return "/user/admin-ligin";
+    }
 }
