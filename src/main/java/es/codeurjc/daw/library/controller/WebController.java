@@ -76,6 +76,15 @@ public class WebController {
     }
 
    @GetMapping("/admin-login")
-    public String admin_login(){ return "/user/admin-ligin";
+    public String admin_login(){ return "/user/admin-login";
+    }
+
+    @GetMapping("/add-review")
+    public String add_review(){ return "/user/add-review";
+    }
+
+    @GetMapping("/forgot-password")
+    public String forgot_password(){ return "/user/forgot-password";
     }
 }
+
