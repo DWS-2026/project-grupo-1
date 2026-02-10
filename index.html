@@ -1,10 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>MyApp v3</title>
-</head>
-<body>
+<html lang="es">
 
+
+
+
+
+
+<head>
+    <meta charset="utf-8">
+
+    <!-- window title and icon -->
+    <title>Apex - Inicio</title>
+    <link rel="icon" href="../img/favicon_triangle.png" type="image/png">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <!-- seo optimizaton -->
+    <meta content="viajes, turismo, expediciones, tours, guías, vacaciones" name="keywords">
+    <meta content="Apex Expeditions ofrece los mejores destinos turísticos y aventuras inolvidables alrededor del mundo."
+          name="description">
+
+    <!-- google web fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500;600&family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- icon font stylesheet -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- css and bootstrap templates stylesheet -->
+    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+</head>
+
+
+
+
+
+
+<body>
+<!-- solid (top) navbar start  -->
+<div class="container-fluid bg-primary px-5 d-none d-lg-block">
+    <div class="row gx-0">
+
+        <!-- fake social media start -->
+        <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+            <div class="d-inline-flex align-items-center" style="height: 45px;">
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                        class="fab fa-twitter fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                        class="fab fa-facebook-f fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                        class="fab fa-linkedin-in fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i
+                        class="fab fa-instagram fw-normal"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i
+                        class="fab fa-youtube fw-normal"></i></a>
+            </div>
+        </div>
+        <!-- fake social media end -->
+
+        <!-- user buttons start -->
+        <div class="col-lg-4 text-center text-lg-end">
+            <div class="d-inline-flex align-items-center" style="height: 45px;">
+                <a href="register.html"><small class="me-3 text-light"><i class="fa fa-user me-2"></i>Regístrate</small></a>
+                <a href="login.html"><small class="me-3 text-light"><i class="fa fa-sign-in-alt me-2"></i>Iniciar
+                    sesión</small></a>
+
+                <!-- options start -->
+                <div class="dropdown">
+                    <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown"><small><i
+                            class="fa fa-home me-2"></i> Opciones</small></a>
+                    <div class="dropdown-menu rounded">
+                        <a href="profile.html" class="dropdown-item"><i class="fas fa-user-alt me-2"></i> Mi perfil</a>
+                        <a href="#" class="dropdown-item"><i class="fas fa-power-off me-2"></i> Cerrar sesión</a>
+                    </div>
+                </div>
+                <!-- options end -->
+            </div>
+        </div>
+        <!-- user buttons end -->
+
+    </div>
+</div>
+<!-- solid (top) navbar end  -->
+
+
+
+<!-- transparent navbar start  -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+
+        <!-- logo + name start -->
+        <a href="" class="navbar-brand p-0">
+            <h1 class="m-0 text-white d-flex align-items-center">
+                <img src="../img/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
+                     style="max-height: 80px; padding: 7px 6px;">
+                Apex Expeditions
+            </h1>
+        </a>
+        <!-- logo + name end -->
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+            <span class="fa fa-bars"></span>
+        </button>
+
+        <!-- navigation buttons start -->
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="index.html" class="nav-item nav-link active">Inicio</a>
+                <a href="packages.html" class="nav-item nav-link">Tours</a>
+                <a href="guides.html" class="nav-item nav-link">Guías</a>
+                <a href="services.html" class="nav-item nav-link">Servicios</a>
+                <a href="about.html" class="nav-item nav-link">Sobre nosotros</a>
+                <a href="contact.html" class="nav-item nav-link">Contacto</a>
+                <a href="carrito.html" class="nav-item nav-link position-relative">
+                    <i class="fa fa-shopping-cart fa-lg"></i>
+                    <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger" style="top: 65%;">
+              1
+            </span>
+                </a>
+            </div>
+            <a href="tel:+1234567890" class="btn btn-primary rounded-pill py-2 px-4 ms-lg-4">Llámenos &nbsp; 📞</a>
+        </div>
+        <!-- navigation buttons end -->
+
+    </nav>
+    <!-- transparent navbar end -->
+
+
+
+    <!-- carousel start -->
+    <div class="carousel-header">
+        <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="1"></li>
+                <li data-bs-target="#carouselId" data-bs-slide-to="2"></li>
+            </ol>
+
+            <!-- carousel items start -->
+            <div class="carousel-inner" role="listbox">
+
+                <!-- carousel item 1 start -->
+                <div class="carousel-item active">
+                    <img src="../img/carousel-2.jpg" class="img-fluid" alt="Image">
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Descubre tu próximo destino</h1>
+                            <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote
+                                experiencias inolvidables y aventuras únicas.
+                            </p>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5"
+                                   href="packages.html">Descubre todos los viajes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- carousel item 1 end -->
+
+                <!-- carousel item 2 start -->
+                <div class="carousel-item">
+                    <img src="../img/imagen1.jpg" class="img-fluid" alt="Image">
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">Encuentra tu viaje perfecto</h1>
+                            <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote
+                                experiencias inolvidables y aventuras únicas.
+                            </p>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5"
+                                   href="packages.html">Descubre todos los viajes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- carousel item 2 end -->
+
+                <!-- carousel item 3 start -->
+                <div class="carousel-item">
+                    <img src="../img/carousel-3.jpg" class="img-fluid" alt="Image">
+                    <div class="carousel-caption">
+                        <div class="p-3" style="max-width: 900px;">
+                            <h4 class="text-white text-uppercase fw-bold mb-4" style="letter-spacing: 3px;">Explora el mundo</h4>
+                            <h1 class="display-2 text-capitalize text-white mb-4">¿A dónde quieres ir?</h1>
+                            <p class="mb-5 fs-5">Te acompañamos a los mejores destinos turísticos del mundo, ofreciéndote
+                                experiencias inolvidables y aventuras únicas.
+                            </p>
+                            <div class="d-flex align-items-center justify-content-center">
+                                <a class="btn-hover-bg btn btn-primary rounded-pill text-white py-3 px-5"
+                                   href="packages.html">Descubre todos los viajes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- carousel item 3 end -->
+
+            </div>
+            <!-- carousel items end -->
+
+            <!-- carousel navigation start -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon btn bg-primary" aria-hidden="false"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                <span class="carousel-control-next-icon btn bg-primary" aria-hidden="false"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            <!-- carousel navigation end -->
+
+        </div>
+    </div>
+    <!-- carousel end -->
+</div>
+<!-- navbar end -->
+
+
+
+<!-- footer start -->
+<div class="container-fluid footer py-5">
+    <div class="container py-5">
+        <div class="row g-5">
+
+            <!-- contact + social media start -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Contacto</h4>
+                    <a href="#"><i class="fas fa-home me-2"></i> C. Alcalá 245, 28027 Madrid</a>
+                    <a href="#"><i class="fas fa-envelope me-2"></i> contacto@apexexpeditions.com</a>
+                    <a href="#"><i class="fas fa-phone me-2"></i> +34 622 714 908</a>
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-share fa-2x text-white me-2"></i>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://facebook.com" target="_blank"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://x.com" target="_blank"><i
+                                class="fab fa-twitter"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://instagram.com" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a class="btn-square btn btn-primary rounded-circle mx-1" href="https://linkedin.com" target="_blank"><i
+                                class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- contact + social media end -->
+
+
+            <!-- portal start -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Portal</h4>
+                    <a href="index.html"><i class="fas fa-angle-right me-2"></i> Inicio</a>
+                    <a href="packages.html"><i class="fas fa-angle-right me-2"></i> Tours</a>
+                    <a href="about.html"><i class="fas fa-angle-right me-2"></i> Sobre nosotros</a>
+                </div>
+            </div>
+            <!-- portal end -->
+
+            <!-- support start -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item d-flex flex-column">
+                    <h4 class="mb-4 text-white">Soporte</h4>
+                    <a href="contact.html"><i class="fas fa-angle-right me-2"></i> Contacto</a>
+                    <a href="login.html"><i class="fas fa-angle-right me-2"></i> Inicio de sesión</a>
+                    <a href="register.html"><i class="fas fa-angle-right me-2"></i> Registrarse</a>
+                </div>
+            </div>
+            <!-- support end -->
+
+            <!-- payment start -->
+            <div class="col-md-6 col-lg-6 col-xl-3">
+                <div class="footer-item">
+                    <h4 class="text-white mb-3">Pagos</h4>
+                    <div class="footer-bank-card">
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-amex fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-visa fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fas fa-credit-card fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-mastercard fa-2x"></i></a>
+                        <a href="#" class="text-white me-2"><i class="fab fa-cc-paypal fa-2x"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-cc-discover fa-2x"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- payment end -->
+
+        </div>
+    </div>
+</div>
+<!-- footer end -->
+
+
+
+<!-- copyright start -->
+<div class="container-fluid copyright text-body py-4">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-6 text-center text-md-end mb-md-0">
+                <i class="fas fa-copyright me-2"></i><a class="text-white" href="#">Apex Expeditions</a>, All right reserved.
+            </div>
+            <div class="col-md-6 text-center text-md-start">
+                Designed By <a class="text-white" href="https://htmlcodex.com">Grupo 1</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- copyright end -->
+
+
+
+<!-- back to top -->
+<a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+
+
+<!-- js libraries -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
