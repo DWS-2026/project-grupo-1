@@ -1,335 +1,3 @@
-# MyApp v4
-
-## 👥 Miembros del Equipo
-| Nombre y Apellidos | Correo URJC | Usuario GitHub |
-|:--- |:--- |:--- |
-| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
-| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
-| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
-| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
-
----
-
-## 🎭 **Preparación: Definición del Proyecto**
-
-### **Descripción del Tema**
-[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
-
-### **Entidades**
-Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
-
-1. **[Entidad 1]**: [Ej: Usuario]
-2. **[Entidad 2]**: [Ej: Producto]
-3. **[Entidad 3]**: [Ej: Pedido]
-4. **[Entidad 4]**: [Ej: Categoría]
-
-**Relaciones entre entidades:**
-- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
-- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
-- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
-- [Descripción de otras relaciones relevantes]
-
-### **Permisos de los Usuarios**
-Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
-
-* **Usuario Anónimo**: 
-  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
-  - No es dueño de ninguna entidad
-
-* **Usuario Registrado**: 
-  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
-  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
-
-* **Administrador**: 
-  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
-  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
-
-### **Imágenes**
-Indicar qué entidades tendrán asociadas una o varias imágenes:
-
-- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
-- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
-- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
-
----
-
-## 🛠 **Práctica 1: Maquetación de páginas con HTML y CSS**
-
-### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
-> Vídeo mostrando las principales funcionalidades de la aplicación web.
-
-### **Diagrama de Navegación**
-Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
-
-![Diagrama de Navegación](images/navigation-diagram.png)
-
-> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
-
-### **Capturas de Pantalla y Descripción de Páginas**
-
-#### **1. Página Principal / Home**
-![Página Principal](images/home-page.png)
-
-> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
-
-#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
-
-### **Participación de Miembros en la Práctica 1**
-
-#### **Alumno 1 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 2 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 4 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-## 🛠 **Práctica 2: Web con HTML generado en servidor**
-
-### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
-> Vídeo mostrando las principales funcionalidades de la aplicación web.
-
-### **Navegación y Capturas de Pantalla**
-
-#### **Diagrama de Navegación**
-
-Solo si ha cambiado.
-
-#### **Capturas de Pantalla Actualizadas**
-
-Solo si han cambiado.
-
-### **Instrucciones de Ejecución**
-
-#### **Requisitos Previos**
-- **Java**: versión 21 o superior
-- **Maven**: versión 3.8 o superior
-- **MySQL**: versión 8.0 o superior
-- **Git**: para clonar el repositorio
-
-#### **Pasos para ejecutar la aplicación**
-
-1. **Clonar el repositorio**
-   ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
-   ```
-
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
-
-#### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
-
-### **Diagrama de Entidades de Base de Datos**
-
-Diagrama mostrando las entidades, sus campos y relaciones:
-
-![Diagrama Entidad-Relación](images/database-diagram.png)
-
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
-
-### **Diagrama de Clases y Templates**
-
-Diagrama de clases de la aplicación con diferenciación por colores o secciones:
-
-![Diagrama de Clases](images/classes-diagram.png)
-
-> [Descripción opcional del diagrama y relaciones principales]
-
-### **Participación de Miembros en la Práctica 2**
-
-#### **Alumno 1 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 2 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 4 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-## 🛠 **Práctica 3: Incorporación de una API REST a la aplicación web, análisis de vulnerabilidades y contramedidas**
-
-### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
-> Vídeo mostrando las principales funcionalidades de la aplicación web.
-
-### **Documentación de la API REST**
-
-#### **Especificación OpenAPI**
-📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
-
-#### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
-
-> La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
-
-### **Diagrama de Clases y Templates Actualizado**
-
-Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
-
-![Diagrama de Clases Actualizado](images/complete-classes-diagram.png)
-
-#### **Credenciales de Usuarios de Ejemplo**
-
-| Rol | Usuario | Contraseña |
-|:---|:---|:---|
-| Administrador | admin | admin123 |
-| Usuario Registrado | user1 | user123 |
-| Usuario Registrado | user2 | user123 |
-
-### **Participación de Miembros en la Práctica 3**
-
-#### **Alumno 1 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 2 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 3 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
-
----
-
-#### **Alumno 4 - [Nombre Completo]**
-
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
-
-| Nº    | Commits      | Files      |
-|:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 # Apex Expeditions
 
 ## 👥 Miembros del Equipo
@@ -413,7 +81,6 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 
 ### **Diagrama de Navegación**
 ![Diagrama de flujo fase 1.png](Diagrama%20de%20flujo%20fase%201.png)
-
 > Descripción: El flujo de la aplicación comienza en la zona pública, donde el usuario puede acceder a la web desde cualquier página principal a través de la barra de navegación. Desde la navbar se puede ir libremente a la página de inicio, al listado de paquetes turísticos, a la sección de guías, a los servicios ofrecidos, a la página “sobre nosotros”, al formulario de contacto y al carrito de la compra. Esta navegación es bidireccional, permitiendo moverse entre estas secciones sin restricciones.
 >
 > Desde la página de paquetes, el usuario puede consultar más información sobre un tour concreto, lo que le lleva a la página de detalle del tour. En esta página se muestra la información completa del viaje seleccionado y desde ella se habilitan varias acciones clave. El usuario puede añadir una opinión sobre el tour, accediendo a la página de añadir reseña, desde la cual, una vez enviada la opinión, se regresa de nuevo a la página de detalles del tour. También es posible añadir el tour directamente al carrito de la compra.
@@ -429,98 +96,88 @@ Describir los permisos de cada tipo de usuario e indicar de qué entidades es du
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](img/index.png)
+![index.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Findex.png)
 
 > "Página de inicio que muestra tanto los servicios que ofrecemos como la calidad de estos. Incluye una barra de navegación y acceso a registro/login para usuarios no autenticados."
 
 #### **2. Tours disponibles / Packages**
-![Página Principal](img/packages.png)
+![packages.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fpackages.png)
 
 > "Página donde el usuario puede observar los distintos viajes que ofrecemos, así como su información más relevante resumida (destino principal, precio, duración, número de viajeros posibles, etc). La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **3. Descripción de un tour específico / Tour-details**
-![Página Principal](img/tour%20details.png)
+![tour details.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Ftour%20details.png)
 
 > "Página en la que se muestran todos los detalles del producto seleccionado en tours. En esta página, específica para cada producto, podremos añadir el producto al carrito o reservarlo tanto online como por llamada telefónica, también podremos leer toda la información sobre el producto y las reseñas que han dejado otros usuarios sobre este. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **4. Carrito de compra / Carrito**
-![Página Principal](img/carrito.png)
-
+![carrito.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fcarrito.png)
 > "Página en la que podremos observar todos los productos que hemos añadido al carrito. Nos permite volver a la página de estos productos para observar de nuevo sus detalles, volver a la página tours para seguir explorando el resto de productos y proceder al pago de los productos seleccionados. Podremos acceder a esta página desde cualquier página que tenga incluida barra de navegación. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **5. Zona de pago / Checkout**
-![Página Principal](img/checkout.png)
-
+![checkout.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fcheckout.png)
   > "Página en la que podremos proceder al pago de los productos seleccionados. En esta página se rellenarán los campos indicados (bancarios) para realizar el pago final de los productos."
 
 #### **6. Factura / Invoice**
-![Página Principal](img/invoice.png)
-
+![invoice.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Finvoice.png)
 > "Página en la que podremos observar el recibo de pago de la compra realizada. En esta página podremos observar todos los detalles de la compra: precio final, detalles de la agencia, quien ha realizado el pago y productos adquiridos (en este caso, packs de tours de viajes). También podremos volver a la página principal."
 
 #### **7. Guías / Guides**
-![Página Principal](img/guides.png)
-
+![guides.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fguides.png)
 > "Página en la que podremos observar a nuestros guías más relevantes. Los usuarios pueden observar a nuestros guías más relevantes asi como su especialización, además, se incluyen sus redes sociales por si se les desea contactar o pedir recomendaciones. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **8. Sobre nosotros / About**
-![Página Principal](img/about.png)
-
+![about.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fabout.png)
 > "Página en la que podremos observar información relevante a la empresa. Los usuarios pueden observar información sobre nosotros y las tareas principales de la empresa, además de las garantías incluidas en todos nuestros productos. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **9. Contacto / Contact**
-![Página Principal](img/contact.png)
-
+![contact.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fcontact.png)
 > "Página en la que se indicará como contactar con el servicio al cliente de la empresa. Los usuarios que tengan cualquier duda en lo relativo a los productos o hayan tenido cualquier problema técnico, nos podrán contactar rellenando los formularios indicados en esta página. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **10. Inicio de sesión / Login**
-![Página Principal](img/login.png)
-
+![login.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Flogin.png)
 > "Página en la que se indicará como iniciar sesión en la web para poder acceder a todos los servicios ofrecidos. En caso de tener una cuenta registrada, se podrá navegar a una página para la creación de esta, también se podrá proceder a la recuperación de contraseña en caso de haberla olvidado o haber tenido cualquier problema relativo a esta. También se podrá acceder a la página de incio de sesión como administrador. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **11. Registro / Register**
-![Página Principal](img/register.png)
-
+![register.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fregister.png)
 > "Página en la que se podrá proceder a la creación de una nueva cuenta. Una vez rellenados todos los campos requeridos y haber aceptado los términos y condiciones, se redirigirá al usuario a la página de ini  cio de sesión. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **12. Inicio de sesión para administrador / Admin-login**
-![Página Principal](img/adminlogin.png)
-
+![adminlogin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fadminlogin.png)
 > "Página en la que los administradores podrán iniciar sesión. Una vez rellenados los campos se podrá acceder al panel de administrador, también se ofrece la posibilidad de volver al inicio de sesión para usuarios comunes. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **13. Recuperación de contraseña / Forgot-password**
-![Página Principal](img/password.png)
+![password.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fpassword.png)
 
 > "Página en la que podremos recuperar la contraseña en caso de haberla perdido o tener cualquier problema relativo a esta. Se nos pedirá introducir nuestro correo asociado a la cuenta, una vez hecho esto se nos enviará un mensaje a nuestro correo electrónico. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **14. Mi perfil / Profile**
-![Página Principal](img/profile.png)
+![profile.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fprofile.png)
 
 > "Página en la que se podrá observar la información de la cuenta con la que nos encontramos registrados. En todas las páginas de esta web (salvo checkout e invoice) se podrá acceder a través del botón "Mi perfil", ubicado en la dropbar "Opciones" situada en parte superior de estas. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
 
 #### **15. Panel de control para administradores / Index**
-![Página Principal](img/index_admin.png)
+![index_admin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Findex_admin.png)
 
 > "Panel de control para administradores desde donde se puede acceder al resto de funcionalidades."
 
 #### **16. Perfil de administrador / Profile**
-![Página Principal](img/profile_admin.png)
+![profile_admin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fprofile_admin.png)
 
 > "En esta página cada administrador podrá acceder a información relativa a su cuenta, además de poder editarla."
 
 #### **17. Usuarios / Users**
-![Página Principal](img/users_admin.png)
+![users_admin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fusers_admin.png)
 
 > "Desde esta página los administradores podrán acceder al listado de todos los perfiles de usuario registrados de la web, así como acceder y editar los datos de estos."
 
 #### **18. Tours disponibles / Tours**
-![Página Principal](img/tours_admin.png)
+![tours_admin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Ftours_admin.png)
 
 > "Desde esta página los administradores podrán gestionar todos los packs de tours disponibles en la web, pudiendo modificarlos y borrarlos."
 
 #### **19. Reseñas / Reviews**
-![Página Principal](img/reviews_admin.png)
-
+![reviews_admin.png](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Freviews_admin.png)
 > "Desde esta página los administradores tendrán acceso a todas las reviews enviadas por los usuarios, pudiendo editarlas y borrarlas."
 
 ### **Participación de Miembros en la Práctica 1**
