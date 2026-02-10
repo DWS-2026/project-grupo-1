@@ -461,7 +461,7 @@
 /* SINGLE PAGE HERO HEADER START */
 /* Styles the breadcrumb/header area for single pages with a gradient and image */
 .bg-breadcrumb {
-    background: linear-gradient(rgba(123, 19, 81, 0.5), rgba(123, 19, 62, 0.5)), url(../img/breadcrumb-bg.jpg);
+    background: linear-gradient(rgba(123, 19, 81, 0.5), rgba(123, 19, 62, 0.5)), url(../images/breadcrumb-bg.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
