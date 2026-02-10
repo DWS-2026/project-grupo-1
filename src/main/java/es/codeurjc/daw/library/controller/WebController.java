@@ -10,4 +10,46 @@ public class WebController {
     public String index() {
         return "user/index";
     }
+
+    @GetMapping("/packages")
+    public String packages() {
+        return "user/packages";
+    }
+
+    @GetMapping("/guides")
+    public String guides() {
+        return "user/guides";
+    }
+
+    @GetMapping("/services")
+    public String services() {
+        return "user/services";
+    }
+    @GetMapping("/about")
+    public String about() {
+        return "user/about";
+    }
+    @GetMapping("/contact")
+    public String contact() {
+        return "user/contact";
+    }
+    @GetMapping("/carrito")
+    public String carrito() {
+        return "user/carrito";
+    }
+
+    @GetMapping("/register")
+    public String register(){return "user/register";
+    }
+
+    @GetMapping("/login")
+    public String login(){return "user/login";
+    }
+
+    @GetMapping("/profile")
+    public String profile(){return "user/profile";
+    }
+
+
+
 }
