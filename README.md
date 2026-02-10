@@ -1,302 +1,143 @@
-# Apex Expeditions
+# MyApp v4
 
 ## 👥 Miembros del Equipo
 | Nombre y Apellidos | Correo URJC | Usuario GitHub |
 |:--- |:--- |:--- |
-| Mario Ortiz Lopo | m.ortizl.2023@alumnos.urjc.es | marioortiz-6 |
-| Pablo Sánchez Martín | p.sanchezm.2023@alumnos.urjc.es | psmURJC |
-| Javier Hérnandez Campano | j.hernandezca.2023@alumnos.urjc.es | javier0004 |
-| Andrés Sánchez Nogales | a.sanchezn.2023@alumnos.urjc.es | Andresshme |
+| [Nombre 1] | [email1]@alumnos.urjc.es | [User1] |
+| [Nombre 2] | [email2]@alumnos.urjc.es | [User2] |
+| [Nombre 3] | [email3]@alumnos.urjc.es | [User3] |
+| [Nombre 4] | [email4]@alumnos.urjc.es | [User4] |
 
---- 
+---
 
 ## 🎭 **Preparación: Definición del Proyecto**
 
 ### **Descripción del Tema**
-Aplicación web para una agencia de viajes que ofrece paquetes turísticos organizados (tours) a los destinos más raros y únicos del mundo (otros planetas, otrás épocas e incluso futuros apocalípticos), mostrando información de cada tour (precio por persona, duración, ubicación y características del alojamiento) y permitiendo a los usuarios reservar tours de manera online y por llamada, además de poder seleccionarlos para su posterior compra. Pertenece al sector turístico y facilita al usuario comparar destinos y tours de forma rápida, así como contactar con la agencia para gestionar su viaje.
-
+[Escribe aquí una descripción breve y concisa de qué trata tu aplicación, el sector al que pertenece y qué valor aporta al usuario].
 
 ### **Entidades**
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
-1. *Usuario*
-2. *Destino*
-3. *Reserva / Solicitud de Presupuesto*
-4. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.)
-5. *Hotel* (1 por destino)
-
+1. **[Entidad 1]**: [Ej: Usuario]
+2. **[Entidad 2]**: [Ej: Producto]
+3. **[Entidad 3]**: [Ej: Pedido]
+4. **[Entidad 4]**: [Ej: Categoría]
 
 **Relaciones entre entidades:**
-- *Usuario - Reserva*: Un usuario puede crear múltiples reservas/solicitudes de presupuesto; cada reserva pertenece a un único usuario (1:N).
-- *Destino - Reserva*: una reserva está asociada a uno o más destinos; un destino puede tener muchas reservas (1:N). Un tour se compone de 1 o más destinos (ej: si 2 destinos: destino1-hotel1, destino2-hotel2).
-- *Destino - Categoría de Experiencia*: Un destino puede clasificarse en varias experiencias; cada experiencia agrupa múltiples destinos (NM).
-- *Destino - Hotel*: Cada destino tiene exactamente un hotel asociado (1-1).
-- *Usuario - Valoración: Un usuario puede dejar varias valoraciones sobre tours; cada valoración pertenece a un usuario y a un tour (1:N respecto a Usuario y 1:N respecto a Tour).
+- [Ej: Usuario - Pedido: Un usuario puede tener múltiples pedidos (1:N)]
+- [Ej: Pedido - Producto: Un pedido puede contener múltiples productos y un producto puede estar en múltiples pedidos (N:M)]
+- [Ej: Producto - Categoría: Un producto pertenece a una categoría (N:1)]
+- [Descripción de otras relaciones relevantes]
 
 ### **Permisos de los Usuarios**
 Describir los permisos de cada tipo de usuario e indicar de qué entidades es dueño:
 
-* *Usuario Anónimo*:  
-  - Permisos:  
-    - Visualizar listado de tours y destinos (catálogo público). 
-    - Buscar y filtrar tours por destino, fechas y rango de precio.  
-    - Ver detalles básicos del tour (precio por persona, duración, ubicación, características).  
-    - Enviar formulario de contacto genérico o “Ask For A Quote” sin cuenta (según diseño). 
-  - No es dueño de ninguna entidad.
+* **Usuario Anónimo**: 
+  - Permisos: [Ej: Visualización de catálogo, búsqueda de productos, registro]
+  - No es dueño de ninguna entidad
 
-* *Usuario Registrado*:  
-  - Permisos:  
-    - Todo lo del usuario anónimo.  
-    - Gestionar su perfil (datos personales, preferencias de viaje).  
-    - Crear y gestionar sus propias reservas/solicitudes de presupuesto de tours.  
-    - Consultar el historial de reservas y estado (pendiente, confirmada, cancelada).  
-    - Crear valoraciones/comentarios sobre tours (si se implementa módulo de opiniones).  
-  - Es dueño de:  
-    - Su Perfil de Usuario.  
-    - Sus propias Reservas/Solicitudes de Presupuesto.  
-    - Sus propias Valoraciones/Comentarios.
+* **Usuario Registrado**: 
+  - Permisos: [Ej: Gestión de perfil, realizar pedidos, crear valoraciones]
+  - Es dueño de: [Ej: Sus propios Pedidos, su Perfil de Usuario, sus Valoraciones]
 
-* *Administrador*:  
-  - Permisos:  
-    - Gestión completa (CRUD) de Tours (precio, duración, imágenes, descripción, servicios, etc.).
-    - Gestión de Hoteles (alta, baja, modificación; un hotel por destino).
-    - Gestión de Categorías de Experiencia (Adventure, Beach, Nature, etc.).
-    - Gestión de Usuarios (activar/desactivar cuentas, ver datos básicos y reservas).
-    - Gestión y revisión de Reservas/Solicitudes (cambio de estado, anulación, confirmación).
-    - Moderación de valoraciones/comentarios (aprobar, eliminar).
-    - Visualización de estadísticas (número de reservas por destino, destinos más populares, ingresos estimados).
-  - Es dueño de:  
-    - Destinos, Categorías y Hoteles.  
-    - Puede gestionar (no “poseer”) todas las Reservas y Usuarios.
+* **Administrador**: 
+  - Permisos: [Ej: Gestión completa de productos (CRUD), visualización de estadísticas, moderación de contenido]
+  - Es dueño de: [Ej: Productos, Categorías, puede gestionar todos los Pedidos y Usuarios]
+
+### **Imágenes**
+Indicar qué entidades tendrán asociadas una o varias imágenes:
+
+- **[Entidad con imágenes 1]**: [Ej: Usuario - Una imagen de avatar por usuario]
+- **[Entidad con imágenes 2]**: [Ej: Producto - Múltiples imágenes por producto (galería)]
+- **[Entidad con imágenes 3]**: [Ej: Categoría - Una imagen representativa por categoría]
 
 ---
 
 ## 🛠 **Práctica 1: Maquetación de páginas con HTML y CSS**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://youtu.be/GUYZgqYFe60)**
-📹 **[Enlace al vídeo en Google Drive](https://drive.google.com/file/d/1pgBzeMeLv6O-XTHStwoZ2a43lTnHDl3A/view?usp=sharing)**
-
+📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
 > Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Diagrama de Navegación**
-![Diagrama de flujo fase 1.png](Diagrama%20de%20flujo%20fase%201.png)
+Diagrama que muestra cómo se navega entre las diferentes páginas de la aplicación:
 
-> Descripción: El flujo de la aplicación comienza en la zona pública, donde el usuario puede acceder a la web desde cualquier página principal a través de la barra de navegación. Desde la navbar se puede ir libremente a la página de inicio, al listado de paquetes turísticos, a la sección de guías, a los servicios ofrecidos, a la página “sobre nosotros”, al formulario de contacto y al carrito de la compra. Esta navegación es bidireccional, permitiendo moverse entre estas secciones sin restricciones.
->
-> Desde la página de paquetes, el usuario puede consultar más información sobre un tour concreto, lo que le lleva a la página de detalle del tour. En esta página se muestra la información completa del viaje seleccionado y desde ella se habilitan varias acciones clave. El usuario puede añadir una opinión sobre el tour, accediendo a la página de añadir reseña, desde la cual, una vez enviada la opinión, se regresa de nuevo a la página de detalles del tour. También es posible añadir el tour directamente al carrito de la compra.
->
->El carrito actúa como punto intermedio en el proceso de compra. Desde él, el usuario puede volver a consultar el detalle del tour, seguir explorando otros paquetes turísticos o continuar con el proceso de pago. Si decide pagar, el flujo conduce a la página de checkout, donde se finaliza la compra, y posteriormente a la página de factura, que confirma el pago realizado.
->
->En paralelo, el usuario puede acceder a la zona de autenticación desde la barra de navegación. Desde ahí puede iniciar sesión, registrarse como nuevo usuario o recuperar su contraseña en caso de olvido. Una vez que el inicio de sesión es correcto, el usuario accede a su perfil de cliente, desde donde gestiona su información personal. Además, desde la página de login existe la posibilidad de acceder al panel de administración si se trata de un usuario con permisos de administrador.
->
->El panel de administración comienza con el inicio de sesión del administrador y da acceso al dashboard principal, desde el cual se gestionan las diferentes áreas del sistema. El administrador puede administrar usuarios, consultar y editar sus perfiles, gestionar los tours disponibles (verlos, editarlos o añadir nuevos), y moderar las reseñas realizadas por los clientes. Desde la sección de reseñas, el administrador también puede acceder al detalle del tour asociado a cada opinión para tener una visión completa del contenido que se está gestionando.
->
->Finalmente, el sistema contempla el manejo de errores de navegación. Si el usuario introduce una URL que no corresponde a ninguna página existente, el flujo redirige a la página 404, informando de que la ruta solicitada no se encuentra disponible.
+![Diagrama de Navegación](images/navigation-diagram.png)
+
+> [Descripción opcional del flujo de navegación: Ej: "El usuario puede acceder desde la página principal a todas las secciones mediante el menú de navegación. Los usuarios anónimos solo tienen acceso a las páginas públicas, mientras que los registrados pueden acceder a su perfil y panel de usuario."]
 
 ### **Capturas de Pantalla y Descripción de Páginas**
 
 #### **1. Página Principal / Home**
-![Página Principal](img/index.png)
+![Página Principal](images/home-page.png)
 
-> "Página de inicio que muestra tanto los servicios que ofrecemos como la calidad de estos. Incluye una barra de navegación y acceso a registro/login para usuarios no autenticados."
+> [Descripción breve: Ej: "Página de inicio que muestra los productos destacados, categorías principales y un banner promocional. Incluye barra de navegación y acceso a registro/login para usuarios no autenticados."]
 
-#### **2. Tours disponibles / Packages**
-![Página Principal](img/packages.png)
-
-> "Página donde el usuario puede observar los distintos viajes que ofrecemos, así como su información más relevante resumida (destino principal, precio, duración, número de viajeros posibles, etc). La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **3. Descripción de un tour específico / Tour-details**
-![Página Principal](img/tour%20details.png)
-
-> "Página en la que se muestran todos los detalles del producto seleccionado en tours. En esta página, específica para cada producto, podremos añadir el producto al carrito o reservarlo tanto online como por llamada telefónica, también podremos leer toda la información sobre el producto y las reseñas que han dejado otros usuarios sobre este. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **4. Carrito de compra / Carrito**
-![Página Principal](img/carrito.png)
-
-> "Página en la que podremos observar todos los productos que hemos añadido al carrito. Nos permite volver a la página de estos productos para observar de nuevo sus detalles, volver a la página tours para seguir explorando el resto de productos y proceder al pago de los productos seleccionados. Podremos acceder a esta página desde cualquier página que tenga incluida barra de navegación. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **5. Zona de pago / Checkout**
-![Página Principal](img/checkout.png)
-
-  > "Página en la que podremos proceder al pago de los productos seleccionados. En esta página se rellenarán los campos indicados (bancarios) para realizar el pago final de los productos."
-
-#### **6. Factura / Invoice**
-![Página Principal](img/invoice.png)
-
-> "Página en la que podremos observar el recibo de pago de la compra realizada. En esta página podremos observar todos los detalles de la compra: precio final, detalles de la agencia, quien ha realizado el pago y productos adquiridos (en este caso, packs de tours de viajes). También podremos volver a la página principal."
-
-#### **7. Guías / Guides**
-![Página Principal](img/guides.png)
-
-> "Página en la que podremos observar a nuestros guías más relevantes. Los usuarios pueden observar a nuestros guías más relevantes asi como su especialización, además, se incluyen sus redes sociales por si se les desea contactar o pedir recomendaciones. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **8. Sobre nosotros / About**
-![Página Principal](img/about.png)
-
-> "Página en la que podremos observar información relevante a la empresa. Los usuarios pueden observar información sobre nosotros y las tareas principales de la empresa, además de las garantías incluidas en todos nuestros productos. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **9. Contacto / Contact**
-![Página Principal](img/contact.png)
-
-> "Página en la que se indicará como contactar con el servicio al cliente de la empresa. Los usuarios que tengan cualquier duda en lo relativo a los productos o hayan tenido cualquier problema técnico, nos podrán contactar rellenando los formularios indicados en esta página. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **10. Inicio de sesión / Login**
-![Página Principal](img/login.png)
-
-> "Página en la que se indicará como iniciar sesión en la web para poder acceder a todos los servicios ofrecidos. En caso de tener una cuenta registrada, se podrá navegar a una página para la creación de esta, también se podrá proceder a la recuperación de contraseña en caso de haberla olvidado o haber tenido cualquier problema relativo a esta. También se podrá acceder a la página de incio de sesión como administrador. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **11. Registro / Register**
-![Página Principal](img/register.png)
-
-> "Página en la que se podrá proceder a la creación de una nueva cuenta. Una vez rellenados todos los campos requeridos y haber aceptado los términos y condiciones, se redirigirá al usuario a la página de ini  cio de sesión. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **12. Inicio de sesión para administrador / Admin-login**
-![Página Principal](img/adminlogin.png)
-
-> "Página en la que los administradores podrán iniciar sesión. Una vez rellenados los campos se podrá acceder al panel de administrador, también se ofrece la posibilidad de volver al inicio de sesión para usuarios comunes. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **13. Recuperación de contraseña / Forgot-password**
-![Página Principal](img/password.png)
-
-> "Página en la que podremos recuperar la contraseña en caso de haberla perdido o tener cualquier problema relativo a esta. Se nos pedirá introducir nuestro correo asociado a la cuenta, una vez hecho esto se nos enviará un mensaje a nuestro correo electrónico. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **14. Mi perfil / Profile**
-![Página Principal](img/profile.png)
-
-> "Página en la que se podrá observar la información de la cuenta con la que nos encontramos registrados. En todas las páginas de esta web (salvo checkout e invoice) se podrá acceder a través del botón "Mi perfil", ubicado en la dropbar "Opciones" situada en parte superior de estas. La barra de navegación y acceso a registro/login para usuarios no autenticados sigue disponible."
-
-#### **15. Panel de control para administradores / Index**
-![Página Principal](img/index_admin.png)
-
-> "Panel de control para administradores desde donde se puede acceder al resto de funcionalidades."
-
-#### **16. Perfil de administrador / Profile**
-![Página Principal](img/profile_admin.png)
-
-> "En esta página cada administrador podrá acceder a información relativa a su cuenta, además de poder editarla."
-
-#### **17. Usuarios / Users**
-![Página Principal](img/users_admin.png)
-
-> "Desde esta página los administradores podrán acceder al listado de todos los perfiles de usuario registrados de la web, así como acceder y editar los datos de estos."
-
-#### **18. Tours disponibles / Tours**
-![Página Principal](img/tours_admin.png)
-
-> "Desde esta página los administradores podrán gestionar todos los packs de tours disponibles en la web, pudiendo modificarlos y borrarlos."
-
-#### **19. Reseñas / Reviews**
-![Página Principal](img/reviews_admin.png)
-
-> "Desde esta página los administradores tendrán acceso a todas las reviews enviadas por los usuarios, pudiendo editarlas y borrarlas."
+#### **AQUÍ AÑADIR EL RESTO DE PÁGINAS**
 
 ### **Participación de Miembros en la Práctica 1**
 
-#### **Alumno 1 - Mario Ortiz Lopo**
+#### **Alumno 1 - [Nombre Completo]**
 
-# Tareas principales del proyecto
-
-1. **Desarrollo de la interfaz de administración**
-   - Implementación de funcionalidades para la edición de entidades: **tours**, **reviews** y **usuarios**.
-
-2. **Estilizado de la interfaz**
-   - Modificación del fichero `sb-admin-2.min.css` para dar estilo consistente a todas las pantallas.
-
-3. **Pantallas de inicio de sesión**
-   - Creación y estilizado de la pantalla de **login normal** y **login de administrador**.
-
-4. **Configuración de navegación**
-   - Implementación de la navegación en toda la interfaz de administración y parte de la interfaz de usuario.
-
-5. **Gestión de imágenes**
-   - Incorporación de imágenes en las pantallas según los requisitos visuales.
-
-6. **Modularización de la interfaz**
-   - Separación de secciones HTML en **componentes reutilizables**, almacenados en `sb_admin_2/components`.
-
-7. **Traducción de contenidos**
-   - Traducción al español de todos los ficheros de la interfaz de administración.
-
-8. **Video-presentación de la práctica**
-   - Grabación de un video que muestre el funcionamiento y desarrollo del proyecto.
-
+[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Reducción de código repetido a través de creación de componentes](https://github.com/DWS-2026/project-grupo-1/commit/fba03fc)  | [sb_admin_2/components/sidebar.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/components/sidebar.html)   |
-|2| [Utilización de los componentes](https://github.com/DWS-2026/project-grupo-1/commit/0ef97f5)  | [sb_admin_2/index.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/index.html)   |
-|3| [Actualizada interfaz de administrador](https://github.com/DWS-2026/project-grupo-1/commit/6513f94)  | [html/login.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/login.html)   |
-|4| [Añadida sección tours en panel de administración](https://github.com/DWS-2026/project-grupo-1/commit/f7be732)  | [sb_admin_2/charts.html](https://github.com/DWS-2026/project-grupo-1/blob/main/sb_admin_2/charts.html)   |
-|5| [Actualizado el archivo css](https://github.com/DWS-2026/project-grupo-1/commit/ed2bef7)  | [html/admin-login](https://github.com/DWS-2026/project-grupo-1/blob/main/html/admin-login.html)   |
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
 ---
 
-#### **Alumno 2 - Pablo Sánchez Martín**
+#### **Alumno 2 - [Nombre Completo]**
 
-Me he encargado de la organización inicial del repositorio (ramas y carpetas) y del diseño granular y reparto de tareas (mediante [trello](https://trello.com/invite/b/697f29309b83f21b92d02577/ATTI13ac19c938e84fc5479018bc1e789e18531EE990/dws-grupo-1)). Por otro lado, he configurando el entorno de trabajo en Git para parte del equipo (en sus dispositivos), introduciendo a algunos a la plataforma.
-
-Mi foco principal ha sido la optimización y limpieza de la plantilla original, eliminando la dependencia de JavaScript (reduciéndolo a menos del 4%) para priorizar una implementación limpia basada en Bootstrap y HTML5, manteniendo scripts únicamente donde eran estrictamente necesarios:
-- Dropdown 'Opciones' del navbar sólido.
-- Directorio almacenando el panel de gestión admin: `/sb_admin_2`, ya que está más orientando a prácticas futuras. No obstante, nos hemos asegurado de que los requisitos de PoC de gestión de usuarios, reviews y tours sea estática.
-
-Finalmente, he desarrollado plantillas desde cero para las páginas que no incluía la plantilla (`login`, `register`, `admin-login`, `profile`, `checkout`, `invoice`, `tour-details` y `packages`), estilizando algunas de ellas (`checkout`, `invoice`, `tour-details` y `packages`). También he asumido la responsabilidad de documentar el código en las carpetas `/html` y `/css`, diseñar la identidad gráfica (logos/favicons) y solucionar errores recurrentes en la navegación (en navbar y footer, errores tipográficos, etc.) introducidos durante el desarrollo.
-
-
+[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Implementación de la estructura general de la web sin JS (limpieza de plantilla)](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624)  | [/html/index.html](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-c9f5db8ca708e7a00f0eb981560568a544afb798eaba34269168d6b432454438), [/html/contact.html](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-f93c9c8bb477b277c123ffb6e4873beb1bb27d074665981ba021d102a2761836), [/html/about.html](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-8dcf3fc487131a4a97fb09aeb2caa640f73721a717657f540c7a8b0af27f06e4), [/html/services.html](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-b3cdb78d46f6114635a059942cd1929ed7e12f45e5504f76a227ee2fb1654850), [/css/bootstrap.min.css](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-7c016081189f7a82e2bb0c47351cc3857fa33e62e2fb9f12158107a9809e31b5), [/css/style.css](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-1fc556f95754ee7e33d91044125c44bb9f750c99be4406756ffb27413adfcaf5), [template-credits.txt](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-eca02b1f0a6402ab40983d5958150c9cd4e3aa20cd2fbba24e9194ce63ce09b2) y multitud de imágenes en [/img](https://github.com/DWS-2026/project-grupo-1/commit/ef38f9760f3d98fc7dc184abaeb15b3ed71bb624#diff-295114c988f3d1a5037aba456693bd5ce8a023578939892b3bb556d8b92ce8b2)|
-|2| [Implementación de la plantilla cruda de login (sin estilado temático)](https://github.com/DWS-2026/project-grupo-1/commit/6c2019f17fe04e66267b08f57ff6e4cda064dc1e)  | [/html/login.html](https://github.com/DWS-2026/project-grupo-1/commit/6c2019f17fe04e66267b08f57ff6e4cda064dc1e#diff-2bd5f6dbdc348f96a20f0d4a1a942687783b39c86907b8c9faf6671c66bc9582)   |
-|3| [Implementación de la plantilla cruda de register (sin estilado temático)](https://github.com/DWS-2026/project-grupo-1/commit/6d7ef2ba05693c1cf212acde848244f19418f3bc)  | [/html/register.html](https://github.com/DWS-2026/project-grupo-1/commit/6d7ef2ba05693c1cf212acde848244f19418f3bc#diff-ec520d513723d69aac93fbe527b73b1093adcabe76c628934e5c42171fee1fbe)   |
-|4| [Implementación de la plantilla base + estilizada de detalles de tour (le añadí la sección de reviews más tarde)](https://github.com/DWS-2026/project-grupo-1/commit/2928c62feb374cf49f3dd52a85c10d4582b56f55)  | [/html/tour-details.html](https://github.com/DWS-2026/project-grupo-1/commit/2928c62feb374cf49f3dd52a85c10d4582b56f55#diff-bc792cc27cc378666f815bce237a8e786be5b10ea0548ca1ababcd0c3403f291) y multitud de imágenes en [/img](https://github.com/DWS-2026/project-grupo-1/commit/2928c62feb374cf49f3dd52a85c10d4582b56f55#diff-b4d30a3ca61d2581aa7e39b0e0cf5669d3202f29a8336cb7de70bb09f57e6d42)   |
-|5| [Adición de logo + nombre de empresa (diseño propio)](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a)  | [/html/about.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-8dcf3fc487131a4a97fb09aeb2caa640f73721a717657f540c7a8b0af27f06e4), [/html/contact.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-f93c9c8bb477b277c123ffb6e4873beb1bb27d074665981ba021d102a2761836), [/html/guides.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-f4a9948d0d64150be2d47a87a36f513bb5b7db80748817cd9adcf377615fc6b9), [/html/index.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-c9f5db8ca708e7a00f0eb981560568a544afb798eaba34269168d6b432454438), [/html/packages.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-6c37de3b954bc163769ad0f93b6f90d2e81a6ec49db8587a3ad81f251e2f92b3), [/html/profile.html](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-f0271321901161444964b89aa3750041d33ccfda3f0fe1963165e003463c3f6b) y [/img/logo_apex.png](https://github.com/DWS-2026/project-grupo-1/commit/f8efe0535dbe2e6dc55bd852a116cb90f356554a#diff-a09dc930a04d1f5b1d7c61bd6e94044f919b2fe19bb0d2c00f83d85071e05c3c)  |
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
 ---
 
-#### **Alumno 3 – Javier Hernández Campano**
+#### **Alumno 3 - [Nombre Completo]**
 
-Me he encargado principalmente de la integración funcional y mejora del flujo de navegación de la aplicación, así como de la refactorización y corrección de errores en múltiples páginas del proyecto. Mi trabajo se ha centrado en asegurar una experiencia de usuario coherente, fluida y sin errores de navegación entre las distintas secciones de la web.
-
-He integrado y unificado la navbar en todas las páginas, corrigiendo duplicidades, enlaces incorrectos y problemas de navegación. Además, he desarrollado y mejorado el flujo completo de compra, conectando correctamente el carrito con el proceso de checkout y la generación de la factura. También he creado e integrado la página de error 404 para gestionar rutas inexistentes.
-
-Por otro lado, he realizado tareas de mantenimiento y limpieza del proyecto, reorganizando archivos obsoletos de la plantilla original, actualizando contenidos visuales (como imágenes de guías), corrigiendo textos y mejorando elementos de interfaz como botones y redirecciones. Finalmente, he documentado el funcionamiento general del proyecto mediante la integración del diagrama de flujo.
-
-| Nº | Commits | Files |
-|:--:|:--------|:------|
-| 1  | [Refactor completo de la navbar e integración global](https://github.com/DWS-2026/project-grupo-1/commit/0b29350) | about.html, contact.html, guides.html, index.html, packages.html, profile.html, register.html, tour-details.html |
-| 2 | [Cambio global del estilo: color principal a rojo](https://github.com/DWS-2026/project-grupo-1/commit/5d0de9f) | css/style.css, css/bootstrap.min.css, about.html, blog.html, contact.html, guides.html, index.html |
-|3| [Activación del flujo de compra desde el carrito](https://github.com/DWS-2026/project-grupo-1/commit/0076964) | carrito.html |
-| 4  | [Creación de la página de error 404](https://github.com/DWS-2026/project-grupo-1/commit/e1fdbcf) | 404.html |
-| 5  | [Integración del diagrama de flujo y actualización del README](https://github.com/DWS-2026/project-grupo-1/commit/92a1de7) | README.md, Diagrama de flujo fase 1.png |
-
-
----
-
-#### **Alumno 4 - Andrés Sánchez Nogales**
-
-Me he encargado de traducir los distintos archivos de la página, así como de darles imágenes a estos. A su vez, completé aquellos archivos a los que les faltaba algún campo por cubrir. 
-
-Primeramente me encargué de crear el carrito, el cual diseñé primero usando JavaScript, y una vez viendo que este no podía ser usado, diseñé otro (esta vez sin emplear JavaScript) empleando los botones requeridos en el archivo tour-details.html y luego creando y diseñando el archivo carrito.html. Eliminé alguna funcionalidad innecesaria en packages.html. 
-
-También me encargué de solucionar diversos problemas que iban surgiendo a lo largo del diseño: botones o algunos dropdowns no funcionaban, redireccionamiento de botones erróneos, descolocamientos de textos o imágenes, etc.
-
-Por último, redacté gran parte del README, añadiendo imágenes y descripciones de cada archivo de la web, siguiendo el flujo de funcionamiento.
+[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Creación de un carrito para gestionar las compras(descartado)](https://github.com/DWS-2026/project-grupo-1/commit/3119a02e87639263196816fa396f108408459eef)  | [cart.js](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
-|2| [Nuevo carrito (sin js) y arreglos de reedireciones](https://github.com/DWS-2026/project-grupo-1/commit/2a5fac0010f3889b6bdc20b232353529cf1448e1)  | [carrito.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
-|3| [dashboard arreglada, imagenes packages ajustadas,  tour-details acabado](https://github.com/DWS-2026/project-grupo-1/commit/d0c307ff1b4d760c264121acc86d001926feaf09)  | [img](https://github.com/DWS-2026/project-grupo-1/tree/main/img)   |
-|4| [arreglo invoice y carrito, decoración](https://github.com/DWS-2026/project-grupo-1/commit/f877cb3bbc59372740a4170b9efed9ac75692d97)  | [carrito.html](https://github.com/DWS-2026/project-grupo-1/blob/main/html/carrito.html)   |
-|5| [Fotos de cada página añadidas + correcciones + descripciones](https://github.com/DWS-2026/project-grupo-1/commit/5278b92d5a436490f1e7707ac74d4648e65bd8e8)  | [README.md](https://github.com/DWS-2026/project-grupo-1/blob/main/README.md)   |
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+
+---
+
+#### **Alumno 4 - [Nombre Completo]**
+
+[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+
+| Nº    | Commits      | Files      |
+|:------------: |:------------:| :------------:|
+|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
+|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
+|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
+|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
+|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
 
 ---
 
 ## 🛠 **Práctica 2: Web con HTML generado en servidor**
 
 ### **Vídeo de Demostración**
-📹 **[Enlace al vídeo en YouTube](https://youtu.be/NM7fwv_d4dY)**
+📹 **[Enlace al vídeo en YouTube](https://www.youtube.com/watch?v=x91MPoITQ3I)**
+> Vídeo mostrando las principales funcionalidades de la aplicación web.
 
 ### **Navegación y Capturas de Pantalla**
 
