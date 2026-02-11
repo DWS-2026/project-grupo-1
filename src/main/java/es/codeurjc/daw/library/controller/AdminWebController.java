@@ -19,39 +19,78 @@ public class AdminWebController {
         return "admin/buttons";
     }
 
-    // Tarjetas
     @GetMapping("/cards")
     public String cards() {
         return "admin/cards";
     }
 
-    // Estadísticas
     @GetMapping("/charts")
     public String charts() {
         return "admin/charts";
     }
 
-    // Página en blanco
     @GetMapping("/blank")
     public String blank() {
         return "admin/blank";
     }
 
-    // Usuarios
+    @GetMapping("/404")
+    public String pagina404() {return "admin/404";
+    }
+
     @GetMapping("/users")
     public String users() {
         return "admin/users";
     }
 
-    // Tours
+    @GetMapping("/user-edit")
+    public String user_edit() {
+        return "admin/user-edit";
+    }
+
+    @GetMapping("/profile")
+    public String profile() {
+        return "admin/profile";
+    }
+
     @GetMapping("/tours")
     public String tours() {
         return "admin/tours";
     }
 
-    // Reviews
+    @GetMapping("/tour-edit")
+    public String tour_edit() {
+        return "admin/tour-edit";
+    }
+
     @GetMapping("/reviews")
     public String reviews() {
         return "admin/reviews";
     }
+
+    @GetMapping("/review-edit")
+    public String review_edit() {
+        return "admin/review-edit";
+    }
+
+    @GetMapping("/utilities-animation")
+    public String utilities_animation() {return "admin/utilities-animation";}
+    @GetMapping("/utilities-border")
+    public String utilities_border() {
+        return "admin/utilities-border";
+    }
+
+    @GetMapping("/utilities-color")
+    public String utilities_color() {
+        return "admin/utilities-color";
+    }
+
+    @GetMapping("/utilities-other")
+    public String utilities_other() {
+        return "admin/utilities-other";
+    }
+
+
+
+
 }

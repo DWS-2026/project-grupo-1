@@ -12,16 +12,16 @@
     <title>SB Admin 2 - Tours</title>
 
     <!-- Custom fonts for this template -->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
 </head>
 
@@ -69,7 +69,7 @@
 
                                     <tbody>
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Futuro - Tierra</a></td>
+                                            <td><a href=/user/tour-details">Futuro - Tierra</a></td>
                                             <td>4349,00 €</td>
                                             <td>3 días</td>
                                             <td>2 Personas</td>
@@ -77,12 +77,12 @@
                                             <td>Explora un mundo del futuro con coches flotantes y tecnología
                                                 inimaginable.</td>
                                             <td>
-                                                <a href="tour-edit.html" class="btn btn-warning btn-sm">Editar</a>
+                                                <a href="/admin/tour-edit" class="btn btn-warning btn-sm">Editar</a>
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Volcán Krakatoa - Sonda,
+                                            <td><a href="/tour-details">Volcán Krakatoa - Sonda,
                                                     Indonesia</a></td>
                                             <td>1649,00 €</td>
                                             <td>3 días</td>
@@ -96,7 +96,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Apocalipsis zombie - ???</a></td>
+                                            <td><a href="/tour-details">Apocalipsis zombie - ???</a></td>
                                             <td>3349,00 €</td>
                                             <td>3 días</td>
                                             <td>2 Personas</td>
@@ -104,12 +104,12 @@
                                             <td>Adéntrate en un mundo invadido por zombies y vive la emoción del fin del
                                                 mundo en cada esquina.</td>
                                             <td>
-                                                <a href="tour-edit.html" class="btn btn-warning btn-sm">Editar</a>
+                                                <a href="/admin/tour-edit" class="btn btn-warning btn-sm">Editar</a>
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Luna - Sistema solar</a></td>
+                                            <td><a href="/tour-details">Luna - Sistema solar</a></td>
                                             <td>9349,00 €</td>
                                             <td>3 días</td>
                                             <td>2 Personas</td>
@@ -121,7 +121,7 @@
                                         </tr>
 
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Urano - Sistema solar</a></td>
+                                            <td><a href="/user/tour-details">Urano - Sistema solar</a></td>
                                             <td>9449,00 €</td>
                                             <td>3 días</td>
                                             <td>2 Personas</td>
@@ -129,12 +129,12 @@
                                             <td>Explora el misterioso planeta helado y sus paisajes extremos en un viaje
                                                 fuera de lo común.</td>
                                             <td>
-                                                <a href="tour-edit.html" class="btn btn-warning btn-sm">Editar</a>
+                                                <a href="/admin/tour-edit" class="btn btn-warning btn-sm">Editar</a>
                                             </td>
                                         </tr>
 
                                         <tr>
-                                            <td><a href="../html/tour-details.html">Planeta HD 137010 b - Espacio
+                                            <td><a href="/tour-details">Planeta HD 137010 b - Espacio
                                                     exterior</a></td>
                                             <td>10449,00 €</td>
                                             <td>3 días</td>
@@ -182,36 +182,36 @@
     <div id="logout-modal"></div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+    <script src="/js/demo/datatables-demo.js"></script>
 
     <script>
-        fetch("./components/sidebar.html")
+        fetch("/admin/components/sidebar.html")
             .then(res => res.text())
             .then(data => document.getElementById("sidebar").innerHTML = data);
 
-        fetch("./components/topbar.html")
+        fetch("/admin/components/topbar.html")
             .then(res => res.text())
             .then(data => document.getElementById("topbar").innerHTML = data);
 
-        fetch("./components/footer.html")
+        fetch("/admin/components/footer.html")
             .then(res => res.text())
             .then(data => document.getElementById("footer").innerHTML = data);
 
-        fetch("./components/logout-modal.html")
+        fetch("/admin/components/logout-modal.html")
             .then(res => res.text())
             .then(data => document.getElementById("logout-modal").innerHTML = data);
     </script>

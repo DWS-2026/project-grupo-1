@@ -12,13 +12,13 @@
     <title>SB Admin 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
 
@@ -72,29 +72,29 @@
     <div id="logout-modal"></div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
 
     <script>
-        fetch("./components/sidebar.html")
+        fetch("/admin/components/sidebar.html")
             .then(res => res.text())
             .then(data => document.getElementById("sidebar").innerHTML = data);
 
-        fetch("./components/topbar.html")
+        fetch("/admin/components/topbar.html")
             .then(res => res.text())
             .then(data => document.getElementById("topbar").innerHTML = data);
 
-        fetch("./components/footer.html")
+        fetch("/admin/components/footer.html")
             .then(res => res.text())
             .then(data => document.getElementById("footer").innerHTML = data);
-        
-        fetch("./components/logout-modal.html")
+
+        fetch("/admin/components/logout-modal.html")
             .then(res => res.text())
             .then(data => document.getElementById("logout-modal").innerHTML = data);
     </script>
