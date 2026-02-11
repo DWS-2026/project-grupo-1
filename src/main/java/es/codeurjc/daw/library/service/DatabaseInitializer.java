@@ -5,23 +5,42 @@ import es.codeurjc.daw.library.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
-@Service
+
+
+@Service // service to fill up users table on app startup
 public class DatabaseInitializer {
 
     @Autowired
     private UserRepository userRepository;
 
     @PostConstruct
-    public void init() {
+    public void init() { // autoruns after initializing spring context
+
+        // only insert data if users table completely empty
         if (userRepository.count() == 0) {
-            User testUser = new User();
-            testUser.setNombre("Pablo");
-            testUser.setApellidos("Arch User");
-            testUser.setEmail("pablo@test.com");
-            testUser.setPassword("1234");
-            userRepository.save(testUser);
-            System.out.println(">>> Datos de prueba insertados.");
+
+            // create standard client user
+            User user = new User();
+            user.setName("Client");
+            user.setLastName("Normal");
+            user.setEmail("user@test.com");
+            user.setPassword("1234");
+            user.setRoles(List.of("USER"));
+            userRepository.save(user);
+
+            // create admin user
+            User admin = new User();
+            admin.setName("Boss");
+            admin.setLastName("Administrator");
+            admin.setEmail("admin@test.com");
+            admin.setPassword("1234");
+            admin.setRoles(List.of("USER", "ADMIN"));
+            userRepository.save(admin);
+
+            // log creation success
+            System.out.println(">>> Sample users (USER and ADMIN) have been successfully inserted.");
         }
     }
 }
