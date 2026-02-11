@@ -44,10 +44,10 @@ public class WebController {
         return "user/contact";
     }
 
-    @GetMapping("/carrito")
-    public String carrito(Model model) {
-        model.addAttribute("carrito", true);
-        return "user/carrito";
+    @GetMapping("/cart")
+    public String cart(Model model) {
+        model.addAttribute("cart", true);
+        return "user/cart";
     }
 
 

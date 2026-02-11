@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Usuarios</title>
+</head>
+<body>
+<h1>Lista de Usuarios en DB</h1>
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Habilitado</th>
+    </tr>
+    {{#users}}
+    <tr>
+        <td>{{id}}</td>
+        <td>{{name}} {{lastName}}</td>
+        <td>{{email}}</td>
+        <td>{{enabled}}</td>
+    </tr>
+    {{/users}}
+</table>
+<br>
+<a href="/static">Volver al índice</a>
+</body>
+</html>
