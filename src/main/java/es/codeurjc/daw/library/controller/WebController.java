@@ -4,7 +4,7 @@ package es.codeurjc.daw.library.controller;
 
 
 import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ import java.util.Base64;
 public class WebController {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -127,11 +127,11 @@ public class WebController {
                                 @RequestParam String action) throws IOException {
 
         // get user logged in
-        User user = userRepository.findByEmail(principal.getName());
+        User user = userService.findByEmail(principal.getName());
 
         // process user deletion
         if ("delete".equals(action)) {
-            userRepository.delete(user);
+            userService.delete(user);
             return "redirect:/logout";
         }
 
@@ -154,7 +154,7 @@ public class WebController {
         }
 
         // save changes
-        userRepository.save(user);
+        userService.save(user);
 
         // return to profile page
         return "redirect:/profile";

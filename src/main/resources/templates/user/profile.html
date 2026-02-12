@@ -110,23 +110,28 @@
                                     <h4 class="mb-4 mt-0">Detalles</h4>
                                     <div class="col-md-6">
                                         <label class="form-label">Nombre *</label>
-                                        <input type="text" class="form-control" name="name" placeholder="Scaralet" aria-label="First name">
+                                        <input type="text" class="form-control" name="name"
+                                               value="{{currentUser.name}}" placeholder="Nombre">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Apellidos *</label>
-                                        <input type="text" class="form-control" name="lastName" placeholder="Doe" aria-label="Last name">
+                                        <input type="text" class="form-control" name="lastName"
+                                               value="{{currentUser.lastName}}" placeholder="Apellidos">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Número de teléfono principal *</label>
-                                        <input type="text" class="form-control" name="mainPhone" placeholder="(333) 000 555" aria-label="Phone number">
+                                        <input type="text" class="form-control" name="mainPhone"
+                                               value="{{currentUser.mainPhone}}" placeholder="Teléfono 1">
                                     </div>
                                     <div class="col-md-6">
                                         <label class="form-label">Número de teléfono secundario *</label>
-                                        <input type="text" class="form-control" name="secondaryPhone" placeholder="+91 9852 8855 252" aria-label="Phone number">
+                                        <input type="text" class="form-control" name="secondaryPhone"
+                                               value="{{currentUser.secondaryPhone}}" placeholder="Teléfono 2">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="inputEmail4" class="form-label">Correo electrónico *</label>
-                                        <input type="email" class="form-control" id="inputEmail4" placeholder="ejemplo@ejemplo.com">
+                                        <input type="email" class="form-control" id="inputEmail4"
+                                               value="{{currentUser.email}}" readonly>
                                     </div>
                                 </div>
                             </div>

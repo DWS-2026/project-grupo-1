@@ -45,17 +45,17 @@ public class DatabaseInitializer {
             System.out.println (">>> Initializing users in db");
 
             // normal user creation
-            createUser ("Luis", "Coca", "luiscoca@email.com", "1234luis");
-            createUser ("Ana", "Fernández", "anafernandez@email.com", "1234ana");
-            createUser ("Carlos", "Reberte", "carlosreberte@email.com", "1234carlos");
-            createUser ("Test", "Testing", "testtesting@email.com", "1234test");
+            createUser ("Luis", "Coca", "luiscoca@email.com", "1234luis", "600111222", "910112233");
+            createUser ("Ana", "Fernández", "anafernandez@email.com", "1234ana", "600444555", "910445566");
+            createUser ("Carlos", "Reberte", "carlosreberte@email.com", "1234carlos", "600777888", "910778899");
+            createUser ("Test", "Testing", "testtesting@email.com", "1234test", "600000000", "900000000");
 
 
             // admin creation
-            createAdmin ("Pablo", "Apellido", "adminPablo@apexexpeditions.com", "1234pablo");
-            createAdmin ("Javier", "Apellido", "adminJavier@apexexpeditions.com", "1234javier");
-            createAdmin ("Mario", "Apellido", "adminMario@apexexpeditions.com", "1234mario");
-            createAdmin ("Andres", "Apellido", "adminAndres@apexexpeditions.com", "1234andres");
+            createAdmin ("Pablo", "Apellido", "adminPablo@apexexpeditions.com", "1234pablo", "700111222", "800111222");
+            createAdmin ("Javier", "Apellido", "adminJavier@apexexpeditions.com", "1234javier", "700333444", "800333444");
+            createAdmin ("Mario", "Apellido", "adminMario@apexexpeditions.com", "1234mario", "700555666", "800555666");
+            createAdmin ("Andres", "Apellido", "adminAndres@apexexpeditions.com", "1234andres", "700777888", "800777888");
 
             System.out.println (">>> users created successfully.");
         }
@@ -63,12 +63,14 @@ public class DatabaseInitializer {
 
 
     // method to create normal user
-    private void createUser (String name, String lastName, String email, String password) {
+    private void createUser (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone) {
         User user = new User();
         user.setName (name);
         user.setLastName (lastName);
         user.setEmail (email);
         user.setPassword (passwordEncoder.encode (password));
+        user.setMainPhone(mainPhone);
+        user.setSecondaryPhone(secondaryPhone);
         user.setRoles (List.of ("USER"));
 
         // blue avatar for normal user
@@ -80,12 +82,14 @@ public class DatabaseInitializer {
 
 
     // method to create admin user
-    private void createAdmin (String name, String lastName, String email, String password) {
+    private void createAdmin (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone) {
         User admin = new User();
         admin.setName (name);
         admin.setLastName (lastName);
         admin.setEmail (email);
         admin.setPassword (passwordEncoder.encode (password));
+        admin.setMainPhone(mainPhone);
+        admin.setSecondaryPhone(secondaryPhone);
         admin.setRoles (List.of ("USER", "ADMIN"));
         // red avatar for admin
         admin.setProfilePicture (generateDynamicAvatar ("Admin", name, new Color (0, 0, 0)));
