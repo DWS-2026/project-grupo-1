@@ -92,20 +92,5 @@ public class WebController {
         model.addAttribute("error", error != null);
         return "user/admin-login";
     }
-
-    @PostMapping("/admin-login")
-    public String processAdminLogin(
-            @RequestParam String username,
-            @RequestParam String password) {
-
-        // Validación temporal (más adelante irá contra BD)
-        if (username.equals("admin@apex.com") && password.equals("1234")) {
-            return "redirect:/admin/index";
-        }
-
-        return "redirect:/admin-login?error=1";
-    }
-
-
 }
 

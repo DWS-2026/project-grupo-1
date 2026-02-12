@@ -104,6 +104,7 @@
 
           <!-- POC login without backend (auto redirect) -->
           <form method="post" action="/admin-login">
+            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <div class="row g-3">
 
               <!-- email section start -->
