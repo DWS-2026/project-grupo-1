@@ -48,6 +48,8 @@ public class DatabaseInitializer {
             createUser ("Luis", "Coca", "luiscoca@email.com", "1234luis");
             createUser ("Ana", "Fernández", "anafernandez@email.com", "1234ana");
             createUser ("Carlos", "Reberte", "carlosreberte@email.com", "1234carlos");
+            createUser ("Test", "Testing", "testtesting@email.com", "1234test");
+
 
             // admin creation
             createAdmin ("Pablo", "Apellido", "adminPablo@apexexpeditions.com", "1234pablo");

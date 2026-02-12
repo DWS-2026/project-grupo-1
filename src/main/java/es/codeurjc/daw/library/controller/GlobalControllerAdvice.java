@@ -32,7 +32,7 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
      *
      * @param request   http request used to retrieve CSRF token
      * @param model     spring mcv model where attributes are stored for the view
-     * @param principal urrently authenticated user (if any)
+     * @param principal currently authenticated user (if any)
      */
     @ModelAttribute
     public void addCommonAttributes (HttpServletRequest request, Model model, Principal principal) {
