@@ -90,7 +90,15 @@ public class AdminWebController {
         return "admin/utilities-other";
     }
 
+    @GetMapping("/guides")
+    public String guides() {
+        return "admin/guides";
+    }
 
+    @GetMapping("/guides-edit")
+    public String guides_edit() {
+        return "admin/guides-edit";
+    }
 
 
 }
