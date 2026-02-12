@@ -14,8 +14,9 @@
         </div>
         {{!-- fake social media end --}}
 
-        <!-- Usuario (derecha) -->
         <div class="col-lg-4 text-end">
+            {{!-- case 1: anon (not logged in) --}}
+            {{^logged}}
             <div class="d-inline-flex align-items-center justify-content-end" style="height: 45px;">
                 <a href="/register" class="text-light me-3">
                     <i class="fa fa-user me-2"></i>Regístrate
@@ -23,22 +24,38 @@
                 <a href="/login" class="text-light me-3">
                     <i class="fa fa-sign-in-alt me-2"></i>Iniciar sesión
                 </a>
+            </div>
+            {{/logged}}
 
+            {{!-- case 2: user or admin (logged in) --}}
+            {{#logged}}
+            <div class="d-inline-flex align-items-center justify-content-end" style="height: 45px;">
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown">
-                        <i class="fa fa-home me-2"></i>Opciones
+                        {{#currentUser.profilePicture}}
+                        <img src="data:image/png;base64,{{currentUser.profilePicture}}"
+                             class="rounded-circle me-2"
+                             style="width: 25px; height: 25px; object-fit: cover; border: 1px solid white;">
+                        {{/currentUser.profilePicture}}
+                        {{^currentUser.profilePicture}}
+                        <i class="fa fa-user me-2"></i>
+                        {{/currentUser.profilePicture}}
+
+                        Hola, {{currentUser.name}}
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded">
                         <a href="/profile" class="dropdown-item"><i class="fas fa-user-alt me-2"></i>Mi perfil</a>
-                        <a href="/logout" class="dropdown-item"><i class="fas fa-power-off me-2"></i>Cerrar sesión</a>
+
+                        <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <i class="fas fa-power-off me-2"></i>Cerrar sesión
+                        </a>
                     </div>
                 </div>
             </div>
+            {{/logged}}
         </div>
 
     </div>
-</div>
-{{!-- END TOP BAR --}}
 </div>
 {{!-- solid (top) navbar end  --}}
 
@@ -48,7 +65,7 @@
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
 
         {{!-- logo + name start --}}
-        <a href="" class="navbar-brand p-0">
+        <a href="/" class="navbar-brand p-0">
             <h1 class="m-0 text-white d-flex align-items-center">
                 <img src="/images/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
                      style="max-height: 80px; padding: 7px 6px;">
@@ -82,4 +99,6 @@
         {{!-- navigation buttons end --}}
 
     </nav>
-  {{!-- transparent navbar end --}}
+</div>
+{{!-- transparent navbar end --}}
+{{>partials/logout-modal}}

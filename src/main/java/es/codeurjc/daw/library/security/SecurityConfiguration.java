@@ -1,5 +1,8 @@
 package es.codeurjc.daw.library.security;
 
+
+
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,6 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+
+
 
 @Configuration
 @EnableWebSecurity
@@ -18,25 +25,37 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests
-                        // Rutas públicas (Web, CSS, JS, Login)
+    public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests ((requests) -> requests
+                        // public paths
                         .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/error").permitAll()
-                        .requestMatchers("/login", "/register", "/admin-login").permitAll()
+                        .requestMatchers("/login", "/register", "/admin-login", "/login-check").permitAll()
 
-                        // Rutas PRIVADAS de Admin (Solo usuarios con rol ADMIN) [cite: 18, 19]
+                        // admin private paths
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // El resto de rutas requieren estar al menos autenticado (ej. perfil usuario)
+                        // rest of paths (require login as user or admin)
                         .anyRequest().authenticated()
                 )
+
+
                 .formLogin((form) -> form
-                        .loginPage("/admin-login") // URL de tu formulario HTML
-                        .loginProcessingUrl("/admin-login") // URL a la que el formulario envía el POST
-                        .defaultSuccessUrl("/admin/index", true) // Si login OK, ir al dashboard
-                        .failureUrl("/admin-login?error") // Si falla, volver con error
+                        .loginPage("/login") // normal user login
+                        .loginProcessingUrl("/login-check") // internal url used by spring for validation
+                        .failureUrl("/login?error") // error url
+                        .successHandler((request, response, authentication) -> {
+                            // Lógica de redirección inteligente:
+                            if (authentication.getAuthorities().stream()
+                                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+                                response.sendRedirect("/admin"); // Si es Admin -> Panel de control
+                            } else {
+                                response.sendRedirect("/"); // Si es User -> Página de inicio
+                            }
+                        })
                         .permitAll()
                 )
+
+
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/")

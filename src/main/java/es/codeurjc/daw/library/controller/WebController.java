@@ -58,7 +58,9 @@ public class WebController {
     }
 
     @GetMapping("/login")
-    public String login(){return "user/login";
+    public String login(@RequestParam(required = false) String error, Model model) {
+        model.addAttribute("error", error != null);
+        return "user/login";
     }
 
     @GetMapping("/profile")
