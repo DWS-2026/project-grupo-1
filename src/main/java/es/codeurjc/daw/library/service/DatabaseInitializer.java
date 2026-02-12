@@ -86,7 +86,7 @@ public class DatabaseInitializer {
         admin.setPassword (passwordEncoder.encode (password));
         admin.setRoles (List.of ("USER", "ADMIN"));
         // red avatar for admin
-        admin.setProfilePicture (generateDynamicAvatar ("Admin", name, new Color (220, 53, 69)));
+        admin.setProfilePicture (generateDynamicAvatar ("Admin", name, new Color (0, 0, 0)));
         userRepository.save (admin);
     }
 

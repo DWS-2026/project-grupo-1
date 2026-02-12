@@ -101,7 +101,8 @@
             Credenciales incorrectas
           </div>
           {{/error}}
-          <!-- POC login without backend -->
+
+          <!-- login implementation -->
           <form action="/login-check" method="post">
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <div class="row g-3">

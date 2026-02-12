@@ -15,50 +15,71 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 
 
+/**
+ * main security configuration class for app
+ * define password encryption, URL access rules, login/logout behavior and role-based redirection
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    /**
+     * define password encoder bean
+     * bcrypt used to securely hash passwords before storing them in db
+     * @return BCryptPasswordEncoder instance
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Algoritmo de encriptación seguro [cite: 17]
     }
 
+
+    /**
+     * configures security filter chain
+     * defines which URLs are public, require authentication and how login/logout processes work
+     *
+     * @param http HttpSecurity object to configure
+     * @return built SecurityFilterChain
+     * @throws Exception if error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http.authorizeHttpRequests ((requests) -> requests
-                        // public paths
+                        // public paths (accesible without loggin in)
                         .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/error").permitAll()
                         .requestMatchers("/login", "/register", "/admin-login", "/login-check").permitAll()
 
-                        // admin private paths
+                        // admin private paths (require ADMIN role)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // rest of paths (require login as user or admin)
+                        // rest of paths / protected (require role USER or ADMIN)
                         .anyRequest().authenticated()
                 )
 
 
+                // configure form-based login
                 .formLogin((form) -> form
-                        .loginPage("/login") // normal user login
-                        .loginProcessingUrl("/login-check") // internal url used by spring for validation
-                        .failureUrl("/login?error") // error url
+                        .loginPage("/login") // custom normal user login url
+                        .loginProcessingUrl("/login-check") // internal url used by spring for validation (POST processing)
+                        .failureUrl("/login?error") // error url to redirect
+
+                        // redirection logic after successful login
                         .successHandler((request, response, authentication) -> {
-                            // Lógica de redirección inteligente:
                             if (authentication.getAuthorities().stream()
                                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                                response.sendRedirect("/admin"); // Si es Admin -> Panel de control
+                                response.sendRedirect("/admin"); // if admin, go to admin control panel
                             } else {
-                                response.sendRedirect("/"); // Si es User -> Página de inicio
+                                response.sendRedirect("/"); // if admin, go to index
                             }
                         })
                         .permitAll()
                 )
 
 
+                // configure logout behavior
                 .logout((logout) -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/")
+                        .logoutUrl("/logout") // url that triggers logout
+                        .logoutSuccessUrl("/") // redirection after succesful logout
                         .permitAll()
                 );
 
