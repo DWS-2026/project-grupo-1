@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/admin")
 public class AdminWebController {
 
-    @GetMapping({"", "/index"})
+    @GetMapping({ "", "/index" })
     public String adminHome() {
         return "admin/admin_index";
     }
@@ -35,7 +35,8 @@ public class AdminWebController {
     }
 
     @GetMapping("/404")
-    public String pagina404() {return "admin/404";
+    public String pagina404() {
+        return "admin/404";
     }
 
     @GetMapping("/users")
@@ -58,6 +59,11 @@ public class AdminWebController {
         return "admin/tours";
     }
 
+    @GetMapping("/add-tour") // ESTO ES LA RUTA. Si pones /add-tour.html aquí, fallará.
+    public String addTour() {
+        return "admin/add-tour"; // ESTO ES EL NOMBRE DEL ARCHIVO en templates/admin/
+    }
+
     @GetMapping("/tour-edit")
     public String tour_edit() {
         return "admin/tour-edit";
@@ -74,7 +80,10 @@ public class AdminWebController {
     }
 
     @GetMapping("/utilities-animation")
-    public String utilities_animation() {return "admin/utilities-animation";}
+    public String utilities_animation() {
+        return "admin/utilities-animation";
+    }
+
     @GetMapping("/utilities-border")
     public String utilities_border() {
         return "admin/utilities-border";
@@ -99,6 +108,5 @@ public class AdminWebController {
     public String guides_edit() {
         return "admin/guides-edit";
     }
-
 
 }
