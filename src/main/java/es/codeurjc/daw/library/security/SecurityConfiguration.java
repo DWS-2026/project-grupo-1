@@ -46,8 +46,32 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http.authorizeHttpRequests ((requests) -> requests
                         // public paths (accesible without loggin in)
-                        .requestMatchers("/", "/index", "/css/**", "/js/**", "/images/**", "/error").permitAll()
-                        .requestMatchers("/login", "/register", "/admin-login", "/login-check").permitAll()
+                        .requestMatchers(
+                                "/",                 // index
+                                "/about",
+                                "/contact",
+                                "/guides",
+                                "/packages",
+                                "/services",
+                                "/tour-details",
+                                "/forgot-password",
+                                "/login",
+                                "/register",
+                                "/admin-login",
+                                "/login-check"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/img/**",
+                                "/vendor/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/error/**"
+                        ).permitAll()
 
                         // admin private paths (require ADMIN role)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
