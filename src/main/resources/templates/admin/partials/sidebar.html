@@ -1,32 +1,145 @@
-<!-- Sidebar -->
+<!-- sidebar start -->
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-    <!-- Sidebar - Brand -->
+
+
+    <!-- logo + title start -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin/index">
         <img src="/images/logo_apex.png" alt="Logo" class="bg-primary rounded me-3" style="width: 60px">
 
-        <div class="sidebar-brand-text mx-2">SB Admin <sup>2</sup></div>
+        <div class="sidebar-brand-text mx-2">Apex:<br>SB Admin <sup>2</sup></div>
     </a>
-
-    <!-- Divider -->
+    <!-- logo + title end -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Nav Item - Dashboard -->
+
+
+    <!-- section control panel start -->
     <li class="nav-item active">
         <a class="nav-link" href="/admin">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Panel de control</span></a>
     </li>
-
-    <!-- Divider -->
+    <!-- section control panel end -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
+
+
+    <!-- section tours start -->
+    <!-- header -->
+    <div class="sidebar-heading">Tours</div>
+
+    <!-- item view tours start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/tours">
+            <i class="fas fa-fw fa-map"></i>
+            <span>Ver tours</span>
+        </a>
+    </li>
+    <!-- item view end start -->
+
+    <!-- item add tour start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/add-tour">
+            <i class="fas fa-fw fa-map"></i>
+            <span>Añadir tour</span>
+        </a>
+    </li>
+    <!-- item add tour end -->
+    <!-- section tours end -->
+    <hr class="sidebar-divider">
+
+
+
+    <!-- section users start -->
+    <!-- header -->
+    <div class="sidebar-heading">Usuarios</div>
+
+    <!-- item view users start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/users">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Ver usuarios</span></a>
+    </li>
+    <!-- item view users end -->
+
+    <!-- item add user start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Añadir usuario (NO LINK)</span></a>
+    </li>
+    <!-- item add user end -->
+    <!-- section users end -->
+    <hr class="sidebar-divider">
+
+
+
+    <!-- section reviews start -->
+    <!-- header -->
+    <div class="sidebar-heading">Reseñas</div>
+
+    <!-- item view reviews start -->
+
+    <!-- item view reviews end -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/reviews">
+            <i class="fas fa-fw fa-comments"></i>
+            <span>Ver reseñas</span>
+        </a>
+    </li>
+    <!-- section reviews end -->
+    <hr class="sidebar-divider">
+
+
+
+    <!-- section guides start -->
+    <!-- header -->
+    <div class="sidebar-heading">Guías</div>
+
+    <!-- item view guides start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin/guides">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Ver guías</span></a>
+    </li>
+    <!-- item view guides end -->
+
+    <!-- item add guide start -->
+    <li class="nav-item">
+        <a class="nav-link" href="/admin">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Añadir guía (NO LINK)</span></a>
+    </li>
+    <!-- item add guide end -->
+    <!-- section guides end -->
+    <hr class="sidebar-divider">
+
+
+
+    <!-- section navigation start -->
+    <div class="sidebar-heading">
+        Navegación
+    </div>
+
+    <li class="nav-item">
+        <a class="nav-link" href="/">
+            <i class="fas fa-fw fa-arrow-left"></i>
+            <span>Volver a inicio</span>
+        </a>
+    </li>
+    <!-- section navigation end -->
+    <hr class="sidebar-divider">
+
+
+
+    <!-- section interface start -->
+    <!-- header -->
     <div class="sidebar-heading">
         Interfaz
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- collapse tools start -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true"
             aria-controls="collapseTwo">
@@ -40,8 +153,9 @@
             </div>
         </div>
     </li>
+    <!-- collapse tools end -->
 
-    <!-- Nav Item - Utilities Collapse Menu -->
+    <!-- collapse utilities start -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
             aria-expanded="true" aria-controls="collapseUtilities">
@@ -58,16 +172,19 @@
             </div>
         </div>
     </li>
-
-    <!-- Divider -->
+    <!-- collapse utilities end -->
+    <!-- section interface end -->
     <hr class="sidebar-divider">
 
-    <!-- Heading -->
+
+
+    <!-- section resources start -->
+    <!-- header -->
     <div class="sidebar-heading">
         Recursos
     </div>
 
-    <!-- Nav Item - Pages Collapse Menu -->
+    <!-- collapse pages start -->
     <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
             aria-controls="collapsePages">
@@ -89,59 +206,14 @@
             </div>
         </div>
     </li>
+    <!-- collapse pages end -->
 
-    <!-- Nav Item - Charts -->
+    <!-- item charts start -->
     <li class="nav-item">
         <a class="nav-link" href="/admin/charts">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Estadísticas</span></a>
     </li>
-
-    <!-- Nav Item - Users -->
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/users">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Usuarios</span></a>
-    </li>
-
-    <!-- Nav Item - Tours -->
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/tours">
-            <i class="fas fa-fw fa-map"></i>
-            <span>Tours</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Reviews -->
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/reviews">
-            <i class="fas fa-fw fa-comments"></i>
-            <span>Reviews</span>
-        </a>
-    </li>
-
-    <!-- Nav Item - Guides -->
-    <li class="nav-item">
-        <a class="nav-link" href="/admin/guides">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Guías</span></a>
-    </li>
-
-
-
-    <!-- Divider -->
-
-
-    <hr class="sidebar-divider d-none d-md-block">
-    <div class="sidebar-heading">
-        Navegación
-    </div>
-
-    <li class="nav-item">
-        <a class="nav-link" href="/">
-            <i class="fas fa-fw fa-arrow-left"></i>
-            <span>Volver a inicio</span>
-        </a>
-    </li>
+    <!-- item charts end -->
 </ul>
-<!-- End of Sidebar -->
+<!-- sidebar end -->
