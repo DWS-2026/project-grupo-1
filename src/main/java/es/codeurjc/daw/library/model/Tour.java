@@ -1,6 +1,7 @@
 package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "tours")
@@ -13,12 +14,15 @@ public class Tour {
     private String name;
 
     @Lob
-    private String image; // URL larga o base64 (igual que profilePicture)
+    private String image;
 
     @Lob
     private String description;
 
     private double price;
+
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Guide> guides;
 
     public Tour() {}
 
@@ -37,4 +41,6 @@ public class Tour {
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
+    public List<Guide> getGuides() { return guides; }
+    public void setGuides(List<Guide> guides) { this.guides = guides; }
 }

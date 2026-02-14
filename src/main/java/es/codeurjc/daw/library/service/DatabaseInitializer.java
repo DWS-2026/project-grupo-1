@@ -3,7 +3,13 @@ package es.codeurjc.daw.library.service;
 
 
 
+import es.codeurjc.daw.library.model.Review;
+import es.codeurjc.daw.library.model.Tour;
+import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.model.User; // user dependency
+import es.codeurjc.daw.library.repository.ReviewRepository;
+import es.codeurjc.daw.library.repository.TourRepository;
+import es.codeurjc.daw.library.repository.GuideRepository;
 import es.codeurjc.daw.library.repository.UserRepository; // user dependency
 
 import jakarta.annotation.PostConstruct;
@@ -36,6 +42,16 @@ public class DatabaseInitializer {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private TourRepository tourRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private GuideRepository guideRepository;
+
+
 
     @PostConstruct
     public void init() { // autoruns after initializing spring context
@@ -59,8 +75,35 @@ public class DatabaseInitializer {
 
             System.out.println (">>> users created successfully.");
         }
-    }
 
+        if (tourRepository.count() == 0) {
+            createTour("Viaje al futuro", "imagen1.jpg",
+                    "Explora ciudades futuristas...",
+                    4349.00);
+
+            createTour("Volcán Krakatoa",
+                    "imagen2.jpg",
+                    "Explora el interior del volcán...",
+                    1649.00);
+        }
+
+        if (reviewRepository.count() == 0) {
+
+            User user = userRepository.findAll().get(0);
+            Tour tour = tourRepository.findAll().get(0);
+
+            createReview(user, tour, 5, "Una experiencia inolvidable.");
+            createReview(user, tour, 4, "Muy buen tour, repetiría.");
+        }
+
+        if (guideRepository.count() == 0) {
+            Tour t1 = tourRepository.findAll().get(0);
+
+            createGuide("Laura", "Méndez", 199.99, t1);
+            createGuide("Pablo", "Ruiz", 149.99, t1);
+        }
+
+    }
 
     // method to create normal user
     private void createUser (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone) {
@@ -95,6 +138,46 @@ public class DatabaseInitializer {
         admin.setProfilePicture (generateDynamicAvatar ("Admin", name, new Color (0, 0, 0)));
         userRepository.save (admin);
     }
+
+    // ================= TOUR METHOD =================
+
+    private void createTour(String name, String image,
+                            String description, double price) {
+
+        Tour tour = new Tour();
+        tour.setName(name);
+        tour.setImage(image);
+        tour.setDescription(description);
+        tour.setPrice(price);
+
+        tourRepository.save(tour);
+    }
+
+
+    private void createReview(User user, Tour tour, int rating, String description) {
+
+        Review review = new Review();
+        review.setUser(user);
+        review.setTour(tour);
+        review.setRating(rating);
+        review.setDescription(description);
+
+        reviewRepository.save(review);
+    }
+
+
+    private void createGuide(String name, String lastName, double price, Tour tour) {
+        Guide g = new Guide();
+        g.setName(name);
+        g.setLastName(lastName);
+        g.setPrice(price);
+        g.setTour(tour);
+        guideRepository.save(g);
+    }
+
+
+
+
 
 
     /**
