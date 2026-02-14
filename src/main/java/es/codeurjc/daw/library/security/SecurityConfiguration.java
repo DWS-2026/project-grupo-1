@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.security;
 
 
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 
 
@@ -22,6 +25,13 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    // key value taken from definition in properties
+    @Value("${security.rememberme.key}")
+    private String rememberMeKey;
 
     /**
      * define password encoder bean
@@ -105,6 +115,14 @@ public class SecurityConfiguration {
                         .logoutUrl("/logout") // url that triggers logout
                         .logoutSuccessUrl("/") // redirection after succesful logout
                         .permitAll()
+                )
+
+                // remember me cookie functionality
+                .rememberMe((remember) -> remember
+                        .key(rememberMeKey) // key to sign token
+                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 day duration
+                        .userDetailsService(userDetailsService) // reload user
+                        .rememberMeParameter("remember-me") // html input (remember me check) name
                 );
 
         return http.build();
