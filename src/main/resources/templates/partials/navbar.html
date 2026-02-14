@@ -33,6 +33,36 @@
             {{!-- case 2: user or admin (logged in) --}}
             {{#logged}}
             <div class="d-inline-flex align-items-center justify-content-end" style="height: 45px;">
+                {{! --- admin dropdown start --- }}
+                {{#isAdmin}}
+                <div class="dropdown me-3">
+                    <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown">
+                        <i class="fas fa-tools me-2"></i>Admin
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end rounded">
+                        <a href="/admin" class="dropdown-item">
+                            <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                        </a>
+                        <div class="dropdown-divider"></div>
+
+                        <h6 class="dropdown-header">Tours</h6>
+                        <a href="/admin/tours" class="dropdown-item">Ver tours</a>
+                        <a href="/admin/add-tour" class="dropdown-item">Añadir tour</a>
+                        <div class="dropdown-divider"></div>
+
+                        <h6 class="dropdown-header">Usuarios</h6>
+                        <a href="/admin/users" class="dropdown-item">Ver usuarios</a>
+                        <a href="/admin/user-edit" class="dropdown-item">Añadir usuario</a> <div class="dropdown-divider"></div>
+
+                        <h6 class="dropdown-header">Reseñas</h6>
+                        <a href="/admin/reviews" class="dropdown-item">Ver reseñas</a>
+                    </div>
+                </div>
+                {{/isAdmin}}
+                {{! --- admin dropdown end --- }}
+
+
+                {{! --- profile and logout start --- }}
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown">
                         {{#currentUser.profilePicture}}
@@ -54,6 +84,8 @@
                         </a>
                     </div>
                 </div>
+                {{! --- profile and logout end --- }}
+
             </div>
             {{/logged}}
         </div>

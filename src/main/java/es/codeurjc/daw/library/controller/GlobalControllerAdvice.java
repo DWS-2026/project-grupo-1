@@ -53,6 +53,11 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
                 // expose user object and boolean flag to views
                 model.addAttribute ("currentUser", user);
                 model.addAttribute ("logged", true);
+                
+                // check if user admin role
+                boolean isAdmin = user.getRoles().contains("ADMIN");
+                model.addAttribute("isAdmin", isAdmin);
+                
             }
         } else {
             // if no user authenticated set flag to false
