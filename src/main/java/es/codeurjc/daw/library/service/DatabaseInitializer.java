@@ -68,10 +68,10 @@ public class DatabaseInitializer {
 
 
             // admin creation
-            createAdmin ("Pablo", "Apellido", "adminPablo@apexexpeditions.com", "1234pablo", "700111222", "800111222");
-            createAdmin ("Javier", "Apellido", "adminJavier@apexexpeditions.com", "1234javier", "700333444", "800333444");
-            createAdmin ("Mario", "Apellido", "adminMario@apexexpeditions.com", "1234mario", "700555666", "800555666");
-            createAdmin ("Andres", "Apellido", "adminAndres@apexexpeditions.com", "1234andres", "700777888", "800777888");
+            createAdmin ("Pablo", "ApellidoDePablo", "adminPablo@apexexpeditions.com", "1234pablo", "700111222", "800111222");
+            createAdmin ("Javier", "ApellidoDeJavier", "adminJavier@apexexpeditions.com", "1234javier", "700333444", "800333444");
+            createAdmin ("Mario", "ApellidoDeMario", "adminMario@apexexpeditions.com", "1234mario", "700555666", "800555666");
+            createAdmin ("Andres", "ApellidoDeAndres", "adminAndres@apexexpeditions.com", "1234andres", "700777888", "800777888");
 
             System.out.println (">>> users created successfully.");
         }
