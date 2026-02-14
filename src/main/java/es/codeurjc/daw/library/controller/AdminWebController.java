@@ -11,7 +11,7 @@ public class AdminWebController {
 
     @GetMapping({ "", "/index" })
     public String adminHome() {
-        return "admin/admin_index";
+        return "admin/admin-index";
     }
 
     @GetMapping("/buttons")
