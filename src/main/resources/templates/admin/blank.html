@@ -28,7 +28,7 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar"></div>
+        {{>admin/partials/sidebar}}
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
@@ -38,7 +38,9 @@
             <div id="content">
 
                 <!--Topbar -->
-                <div id="topbar"></div>
+                <div id="topbar">
+        {{>admin/partials/topbar}}
+      </div>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -54,7 +56,9 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <div id="footer"></div>
+            <footer id="footer">
+      {{>admin/partials/footer}}
+    </footer>
             <!-- End of Footer -->
 
         </div>
@@ -69,7 +73,9 @@
     </a>
 
     <!-- Logout Modal-->
-    <div id="logout-modal"></div>
+    <div id="logout-modal">
+  {{>admin/partials/logout-modal}}
+</div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>

@@ -23,14 +23,16 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <div id="sidebar"></div>
+        {{>admin/partials/sidebar}}
 
         <div id="content-wrapper" class="d-flex flex-column">
 
             <div id="content">
 
                 <!-- Topbar -->
-                <div id="topbar"></div>
+                <div id="topbar">
+        {{>admin/partials/topbar}}
+      </div>
 
                 <!-- Page Content -->
                 <div class="container-fluid">
@@ -94,7 +96,9 @@
             </div>
 
             <!-- Footer -->
-            <div id="footer"></div>
+            <footer id="footer">
+      {{>admin/partials/footer}}
+    </footer>
 
         </div>
     </div>
@@ -104,7 +108,9 @@
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <div id="logout-modal"></div>
+    <div id="logout-modal">
+  {{>admin/partials/logout-modal}}
+</div>
 
     <!-- Scripts -->
     <script src="vendor/jquery/jquery.min.js"></script>
