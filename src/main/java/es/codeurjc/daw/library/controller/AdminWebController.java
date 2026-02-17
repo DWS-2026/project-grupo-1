@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
@@ -79,6 +81,17 @@ public class AdminWebController {
     @GetMapping("/add-tour")
     public String addTour() {
         return "admin/add-tour";
+    }
+
+    @PostMapping("/add-tour")
+    public String addTour(
+            @ModelAttribute Tour tour,
+            @RequestParam(required = false) MultipartFile imageFile) {
+
+        // lógica imagen si quieres
+
+        tourRepository.save(tour);
+        return "redirect:/admin/tours";
     }
 
     @GetMapping("/tour-edit/{id}")
