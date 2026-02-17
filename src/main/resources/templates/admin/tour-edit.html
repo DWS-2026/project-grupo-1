@@ -48,7 +48,8 @@
                     <div class="card-body">
 
                         <form action="/admin/tour-edit/{{tour.id}}" method="post" enctype="multipart/form-data">
-
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                            
                             <!-- Nombre -->
                             <div class="form-group">
                                 <label>Nombre del tour</label>

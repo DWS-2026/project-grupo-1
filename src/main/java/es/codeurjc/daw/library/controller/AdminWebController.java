@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
+import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin")
@@ -80,10 +82,17 @@ public class AdminWebController {
     }
 
     @GetMapping("/tour-edit/{id}")
-    public String tourEdit(@PathVariable Long id, Model model) {
+    public String tourEdit(@PathVariable Long id, Model model,
+            HttpServletRequest request) {
+
         Tour tour = tourRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tour no encontrado: " + id));
+
+        CsrfToken csrf = (CsrfToken) request.getAttribute("_csrf");
+
         model.addAttribute("tour", tour);
+        model.addAttribute("_csrf", csrf);
+
         return "admin/tour-edit";
     }
 
