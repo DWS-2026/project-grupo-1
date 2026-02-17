@@ -74,9 +74,10 @@
                                         <tr>
                                             <td><a href="/user/tour-details/{{id}}">{{name}}</a></td>
                                             <td>{{price}} €</td>
-                                            <td>3 días</td>
-                                            <td>2 Personas</td>
-                                            <td>Incluido</td>
+                                            <td>{{duration}}</td>
+                                            <td>{{numPeople}} Personas</td>
+                                            <td>{{#hotelIncluded}}Incluido{{/hotelIncluded}}{{^hotelIncluded}}No
+                                                incluido{{/hotelIncluded}}</td>
                                             <td>{{description}}</td>
                                             <td>
                                                 <a href="/admin/tour-edit/{{id}}"
@@ -90,6 +91,7 @@
                                         </tr>
                                         {{/tours}}
                                     </tbody>
+
 
 
 
@@ -145,7 +147,7 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
 
-   
+
 
 </body>
 

@@ -92,10 +92,17 @@ public class AdminWebController {
         Tour tour = tourRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tour no encontrado: " + id));
 
+        // Actualizamos todos los campos editables
         tour.setName(tourData.getName());
         tour.setPrice(tourData.getPrice());
         tour.setDescription(tourData.getDescription());
-        // Aquí puedes agregar manejo de imagen si quieres guardar el archivo
+        tour.setDuration(tourData.getDuration());
+        tour.setNumPeople(tourData.getNumPeople());
+        tour.setHotelIncluded(tourData.isHotelIncluded());
+
+        // Si quieres manejar la imagen como archivo, aquí iría la lógica para guardarla
+        // y asignarla
+        // tour.setImage(...);
 
         tourRepository.save(tour);
         return "redirect:/admin/tours";

@@ -21,11 +21,18 @@ public class Tour {
 
     private double price;
 
+    private String duration;       // Nueva propiedad
+
+    private int numPeople;         // Nueva propiedad
+
+    private boolean hotelIncluded; // Nueva propiedad: true = Incluido, false = No incluido
+
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guide> guides;
 
     public Tour() {}
 
+    // Getters y setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -40,6 +47,15 @@ public class Tour {
 
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
+
+    public String getDuration() { return duration; }
+    public void setDuration(String duration) { this.duration = duration; }
+
+    public int getNumPeople() { return numPeople; }
+    public void setNumPeople(int numPeople) { this.numPeople = numPeople; }
+
+    public boolean isHotelIncluded() { return hotelIncluded; }
+    public void setHotelIncluded(boolean hotelIncluded) { this.hotelIncluded = hotelIncluded; }
 
     public List<Guide> getGuides() { return guides; }
     public void setGuides(List<Guide> guides) { this.guides = guides; }
