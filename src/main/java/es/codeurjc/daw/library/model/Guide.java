@@ -1,9 +1,10 @@
 package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name = "guides")
+@Table(name = "guide")
 public class Guide {
 
     @Id
@@ -17,6 +18,7 @@ public class Guide {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tour_id")
+    @JsonBackReference
     private Tour tour;
 
     public Guide() {}

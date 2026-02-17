@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "tours")
@@ -22,6 +23,7 @@ public class Tour {
     private double price;
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Guide> guides;
 
     public Tour() {}

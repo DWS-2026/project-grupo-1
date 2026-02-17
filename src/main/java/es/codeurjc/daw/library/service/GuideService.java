@@ -22,4 +22,9 @@ public class GuideService {
     public Guide save(Guide guide) {
         return guideRepository.save(guide);
     }
+
+    public Guide findById(Long id) {
+        return guideRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Guide not found"));
+    }
 }
