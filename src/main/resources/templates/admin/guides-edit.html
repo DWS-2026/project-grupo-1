@@ -12,25 +12,24 @@
     <link href="/https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet"> 
 
     <!-- Custom styles --> 
-     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
-    
-    </head> 
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+</head> 
 
-    <body id="page-top"> 
+<body id="page-top"> 
 
-        <div id="wrapper"> 
-            
-            <!-- Sidebar -->
-            {{>admin/partials/sidebar}}
+    <div id="wrapper"> 
+        
+        <!-- Sidebar -->
+        {{>admin/partials/sidebar}}
 
-            <div id="content-wrapper" class="d-flex flex-column"> 
+        <div id="content-wrapper" class="d-flex flex-column"> 
 
-                <div id="content"> 
-                    
-                    <!-- Topbar --> 
-                    <div id="topbar">
-                {{>admin/partials/topbar}} 
-            </div> 
+            <div id="content"> 
+                
+                <!-- Topbar --> 
+                <div id="topbar">
+                    {{>admin/partials/topbar}} 
+                </div> 
             
                 <!-- Page Content --> 
                 <div class="container-fluid"> 
@@ -40,76 +39,83 @@
                     <div class="card shadow mb-4"> 
                         <div class="card-header py-3"> 
                             <h6 class="m-0 font-weight-bold text-primary">Datos del guía</h6> 
-                            </div> 
-                            
-                            <div class="card-body"> 
-                                
-                                <form action="/admin/guides/save" method="post"> 
-                                    
-                                    <input type="hidden" name="id" value="{{guide.id}}"> 
-                                    
-                                    <div class="form-group"> 
-                                        <label>Nombre</label> 
-                                        <input type="text" name="name" class="form-control" value="{{guide.name}}" required> 
-                                    </div> 
-                                    <div class="form-group"> <label>Apellido</label> 
-                                        <input type="text" name="lastName" class="form-control" value="{{guide.lastName}}" required> 
-                                    </div> 
-                                    
-                                    <div class="form-group"> 
-                                        <label>Precio</label> 
-                                        <input type="number" step="0.01" name="price" class="form-control" value="{{guide.price}}" required> 
-                                    </div> 
-                                    
-                                    <div class="form-group"> 
-                                        <label>Tour asociado</label> 
-                                        <select name="tourId" class="form-control" required> 
-                                            {{#tours}} 
-                                                <option value="{{id}}" {{#selected}}selected{{/selected}}> 
-                                                    {{name}} 
-                                                </option> 
-                                            {{/tours}} 
-                                        </select> 
-                                        
-                                    </div> 
-                                    
-                                    <hr> 
-                                    
-                                    <button type="submit" class="btn btn-success"> 
-                                        <i class="fas fa-save"></i> Guardar 
-                                    </button> 
-                                    
-                                    <a href="/admin/guides" class="btn btn-secondary"> 
-                                        Cancelar 
-                                    </a> 
-                                
-                                </form> 
-                                
-                            </div> 
                         </div> 
                         
-                    </div> 
-                </div> 
-                
-                <!-- Footer --> 
-                 <footer id="footer"> 
-            {{>admin/partials/footer}} 
-        </footer>
+                        <div class="card-body"> 
+                            
+                            <form action="/admin/guides/save" method="post"> 
+                                
+                                <!-- Necessary Token CSRF. Needed to make POST requests-->
+                                <input type="hidden" name="{{_csrf.parameterName}}" value="{{_csrf.token}}" />
 
+                                <input type="hidden" name="id" value="{{guide.id}}"> 
+                                
+                                <div class="form-group"> 
+                                    <label>Nombre</label> 
+                                    <input type="text" name="name" class="form-control" value="{{guide.name}}" required> 
+                                </div> 
+                                
+                                <div class="form-group"> 
+                                    <label>Apellido</label> 
+                                    <input type="text" name="lastName" class="form-control" value="{{guide.lastName}}" required> 
+                                </div> 
+                                
+                                <div class="form-group"> 
+                                    <label>Precio</label> 
+                                    <input type="number" step="0.01" name="price" class="form-control" value="{{guide.price}}" required> 
+                                </div> 
+                                
+                                <div class="form-group"> 
+                                    <label>Tour asociado</label> 
+                                    <select name="tourId" class="form-control" required> 
+                                        {{#tours}} 
+                                            <option value="{{id}}" {{#selected}}selected{{/selected}}> 
+                                                {{name}} 
+                                            </option> 
+                                        {{/tours}} 
+                                    </select> 
+                                </div> 
+                                
+                                <hr> 
+                                
+                                <button type="submit" class="btn btn-success"> 
+                                    <i class="fas fa-save"></i> Guardar 
+                                </button> 
+                                
+                                <a href="/admin/guides" class="btn btn-secondary"> 
+                                    Cancelar 
+                                </a> 
+                            
+                            </form> 
+                            
+                        </div> 
+                    </div>
+                    
+                </div> 
             </div> 
+            
+            <!-- Footer --> 
+            <footer id="footer"> 
+                {{>admin/partials/footer}} 
+            </footer>
+
         </div> 
-        
-        <!-- Scroll button --> 
-         <a class="scroll-to-top rounded" href="#page-top"> 
-            <i class="fas fa-angle-up"></i> 
-        </a> 
-        
-        <div id="logout-modal"> 
-    {{>admin/partials/logout-modal}} 
-</div> 
+    </div> 
+    
+    <!-- Scroll button --> 
+    <a class="scroll-to-top rounded" href="#page-top"> 
+        <i class="fas fa-angle-up"></i> 
+    </a> 
+    
+    <div id="logout-modal"> 
+        {{>admin/partials/logout-modal}} 
+    </div> 
 
     <!-- Scripts --> 
     <script src="/vendor/jquery/jquery.min.js"></script> 
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script> 
-    <script src="/js/sb-admin-2.min.js"></script> <script>
+    <script src="/js/sb-admin-2.min.js"></script> 
+
+</body>
+</html>
