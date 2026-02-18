@@ -32,8 +32,8 @@
 
                 <!-- Topbar -->
                 <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
+                    {{>admin/partials/topbar}}
+                </div>
 
                 <div class="container-fluid">
 
@@ -46,45 +46,49 @@
 
                         <div class="card-body">
 
-                            <form>
+                            <form action="/admin/add-tour" method="post" enctype="multipart/form-data">
+
+                                <!-- CSRF -->
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
 
                                 <div class="form-group">
                                     <label>Nombre del tour</label>
-                                    <input type="text" class="form-control" placeholder="Nombre">
+                                    <input type="text" class="form-control" name="name" placeholder="Nombre" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Precio (€)</label>
-                                    <input type="text" class="form-control" placeholder="Precio">
+                                    <input type="number" step="0.01" class="form-control" name="price"
+                                        placeholder="Precio" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Duración</label>
-                                    <input type="text" class="form-control" placeholder="Duración">
+                                    <input type="text" class="form-control" name="duration" placeholder="Duración">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Número de personas</label>
-                                    <input type="number" class="form-control" placeholder="Número de personas">
+                                    <input type="number" class="form-control" name="numPeople"
+                                        placeholder="Número de personas">
                                 </div>
 
                                 <div class="form-group">
                                     <label>Hotel incluido</label>
-                                    <select class="form-control">
-                                        <option selected>Incluido</option>
-                                        <option>No incluido</option>
+                                    <select class="form-control" name="hotelIncluded">
+                                        <option value="true">Incluido</option>
+                                        <option value="false">No incluido</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" rows="4">
-                                </textarea>
+                                    <textarea class="form-control" name="description" rows="4"></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Imagen del tour</label>
-                                    <input type="file" class="form-control-file">
+                                    <input type="file" class="form-control-file" name="imageFile">
                                 </div>
 
                                 <hr>
@@ -93,11 +97,12 @@
                                     <i class="fas fa-save"></i> Añadir Tour
                                 </button>
 
-                                <a href="tours.html" class="btn btn-secondary">
+                                <a href="/admin/tours" class="btn btn-secondary">
                                     Cancelar
                                 </a>
 
                             </form>
+
 
                         </div>
                     </div>
@@ -108,8 +113,8 @@
 
             <!-- Footer -->
             <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
+                {{>admin/partials/footer}}
+            </footer>
 
         </div>
     </div>
@@ -119,32 +124,14 @@
     </a>
 
     <div id="logout-modal">
-  {{>admin/partials/logout-modal}}
-</div>
+        {{>admin/partials/logout-modal}}
+    </div>
 
     <!-- Scripts -->
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
-
-    <script>
-        fetch("./components/sidebar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("sidebar").innerHTML = data);
-
-        fetch("./components/topbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("topbar").innerHTML = data);
-
-        fetch("./components/footer.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("footer").innerHTML = data);
-
-        fetch("./components/logout-modal.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("logout-modal").innerHTML = data);
-    </script>
 
 </body>
 

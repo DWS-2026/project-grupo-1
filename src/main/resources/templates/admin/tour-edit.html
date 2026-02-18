@@ -7,13 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>SB Admin 2 - Editar Tour</title>
+    <title>Editar Tour</title>
 
-    <!-- Custom fonts -->
+    <!-- Fonts -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="/https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
 
-    <!-- Custom styles -->
+    <!-- Styles -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
@@ -25,68 +25,81 @@
     <!-- Sidebar -->
     {{>admin/partials/sidebar}}
 
+    <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
+        <!-- Main Content -->
         <div id="content">
 
             <!-- Topbar -->
-            <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
+            {{>admin/partials/topbar}}
 
+            <!-- Page Content -->
             <div class="container-fluid">
 
                 <h1 class="h3 mb-4 text-gray-800">Editar Tour</h1>
 
                 <div class="card shadow mb-4">
+
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Datos del tour</h6>
                     </div>
 
                     <div class="card-body">
 
-                        <form>
-
+                        <form action="/admin/tour-edit/{{tour.id}}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                            
+                            <!-- Nombre -->
                             <div class="form-group">
                                 <label>Nombre del tour</label>
-                                <input type="text" class="form-control" value="Futuro - Tierra">
+                                <input type="text" class="form-control" name="name" value="{{tour.name}}">
                             </div>
 
+                            <!-- Precio -->
                             <div class="form-group">
                                 <label>Precio (€)</label>
-                                <input type="number" class="form-control" value="4349">
+                                <input type="number" step="0.01" class="form-control" name="price" value="{{tour.price}}">
                             </div>
 
+                            <!-- Duración -->
                             <div class="form-group">
                                 <label>Duración</label>
-                                <input type="text" class="form-control" value="3 días">
+                                <input type="text" class="form-control" name="duration" value="{{tour.duration}}">
                             </div>
 
+                            <!-- Personas -->
                             <div class="form-group">
                                 <label>Número de personas</label>
-                                <input type="number" class="form-control" value="2">
+                                <input type="number" class="form-control" name="numPeople" value="{{tour.numPeople}}">
                             </div>
 
+                            <!-- Hotel -->
                             <div class="form-group">
                                 <label>Hotel incluido</label>
-                                <select class="form-control">
-                                    <option selected>Incluido</option>
-                                    <option>No incluido</option>
+                                <select class="form-control" name="hotelIncluded">
+                                    <option value="true" {{#tour.hotelIncluded}}selected{{/tour.hotelIncluded}}>Incluido</option>
+                                    <option value="false" {{^tour.hotelIncluded}}selected{{/tour.hotelIncluded}}>No incluido</option>
                                 </select>
                             </div>
 
+                            <!-- Descripción -->
                             <div class="form-group">
                                 <label>Descripción</label>
-                                <textarea class="form-control" rows="4">
-Explora un mundo del futuro con coches flotantes y tecnología inimaginable.
-                                </textarea>
+                                <textarea class="form-control" name="description" rows="4">{{tour.description}}</textarea>
                             </div>
 
+                            <!-- Imagen -->
                             <div class="form-group">
                                 <label>Imagen del tour</label>
-                                <input type="file" class="form-control-file">
+                                <input type="file" class="form-control-file" name="imageFile">
                             </div>
-                            <img src="/images/tour-14.webp" width="300">
+
+                            {{#tour.image}}
+                            <div class="mb-3">
+                                <img src="/images/{{tour.image}}" width="300">
+                            </div>
+                            {{/tour.image}}
 
                             <hr>
 
@@ -94,7 +107,7 @@ Explora un mundo del futuro con coches flotantes y tecnología inimaginable.
                                 <i class="fas fa-save"></i> Guardar cambios
                             </button>
 
-                            <a href="tours.html" class="btn btn-secondary">
+                            <a href="/admin/tours" class="btn btn-secondary">
                                 Cancelar
                             </a>
 
@@ -104,48 +117,33 @@ Explora un mundo del futuro con coches flotantes y tecnología inimaginable.
                 </div>
 
             </div>
+            <!-- End Page Content -->
 
         </div>
+        <!-- End Main Content -->
 
         <!-- Footer -->
-        <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
+        {{>admin/partials/footer}}
 
     </div>
-</div>
+    <!-- End Content Wrapper -->
 
+</div>
+<!-- End Page Wrapper -->
+
+<!-- Scroll -->
 <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
 </a>
 
-<div id="logout-modal">
-  {{>admin/partials/logout-modal}}
-</div>
+<!-- Logout Modal -->
+{{>admin/partials/logout-modal}}
 
 <!-- Scripts -->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-<script src="js/sb-admin-2.min.js"></script>
-
-<script>
-    fetch("./components/sidebar.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("sidebar").innerHTML = data);
-
-    fetch("./components/topbar.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("topbar").innerHTML = data);
-
-    fetch("./components/footer.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("footer").innerHTML = data);
-
-    fetch("./components/logout-modal.html")
-        .then(res => res.text())
-        .then(data => document.getElementById("logout-modal").innerHTML = data);
-</script>
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/js/sb-admin-2.min.js"></script>
 
 </body>
 </html>
