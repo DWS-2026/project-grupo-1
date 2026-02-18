@@ -20,43 +20,101 @@ public class Tour {
     private String description;
 
     private double price;
+    private String duration;
 
-    private String duration;       // Nueva propiedad
+    // Nueva propiedad
+    private int numPeople;
 
-    private int numPeople;         // Nueva propiedad
-
-    private boolean hotelIncluded; // Nueva propiedad: true = Incluido, false = No incluido
+    // Nueva propiedad
+    private boolean hotelIncluded; // true = Incluido, false = No incluido
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Guide> guides;
 
+    @Transient
+    private boolean selected;
+
     public Tour() {}
 
     // Getters y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getImage() { return image; }
-    public void setImage(String image) { this.image = image; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getName() {
+        return name;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public String getDuration() { return duration; }
-    public void setDuration(String duration) { this.duration = duration; }
+    public String getImage() {
+        return image;
+    }
 
-    public int getNumPeople() { return numPeople; }
-    public void setNumPeople(int numPeople) { this.numPeople = numPeople; }
+    public void setImage(String image) {
+        this.image = image;
+    }
 
-    public boolean isHotelIncluded() { return hotelIncluded; }
-    public void setHotelIncluded(boolean hotelIncluded) { this.hotelIncluded = hotelIncluded; }
+    public String getDescription() {
+        return description;
+    }
 
-    public List<Guide> getGuides() { return guides; }
-    public void setGuides(List<Guide> guides) { this.guides = guides; }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public int getNumPeople() {
+        return numPeople;
+    }
+
+    public void setNumPeople(int numPeople) {
+        this.numPeople = numPeople;
+    }
+
+    public boolean isHotelIncluded() {
+        return hotelIncluded;
+    }
+
+    public void setHotelIncluded(boolean hotelIncluded) {
+        this.hotelIncluded = hotelIncluded;
+    }
+
+    public List<Guide> getGuides() {
+        return guides;
+    }
+
+    public void setGuides(List<Guide> guides) {
+        this.guides = guides;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
 }

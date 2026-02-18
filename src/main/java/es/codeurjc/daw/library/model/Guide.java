@@ -12,7 +12,6 @@ public class Guide {
 
     private String name;
     private String lastName;
-
     private double price;
 
     @ManyToOne(optional = false)
@@ -21,18 +20,43 @@ public class Guide {
 
     public Guide() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String lastName) { this.lastName = lastName; }
+    public String getName() {
+        return name;
+    }
 
-    public double getPrice() { return price; }
-    public void setPrice(double price) { this.price = price; }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-    public Tour getTour() { return tour; }
-    public void setTour(Tour tour) { this.tour = tour; }
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Tour getTour() {
+        return tour;
+    }
+
+    public void setTour(Tour tour) {
+        this.tour = tour;
+    }
 }

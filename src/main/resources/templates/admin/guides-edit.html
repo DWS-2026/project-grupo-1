@@ -1,136 +1,115 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="utf-8"> 
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>SB Admin 2 - Edit Guide</title>
+    <title>SB Admin 2 - Edit Guide</title> 
+    
+    <!-- Custom fonts --> 
+    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet"> 
+    <link href="/https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet"> 
 
-    <!-- Custom fonts -->
-    <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
-    <link href="/https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
+    <!-- Custom styles --> 
+     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    </head> 
 
-    <!-- Custom styles -->
-    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <body id="page-top"> 
 
-</head>
+        <div id="wrapper"> 
+            
+            <!-- Sidebar -->
+            {{>admin/partials/sidebar}}
 
-<body id="page-top">
+            <div id="content-wrapper" class="d-flex flex-column"> 
 
-    <div id="wrapper">
+                <div id="content"> 
+                    
+                    <!-- Topbar --> 
+                    <div id="topbar">
+                {{>admin/partials/topbar}} 
+            </div> 
+            
+                <!-- Page Content --> 
+                <div class="container-fluid"> 
+                    
+                    <h1 class="h3 mb-4 text-gray-800">Editar Guía</h1> 
+                    
+                    <div class="card shadow mb-4"> 
+                        <div class="card-header py-3"> 
+                            <h6 class="m-0 font-weight-bold text-primary">Datos del guía</h6> 
+                            </div> 
+                            
+                            <div class="card-body"> 
+                                
+                                <form action="/admin/guides/save" method="post"> 
+                                    
+                                    <input type="hidden" name="id" value="{{guide.id}}"> 
+                                    
+                                    <div class="form-group"> 
+                                        <label>Nombre</label> 
+                                        <input type="text" name="name" class="form-control" value="{{guide.name}}" required> 
+                                    </div> 
+                                    <div class="form-group"> <label>Apellido</label> 
+                                        <input type="text" name="lastName" class="form-control" value="{{guide.lastName}}" required> 
+                                    </div> 
+                                    
+                                    <div class="form-group"> 
+                                        <label>Precio</label> 
+                                        <input type="number" step="0.01" name="price" class="form-control" value="{{guide.price}}" required> 
+                                    </div> 
+                                    
+                                    <div class="form-group"> 
+                                        <label>Tour asociado</label> 
+                                        <select name="tourId" class="form-control" required> 
+                                            {{#tours}} 
+                                                <option value="{{id}}" {{#selected}}selected{{/selected}}> 
+                                                    {{name}} 
+                                                </option> 
+                                            {{/tours}} 
+                                        </select> 
+                                        
+                                    </div> 
+                                    
+                                    <hr> 
+                                    
+                                    <button type="submit" class="btn btn-success"> 
+                                        <i class="fas fa-save"></i> Guardar 
+                                    </button> 
+                                    
+                                    <a href="/admin/guides" class="btn btn-secondary"> 
+                                        Cancelar 
+                                    </a> 
+                                
+                                </form> 
+                                
+                            </div> 
+                        </div> 
+                        
+                    </div> 
+                </div> 
+                
+                <!-- Footer --> 
+                 <footer id="footer"> 
+            {{>admin/partials/footer}} 
+        </footer>
 
-        <!-- Sidebar -->
-        {{>admin/partials/sidebar}}
+            </div> 
+        </div> 
+        
+        <!-- Scroll button --> 
+         <a class="scroll-to-top rounded" href="#page-top"> 
+            <i class="fas fa-angle-up"></i> 
+        </a> 
+        
+        <div id="logout-modal"> 
+    {{>admin/partials/logout-modal}} 
+</div> 
 
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <!-- Topbar -->
-                <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
-
-                <!-- Page Content -->
-                <div class="container-fluid">
-
-                    <h1 class="h3 mb-4 text-gray-800">Editar Guía</h1>
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Datos del guía</h6>
-                        </div>
-
-                        <div class="card-body">
-
-                            <form>
-
-                                <div class="form-group">
-                                    <label>Nombre completo</label>
-                                    <input type="text" class="form-control" value="Mario Ortiz Lopo">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Especialidad</label>
-                                    <input type="text" class="form-control" value="Guía astronauta">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Estado</label>
-                                    <select class="form-control">
-                                        <option selected>Activo</option>
-                                        <option>Inactivo</option>
-                                        <option>Bloqueado</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Foto de perfil (URL)</label>
-                                    <input type="text" class="form-control" value="/images/Rob.webp">
-                                </div>
-
-                                <hr>
-
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save"></i> Guardar cambios
-                                </button>
-
-                                <a href="/guides" class="btn btn-secondary">
-                                    Cancelar
-                                </a>
-
-                            </form>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
-
-        </div>
-    </div>
-
-    <!-- Scroll button -->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <div id="logout-modal">
-  {{>admin/partials/logout-modal}}
-</div>
-
-    <!-- Scripts -->
-    <script src="/vendor/jquery/jquery.min.js"></script>
-    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <script src="/js/sb-admin-2.min.js"></script>
-
-    <script>
-        fetch("./components/sidebar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("sidebar").innerHTML = data);
-
-        fetch("./components/topbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("topbar").innerHTML = data);
-
-        fetch("./components/footer.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("footer").innerHTML = data);
-
-        fetch("./components/logout-modal.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("logout-modal").innerHTML = data);
-    </script>
-
-</body>
-
-</html>
+    <!-- Scripts --> 
+    <script src="/vendor/jquery/jquery.min.js"></script> 
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script> 
+    <script src="/js/sb-admin-2.min.js"></script> <script>

@@ -17,34 +17,33 @@ public class TourInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-
         if (tourRepository.count() != 0)
             return;
 
         createTour(
-                "Viaje al futuro",
-                "imagen1.jpg",
-                "Explora ciudades futuristas...",
-                4349.00,
-                "3 días",
-                2,
-                true);
+            "Viaje al futuro",
+            "imagen1.jpg",
+            "Explora ciudades futuristas...",
+            4349.00,
+            "3 días",
+            2,
+            true
+        );
+
         createTour(
-                "Viaje al pasado",
-                "imagen2.jpg",
-                "Explora ciudades del pasado...",
-                2222.00,
-                "8 días",
-                7,
-                false);
+            "Viaje al pasado",
+            "imagen2.jpg",
+            "Explora ciudades del pasado...",
+            2222.00,
+            "8 días",
+            7,
+            false
+        );
 
         System.out.println(">>> Tours initialized");
     }
 
-    private void createTour(String name, String image,
-            String description, double price,
-            String duration, int numPeople, boolean hotelIncluded) {
-
+    private void createTour(String name, String image, String description, double price, String duration, int numPeople, boolean hotelIncluded) {
         Tour tour = new Tour();
         tour.setName(name);
         tour.setImage(image);
@@ -53,8 +52,6 @@ public class TourInitializer implements CommandLineRunner {
         tour.setDuration(duration);
         tour.setNumPeople(numPeople);
         tour.setHotelIncluded(hotelIncluded);
-
         tourRepository.save(tour);
     }
-
 }

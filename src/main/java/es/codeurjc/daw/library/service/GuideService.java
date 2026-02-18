@@ -3,7 +3,6 @@ package es.codeurjc.daw.library.service;
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.repository.GuideRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -21,5 +20,17 @@ public class GuideService {
 
     public Guide save(Guide guide) {
         return guideRepository.save(guide);
+    }
+
+    public List<Guide> findAll() {
+        return guideRepository.findAll();
+    }
+
+    public Guide findById(Long id) {
+        return guideRepository.findById(id).orElseThrow();
+    }
+
+    public void deleteById(Long id) {
+        guideRepository.deleteById(id);
     }
 }

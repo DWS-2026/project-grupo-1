@@ -42,12 +42,6 @@ public class WebController {
         return "user/packages";
     }
 
-    @GetMapping("/guides")
-    public String guides(Model model) {
-        model.addAttribute("guides", true);
-        return "user/guides";
-    }
-
     @GetMapping("/services")
     public String services(Model model) {
         model.addAttribute("services", true);

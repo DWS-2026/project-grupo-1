@@ -3,7 +3,6 @@ package es.codeurjc.daw.library.service;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -21,5 +20,13 @@ public class TourService {
 
     public Tour save(Tour tour) {
         return tourRepository.save(tour);
+    }
+
+    public List<Tour> findAll() {
+        return tourRepository.findAll();
+    }
+
+    public Tour findById(Long id) {
+        return tourRepository.findById(id).orElse(null);
     }
 }
