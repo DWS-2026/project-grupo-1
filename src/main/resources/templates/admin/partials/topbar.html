@@ -6,16 +6,16 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Navbar -->
+                    <!-- navbar start -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <!-- nav item search dropdown (visible only xs) -->
                         <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
-                            <!-- Dropdown - Messages -->
+                            <!-- dropdown messages-->
                             <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                                 aria-labelledby="searchDropdown">
                                 <form class="form-inline mr-auto w-100 navbar-search">
@@ -32,21 +32,28 @@
                                 </form>
                             </div>
                         </li>
+                        <!-- xs view end -->
 
-                        <!-- Nav Item - Alerts -->
+                        <!-- notifications start -->
                         <li class="nav-item dropdown no-arrow mx-1">
+
+                            <!-- icon and notification counter start -->
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                                <!-- Counter - Alerts -->
+                                <!-- counter -->
                                 <span class="badge badge-danger badge-counter">3+</span>
                             </a>
-                            <!-- Dropdown - Alerts -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="alertsDropdown">
+                            <!-- icon and notification counter end -->
+
+                            <!-- notifications dropdown start -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                                <!-- title -->
                                 <h6 class="dropdown-header">
                                     Notificaciones
                                 </h6>
+
+                                <!-- notification 1 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-primary">
@@ -58,6 +65,9 @@
                                         <span class="font-weight-bold">Un nuevo informe mensual está listo para descargar</span>
                                     </div>
                                 </a>
+                                <!-- notification 1 end -->
+
+                                <!-- notification 2 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-success">
@@ -69,6 +79,9 @@
                                         Se han depositado 290,29€ en tu cuenta
                                     </div>
                                 </a>
+                                <!-- notification 2 end -->
+
+                                <!-- notification 3 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
                                         <div class="icon-circle bg-warning">
@@ -80,25 +93,32 @@
                                         Alerta de gasto: Hemos notado un gasto inusualmente alto en su cuenta.
                                     </div>
                                 </a>
+                                <!-- notification 3 end -->
+
+                                <!-- button show all alerts -->
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
+                            <!-- notifications dropdown end -->
                         </li>
-                        <!-- alerts end -->
+                        <!-- notifications end -->
 
-                        <!-- Nav Item - Messages -->
+                        <!-- messages start -->
                         <li class="nav-item dropdown no-arrow mx-1">
+                            <!-- icon and counter start -->
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
-                                <!-- Counter - Messages -->
+                                <!-- counter -->
                                 <span class="badge badge-danger badge-counter">7</span>
                             </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="messagesDropdown">
-                                <h6 class="dropdown-header">
-                                    Mensajes
-                                </h6>
+                            <!-- icon and counter start -->
+
+                            <!-- dropdown start -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+                                <!-- title -->
+                                <h6 class="dropdown-header">Mensajes</h6>
+
+                                <!-- message 1 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle" src="/images/undraw_profile_1.svg"
@@ -110,6 +130,9 @@
                                         <div class="small text-gray-500">Emily Fowler · 58m</div>
                                     </div>
                                 </a>
+                                <!-- message 1 end -->
+
+                                <!-- message 2 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle" src="/images/undraw_profile_2.svg"
@@ -121,6 +144,9 @@
                                         <div class="small text-gray-500">Jae Chun · 1d</div>
                                     </div>
                                 </a>
+                                <!-- message 2 end -->
+
+                                <!-- message 3 start -->
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle" src="/images/undraw_profile_3.svg"
@@ -129,9 +155,12 @@
                                     </div>
                                     <div>
                                         <div class="text-truncate">El informe del mes pasado se ve genial, estoy muy contento con el progreso hasta ahora. ¡Sigan con el buen trabajo!</div>
-                                        <div class="small text-gray-500">Pablo Sánchez · 2d</div>
+                                        <div class="small text-gray-500">Richi Richardo · 2d</div>
                                     </div>
                                 </a>
+                                <!-- message 3 end -->
+
+                                <!-- message 4 start -->
                                 <a class="dropdown-item d-flex align-items-center">
                                     <div class="dropdown-list-image mr-3">
                                         <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
@@ -143,9 +172,15 @@
                                         <div class="small text-gray-500">Chicken the Dog · 2w</div>
                                     </div>
                                 </a>
+                                <!-- message 4 end -->
+
+                                <!-- show more button -->
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Leer más</a>
                             </div>
+                            <!-- dropdown end -->
+
                         </li>
+                        <!-- messages end -->
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -175,29 +210,43 @@
                                 <!-- pfp end  -->
 
                             </a>
-                            <!-- Dropdown - User Information -->
-                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                                aria-labelledby="userDropdown">
+
+                            <!-- user dropdown start -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <!-- profile start -->
                                 <a class="dropdown-item" href="/profile"> <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Mi perfil
                                 </a>
+                                <!-- profile end -->
+
+                                <!-- configuration start -->
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Configuración
                                 </a>
+                                <!-- configuration end -->
+
+                                <!-- activity register start -->
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Registro de Actividad
                                 </a>
+                                <!-- activity register end -->
+
+                                <!-- logout start -->
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar Sesión
                                 </a>
+                                <!-- logout end -->
                             </div>
+                            <!-- user dropdown end -->
+
                         </li>
 
                     </ul>
+                    <!-- navbar end -->
 
                 </nav>
 <!-- topbar end -->
