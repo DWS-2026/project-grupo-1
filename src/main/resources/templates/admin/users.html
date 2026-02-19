@@ -59,38 +59,67 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
-                                        <tr>
-                                            <th>Nombre</th>
-                                            <th>Fecha de creación</th>
-                                            <th>Perfil</th>
-                                            <th>Dinero gastado</th>
-                                            <th>Acciones</th>
-                                        </tr>
+                                    <tr>
+                                        <th>Nombre y Apellido</th>
+                                        <th>Email</th>
+                                        <th>Tel. principal</th>
+                                        <th>Tel. secundario</th>
+                                        <th>Fecha creación</th>
+                                        <th>Dinero gastado</th>
+                                        <th>Estado</th>
+                                        <th>Acciones</th>
+                                    </tr>
                                     </thead>
-
                                     <tbody>
-                                        {{#users}}
-                                        <tr>
-                                            <td>{{name}} {{lastName}}</td>
-                                            <td>{{formattedCreationDate}}</td>
-                                            <td><a href="/profile/{{id}}" class="btn btn-primary btn-sm">Ver perfil</a></td>
-                                            <td>{{moneySpent}} €</td>
-                                            <td>
-                                                <a href="/admin/users/edit/{{id}}" class="btn btn-warning btn-sm">Editar</a>
-                                            </td>
-                                        </tr>
-                                        {{/users}}
+                                    {{#users}}
+                                    <tr>
+                                        <td>{{name}} {{lastName}}</td>
 
-                                        {{^users}}
-                                        <tr>
-                                            <td colspan="5" class="text-center">No hay usuarios registrados en el sistema.</td>
-                                        </tr>
-                                        {{/users}}
+                                        <td>{{email}}</td>
+
+                                        <td>{{mainPhone}}</td>
+
+                                        <td>{{#secondaryPhone}}{{secondaryPhone}}{{/secondaryPhone}}{{^secondaryPhone}}-{{/secondaryPhone}}</td>
+
+                                        <td>{{formattedCreationDate}}</td>
+
+                                        <td>{{moneySpent}} €</td>
+
+                                        <td>
+                                            {{#enabled}}
+                                            <span class="badge badge-success">Activo</span>
+                                            {{/enabled}}
+                                            {{^enabled}}
+                                            <span class="badge badge-danger">Inactivo</span>
+                                            {{/enabled}}
+                                        </td>
+
+                                        <td>
+                                            <div class="btn-group" role="group">
+                                                <a href="/profile/{{id}}" class="btn btn-info btn-sm" title="Ver perfil">
+                                                    <i class="fas fa-eye"></i>
+                                                </a>
+                                                <a href="/admin/users/edit/{{id}}" class="btn btn-warning btn-sm" title="Editar">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                                <form action="/admin/users/delete/{{id}}" method="POST" style="display:inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/users}}
+
+                                    {{^users}}
+                                    <tr>
+                                        <td colspan="8" class="text-center">No hay clientes registrados en el sistema.</td>
+                                    </tr>
+                                    {{/users}}
                                     </tbody>
-
-
                                 </table>
-
                             </div>
                         </div>
                     </div>
