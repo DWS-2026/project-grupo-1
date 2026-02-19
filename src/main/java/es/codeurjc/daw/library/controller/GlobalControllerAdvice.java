@@ -5,6 +5,7 @@ package es.codeurjc.daw.library.controller;
 
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.service.NotificationService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -25,6 +26,9 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired // to manage notifications
+    private NotificationService notificationService;
 
     /**
      * adds common attributes to model before any controller method is executed
@@ -63,5 +67,11 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
             // if no user authenticated set flag to false
             model.addAttribute ("logged", false);
         }
+    }
+
+    @ModelAttribute
+    public void addNotifications(Model model) {
+        model.addAttribute ("notifications", notificationService.getRecent());
+        model.addAttribute ("hasNotifications", !notificationService.getRecent().isEmpty());
     }
 }

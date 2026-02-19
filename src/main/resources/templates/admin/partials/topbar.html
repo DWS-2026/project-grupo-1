@@ -36,69 +36,38 @@
 
                         <!-- notifications start -->
                         <li class="nav-item dropdown no-arrow mx-1">
-
-                            <!-- icon and notification counter start -->
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                                <!-- counter -->
-                                <span class="badge badge-danger badge-counter">3+</span>
+                                {{#hasNotifications}}
+                                <span class="badge badge-danger badge-counter">!</span>
+                                {{/hasNotifications}}
                             </a>
-                            <!-- icon and notification counter end -->
 
-                            <!-- notifications dropdown start -->
                             <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
-                                <!-- title -->
                                 <h6 class="dropdown-header">
-                                    Notificaciones
+                                    Centro de Alertas
                                 </h6>
 
-                                <!-- notification 1 start -->
+                                {{#notifications}}
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3">
-                                        <div class="icon-circle bg-primary">
-                                            <i class="fas fa-file-alt text-white"></i>
+                                        <div class="icon-circle {{color}}">
+                                            <i class="{{icon}} text-white"></i>
                                         </div>
                                     </div>
                                     <div>
-                                        <div class="small text-gray-500">Deciembre, 12, 2019</div>
-                                        <span class="font-weight-bold">Un nuevo informe mensual está listo para descargar</span>
+                                        <div class="small text-gray-500">{{formattedDate}}</div>
+                                        <span class="font-weight-bold">{{message}}</span>
                                     </div>
                                 </a>
-                                <!-- notification 1 end -->
+                                {{/notifications}}
 
-                                <!-- notification 2 start -->
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-success">
-                                            <i class="fas fa-donate text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Deciembre, 7, 2019</div>
-                                        Se han depositado 290,29€ en tu cuenta
-                                    </div>
-                                </a>
-                                <!-- notification 2 end -->
+                                {{^notifications}}
+                                <a class="dropdown-item text-center small text-gray-500" href="#">No hay notificaciones nuevas</a>
+                                {{/notifications}}
 
-                                <!-- notification 3 start -->
-                                <a class="dropdown-item d-flex align-items-center" href="#">
-                                    <div class="mr-3">
-                                        <div class="icon-circle bg-warning">
-                                            <i class="fas fa-exclamation-triangle text-white"></i>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <div class="small text-gray-500">Diciembre, 2, 2019</div>
-                                        Alerta de gasto: Hemos notado un gasto inusualmente alto en su cuenta.
-                                    </div>
-                                </a>
-                                <!-- notification 3 end -->
-
-                                <!-- button show all alerts -->
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas</a>
                             </div>
-                            <!-- notifications dropdown end -->
                         </li>
                         <!-- notifications end -->
 

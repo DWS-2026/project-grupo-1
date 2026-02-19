@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired; // to inject user
 import org.springframework.stereotype.Controller; // to define class as controller
 import org.springframework.ui.Model; // to pass data from controller to mustache view template
 import org.springframework.web.bind.annotation.*; // to add annotation for HTTP method mapping to java methods
+import org.springframework.web.multipart.MultipartFile; // handles file uploads (pfp) from http forms
 
 import es.codeurjc.daw.library.model.User; // to be able to work with user entity
 import es.codeurjc.daw.library.service.UserService; // to call its methods
-import org.springframework.web.multipart.MultipartFile; // handles file uploads (pfp) from http forms
+import es.codeurjc.daw.library.service.NotificationService;
 
 // to call user service pfp generation
 import java.awt.Color;
@@ -35,6 +36,8 @@ public class UserController {
     @Autowired // for password protection before db storage
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
+    @Autowired // to generate notifications
+    private NotificationService notificationService;
 
 
     /**
@@ -125,6 +128,10 @@ public class UserController {
             userService.delete(user);
         }
 
+        // notification user deletion
+        notificationService.notify ("Usuario eliminado: " + user.getName(), "fas fa-user", "bg-danger");
+
+
         // redirect to users
         return "redirect:/admin/users";
     }
@@ -181,6 +188,9 @@ public class UserController {
         }
 
         userService.save(newUser);
+
+        // notification user creation
+        notificationService.notify ("Usuario creado: " + name, "fas fa-user", "bg-success");
 
         return "redirect:/admin/users";
     }
