@@ -22,6 +22,9 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
+
     // show user list
     @GetMapping
     public String listUsers(Model model) {
@@ -96,6 +99,51 @@ public class UserController {
         }
 
         // redirect to users
+        return "redirect:/admin/users";
+    }
+
+    
+    // display user creation form
+    @GetMapping("/add")
+    public String showAddUserForm() {
+        return "admin/user-add";
+    }
+
+
+    // process user creation request (post)
+    @PostMapping("/add")
+    public String saveUser(@RequestParam String name,
+                           @RequestParam String lastName,
+                           @RequestParam String email,
+                           @RequestParam String mainPhone,
+                           @RequestParam String secondaryPhone,
+                           @RequestParam String password,
+                           @RequestParam double moneySpent,
+                           @RequestParam boolean enabled,
+                           @RequestParam(required = false) MultipartFile imageFile) throws IOException {
+
+        // create the instance
+        User newUser = new User();
+        newUser.setName(name);
+        newUser.setLastName(lastName);
+        newUser.setEmail(email);
+        newUser.setMainPhone(mainPhone);
+        newUser.setSecondaryPhone(secondaryPhone);
+        newUser.setMoneySpent(moneySpent);
+        newUser.setEnabled(enabled);
+        newUser.setRoles(java.util.Arrays.asList("USER"));
+
+        // apply password protection
+        newUser.setPassword(passwordEncoder.encode(password));
+
+        // if an image is added, store it too
+        if (imageFile != null && !imageFile.isEmpty()) {
+            byte[] bytes = imageFile.getBytes();
+            String base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
+            newUser.setProfilePicture(base64Image);
+        }
+
+        userService.save(newUser);
         return "redirect:/admin/users";
     }
 }
