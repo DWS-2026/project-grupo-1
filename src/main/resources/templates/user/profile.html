@@ -196,7 +196,12 @@
                                     <i class="fas fa-power-off me-2"></i>Cerrar sesión
                                 </button>
                                 <div class="gap-3 d-flex flex-column flex-sm-row">
+                                    <!-- only show button if user isnt admin -->
+                                    <!-- otherwise would delete the only admin in the system -->
+                                    {{^isAdmin}}
                                     <button type="submit" name="action" value="delete" class="btn btn-danger btn-lg w-100">Eliminar perfil</button>
+                                    {{/isAdmin}}
+
                                     <button type="submit" name="action" value="update" class="btn btn-primary btn-lg w-100">Actualizar perfil</button>
                                 </div>
                             </div>

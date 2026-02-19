@@ -5,6 +5,7 @@ package es.codeurjc.daw.library.controller;
 
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -83,7 +84,16 @@ public class WebController {
     }
 
     @GetMapping("/profile")
-    public String profile(){return "user/profile";
+        public String profile(Model model, Principal principal, HttpServletRequest request) {
+            if (principal != null) {
+                User user = userService.findByEmail(principal.getName());
+                model.addAttribute("user", user);
+
+                // check if user admin, and set flag accordingly
+                boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
+                model.addAttribute("isAdmin", isAdmin);
+            }
+            return "user/profile";
     }
 
     @GetMapping("/tour-details")
