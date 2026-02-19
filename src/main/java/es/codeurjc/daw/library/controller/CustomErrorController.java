@@ -43,9 +43,24 @@ public class CustomErrorController implements ErrorController {
                 // recover original uri that caused error
                 String requestUri = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
 
-                // if uri starts with /admin, set flag to true
-                if (requestUri != null && requestUri.startsWith("/admin")) {
-                    model.addAttribute("isAdminAttempt", true);
+                // if uri requested successfully, configure custom error message for each case
+                if (requestUri != null) {
+                    if (requestUri.startsWith ("/admin")) {
+                        model.addAttribute("isAdminAttempt", true);
+                        model.addAttribute("customMessage", "Lo sentimos, no tienes los permisos suficientes para ver esta sección.\nEsta área está reservada exclusivamente para administradores.");
+                    }
+                    else if (requestUri.startsWith ("/cart")) {
+                        model.addAttribute("isUserAttempt", true);
+                        model.addAttribute("customMessage", "Para ver su carrito, necesita iniciar sesión con una cuenta.");
+                    }
+                    else if (requestUri.startsWith ("/checkout")) {
+                        model.addAttribute("isUserAttempt", true);
+                        model.addAttribute("customMessage", "Para finalizar su compra, necesita iniciar sesión con una cuenta.");
+                    }
+                    else if (requestUri.startsWith ("/invoice")) {
+                        model.addAttribute("isUserAttempt", true);
+                        model.addAttribute("customMessage", "Para ver su factura, necesita iniciar sesión con una cuenta.");
+                    }
                 }
 
                 return "error/403";

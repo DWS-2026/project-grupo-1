@@ -126,16 +126,18 @@ public class SecurityConfiguration {
                         .rememberMeParameter("remember-me") // html input (remember me check) name
                 )
 
-                // trigger 403 if anon tries to visit /admin
+                // trigger 403 if anon tries to visit admin or user exclusive pages
                 .exceptionHandling((exception) -> exception
                     .authenticationEntryPoint((request, response, authException) -> {
-                        // Si un usuario no logueado intenta acceder a /admin, enviamos error 403
-                        if (request.getRequestURI().startsWith("/admin")) {
-                            response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denied");
-                      } else {
-                            // Para cualquier otra ruta protegida, le redirigimos al login normal
+                        String uri = request.getRequestURI();
+                        // conditions to trigger
+                        if (uri.startsWith("/admin") || // admin pages
+                                uri.startsWith("/cart") || uri.startsWith("/checkout") || uri.startsWith("/invoice")) { // user pages
+                                    response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denegado");
+                        } else {
+                            // default redirect to login
                             response.sendRedirect("/login");
-                    }
+                        }
                 })
         );
 

@@ -38,11 +38,17 @@
         <i class="bi bi-exclamation-octagon display-1 text-danger"></i>
         <h1 class="display-1">403</h1>
         <h1 class="mb-4 text-dark">Acceso restringido.</h1>
+
+        <!-- custom error message start -->
         <p class="mb-4 text-dark">
-          Lo sentimos, no tienes los permisos suficientes para ver esta sección.
-          <br>
-          Esta área está reservada exclusivamente para administradores.
+          {{#customMessage}}
+          {{customMessage}}
+          {{/customMessage}}
+          {{^customMessage}}
+          Lo sentimos, no tienes los permisos suficientes para acceder a esta sección.
+          {{/customMessage}}
         </p>
+        <!-- custom error message end -->
 
         <!-- buttons start -->
         <div class="d-flex flex-column align-items-center gap-3 mt-4">
@@ -52,6 +58,12 @@
           {{#isAdminAttempt}}
           <a class="btn btn-dark rounded-pill py-3 px-5" href="/admin-login">Ir al portal de login de administrador</a>
           {{/isAdminAttempt}}
+          <!-- end -->
+
+          <!-- if anon tries to visit user pages, this button is displayed -->
+          {{#isUserAttempt}}
+          <a class="btn btn-dark rounded-pill py-3 px-5" href="/login">Iniciar sesión</a>
+          {{/isUserAttempt}}
           <!-- end -->
 
         </div>
