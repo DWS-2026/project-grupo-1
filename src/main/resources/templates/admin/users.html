@@ -69,40 +69,23 @@
                                     </thead>
 
                                     <tbody>
+                                        {{#users}}
                                         <tr>
-                                            <td>Laura Méndez</td>
-                                            <td>2024/01/15</td>
-                                            <td><a href="profile.html" class="btn btn-primary btn-sm">Ver perfil</a>
-                                            </td>
-                                            <td>215,40 €</td>
+                                            <td>{{name}} {{lastName}}</td>
+                                            <td>{{creationDate}}</td>
+                                            <td><a href="/profile/{{id}}" class="btn btn-primary btn-sm">Ver perfil</a></td>
+                                            <td>{{moneySpent}} €</td>
                                             <td>
-                                                <a href="user-edit.html" class="btn btn-warning btn-sm">Editar</a>
+                                                <a href="/admin/users/edit/{{id}}" class="btn btn-warning btn-sm">Editar</a>
                                             </td>
                                         </tr>
+                                        {{/users}}
 
+                                        {{^users}}
                                         <tr>
-                                            <td>Carlos Romero</td>
-                                            <td>2023/09/22</td>
-                                            <td><a href="profile.html" class="btn btn-primary btn-sm">Ver perfil</a>
-                                            </td>
-                                            <td>89,99 €</td>
-                                            <td>
-                                                <a href="user-edit.html" class="btn btn-warning btn-sm">Editar</a>
-                                            </td>
+                                            <td colspan="5" class="text-center">No hay usuarios registrados en el sistema.</td>
                                         </tr>
-
-                                        <tr>
-                                            <td>Andrea Castillo</td>
-                                            <td>2024/02/11</td>
-                                            <td><a href="profile.html" class="btn btn-primary btn-sm">Ver perfil</a>
-                                            </td>
-                                            <td>540,20 €</td>
-                                            <td>
-                                                <a href="user-edit.html" class="btn btn-warning btn-sm">Editar</a>
-                                            </td>
-                                        </tr>
-
-                                        <!-- Repetir lo mismo para los demás usuarios -->
+                                        {{/users}}
                                     </tbody>
 
 

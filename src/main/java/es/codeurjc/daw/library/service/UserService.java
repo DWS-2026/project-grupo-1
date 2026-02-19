@@ -8,7 +8,7 @@ import es.codeurjc.daw.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.List;
 
 
 /**
@@ -48,5 +48,21 @@ public class UserService {
      */
     public void delete(User user) {
         userRepository.delete(user);
+    }
+
+
+    /**
+     * Retrieves all users from the database.
+     */
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+
+    /**
+     * Retrieves a user by their ID.
+     */
+    public User findById(Long id) {
+        return userRepository.findById(id).orElse(null);
     }
 }

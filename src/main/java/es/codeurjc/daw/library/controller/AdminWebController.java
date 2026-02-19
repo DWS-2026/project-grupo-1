@@ -56,16 +56,6 @@ public class AdminWebController {
         return "admin/404";
     }
 
-    @GetMapping("/users")
-    public String users() {
-        return "admin/users";
-    }
-
-    @GetMapping("/user-edit")
-    public String user_edit() {
-        return "admin/user-edit";
-    }
-
     @GetMapping("/profile")
     public String profile() {
         return "admin/profile";
