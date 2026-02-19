@@ -2,6 +2,7 @@ package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 
@@ -109,6 +110,14 @@ public class User {
 
     public LocalDateTime getCreationDate() { return creationDate; }
     public void setCreationDate(LocalDateTime creationDate) { this.creationDate = creationDate; }
+
+    public String getFormattedCreationDate() {
+        if (this.creationDate == null) return ""; // if null return empty
+
+        // format date to: day/month/year (hour:minute:second)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy (HH:mm:ss)");
+        return this.creationDate.format(formatter);
+    }
 
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }

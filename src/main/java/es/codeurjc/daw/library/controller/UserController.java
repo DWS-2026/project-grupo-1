@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 
+import java.util.List;
 
 
 
@@ -22,7 +23,15 @@ public class UserController {
     // show user list
     @GetMapping
     public String listUsers(Model model) {
-        model.addAttribute("users", userService.findAll());
+        // retrieve all users
+        List<User> allUsers = userService.findAll();
+
+        // filter to exclude admin
+        List<User> customersOnly = allUsers.stream()
+                .filter(user -> !user.getRoles().contains("ADMIN"))
+                .toList();
+
+        model.addAttribute("users", customersOnly);
         return "admin/users";
     }
 

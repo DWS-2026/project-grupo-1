@@ -61,7 +61,7 @@
                                     <thead>
                                         <tr>
                                             <th>Nombre</th>
-                                            <th>Fecha de inserción</th>
+                                            <th>Fecha de creación</th>
                                             <th>Perfil</th>
                                             <th>Dinero gastado</th>
                                             <th>Acciones</th>
@@ -72,7 +72,7 @@
                                         {{#users}}
                                         <tr>
                                             <td>{{name}} {{lastName}}</td>
-                                            <td>{{creationDate}}</td>
+                                            <td>{{formattedCreationDate}}</td>
                                             <td><a href="/profile/{{id}}" class="btn btn-primary btn-sm">Ver perfil</a></td>
                                             <td>{{moneySpent}} €</td>
                                             <td>

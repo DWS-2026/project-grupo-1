@@ -63,7 +63,7 @@ public class UserInitializer implements CommandLineRunner {
 
         System.out.println(">>> Admin initialized");
     }
-
+        
 
 
 
