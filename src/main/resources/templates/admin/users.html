@@ -1,191 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
 
+
+
+
+
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Users</title>
+    <title>SB Admin 2 - Usuarios</title>
 
-    <!-- Custom fonts for this template -->
+    <!-- custom fonts for this template -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- custom styles for this template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
+    <!-- custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
 </head>
 
-<body id="page-top">
 
-    <!-- Page Wrapper -->
+
+
+
+
+
+<body id="page-top">
+    <!-- content wrapper start -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
+        <!-- sidebar start -->
         {{>admin/partials/sidebar}}
-        <!-- End of Sidebar -->
+        <!-- sidebar end -->
 
-        <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
-            <!-- Main Content -->
+            <!-- content start -->
             <div id="content">
 
-                <!-- Topbar -->
+                <!-- topbar start -->
                 <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
-                <!-- End of Topbar -->
+                    {{>admin/partials/topbar}}
+                </div>
+                <!-- topbar end -->
 
-                <!-- Begin Page Content -->
+                <!-- container start -->
                 <div class="container-fluid">
 
 
-                    <!-- DataTales Example -->
+                    <!-- card start -->
                     <div class="card shadow mb-4">
+
+                        <!-- title start -->
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Users in the system</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Usuarios</h6>
                         </div>
+                        <!-- title end -->
+
+                        <!--  card body start -->
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <!-- table head start -->
                                     <thead>
-                                    <tr>
-                                        <th>Nombre y Apellido</th>
-                                        <th>Email</th>
-                                        <th>Tel. principal</th>
-                                        <th>Tel. secundario</th>
-                                        <th>Fecha creación</th>
-                                        <th>Dinero gastado</th>
-                                        <th>Estado</th>
-                                        <th>Acciones</th>
-                                    </tr>
+                                        <tr>
+                                            <th>Nombre y apellido</th>
+                                            <th>Email</th>
+                                            <th>Tel. principal</th>
+                                            <th>Tel. secundario</th>
+                                            <th>Fecha creación</th>
+                                            <th>Dinero gastado</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
                                     </thead>
+                                    <!-- table head end -->
+
+                                    <!-- body start -->
                                     <tbody>
-                                    {{#users}}
-                                    <tr>
-                                        <td>{{name}} {{lastName}}</td>
+                                        {{#users}}
+                                        <tr>
+                                            <td>{{name}} {{lastName}}</td>
 
-                                        <td>{{email}}</td>
+                                            <td>{{email}}</td>
 
-                                        <td>{{mainPhone}}</td>
+                                            <td>{{mainPhone}}</td>
 
-                                        <td>{{#secondaryPhone}}{{secondaryPhone}}{{/secondaryPhone}}{{^secondaryPhone}}-{{/secondaryPhone}}</td>
+                                            <td>{{#secondaryPhone}}{{secondaryPhone}}{{/secondaryPhone}}{{^secondaryPhone}}-{{/secondaryPhone}}
+                                            </td>
 
-                                        <td>{{formattedCreationDate}}</td>
+                                            <td>{{formattedCreationDate}}</td>
 
-                                        <td>{{moneySpent}} €</td>
+                                            <td>{{moneySpent}} €</td>
 
-                                        <td>
-                                            {{#enabled}}
-                                            <span class="badge badge-success">Activo</span>
-                                            {{/enabled}}
-                                            {{^enabled}}
-                                            <span class="badge badge-danger">Inactivo</span>
-                                            {{/enabled}}
-                                        </td>
+                                            <td>
+                                                {{#enabled}}
+                                                <span class="badge badge-success">Activo</span>
+                                                {{/enabled}}
+                                                {{^enabled}}
+                                                <span class="badge badge-danger">Inactivo</span>
+                                                {{/enabled}}
+                                            </td>
 
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="/profile/{{id}}" class="btn btn-info btn-sm" title="Ver perfil">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="/admin/users/edit/{{id}}" class="btn btn-warning btn-sm" title="Editar">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="/admin/users/delete/{{id}}" method="POST" style="display:inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este usuario?')">
-                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                                                    <button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {{/users}}
+                                            <td class="text-nowrap">
+                                                <div class="btn-group" role="group">
+                                                    <a href="/profile/{{id}}"
+                                                        class="btn btn-info btn-sm shadow-sm mr-2">
+                                                        <i class="fas fa-eye mr-1"></i> <span>Ver</span>
+                                                    </a>
 
-                                    {{^users}}
-                                    <tr>
-                                        <td colspan="8" class="text-center">No hay clientes registrados en el sistema.</td>
-                                    </tr>
-                                    {{/users}}
+                                                    <a href="/admin/users/edit/{{id}}"
+                                                        class="btn btn-warning btn-sm shadow-sm mr-2">
+                                                        <i class="fas fa-edit mr-1"></i> <span>Editar</span>
+                                                    </a>
+
+                                                    <form action="/admin/users/delete/{{id}}" method="POST"
+                                                        style="display:inline"
+                                                        onsubmit="return confirm('¿Estás seguro?')">
+                                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm shadow-sm mr-2">
+                                                            <i class="fas fa-trash mr-1"></i> <span>Eliminar</span>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        {{/users}}
+
+                                        {{^users}}
+                                        <tr>
+                                            <td colspan="8" class="text-center">No hay clientes registrados en el
+                                                sistema.</td>
+                                        </tr>
+                                        {{/users}}
                                     </tbody>
+                                    <!-- body end -->
+
                                 </table>
                             </div>
                         </div>
+                        <!-- card body end -->
+
                     </div>
+                    <!-- card end -->
 
                 </div>
-                <!-- /.container-fluid -->
+                <!-- container end -->
 
             </div>
-            <!-- End of Main Content -->
+            <!-- content end -->
 
-            <!-- Footer -->
+            <!-- footer start -->
             <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
-            <!-- End of Footer -->
+                {{>admin/partials/footer}}
+            </footer>
+            <!-- footer end -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- shadow end -->
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- content wrapper end -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
+    <!-- scroll to top -->
+    <a class="scroll-to-top rounded" href="#page-top"> <i class="fas fa-angle-up"></i> </a>
 
-    <!-- Logout Modal-->
+    <!-- logout modal start -->
     <div id="logout-modal">
-  {{>admin/partials/logout-modal}}
-</div>
+        {{>admin/partials/logout-modal}}
+    </div>
+    <!-- logout modal end -->
 
-    <!-- Bootstrap core JavaScript-->
+    <!-- bootstrap core js -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
+    <!-- core plugin js -->
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
+    <!-- custom scripts for all pages -->
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
+    <!-- page level plugins -->
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-    <!-- Page level custom scripts -->
+    <!-- page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
-
-    <script>
-        fetch("/admin/components/sidebar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("sidebar").innerHTML = data);
-
-        fetch("/admin/components/topbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("topbar").innerHTML = data);
-
-        fetch("/admin/components/footer.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("footer").innerHTML = data);
-
-        fetch("/admin/components/logout-modal.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("logout-modal").innerHTML = data);
-    </script>
 </body>
-
 </html>

@@ -14,7 +14,7 @@ public class User {
     // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; // unique identifier for each user in db
 
 
     // ATTRIBUTES START =====================================================
