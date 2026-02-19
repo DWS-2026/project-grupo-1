@@ -195,9 +195,23 @@
                     <!-- social media + password end -->
                     
                     <!-- bottom buttons start -->
-                    <div class="gap-3 d-md-flex justify-content-md-end text-center mb-5">
-                        <button type="submit" name="action" value="delete" class="btn btn-danger btn-lg">Eliminar perfil</button>
-                        <button type="submit" name="action" value="update" class="btn btn-primary btn-lg">Actualizar perfil</button>
+                    <div class="d-flex justify-content-md-end text-center mb-5">
+                        <div class="d-flex flex-column gap-3">
+
+                            <!-- logout start -->
+                            <button type="button" class="btn btn-secondary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                <i class="fas fa-power-off me-2"></i>Cerrar sesión
+                            </button>
+                            <!-- logout end -->
+
+                            <!-- delete and update start -->
+                            <div class="gap-3 d-md-flex">
+                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-lg">Eliminar perfil</button>
+                                <button type="submit" name="action" value="update" class="btn btn-primary btn-lg">Actualizar perfil</button>
+                            </div>
+                            <!-- delete and update end -->
+
+                        </div>
                     </div>
                     <!-- bottom buttons end -->
 
