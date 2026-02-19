@@ -43,7 +43,20 @@
           <br>
           Esta área está reservada exclusivamente para administradores.
         </p>
-        <a class="btn btn-primary rounded-pill py-3 px-5" href="/">Volver a inicio</a>
+
+        <!-- buttons start -->
+        <div class="d-flex flex-column align-items-center gap-3 mt-4">
+          <a class="btn btn-primary rounded-pill py-3 px-5" href="/">Volver a inicio</a>
+
+          <!-- if user tries to visit /admin, this button is displayed -->
+          {{#isAdminAttempt}}
+          <a class="btn btn-dark rounded-pill py-3 px-5" href="/admin-login">Ir al portal de login de administrador</a>
+          {{/isAdminAttempt}}
+          <!-- end -->
+
+        </div>
+        <!-- buttons end -->
+
       </div>
     </div>
   </div>

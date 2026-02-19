@@ -9,6 +9,9 @@ import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+// used for isadminattempt flag
+import org.springframework.ui.Model;
+
 
 
 
@@ -27,15 +30,24 @@ public class CustomErrorController implements ErrorController {
      * @return path to mustache template to be rendered
      */
     @RequestMapping("/error")
-    public String handleError(HttpServletRequest request) {
+    public String handleError(HttpServletRequest request, Model model) {
         // retrieve HTTP status code (e.g., 404, 403, 500) from request attributes
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
 
-            // * triggered when user lacks necessary roles (authorization error)
+            // triggered when user lacks necessary roles (authorization error)
             if (statusCode == 403) {
+
+                // recover original uri that caused error
+                String requestUri = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+
+                // if uri starts with /admin, set flag to true
+                if (requestUri != null && requestUri.startsWith("/admin")) {
+                    model.addAttribute("isAdminAttempt", true);
+                }
+
                 return "error/403";
             }
 

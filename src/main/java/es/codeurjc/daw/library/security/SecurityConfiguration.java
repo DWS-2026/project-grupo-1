@@ -15,7 +15,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-
+// for 403 redirection
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 
 
 /**
@@ -123,7 +124,20 @@ public class SecurityConfiguration {
                         .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 day duration
                         .userDetailsService(userDetailsService) // reload user
                         .rememberMeParameter("remember-me") // html input (remember me check) name
-                );
+                )
+
+                // trigger 403 if anon tries to visit /admin
+                .exceptionHandling((exception) -> exception
+                    .authenticationEntryPoint((request, response, authException) -> {
+                        // Si un usuario no logueado intenta acceder a /admin, enviamos error 403
+                        if (request.getRequestURI().startsWith("/admin")) {
+                            response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denied");
+                      } else {
+                            // Para cualquier otra ruta protegida, le redirigimos al login normal
+                            response.sendRedirect("/login");
+                    }
+                })
+        );
 
         return http.build();
     }
