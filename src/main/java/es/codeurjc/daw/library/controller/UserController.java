@@ -82,4 +82,20 @@ public class UserController {
 
         return "redirect:/admin/users";
     }
+
+
+    // deletes user
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        // search target user by id
+        User user = userService.findById(id);
+
+        // if user exists, delete him
+        if (user != null) {
+            userService.delete(user);
+        }
+
+        // redirect to users
+        return "redirect:/admin/users";
+    }
 }
