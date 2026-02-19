@@ -101,11 +101,11 @@
 
                 <form class="file-upload" action="/profile/update" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                    <div class="row mb-5 gx-5">
-                        <div class="col-xxl-8 mb-5 mb-xxl-0">
+                    <div class="row mb-4 gx-5">
+                        <div class="col-xxl-8 mb-4 mb-xxl-0">
                             
                             <!-- details form start -->
-                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                            <div class="bg-secondary-soft px-4 py-5 rounded h-100">
                                 <div class="row g-3">
                                     <h4 class="mb-4 mt-0">Detalles</h4>
                                     <div class="col-md-6">
@@ -135,13 +135,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- details form start -->
+                            <!-- details form end -->
 
                         </div>
 
                         <!-- pfp section start -->
                         <div class="col-xxl-4">
-                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                            <div class="bg-secondary-soft px-4 py-5 rounded h-100">
                                 <div class="row g-3 text-center">
                                     <h4 class="mb-4 mt-0">Foto de perfil</h4>
                                     <div class="square position-relative mb-3">
@@ -166,16 +166,15 @@
 
                     </div>
 
-                    <!-- social media + password start -->
+                    <!-- password start -->
                     <div class="row mb-5 gx-5">
 
-                        <!-- password change start -->
-                        <div class="col-xxl-6">
-                            <div class="bg-secondary-soft px-4 py-5 rounded">
+                        <div class="col-xxl-8 mb-4 mb-xxl-0">
+                            <div class="bg-secondary-soft px-4 py-5 rounded h-100">
                                 <div class="row g-3">
-                                    <h4 class="my-4">Cambiar contraseña</h4>
+                                    <h4 class="mb-4 mt-0">Cambiar contraseña</h4>
                                     <div class="col-md-6">
-                                        <label for="exampleInputPassword1" class="form-label">Contraseña antigüa *</label>
+                                        <label for="exampleInputPassword1" class="form-label">Contraseña antigua *</label>
                                         <input type="password" class="form-control" id="exampleInputPassword1">
                                     </div>
                                     <div class="col-md-6">
@@ -189,28 +188,18 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- password change end -->
+                        <div class="col-xxl-4 d-flex flex-column justify-content-end align-items-xxl-end align-items-center">
 
-                    </div> 
-                    <!-- social media + password end -->
-                    
-                    <!-- bottom buttons start -->
-                    <div class="d-flex justify-content-md-end text-center mb-5">
-                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex flex-column gap-3 w-100" style="max-width: 450px;">
 
-                            <!-- logout start -->
-                            <button type="button" class="btn btn-secondary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
-                                <i class="fas fa-power-off me-2"></i>Cerrar sesión
-                            </button>
-                            <!-- logout end -->
-
-                            <!-- delete and update start -->
-                            <div class="gap-3 d-md-flex">
-                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-lg">Eliminar perfil</button>
-                                <button type="submit" name="action" value="update" class="btn btn-primary btn-lg">Actualizar perfil</button>
+                                <button type="button" class="btn btn-secondary btn-lg w-100" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                    <i class="fas fa-power-off me-2"></i>Cerrar sesión
+                                </button>
+                                <div class="gap-3 d-flex flex-column flex-sm-row">
+                                    <button type="submit" name="action" value="delete" class="btn btn-danger btn-lg w-100">Eliminar perfil</button>
+                                    <button type="submit" name="action" value="update" class="btn btn-primary btn-lg w-100">Actualizar perfil</button>
+                                </div>
                             </div>
-                            <!-- delete and update end -->
-
                         </div>
                     </div>
                     <!-- bottom buttons end -->
