@@ -43,12 +43,6 @@ public class User {
 
     // business data
     private double moneySpent = 0.0;
-
-    // social media
-    private String facebook;
-    private String twitter;
-    private String instagram;
-    private String linkedin;
     // ATTRIBUTES END =====================================================
 
 
@@ -93,17 +87,5 @@ public class User {
 
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
-
-    public String getFacebook() { return facebook; }
-    public void setFacebook(String facebook) { this.facebook = facebook; }
-
-    public String getTwitter() { return twitter; }
-    public void setTwitter(String twitter) { this.twitter = twitter; }
-
-    public String getInstagram() { return instagram; }
-    public void setInstagram(String instagram) { this.instagram = instagram; }
-
-    public String getLinkedin() { return linkedin; }
-    public void setLinkedin(String linkedin) { this.linkedin = linkedin; }
     // GETTERS AND SETTERS END =====================================================
-}
+}   
