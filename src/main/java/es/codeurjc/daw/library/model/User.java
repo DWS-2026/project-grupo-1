@@ -1,8 +1,5 @@
 package es.codeurjc.daw.library.model;
 
-
-
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -10,7 +7,7 @@ import java.util.List;
 
 
 
-@Entity // entity represents a user in the app
+@Entity // entity represents a user in  app
 @Table(name = "users") // map to users table in db (user is reserved SQL keyword)
 public class User {
     // primary key
@@ -48,6 +45,34 @@ public class User {
 
     // CONSTRUCTORS START =====================================================
     public User() {} // default empty constructor required by JPA
+
+
+    // client constructor (with money, enabled and date attributes)
+    public User (String name, String lastName, String email, String password,
+                String mainPhone, String secondaryPhone, double moneySpent,
+                boolean enabled, LocalDateTime creationDate) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.mainPhone = mainPhone;
+        this.secondaryPhone = secondaryPhone;
+        this.moneySpent = moneySpent;
+        this.enabled = enabled;
+        this.creationDate = creationDate;
+    }
+
+
+    // admin constructor (no client metrics)
+    public User(String name, String lastName, String email, String password,
+                String mainPhone, String secondaryPhone) {
+        this.name = name;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.mainPhone = mainPhone;
+        this.secondaryPhone = secondaryPhone;
+    }
     // CONSTRUCTORS END =====================================================
 
 
