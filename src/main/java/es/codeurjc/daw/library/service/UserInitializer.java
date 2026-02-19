@@ -24,8 +24,10 @@ import jakarta.annotation.Nullable;
 
 
 
+
+// populates db with user sample data
 @Component
-@Order (1) // first load users
+@Order (1) // ensures users are created before other entities that might depend on them
 public class UserInitializer implements CommandLineRunner {
 
     @Autowired
@@ -37,10 +39,13 @@ public class UserInitializer implements CommandLineRunner {
     @Autowired
     private UserService userService;
 
+
+
+    // auto-runs on app startup
     @Override
     public void run (String... args) {
 
-        // if there are already users, do no thing (ddl-auto is set to create)
+        // if there are already users, do nothing (ddl-auto is set to create)
         if (userRepository.count() != 0) return;
 
         // create 5 users
@@ -62,26 +67,25 @@ public class UserInitializer implements CommandLineRunner {
         System.out.println(">>> Users initialized");
 
         // create admin
-        createAdmin("NombreDeAdmin", "ApellidoDeAdmin", "admin@apexexpeditions.com", "1234", "700111222", "800111222");
+        createAdmin("NombreAdmin", "ApellidoAdmin", "admin@apexexpeditions.com", "1234", "700111222", "800111222");
 
         System.out.println(">>> Admin initialized");
     }
-        
 
 
 
     //  method to create user
     private void createUser (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone,
                              double moneySpent, boolean enabled, LocalDateTime creationDate) {
-        User user = new User(name, lastName, email, passwordEncoder.encode(password), mainPhone, secondaryPhone,
+        User user = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone,
                 moneySpent, enabled, creationDate);
 
         // if user, pfp bg is blue
         String avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
-        user.setProfilePicture(avatar);
+        user.setProfilePicture (avatar);
 
-        user.setRoles(Arrays.asList("USER"));
-        userRepository.save(user);
+        user.setRoles (Arrays.asList("USER"));
+        userRepository.save (user);
     }
 
 
@@ -89,13 +93,13 @@ public class UserInitializer implements CommandLineRunner {
 
     // method to create admin
     private void createAdmin (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone) {
-        User admin = new User(name, lastName, email, passwordEncoder.encode(password), mainPhone, secondaryPhone);
+        User admin = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone);
 
         // if admin, pfp bg is black
         String avatar = userService.generateDefaultAvatar ("Admin", name, new Color(0, 0, 0));
-        admin.setProfilePicture(avatar);
+        admin.setProfilePicture (avatar);
 
-        admin.setRoles(Arrays.asList("USER", "ADMIN"));
-        userRepository.save(admin);
+        admin.setRoles (Arrays.asList("USER", "ADMIN"));
+        userRepository.save (admin);
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 
 
@@ -21,9 +21,9 @@
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     <style>
-        /* Contenedor de la foto más grande y con mejor estilo */
+        /* pfp resize and styling */
         .pfp-container {
-            width: 230px; /* Tamaño aumentado */
+            width: 230px;
             height: 230px;
             border: 2px solid #e3e6f0;
             background-color: #f8f9fc;
@@ -33,18 +33,21 @@
             justify-content: center;
             overflow: hidden;
             margin-bottom: 15px;
-            box-shadow: 0 .125rem .25rem 0 rgba(58,59,69,.2)!important; /* Sombra suave */
+            box-shadow: 0 .125rem .25rem 0 rgba(58,59,69,.2) !important; /* light shadow */
         }
+
         .btn-success-soft {
             color: #28a745;
             background-color: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.2);
         }
+
         .btn-success-soft:hover {
             background-color: #28a745;
             color: white;
         }
-        /* Clase para asegurar el centrado vertical en la fila */
+
+        /* vertical centering */
         .pfp-column-center {
             display: flex;
             flex-direction: column;
@@ -59,44 +62,64 @@
 
 
 
+
 <body id="page-top">
 <div id="wrapper">
     {{>admin/partials/sidebar}}
 
     <div id="content-wrapper" class="d-flex flex-column">
+        <!-- content start -->
         <div id="content">
             <div id="topbar">{{>admin/partials/topbar}}</div>
 
+
             <div class="container-fluid">
+                <!-- page header -->
                 <h1 class="h3 mb-4 text-gray-800">Editar usuario: {{user.name}} {{user.lastName}}</h1>
 
                 <div class="card shadow mb-4">
+                    <!-- page subheader -->
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">Datos del usuario</h6>
                     </div>
 
+                    <!-- card content start -->
                     <div class="card-body">
                         <form action="/admin/users/edit/{{user.id}}" method="post" enctype="multipart/form-data">
                             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 
                             <div class="row">
                                 <div class="col-md-8">
+
+                                    <!-- name start -->
                                     <div class="form-group">
                                         <label>Nombre</label>
                                         <input type="text" name="name" class="form-control" value="{{user.name}}" required>
                                     </div>
+                                    <!-- name end -->
+
+                                    <!-- surname start -->
                                     <div class="form-group">
                                         <label>Apellidos</label>
                                         <input type="text" name="lastName" class="form-control" value="{{user.lastName}}" required>
                                     </div>
+                                    <!-- surname end -->
+
+                                    <!-- email start -->
                                     <div class="form-group">
                                         <label>Email</label>
                                         <input type="email" name="email" class="form-control" value="{{user.email}}" required>
                                     </div>
+                                    <!-- email end -->
+
+                                    <!-- money spent start -->
                                     <div class="form-group">
                                         <label>Dinero gastado (€)</label>
                                         <input type="number" step="0.01" name="moneySpent" class="form-control" value="{{user.moneySpent}}">
                                     </div>
+                                    <!-- money spent end -->
+
+                                    <!-- enabled start -->
                                     <div class="form-group">
                                         <label>Estado del usuario</label>
                                         <select name="enabled" class="form-control">
@@ -104,8 +127,10 @@
                                             <option value="false" {{^user.enabled}}selected{{/user.enabled}}>Inactivo</option>
                                         </select>
                                     </div>
+                                    <!-- enabled end -->
                                 </div>
 
+                                <!-- pfp section start -->
                                 <div class="col-md-4 text-center pfp-column-center">
                                     <label>Foto de perfil</label>
                                     <div class="pfp-container mx-auto">
@@ -115,27 +140,40 @@
                                         </div>
                                         {{/user.profilePicture}}
 
+                                        <!-- load users pfp -->
                                         <img id="pfp-preview"
                                              src="{{#user.profilePicture}}data:image/png;base64,{{user.profilePicture}}{{/user.profilePicture}}"
                                              class="img-fluid {{^user.profilePicture}}d-none{{/user.profilePicture}}"
                                              style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
+
+                                    <!-- confirme change image button start -->
                                     <label class="btn btn-success-soft btn-sm" for="imageFile" style="cursor: pointer;">
                                         <i class="fas fa-camera mr-2"></i>Cambiar imagen
                                     </label>
+                                    <!-- confirme change image button end -->
                                 </div>
+                                <!-- pfp section end -->
+
                             </div>
 
+
                             <hr>
+                            <!-- bottom buttons start -->
                             <button type="submit" class="btn btn-success">
                                 <i class="fas fa-save"></i> Guardar cambios
                             </button>
                             <a href="/admin/users" class="btn btn-secondary">Cancelar</a>
+                            <!-- bottom buttons end -->
                         </form>
                     </div>
+                    <!-- card content end -->
+
                 </div>
             </div>
+
+            <!-- content end -->
         </div>
 
         <footer id="footer">{{>admin/partials/footer}}</footer>
@@ -143,12 +181,13 @@
 </div>
 
 
-    <!-- Scripts -->
+    <!-- scripts -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="/js/sb-admin-2.min.js"></script>
 
+    <!-- display new image before confirmation -->
     <script>
         document.getElementById('imageFile').addEventListener('change', function(event) {
             const file = event.target.files[0];

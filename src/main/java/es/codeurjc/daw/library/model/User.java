@@ -1,19 +1,22 @@
 package es.codeurjc.daw.library.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+
+
+import jakarta.persistence.*; // for jpa annotations: mapping java class as persistent db entity
+import java.time.LocalDateTime; // to manage timestamps
+import java.time.format.DateTimeFormatter; // to format creation timestamp
+import java.util.List; // for role lists
 
 
 
 
-@Entity // entity represents a user in  app
-@Table(name = "users") // map to users table in db (user is reserved SQL keyword)
+
+@Entity // represents user in app
+@Table (name = "users") // map to users table in db (user is reserved SQL keyword)
 public class User {
-    // primary key
+    // primary key (increases automatically per new user)
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id; // unique identifier for each user in db
 
 
@@ -24,19 +27,19 @@ public class User {
     private String mainPhone;
     private String secondaryPhone;
 
-    @Lob // for large text or binary data (base64 or long URLs)
+    @Lob // for b64 encoded image
     private String profilePicture;
 
     // account and security credentials
-    @Column(unique = true)
+    @Column (unique = true) // unique email used as username for auth
     private String email;
 
-    private String password; // stores users password
+    private String password; // hashed password
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> roles; // stores users roles
+    @ElementCollection (fetch = FetchType.EAGER) // eager ensures roles loaded immediatly with user (for security checks)
+    private List<String> roles; // list user roles
 
-    private boolean enabled = true; // flag to enable/disable account
+    private boolean enabled = true; // flag to enable/disable account (without deleting it)
     private LocalDateTime creationDate = LocalDateTime.now(); // account creation timestamp
 
     // business data
@@ -45,13 +48,13 @@ public class User {
 
 
     // CONSTRUCTORS START =====================================================
-    public User() {} // default empty constructor required by JPA
+    public User() {} // default empty constructor required by jpa
 
 
-    // client constructor (with money, enabled and date attributes)
+    // client constructor (has attributes for client metrics: money, enabled and date)
     public User (String name, String lastName, String email, String password,
-                String mainPhone, String secondaryPhone, double moneySpent,
-                boolean enabled, LocalDateTime creationDate) {
+                String mainPhone, String secondaryPhone,
+                 double moneySpent, boolean enabled, LocalDateTime creationDate) {
         this.name = name;
         this.lastName = lastName;
         this.email = email;
@@ -78,47 +81,63 @@ public class User {
 
 
     // GETTERS AND SETTERS START =====================================================
+    // id
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
+    // name
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
+    // last name
     public String getLastName() { return lastName; }
     public void setLastName(String lastName) { this.lastName = lastName; }
 
+    // main phone
     public String getMainPhone() { return mainPhone; }
     public void setMainPhone(String mainPhone) { this.mainPhone = mainPhone; }
 
+    // secondary phone
     public String getSecondaryPhone() { return secondaryPhone; }
     public void setSecondaryPhone(String secondaryPhone) { this.secondaryPhone = secondaryPhone; }
 
+    // pfp
     public String getProfilePicture() { return profilePicture; }
     public void setProfilePicture(String profilePicture) { this.profilePicture = profilePicture; }
 
+    // email
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
 
+    // password
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
+    // roles list
     public List<String> getRoles() { return roles; }
     public void setRoles(List<String> roles) { this.roles = roles; }
 
+    // enabled flag
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
 
+    // creation timestamp
     public LocalDateTime getCreationDate() { return creationDate; }
     public void setCreationDate(LocalDateTime creationDate) { this.creationDate = creationDate; }
 
+    /**
+     * formats creation date for better display in mustache templates
+     * @return string formatted as dd/mm/yyyy (hh:mm:ss)
+     */
     public String getFormattedCreationDate() {
         if (this.creationDate == null) return ""; // if null return empty
 
         // format date to: day/month/year (hour:minute:second)
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy (HH:mm:ss)");
-        return this.creationDate.format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern ("dd/MM/yyyy (HH:mm:ss)");
+        return this.creationDate.format (formatter);
     }
 
+    // money spent
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
     // GETTERS AND SETTERS END =====================================================

@@ -1,14 +1,17 @@
 package es.codeurjc.daw.library.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
 
-import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.service.UserService;
-import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.beans.factory.annotation.Autowired; // to inject user service
+import org.springframework.stereotype.Controller; // to define class as controller
+import org.springframework.ui.Model; // to pass data from controller to mustache view template
+import org.springframework.web.bind.annotation.*; // to add annotation for HTTP method mapping to java methods
+
+import es.codeurjc.daw.library.model.User; // to be able to work with user entity
+import es.codeurjc.daw.library.service.UserService; // to call its methods
+import org.springframework.web.multipart.MultipartFile; // handles file uploads (pfp) from http forms
+
+// to call user service pfp generation
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
@@ -16,19 +19,30 @@ import java.util.Base64;
 
 
 
+
+
+/**
+ * controller to manage administrative tasks for users
+ * all routes prefixed with /admin/users.
+ */
 @Controller
-@RequestMapping("/admin/users") // group user management routes
+@RequestMapping ("/admin/users") // group user management routes
 public class UserController {
 
-    @Autowired
+    @Autowired // to be able to use user service methods
     private UserService userService;
 
-    @Autowired
+    @Autowired // for password protection before db storage
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
-    // show user list
+
+
+    /**
+     * displays list of users
+     * fetches all users filtering out those with ADMIN role
+     */
     @GetMapping
-    public String listUsers(Model model) {
+    public String listUsers (Model model) {
         // retrieve all users
         List<User> allUsers = userService.findAll();
 
@@ -37,26 +51,38 @@ public class UserController {
                 .filter(user -> !user.getRoles().contains("ADMIN"))
                 .toList();
 
-        model.addAttribute("users", customersOnly);
+        model.addAttribute ("users", customersOnly);
         return "admin/users";
     }
 
-    // load editing form (final path: /admin/users/edit/{id})
-    @GetMapping("/edit/{id}")
-    public String editUser(@PathVariable Long id, Model model) {
-        User user = userService.findById(id);
 
+
+    /**
+     * prepares editing form for specific user
+     * @param id db id of user to edit
+     */
+    @GetMapping ("/edit/{id}")
+    public String editUser (@PathVariable Long id, Model model) {
+        // search for target user
+        User user = userService.findById (id);
+
+        // if it doesnt exist, return to user table page
         if (user == null) {
-            return "redirect:/admin/users"; // if it doesnt exist, return to table
+            return "redirect:/admin/users";
         }
 
-        model.addAttribute("user", user);
+        model.addAttribute ("user", user);
         return "admin/user-edit";
     }
 
-    // save form changes (final path: POST /admin/users/edit/{id})
-    @PostMapping("/edit/{id}")
-    public String updateUser(@PathVariable Long id,
+
+
+    /**
+     * processes update request from edit form
+     * imageFile is optional. If provided, converted to base64 to be stored as string in db
+     */
+    @PostMapping ("/edit/{id}")
+    public String updateUser (@PathVariable Long id,
                              @RequestParam String name,
                              @RequestParam String lastName,
                              @RequestParam String email,
@@ -74,18 +100,18 @@ public class UserController {
             existingUser.setMoneySpent(moneySpent);
             existingUser.setEnabled(enabled);
 
-            // update image
+            // update image if added
             if (imageFile != null && !imageFile.isEmpty()) {
                 byte[] bytes = imageFile.getBytes();
                 String base64Image = Base64.getEncoder().encodeToString(bytes);
-                existingUser.setProfilePicture(base64Image);
+                existingUser.setProfilePicture (base64Image);
             }
         }
 
-            userService.save(existingUser);
-
+        userService.save (existingUser);
         return "redirect:/admin/users";
     }
+
 
 
     // deletes user
@@ -111,9 +137,13 @@ public class UserController {
     }
 
 
-    // process user creation request (post)
-    @PostMapping("/add")
-    public String saveUser(@RequestParam String name,
+
+    /**
+     * processes creation of new user
+     * ensures password is encrypted and handles default avatar generation if no image is uploaded
+     */
+    @PostMapping ("/add")
+    public String saveUser (@RequestParam String name,
                            @RequestParam String lastName,
                            @RequestParam String email,
                            @RequestParam String mainPhone,
@@ -125,14 +155,14 @@ public class UserController {
 
         // create the instance
         User newUser = new User();
-        newUser.setName(name);
-        newUser.setLastName(lastName);
-        newUser.setEmail(email);
-        newUser.setMainPhone(mainPhone);
-        newUser.setSecondaryPhone(secondaryPhone);
-        newUser.setMoneySpent(moneySpent);
-        newUser.setEnabled(enabled);
-        newUser.setRoles(java.util.Arrays.asList("USER"));
+        newUser.setName (name);
+        newUser.setLastName (lastName);
+        newUser.setEmail (email);
+        newUser.setMainPhone (mainPhone);
+        newUser.setSecondaryPhone (secondaryPhone);
+        newUser.setMoneySpent (moneySpent);
+        newUser.setEnabled (enabled);
+        newUser.setRoles (java.util.Arrays.asList("USER"));
 
         // apply password protection
         newUser.setPassword(passwordEncoder.encode(password));

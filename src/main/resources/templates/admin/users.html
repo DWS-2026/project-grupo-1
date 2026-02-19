@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 
 
@@ -15,19 +15,16 @@
 
     <title>SB Admin 2 - Usuarios</title>
 
-    <!-- custom fonts for this template -->
+    <!-- custom fonts for template -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
-    <!-- custom styles for this template -->
+    <!-- custom styles for template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
     <!-- custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
-
 
 
 
@@ -55,7 +52,6 @@
 
                 <!-- container start -->
                 <div class="container-fluid">
-
 
                     <!-- card start -->
                     <div class="card shadow mb-4">
@@ -111,8 +107,10 @@
                                                 {{/enabled}}
                                             </td>
 
+                                            <!-- action buttons start -->
                                             <td class="text-nowrap">
                                                 <div class="btn-group" role="group">
+                                                    <!-- view button -->
                                                     <button type="button"
                                                             class="btn btn-info btn-sm shadow-sm mr-2"
                                                             data-toggle="modal"
@@ -120,11 +118,13 @@
                                                         <i class="fas fa-eye mr-1"></i> <span>Ver</span>
                                                     </button>
 
+                                                    <!-- edit button -->
                                                     <a href="/admin/users/edit/{{id}}"
                                                         class="btn btn-warning btn-sm shadow-sm mr-2">
                                                         <i class="fas fa-edit mr-1"></i> <span>Editar</span>
                                                     </a>
 
+                                                    <!-- delete button -->
                                                         <button type="button"
                                                                 class="btn btn-danger btn-sm shadow-sm mr-2"
                                                                 data-toggle="modal"
@@ -135,13 +135,13 @@
                                                 </div>
                                                 {{>admin/partials/user-view}}
                                             </td>
+                                            <!-- action buttons end -->
                                         </tr>
                                         {{/users}}
 
                                         {{^users}}
                                         <tr>
-                                            <td colspan="8" class="text-center">No hay clientes registrados en el
-                                                sistema.</td>
+                                            <td colspan="8" class="text-center">No hay usuarios registrados.</td>
                                         </tr>
                                         {{/users}}
                                     </tbody>

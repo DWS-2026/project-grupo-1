@@ -2,13 +2,12 @@ package es.codeurjc.daw.library.service;
 
 
 
+import es.codeurjc.daw.library.model.User; // to work with users
+import es.codeurjc.daw.library.repository.UserRepository; // to search by email
+import org.springframework.beans.factory.annotation.Autowired; // to inject repository
+import org.springframework.stereotype.Service; // to define service
 
-import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import java.util.List; // for user lists
 
 // for pfp generation
 import javax.imageio.ImageIO;
@@ -25,102 +24,93 @@ import jakarta.annotation.Nullable;
 
 /**
  * service layer class that handles business logic related to users
- * acts as intermediary between WebController and UserRepository
+ * acts as intermediary between webcontroller and userrepository
  */
 @Service
 public class UserService {
-
     // repository injection for db access
     @Autowired
     private UserRepository userRepository;
 
 
-    /**
-     * retrieves user from db using their email address
-     * @param email email used for search
-     * @return user object if found, null otherwise
-     */
-    public User findByEmail(String email) {
+    // search user by email
+    public User findByEmail (String email) {
         return userRepository.findByEmail(email);
     }
 
 
-    /**
-     * persists or updates user in dn
-     * used for profile updates and initial data creation
-     */
-    public void save(User user) {
+    // persist user object into db
+    public void save (User user) {
         userRepository.save(user);
     }
 
 
-    /**
-     * deletes user from db
-     * Used when the user decides to close their account.
-     */
+    // deletes user from db
     public void delete(User user) {
         userRepository.delete(user);
     }
 
 
-    /**
-     * Retrieves all users from the database.
-     */
+    // retrieve all users from db
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
 
-    /**
-     * Retrieves a user by their ID.
-     */
+    // find user by db id
     public User findById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
 
-
     /**
+     * generates default pfp
      * @param roleText first line text (user role)
      * @param nameText second line text (users name)
      * @param bgColor image bg color
      * @return b64 string ready to store in db
      */
-    public @Nullable String generateDefaultAvatar(String roleText, String nameText, Color bgColor) {
+    public @Nullable String generateDefaultAvatar (String roleText, String nameText, Color bgColor) {
+        // image size
         int width = 200;
         int height = 200;
 
+        // buffered image
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
 
+        // anti-analising for smoother text
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
+        // add background
         g.setColor(bgColor);
         g.fillRect(0, 0, width, height);
 
+        // add text
         g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 28));
-
         FontMetrics metrics = g.getFontMetrics();
 
+        // calculate center for role and name
+        // role
         int x1 = (width - metrics.stringWidth(roleText)) / 2;
         int y1 = (height / 2) - 15;
-        g.drawString(roleText, x1, y1);
-
+        g.drawString (roleText, x1, y1);
+        // name
         int x2 = (width - metrics.stringWidth(nameText)) / 2;
         int y2 = (height / 2) + 25;
-        g.drawString(nameText, x2, y2);
-
+        g.drawString (nameText, x2, y2);
         g.dispose();
 
+        // convert generated image to b64
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            return null; // generation error fallback
         }
     }
 }
