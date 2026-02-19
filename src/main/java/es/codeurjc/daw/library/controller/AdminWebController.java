@@ -78,12 +78,12 @@ public class AdminWebController {
         return "admin/tours";
     }
 
-    @GetMapping("/add-tour")
+    @GetMapping("/tour-add")
     public String addTour() {
-        return "admin/add-tour";
+        return "admin/tour-add";
     }
 
-    @PostMapping("/add-tour")
+    @PostMapping("/tour-add")
     public String addTour(
             @ModelAttribute Tour tour,
             @RequestParam(required = false) MultipartFile imageFile) {
