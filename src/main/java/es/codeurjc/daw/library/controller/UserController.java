@@ -9,6 +9,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 import java.util.Base64;
@@ -79,9 +80,9 @@ public class UserController {
                 String base64Image = Base64.getEncoder().encodeToString(bytes);
                 existingUser.setProfilePicture(base64Image);
             }
+        }
 
             userService.save(existingUser);
-        }
 
         return "redirect:/admin/users";
     }
@@ -143,7 +144,14 @@ public class UserController {
             newUser.setProfilePicture(base64Image);
         }
 
+        else {
+            // if no picture, generate default
+            String avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+            newUser.setProfilePicture(avatar);
+        }
+
         userService.save(newUser);
+
         return "redirect:/admin/users";
     }
 }
