@@ -1,13 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
+
+
+
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>SB Admin 2 - Edit User</title>
+    <title>SB Admin 2 - Editar usuario</title>
 
     <!-- Custom fonts -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
@@ -16,107 +20,151 @@
     <!-- Custom styles -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
+    <style>
+        /* Contenedor de la foto más grande y con mejor estilo */
+        .pfp-container {
+            width: 230px; /* Tamaño aumentado */
+            height: 230px;
+            border: 2px solid #e3e6f0;
+            background-color: #f8f9fc;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 .125rem .25rem 0 rgba(58,59,69,.2)!important; /* Sombra suave */
+        }
+        .btn-success-soft {
+            color: #28a745;
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        .btn-success-soft:hover {
+            background-color: #28a745;
+            color: white;
+        }
+        /* Clase para asegurar el centrado vertical en la fila */
+        .pfp-column-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+        }
+    </style>
 </head>
 
+
+
+
+
 <body id="page-top">
+<div id="wrapper">
+    {{>admin/partials/sidebar}}
 
-    <div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div id="topbar">{{>admin/partials/topbar}}</div>
 
-        <!-- Sidebar -->
-        {{>admin/partials/sidebar}}
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800">Editar usuario: {{user.name}} {{user.lastName}}</h1>
 
-        <div id="content-wrapper" class="d-flex flex-column">
-
-            <div id="content">
-
-                <!-- Topbar -->
-                <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
-
-                <!-- Page Content -->
-                <div class="container-fluid">
-
-                    <h1 class="h3 mb-4 text-gray-800">Editar Usuario</h1>
-
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Datos del usuario</h6>
-                        </div>
-
-                        <div class="card-body">
-
-                            <form>
-
-                                <div class="form-group">
-                                    <label>Nombre completo</label>
-                                    <input type="text" class="form-control" value="Laura Méndez">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" value="laura@email.com">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Fecha de registro</label>
-                                    <input type="date" class="form-control" value="2024-01-15">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Estado del usuario</label>
-                                    <select class="form-control">
-                                        <option selected>Activo</option>
-                                        <option>Inactivo</option>
-                                        <option>Bloqueado</option>
-                                    </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Dinero gastado (€)</label>
-                                    <input type="number" class="form-control" value="215.40">
-                                </div>
-
-                                <hr>
-
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-save"></i> Guardar cambios
-                                </button>
-
-                                <a href="/admin/users" class="btn btn-secondary">
-                                    Cancelar
-                                </a>
-
-                            </form>
-
-                        </div>
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Datos del usuario</h6>
                     </div>
 
+                    <div class="card-body">
+                        <form action="/admin/users/edit/{{user.id}}" method="post" enctype="multipart/form-data">
+                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label>Nombre</label>
+                                        <input type="text" name="name" class="form-control" value="{{user.name}}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Apellidos</label>
+                                        <input type="text" name="lastName" class="form-control" value="{{user.lastName}}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="email" name="email" class="form-control" value="{{user.email}}" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Dinero gastado (€)</label>
+                                        <input type="number" step="0.01" name="moneySpent" class="form-control" value="{{user.moneySpent}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Estado del usuario</label>
+                                        <select name="enabled" class="form-control">
+                                            <option value="true" {{#user.enabled}}selected{{/user.enabled}}>Activo</option>
+                                            <option value="false" {{^user.enabled}}selected{{/user.enabled}}>Inactivo</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 text-center pfp-column-center">
+                                    <label>Foto de perfil</label>
+                                    <div class="pfp-container mx-auto">
+                                        {{^user.profilePicture}}
+                                        <div id="pfp-placeholder">
+                                            <i class="fas fa-user fa-5x text-secondary"></i>
+                                        </div>
+                                        {{/user.profilePicture}}
+
+                                        <img id="pfp-preview"
+                                             src="{{#user.profilePicture}}data:image/png;base64,{{user.profilePicture}}{{/user.profilePicture}}"
+                                             class="img-fluid {{^user.profilePicture}}d-none{{/user.profilePicture}}"
+                                             style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                    <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
+                                    <label class="btn btn-success-soft btn-sm" for="imageFile" style="cursor: pointer;">
+                                        <i class="fas fa-camera mr-2"></i>Cambiar imagen
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save"></i> Guardar cambios
+                            </button>
+                            <a href="/admin/users" class="btn btn-secondary">Cancelar</a>
+                        </form>
+                    </div>
                 </div>
             </div>
-
-            <!-- Footer -->
-            <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
-
         </div>
+
+        <footer id="footer">{{>admin/partials/footer}}</footer>
     </div>
-
-    <!-- Scroll button -->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <div id="logout-modal">
-  {{>admin/partials/logout-modal}}
 </div>
+
 
     <!-- Scripts -->
     <script src="/vendor/jquery/jquery.min.js"></script>
     <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="/js/sb-admin-2.min.js"></script>
+
+    <script>
+        document.getElementById('imageFile').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById('pfp-preview');
+                    const placeholder = document.getElementById('pfp-placeholder');
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    if (placeholder) placeholder.classList.add('d-none');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 
 </html>

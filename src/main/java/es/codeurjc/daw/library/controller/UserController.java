@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.*;
 
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.UserService;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-
+import java.util.Base64;
 
 
 
@@ -55,16 +57,25 @@ public class UserController {
                              @RequestParam String lastName,
                              @RequestParam String email,
                              @RequestParam double moneySpent,
-                             @RequestParam boolean enabled) {
+                             @RequestParam boolean enabled,
+                             @RequestParam(required = false) MultipartFile imageFile) throws IOException {
 
         User existingUser = userService.findById(id);
 
+        // update as requested if user exist
         if (existingUser != null) {
             existingUser.setName(name);
             existingUser.setLastName(lastName);
             existingUser.setEmail(email);
             existingUser.setMoneySpent(moneySpent);
             existingUser.setEnabled(enabled);
+
+            // update image
+            if (imageFile != null && !imageFile.isEmpty()) {
+                byte[] bytes = imageFile.getBytes();
+                String base64Image = Base64.getEncoder().encodeToString(bytes);
+                existingUser.setProfilePicture(base64Image);
+            }
 
             userService.save(existingUser);
         }
