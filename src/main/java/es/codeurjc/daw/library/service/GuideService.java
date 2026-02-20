@@ -3,7 +3,21 @@ package es.codeurjc.daw.library.service;
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.repository.GuideRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+
+
+// for pfp generation
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Base64;
+import jakarta.annotation.Nullable;
+
+
+
 
 @Service
 public class GuideService {
@@ -32,5 +46,59 @@ public class GuideService {
 
     public void deleteById(Long id) {
         guideRepository.deleteById(id);
+    }
+
+
+
+
+    /**
+     * generates default pfp
+     * @param roleText first line text (user role)
+     * @param nameText second line text (users name)
+     * @param bgColor image bg color
+     * @return b64 string ready to store in db
+     */
+    public @Nullable String generateDefaultAvatar (String roleText, String nameText, Color bgColor) {
+        // image size
+        int width = 200;
+        int height = 200;
+
+        // buffered image
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = image.createGraphics();
+
+        // anti-analising for smoother text
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        // add background
+        g.setColor(bgColor);
+        g.fillRect(0, 0, width, height);
+
+        // add text
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Arial", Font.BOLD, 28));
+        FontMetrics metrics = g.getFontMetrics();
+
+        // calculate center for role and name
+        // role
+        int x1 = (width - metrics.stringWidth(roleText)) / 2;
+        int y1 = (height / 2) - 15;
+        g.drawString (roleText, x1, y1);
+        // name
+        int x2 = (width - metrics.stringWidth(nameText)) / 2;
+        int y2 = (height / 2) + 25;
+        g.drawString (nameText, x2, y2);
+        g.dispose();
+
+        // convert generated image to b64
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            ImageIO.write(image, "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            return Base64.getEncoder().encodeToString(imageBytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null; // generation error fallback
+        }
     }
 }

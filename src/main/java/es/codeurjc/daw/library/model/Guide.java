@@ -20,6 +20,9 @@ public class Guide {
     @JsonBackReference
     private Tour tour;
 
+    @Lob // for b64 encoded image
+    private String profilePicture;
+
     public Guide() {}
 
     public Long getId() {
@@ -60,5 +63,12 @@ public class Guide {
 
     public void setTour(Tour tour) {
         this.tour = tour;
+    }
+
+    public String getProfilePicture() { 
+        return profilePicture; 
+    }
+    public void setProfilePicture(String profilePicture) { 
+        this.profilePicture = profilePicture; 
     }
 }
