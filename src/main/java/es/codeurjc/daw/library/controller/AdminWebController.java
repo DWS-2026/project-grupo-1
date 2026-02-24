@@ -1,5 +1,6 @@
 package es.codeurjc.daw.library.controller;
 
+import java.sql.Blob;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import java.util.Base64;
 
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
+import es.codeurjc.daw.library.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -25,6 +28,9 @@ public class AdminWebController {
 
     @Autowired
     private TourRepository tourRepository;
+
+    @Autowired
+    private TourService tourService;
 
     @GetMapping({ "", "/index" })
     public String adminHome() {
@@ -74,13 +80,15 @@ public class AdminWebController {
     }
 
     @PostMapping("/tour-add")
-    public String addTour(
-            @ModelAttribute Tour tour,
+    public String addTour(@ModelAttribute Tour tour,
             @RequestParam(required = false) MultipartFile imageFile) {
 
-        // lógica imagen si quieres
+        try {
+            tourService.save(tour, imageFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        tourRepository.save(tour);
         return "redirect:/admin/tours";
     }
 
@@ -100,11 +108,12 @@ public class AdminWebController {
     }
 
     @PostMapping("/tour-edit/{id}")
-    public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData) {
+    public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData,
+            @RequestParam(required = false) MultipartFile imageFile) {
         Tour tour = tourRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tour no encontrado: " + id));
 
-        // Actualizamos todos los campos editables
+        // Actualizamos campos
         tour.setName(tourData.getName());
         tour.setPrice(tourData.getPrice());
         tour.setDescription(tourData.getDescription());
@@ -112,11 +121,12 @@ public class AdminWebController {
         tour.setNumPeople(tourData.getNumPeople());
         tour.setHotelIncluded(tourData.isHotelIncluded());
 
-        // Si quieres manejar la imagen como archivo, aquí iría la lógica para guardarla
-        // y asignarla
-        // tour.setImage(...);
+        try {
+            tourService.save(tour, imageFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        tourRepository.save(tour);
         return "redirect:/admin/tours";
     }
 
@@ -149,6 +159,5 @@ public class AdminWebController {
     public String utilities_other() {
         return "admin/utilities-other";
     }
-
 
 }

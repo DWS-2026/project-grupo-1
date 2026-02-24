@@ -5,6 +5,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Base64;
+
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
 
@@ -21,37 +25,55 @@ public class TourInitializer implements CommandLineRunner {
             return;
 
         createTour(
-            "Viaje al futuro",
-            "imagen1.jpg",
-            "Explora ciudades futuristas...",
-            4349.00,
-            "3 días",
-            2,
-            true
-        );
+                "Viaje al futuro",
+                "imagen1.jpg",
+                "Explora ciudades futuristas...",
+                4349.00,
+                "3 días",
+                2,
+                true);
 
         createTour(
-            "Viaje al pasado",
-            "imagen2.jpg",
-            "Explora ciudades del pasado...",
-            2222.00,
-            "8 días",
-            7,
-            false
-        );
+                "Viaje al pasado",
+                "futuro1.1.jpg",
+                "Explora ciudades del pasado...",
+                2222.00,
+                "8 días",
+                7,
+                false);
 
         System.out.println(">>> Tours initialized");
     }
 
-    private void createTour(String name, String image, String description, double price, String duration, int numPeople, boolean hotelIncluded) {
+    private void createTour(String name, String imagePath, String description,
+                            double price, String duration,
+                            int numPeople, boolean hotelIncluded) {
+
         Tour tour = new Tour();
         tour.setName(name);
-        tour.setImage(image);
+
+        try {
+            byte[] bytes = Files.readAllBytes(
+                    Paths.get("src/main/resources/static/images/" + imagePath)
+            );
+
+            // Convertimos a Base64
+            String base64 = Base64.getEncoder().encodeToString(bytes);
+
+            // Guardamos como String
+            tour.setTourImage(base64);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            tour.setTourImage(null);
+        }
+
         tour.setDescription(description);
         tour.setPrice(price);
         tour.setDuration(duration);
         tour.setNumPeople(numPeople);
         tour.setHotelIncluded(hotelIncluded);
+
         tourRepository.save(tour);
     }
 }

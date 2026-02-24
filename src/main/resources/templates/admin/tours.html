@@ -59,6 +59,7 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th>Imagen</th>
                                             <th>Nombre del Tour</th>
                                             <th>Precio</th>
                                             <th>Duración</th>
@@ -72,12 +73,23 @@
                                     <tbody>
                                         {{#tours}}
                                         <tr>
+                                            <td>
+                                                {{#tourImage}}
+                                                <img src="data:image/jpeg;base64,{{tourImage}}" alt="{{name}}"
+                                                    style="width:80px; height:auto;" />
+                                                {{/tourImage}}
+                                                {{^tourImage}}
+                                                <span>No disponible</span>
+                                                {{/tourImage}}
+                                            </td>
                                             <td><a href="/user/tour-details/{{id}}">{{name}}</a></td>
                                             <td>{{price}} €</td>
                                             <td>{{duration}}</td>
                                             <td>{{numPeople}} Personas</td>
-                                            <td>{{#hotelIncluded}}Incluido{{/hotelIncluded}}{{^hotelIncluded}}No
-                                                incluido{{/hotelIncluded}}</td>
+                                            <td>
+                                                {{#hotelIncluded}}Incluido{{/hotelIncluded}}
+                                                {{^hotelIncluded}}No incluido{{/hotelIncluded}}
+                                            </td>
                                             <td>{{description}}</td>
                                             <td>
                                                 <a href="/admin/tour-edit/{{id}}"
@@ -87,7 +99,7 @@
                                         {{/tours}}
                                         {{^tours}}
                                         <tr>
-                                            <td colspan="7" class="text-center">No hay tours disponibles</td>
+                                            <td colspan="8" class="text-center">No hay tours disponibles</td>
                                         </tr>
                                         {{/tours}}
                                     </tbody>

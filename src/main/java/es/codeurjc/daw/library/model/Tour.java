@@ -1,6 +1,8 @@
 package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
+
+import java.sql.Blob;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -14,8 +16,8 @@ public class Tour {
 
     private String name;
 
-    @Lob
-    private String image;
+    @Lob     // for b64 encoded image
+    private String tour_image;    
 
     @Lob
     private String description;
@@ -36,7 +38,8 @@ public class Tour {
     @Transient
     private boolean selected;
 
-    public Tour() {}
+    public Tour() {
+    }
 
     // Getters y setters
 
@@ -56,13 +59,14 @@ public class Tour {
         this.name = name;
     }
 
-    public String getImage() {
-        return image;
-    }
+   public String getTourImage() {
+     return tour_image; 
+    
+}
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+    public void setTourImage(String image) {
+         this.tour_image = image;
+         }
 
     public String getDescription() {
         return description;
