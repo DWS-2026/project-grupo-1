@@ -18,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Base64;
 
 import es.codeurjc.daw.library.model.Tour;
-import es.codeurjc.daw.library.repository.TourRepository;
 import es.codeurjc.daw.library.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -26,8 +25,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 public class AdminWebController {
 
-    @Autowired
-    private TourRepository tourRepository;
 
     @Autowired
     private TourService tourService;
@@ -69,7 +66,7 @@ public class AdminWebController {
 
     @GetMapping("/tours")
     public String tours(Model model) {
-        List<Tour> tours = tourRepository.findAll();
+        List<Tour> tours = tourService.getAllTours();
         model.addAttribute("tours", tours);
         return "admin/tours";
     }
@@ -96,8 +93,7 @@ public class AdminWebController {
     public String tourEdit(@PathVariable Long id, Model model,
             HttpServletRequest request) {
 
-        Tour tour = tourRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tour no encontrado: " + id));
+        Tour tour = tourService.findById(id);
 
         CsrfToken csrf = (CsrfToken) request.getAttribute("_csrf");
 
@@ -110,8 +106,7 @@ public class AdminWebController {
     @PostMapping("/tour-edit/{id}")
     public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData,
             @RequestParam(required = false) MultipartFile imageFile) {
-        Tour tour = tourRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tour no encontrado: " + id));
+        Tour tour = tourService.findById(id);
 
         // Actualizamos campos
         tour.setName(tourData.getName());
