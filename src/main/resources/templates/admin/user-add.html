@@ -14,6 +14,9 @@
 
     <title>SB Admin 2 - Añadir usuario</title>
 
+
+    <link rel="icon" href="/images/favicon_admin.png" type="image/png">
+
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
@@ -30,17 +33,20 @@
             justify-content: center;
             overflow: hidden;
             margin-bottom: 15px;
-            box-shadow: 0 .125rem .25rem 0 rgba(58,59,69,.2)!important;
+            box-shadow: 0 .125rem .25rem 0 rgba(58, 59, 69, .2) !important;
         }
+
         .btn-success-soft {
             color: #28a745;
             background-color: rgba(40, 167, 69, 0.1);
             border: 1px solid rgba(40, 167, 69, 0.2);
         }
+
         .btn-success-soft:hover {
             background-color: #28a745;
             color: white;
         }
+
         .pfp-column-center {
             display: flex;
             flex-direction: column;
@@ -57,148 +63,157 @@
 
 
 <body id="page-top">
-<div id="wrapper">
-    {{>admin/partials/sidebar}}
+    <div id="wrapper">
+        {{>admin/partials/sidebar}}
 
-    <div id="content-wrapper" class="d-flex flex-column">
-        <div id="content">
-            <div id="topbar">{{>admin/partials/topbar}}</div>
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <div id="topbar">{{>admin/partials/topbar}}</div>
 
-            <div class="container-fluid">
-                <!-- header -->
-                <h1 class="h3 mb-4 text-gray-800">Añadir nuevo usuario</h1>
+                <div class="container-fluid">
+                    <!-- header -->
+                    <h1 class="h3 mb-4 text-gray-800">Añadir nuevo usuario</h1>
 
-                <div class="card shadow mb-4">
-                    <!-- subheader -->
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">Datos del nuevo usuario</h6>
-                    </div>
+                    <div class="card shadow mb-4">
+                        <!-- subheader -->
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Datos del nuevo usuario</h6>
+                        </div>
 
-                    <div class="card-body">
-                        <form action="/admin/users/add" method="post" enctype="multipart/form-data">
-                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                        <div class="card-body">
+                            <form action="/admin/users/add" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
 
-                            <div class="row">
+                                <div class="row">
 
-                                <!-- text fields start -->
-                                <div class="col-md-8">
-                                    <!-- name start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Nombre</label>
-                                        <input type="text" name="name" class="form-control" placeholder="Ej: Juan" required>
-                                    </div>
-                                    <!-- name end -->
-
-                                    <!-- surname start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Apellidos</label>
-                                        <input type="text" name="lastName" class="form-control" placeholder="Ej: Pérez" required>
-                                    </div>
-                                    <!-- surname end -->
-
-                                    <!-- email start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Email</label>
-                                        <input type="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required>
-                                    </div>
-                                    <!-- email end -->
-
-                                    <!-- password start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Contraseña</label>
-                                        <input type="password" name="password" class="form-control" required>
-                                    </div>
-                                    <!-- password end -->
-
-                                    <!-- main phone start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Teléfono Principal</label>
-                                        <input type="text" name="mainPhone" class="form-control" placeholder="600 000 000" required>
-                                    </div>
-                                    <!-- main phone end -->
-
-                                    <!-- secondary phone start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Teléfono Secundario</label>
-                                        <input type="text" name="secondaryPhone" class="form-control" placeholder="Opcional">
-                                    </div>
-                                    <!-- secondary phone end -->
-
-                                    <!-- money spent start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Dinero gastado (€)</label>
-                                        <input type="number" step="0.01" name="moneySpent" class="form-control" value="0.00">
-                                    </div>
-                                    <!-- money spent end -->
-
-                                    <!-- enabled start -->
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Estado inicial</label>
-                                        <select name="enabled" class="form-control">
-                                            <option value="true" selected>Activo</option>
-                                            <option value="false">Inactivo</option>
-                                        </select>
-                                    </div>
-                                    <!-- enabled end -->
-                                </div>
-                                <!-- text fields end -->
-
-
-                                <!-- pfp section start -->
-                                <div class="col-md-4 text-center pfp-column-center">
-                                    <label class="font-weight-bold">Foto de perfil</label>
-                                    <div class="pfp-container mx-auto">
-                                        <div id="pfp-placeholder">
-                                            <i class="fas fa-user fa-5x text-secondary"></i>
+                                    <!-- text fields start -->
+                                    <div class="col-md-8">
+                                        <!-- name start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Nombre</label>
+                                            <input type="text" name="name" class="form-control" placeholder="Ej: Juan"
+                                                required>
                                         </div>
-                                        <img id="pfp-preview" src="#" class="img-fluid d-none" style="width: 100%; height: 100%; object-fit: cover;">
-                                    </div>
-                                    <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
-                                    <label class="btn btn-success-soft btn-sm" for="imageFile" style="cursor: pointer;">
-                                        <i class="fas fa-camera mr-2"></i>Subir imagen
-                                    </label>
-                                </div>
-                                <!-- pfp section end -->
-                            </div>
+                                        <!-- name end -->
 
-                            <hr>
-                            <!-- buttons section start -->
-                            <div class="text-right">
-                                <a href="/admin/users" class="btn btn-secondary mr-2">Cancelar</a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-user-plus"></i> Crear usuario
-                                </button>
-                                <!-- buttons section end -->
-                            </div>
-                        </form>
+                                        <!-- surname start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Apellidos</label>
+                                            <input type="text" name="lastName" class="form-control"
+                                                placeholder="Ej: Pérez" required>
+                                        </div>
+                                        <!-- surname end -->
+
+                                        <!-- email start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Email</label>
+                                            <input type="email" name="email" class="form-control"
+                                                placeholder="correo@ejemplo.com" required>
+                                        </div>
+                                        <!-- email end -->
+
+                                        <!-- password start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Contraseña</label>
+                                            <input type="password" name="password" class="form-control" required>
+                                        </div>
+                                        <!-- password end -->
+
+                                        <!-- main phone start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Teléfono Principal</label>
+                                            <input type="text" name="mainPhone" class="form-control"
+                                                placeholder="600 000 000" required>
+                                        </div>
+                                        <!-- main phone end -->
+
+                                        <!-- secondary phone start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Teléfono Secundario</label>
+                                            <input type="text" name="secondaryPhone" class="form-control"
+                                                placeholder="Opcional">
+                                        </div>
+                                        <!-- secondary phone end -->
+
+                                        <!-- money spent start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Dinero gastado (€)</label>
+                                            <input type="number" step="0.01" name="moneySpent" class="form-control"
+                                                value="0.00">
+                                        </div>
+                                        <!-- money spent end -->
+
+                                        <!-- enabled start -->
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Estado inicial</label>
+                                            <select name="enabled" class="form-control">
+                                                <option value="true" selected>Activo</option>
+                                                <option value="false">Inactivo</option>
+                                            </select>
+                                        </div>
+                                        <!-- enabled end -->
+                                    </div>
+                                    <!-- text fields end -->
+
+
+                                    <!-- pfp section start -->
+                                    <div class="col-md-4 text-center pfp-column-center">
+                                        <label class="font-weight-bold">Foto de perfil</label>
+                                        <div class="pfp-container mx-auto">
+                                            <div id="pfp-placeholder">
+                                                <i class="fas fa-user fa-5x text-secondary"></i>
+                                            </div>
+                                            <img id="pfp-preview" src="#" class="img-fluid d-none"
+                                                style="width: 100%; height: 100%; object-fit: cover;">
+                                        </div>
+                                        <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
+                                        <label class="btn btn-success-soft btn-sm" for="imageFile"
+                                            style="cursor: pointer;">
+                                            <i class="fas fa-camera mr-2"></i>Subir imagen
+                                        </label>
+                                    </div>
+                                    <!-- pfp section end -->
+                                </div>
+
+                                <hr>
+                                <!-- buttons section start -->
+                                <div class="text-right">
+                                    <a href="/admin/users" class="btn btn-secondary mr-2">Cancelar</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-user-plus"></i> Crear usuario
+                                    </button>
+                                    <!-- buttons section end -->
+                                </div>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <footer id="footer">{{>admin/partials/footer}}</footer>
         </div>
-        <footer id="footer">{{>admin/partials/footer}}</footer>
     </div>
-</div>
 
-<script src="/vendor/jquery/jquery.min.js"></script>
-<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/js/sb-admin-2.min.js"></script>
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/sb-admin-2.min.js"></script>
 
-<!-- preview image (display it in place of current one before confirming) -->
-<script>
-    document.getElementById('imageFile').addEventListener('change', function(event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.getElementById('pfp-preview');
-                const placeholder = document.getElementById('pfp-placeholder');
-                preview.src = e.target.result;
-                preview.classList.remove('d-none');
-                if (placeholder) placeholder.classList.add('d-none');
-            };
-            reader.readAsDataURL(file);
-        }
-    });
-</script>
+    <!-- preview image (display it in place of current one before confirming) -->
+    <script>
+        document.getElementById('imageFile').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const preview = document.getElementById('pfp-preview');
+                    const placeholder = document.getElementById('pfp-placeholder');
+                    preview.src = e.target.result;
+                    preview.classList.remove('d-none');
+                    if (placeholder) placeholder.classList.add('d-none');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
+
 </html>

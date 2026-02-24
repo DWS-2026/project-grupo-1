@@ -16,9 +16,14 @@
 
     <title>SB Admin 2 - Usuarios</title>
 
+
+    <link rel="icon" href="/images/favicon_admin.png" type="image/png">
+
     <!-- custom fonts for template -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
 
     <!-- custom styles for template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
@@ -112,10 +117,8 @@
                                             <td class="text-nowrap">
                                                 <div class="btn-group" role="group">
                                                     <!-- view button -->
-                                                    <button type="button"
-                                                            class="btn btn-info btn-sm shadow-sm mr-2"
-                                                            data-toggle="modal"
-                                                            data-target="#userViewModal{{id}}">
+                                                    <button type="button" class="btn btn-info btn-sm shadow-sm mr-2"
+                                                        data-toggle="modal" data-target="#userViewModal{{id}}">
                                                         <i class="fas fa-eye mr-1"></i> <span>Ver</span>
                                                     </button>
 
@@ -126,13 +129,11 @@
                                                     </a>
 
                                                     <!-- delete button -->
-                                                        <button type="button"
-                                                                class="btn btn-danger btn-sm shadow-sm mr-2"
-                                                                data-toggle="modal"
-                                                                data-target="#deleteUserModal{{id}}">
-                                                            <i class="fas fa-trash mr-1"></i> <span>Eliminar</span>
-                                                        </button>
-                                                        {{>admin/partials/user-delete}}
+                                                    <button type="button" class="btn btn-danger btn-sm shadow-sm mr-2"
+                                                        data-toggle="modal" data-target="#deleteUserModal{{id}}">
+                                                        <i class="fas fa-trash mr-1"></i> <span>Eliminar</span>
+                                                    </button>
+                                                    {{>admin/partials/user-delete}}
                                                 </div>
                                                 {{>admin/partials/user-view}}
                                             </td>
@@ -200,4 +201,5 @@
     <!-- page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
 </body>
+
 </html>
