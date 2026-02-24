@@ -96,8 +96,10 @@ public class WebController {
         return "user/profile";
     }
 
-    @GetMapping("/tour-details")
-    public String tour_details(){return "user/tour-details";
+    @GetMapping("/tour-details/{id}")
+    public String showDetails(@PathVariable Long id, Model model) {
+    model.addAttribute("tour", tourService.findById(id));
+        return "user/tour-details";
     }
 
     @GetMapping("/checkout")

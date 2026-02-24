@@ -119,19 +119,19 @@
 
 
 <body>
-{{>partials/navbar}}
+    {{>partials/navbar}}
 
 
 
 
-<!-- banner + breadcrumbs start -->
+    <!-- banner + breadcrumbs start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
-            <h3 class="text-white display-3 mb-4">Viaje al futuro</h3>
+            <h3 class="text-white display-3 mb-4">{{tour.name}}</h3>
             <ol class="breadcrumb justify-content-center mb-0">
                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                 <li class="breadcrumb-item"><a href="packages.html">Tours</a></li>
-                <li class="breadcrumb-item active text-white">Viaje al futuro</li>
+                <li class="breadcrumb-item active text-white">{{tour.name}}</li>
             </ol>
         </div>
     </div>
@@ -149,18 +149,24 @@
 
                     <!-- img + description start -->
                     <div class="mb-5 position-relative">
-                        <img src="/images/futuro1.7.jpg" class="img-fluid rounded w-100" alt="Mediterranean Adventure"
+                        
+                        {{#tour.tourImage}}
+                        <div class="mb-3">
+                            <img src="data:image/jpeg;base64,{{tour.tourImage}}" class="img-fluid rounded w-100" alt="{{tour.name}}"
                             style="min-height: 400px; object-fit: cover;">
+                        </div>
+                        {{/tour.tourImage}}
+                        {{^tour.tourImage}}
+                        <p>No hay imagen disponible</p>
+                        {{/tour.tourImage}}
                         <div class="bg-white border border-top-0 rounded-bottom p-4">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12
-                                    Días</span>
+                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>{{tour.duration}}</span>
                                 <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124
                                     reseñas)</span>
                             </div>
-                            <h2 class="mb-3">Viaje al futuro</h2>
-                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Lugar que
-                                tu selecciones en el futuro (no estan permitidos viajes al pasado)</p>
+                            <h2 class="mb-3">{{tour.name}}</h2>
+                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Lugar</p>
                         </div>
                     </div>
                     <!-- img + description end -->
@@ -173,82 +179,20 @@
 
                         <!-- description start -->
                         <h4 class="mb-3 text-primary font-weight-bold">Descripción</h4>
-                        <p class="mb-4">Emprende un viaje inolvidable hacia el futuro, explorando ciudades futuristas y
-                            paisajes que desafían la imaginación. Desde rascacielos flotantes hasta parques tecnológicos
-                            interplanetarios, vivirás experiencias únicas con transporte ultrarrápido, gastronomía de
-                            vanguardia y aventuras que solo el mañana puede ofrecer. Sumérgete en un mundo donde la
-                            tecnología y la naturaleza conviven en perfecta armonía y cada destino es una ventana al
-                            futuro.</p>
+                        <p class="mb-4">{{tour.description}}</p>
                         <!-- description end -->
 
                         <!-- highlights start -->
-                        <div class="bg-light p-4 rounded mb-4">
-                            <h5 class="mb-3">Puntos destacados del tour</h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Hoteles de
-                                            4 estrellas</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Guías
-                                            temporales expertos</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Desayuno
-                                            diario incluido</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-6">
-                                    <ul class="list-unstyled mb-0">
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Grupos
-                                            pequeños (Max 15)</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i> Monumentos
-                                            históricos futuristas</li>
-                                        <li class="mb-2"><i class="fa fa-check-circle text-primary me-2"></i>
-                                            Experiencias culturales</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        
                         <!-- highlights end -->
+
                     </div>
                     <!-- description + highlights end -->
 
 
 
                     <!--itinerary start -->
-                    <div class="mb-5">
-                        <h4 class="mb-4 text-primary font-weight-bold">Itinerario día a día</h4>
-
-                        <!-- day 1 start -->
-                        <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Día 1: Bienvenida al Futuro</h5>
-                            <p class="text-muted">Llegada a la ciudad futurista de tu destino. Tras registrarte en un
-                                hotel inteligente con habitaciones automatizadas, disfruta de una cena de bienvenida con
-                                gastronomía molecular y vistas a rascacielos flotantes iluminados por luces
-                                holográficas.</p>
-                        </div>
-                        <!-- day 1 end -->
-
-                        <!-- day 2 start -->
-                        <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Día 2: Exploración Tecnológica y Aventuras Futuristas</h5>
-                            <p class="text-muted">Explora los principales hitos futuristas: transporte ultrarrápido,
-                                jardines verticales flotantes y museos interactivos de innovación. Vive experiencias de
-                                realidad aumentada y realidad virtual que te transportan a mundos del mañana. Finaliza
-                                el día con un paseo nocturno en drones turísticos que recorren la ciudad desde el cielo.
-                            </p>
-                        </div>
-                        <!-- day 2 end -->
-
-                        <!-- day 3 start -->
-                        <div class="border-start border-2 border-primary ps-4 mb-4">
-                            <h5 class="fw-bold">Día 3: Descubrimiento Interplanetario y Regreso</h5>
-                            <p class="text-muted">Visita laboratorios de exploración espacial y colonias futuristas
-                                simuladas. Disfruta de un almuerzo con alimentos impresos en 3D y participa en
-                                actividades interactivas que muestran cómo será la vida en otros planetas. Por la tarde,
-                                traslado al aeropuerto o estación futurista para tu regreso a casa.</p>
-                        </div>
-                        <!-- day 3 end -->
-
-                    </div>
+                    
                     <!--itinerary end -->
 
 
@@ -256,39 +200,12 @@
                     <div class="row mb-5">
 
                         <!-- included start -->
-                        <div class="col-md-6">
-                            <h5 class="mb-3 text-success"><i class="fa fa-check me-2"></i>Incluye</h5>
-                            <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Transporte ultrarrápido
-                                    entre destinos futuristas</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Alojamiento en hoteles
-                                    inteligentes de 4 estrellas</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Desayuno futurista diario
-                                    interactivo</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Guías especializados en
-                                    tecnología futurista</li>
-                                <li class="mb-2"><i class="fa fa-check text-success me-2"></i> Acceso a todas las
-                                    atracciones y simulaciones interplanetarias</li>
-                            </ul>
-                        </div>
+                        
                         <!-- included end -->
 
 
                         <!-- not included start -->
-                        <div class="col-md-6">
-                            <h5 class="mb-3 text-danger"><i class="fa fa-times me-2"></i>No Incluye</h5>
-                            <ul class="list-unstyled text-muted">
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Vuelos internacionales
-                                    hacia la ciudad futurista</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Comidas de almuerzo y cena
-                                    (a menos que se especifique)</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Gastos personales y
-                                    souvenirs tecnológicos</li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Seguro de viaje futurista
-                                </li>
-                                <li class="mb-2"><i class="fa fa-times text-danger me-2"></i> Propinas para guías</li>
-                            </ul>
-                        </div>
+                        
                         <!-- not included start -->
 
                     </div>
@@ -297,29 +214,7 @@
 
 
                     <!-- gallery start -->
-                    <div class="mb-5">
-                        <h4 class="mb-4 text-primary font-weight-bold">Galería de fotos</h4>
-                        <div class="row g-3">
-                            <div class="col-4">
-                                <img src="/images/futuro1.1.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/futuro1.2.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/futuro1.3.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                            <div class="col-4">
-                                <img src=" /images/futuro1.4.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/futuro1.5.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                            <div class="col-4">
-                                <img src="/images/futuro1.6.jpg" class="img-fluid gallery-img w-100" alt="Gallery">
-                            </div>
-                        </div>
-                    </div>
+                    
                     <!-- gallery end -->
 
 
@@ -488,12 +383,12 @@
 
                         <!-- tour info start -->
                         <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h3 class="text-primary mb-0">4349.00€</h3>
-                            <span class="text-muted"> cada grupo de 3 personas</span>
+                            <h3 class="text-primary mb-0">{{tour.price}}€</h3>
+                            <span class="text-muted"> cada grupo de {{tour.numPeople}} personas</span>
                         </div>
 
                         <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> 3 días</li>
+                            <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> {{tour.duration}} días</li>
                             <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Personas
                                 máximas: 15</li>
                             <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Lugar que
@@ -532,9 +427,9 @@
 
 
 
-{{>partials/footer}}
+    {{>partials/footer}}
 
-<!-- back to top -->
+    <!-- back to top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
             class="fa fa-arrow-up"></i></a>
 
