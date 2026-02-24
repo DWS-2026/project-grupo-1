@@ -38,12 +38,12 @@
 
 
 <body>
-{{>partials/navbar}}
+    {{>partials/navbar}}
 
 
 
 
-<!-- banner + breadcrumbs start -->
+    <!-- banner + breadcrumbs start -->
     <div class="container-fluid bg-breadcrumb">
         <div class="container text-center py-5" style="max-width: 900px;">
             <h3 class="text-white display-3 mb-4">Packs de viajes</h3>
@@ -69,262 +69,74 @@
 
             <!-- cards start -->
             <div class="row justify-content-center">
-
-                <!-- card 1x1 start -->
+                {{#tours}}
                 <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/imagen futuro.jpg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
                     <div class="packages-content bg-light">
+
+                        <div class="packages-img">
+                            {{#tourImage}} <div class="mb-3">
+                                <img src="data:image/jpeg;base64,{{tourImage}}" width="300" alt="{{name}}">
+                            </div>
+                            {{/tourImage}}
+
+                            {{^tourImage}} <img src="/images/default-tour.jpg" class="img-fluid w-100 rounded-top"
+                                alt="Default">
+                            {{/tourImage}}
+                        </div>
+
                         <div class="p-4 pb-0">
-                            <h5 class="mb-0">Futuro - Tierra</h5>
-                            <small class="text-uppercase">Hotel incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
+                            <h5 class="mb-0">{{name}}</h5>
+
+                            <small class="text-uppercase text-muted">
+                                <i
+                                    class="fa {{#hotelIncluded}}fa-check-circle text-success{{/hotelIncluded}}{{^hotelIncluded}}fa-times-circle text-danger{{/hotelIncluded}} me-1"></i>
+                                {{#hotelIncluded}}Hotel incluido{{/hotelIncluded}}
+                                {{^hotelIncluded}}Hotel no incluido{{/hotelIncluded}}
+                            </small>
+
+                            <div class="my-3">
+                               
                             </div>
 
                             <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">4349.00€</p>
                                 <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Futuro</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
+                                    <small><i class="fa fa-calendar-alt me-2"></i>{{duration}}</small>
+                                    <small><i class="fa fa-user me-2"></i>{{numPeople}} Personas</small>
+                                    <small><i class="fa fa-tag me-2"></i>{{price}} €</small>
                                 </div>
                             </div>
 
-                            <p class="mb-4">Explora un mundo del futuro con coches flotantes y tecnología inimaginable.
-                            </p>
+                            <p class="mb-4 text-truncate-3">{{description}}</p>
                         </div>
+
                         <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-
-
+                            <div class="col-12 text-center px-0">
+                                <a href="/tour-details/{{id}}" class="btn btn-primary text-white py-2 px-4 w-100">Ver
+                                    detalles</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- card 1x1 end -->
+                {{/tours}}
 
-
-                <!-- card 1x2 start -->
-                <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/volcan.jpg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <h5 class="mb-0">Volcán Krakatoa - Sonda, Indonesia</h5>
-                            <small class="text-uppercase">Hotel incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-
-                            <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">1649.00€</p>
-                                <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Sonda</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
-                                </div>
-                            </div>
-
-                            <p class="mb-4">Explora el interior de un volcán y siente el poder de la Tierra desde su
-                                núcleo.</p>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-                            </div>
-                        </div>
-                    </div>
+                {{^tours}}
+                <div class="col-12 text-center">
+                    <p class="lead">No hay tours disponibles en este momento.</p>
                 </div>
-                <!-- card 1x2 end -->
-
-                <!-- card 1x3 start -->
-                <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/zombies.jpg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <h5 class="mb-0">Apocalipsis zombie - ???</h5>
-                            <small class="text-uppercase">Hotel no incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-
-                            <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">3349.00€</p>
-                                <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Zona de reclusión</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
-                                </div>
-                            </div>
-
-                            <p class="mb-4">Adéntrate en un mundo invadido por zombies y vive la emoción del fin del
-                                mundo en cada esquina.</p>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 1x3 end -->
-
-
-                <!-- card 2x1 start -->
-                <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/luna1.jpg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <h5 class="mb-0">Luna - Sistema solar</h5>
-                            <small class="text-uppercase">Hotel incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-
-                            <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">9349.00€</p>
-                                <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Luna</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
-                                </div>
-                            </div>
-
-                            <p class="mb-4">Viaja a la Luna y observa la Tierra desde una perspectiva única.</p>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 2x1 end -->
-
-                <!-- card 2x2 start -->
-                <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/urano.jpg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <h5 class="mb-0">Urano - Sistema solar</h5>
-                            <small class="text-uppercase">Hotel incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-
-                            <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">9449.00€</p>
-                                <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Urano</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
-                                </div>
-                            </div>
-
-                            <p class="mb-4">Explora el misterioso planeta helado y sus paisajes extremos en un viaje
-                                fuera de lo común.</p>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 2x2 end -->
-
-                <!-- card 2x3 start -->
-                <div class="packages-item col-lg-4 col-md-6 mb-4">
-                    <div class="packages-img">
-                        <img src="/images/planeta.jpeg" class="img-fluid w-100 rounded-top" alt="Image">
-                    </div>
-                    <div class="packages-content bg-light">
-                        <div class="p-4 pb-0">
-                            <h5 class="mb-0">Planeta HD 137010 b - Espacio exterior</h5>
-                            <small class="text-uppercase">Hotel incluido</small>
-                            <div class="mb-3">
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                                <small class="fa fa-star text-primary"></small>
-                            </div>
-
-                            <div class="mb-3 border-bottom pb-3">
-                                <p class="h4 text-primary mb-2">10449.00€</p>
-                                <div class="d-flex justify-content-between text-muted">
-                                    <small><i class="fa fa-map-marker-alt me-2"></i>Planeta HD 137010 b</small>
-                                    <small><i class="fa fa-calendar-alt me-2"></i>3 días</small>
-                                    <small><i class="fa fa-user me-2"></i>2 Personas</small>
-                                </div>
-                            </div>
-
-                            <p class="mb-4">Explora HD 137010 b, un planeta lejano en la zona habitable de su estrella,
-                                lleno de vida extraterreste.</p>
-                        </div>
-                        <div class="row bg-primary rounded-bottom mx-0">
-                            <div class="col-6 text-start px-0">
-                                <a href="/tour-details" class="btn-hover btn text-white py-2 px-4">Leer más</a>
-                            </div>
-                            <div class="col-6 text-end px-0">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 2x3 end -->
-
+                {{/tours}}
             </div>
+
             <!-- cards end -->
 
         </div>
     </div>
 
-{{>partials/footer}}
+    {{>partials/footer}}
 
 
 
 
-<!-- back to top -->
+    <!-- back to top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
             class="fa fa-arrow-up"></i></a>
 

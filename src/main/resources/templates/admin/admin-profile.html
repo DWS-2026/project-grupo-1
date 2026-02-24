@@ -11,6 +11,8 @@
 
     <title>SB Admin 2 - Perfil de Administrador</title>
 
+    <link rel="icon" href="/images/favicon_admin.png" type="image/png">
+
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -39,8 +41,8 @@
 
                 <!-- Topbar -->
                 <div id="topbar">
-        {{>admin/partials/topbar}}
-      </div>
+                    {{>admin/partials/topbar}}
+                </div>
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
@@ -58,11 +60,12 @@
 
                             <div class="card shadow mb-4">
                                 <div class="card-body text-center">
-                                    <img class="img-profile rounded-circle mb-3"
-                                        src="img/undraw_profile.svg" alt="Foto de Perfil" style="width: 150px;">
+                                    <img class="img-profile rounded-circle mb-3" src="img/undraw_profile.svg"
+                                        alt="Foto de Perfil" style="width: 150px;">
                                     <h4 class="font-weight-bold">Juan Pérez</h4>
                                     <p class="text-muted">Administrador Principal</p>
-                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-user-edit"></i> Editar Perfil</a>
+                                    <a href="#" class="btn btn-primary btn-sm"><i class="fas fa-user-edit"></i> Editar
+                                        Perfil</a>
                                 </div>
                             </div>
 
@@ -89,7 +92,8 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="card border-left-primary shadow h-100 py-2">
                                         <div class="card-body">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Usuarios
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                Usuarios
                                                 Registrados</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">1,200</div>
                                         </div>
@@ -99,7 +103,8 @@
                                 <div class="col-md-6 mb-4">
                                     <div class="card border-left-success shadow h-100 py-2">
                                         <div class="card-body">
-                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Ventas
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                Ventas
                                                 Totales</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800">$45,000</div>
                                         </div>
@@ -115,10 +120,14 @@
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
-                                        <li class="list-group-item"><i class="fas fa-user-plus text-success"></i> Nuevo usuario registrado: María López</li>
-                                        <li class="list-group-item"><i class="fas fa-file-alt text-info"></i> Reporte generado: Ventas Mensuales</li>
-                                        <li class="list-group-item"><i class="fas fa-user-edit text-warning"></i> Perfil actualizado: Carlos García</li>
-                                        <li class="list-group-item"><i class="fas fa-check-circle text-primary"></i> Tarea completada: Actualización de base de datos</li>
+                                        <li class="list-group-item"><i class="fas fa-user-plus text-success"></i> Nuevo
+                                            usuario registrado: María López</li>
+                                        <li class="list-group-item"><i class="fas fa-file-alt text-info"></i> Reporte
+                                            generado: Ventas Mensuales</li>
+                                        <li class="list-group-item"><i class="fas fa-user-edit text-warning"></i> Perfil
+                                            actualizado: Carlos García</li>
+                                        <li class="list-group-item"><i class="fas fa-check-circle text-primary"></i>
+                                            Tarea completada: Actualización de base de datos</li>
                                     </ul>
                                 </div>
                             </div>
@@ -135,8 +144,8 @@
 
             <!-- Footer -->
             <footer id="footer">
-      {{>admin/partials/footer}}
-    </footer>
+                {{>admin/partials/footer}}
+            </footer>
             <!-- End of Footer -->
 
         </div>
@@ -152,8 +161,8 @@
 
     <!-- Logout Modal-->
     <div id="logout-modal">
-  {{>admin/partials/logout-modal}}
-</div>
+        {{>admin/partials/logout-modal}}
+    </div>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
@@ -177,7 +186,7 @@
         fetch("./components/footer.html")
             .then(res => res.text())
             .then(data => document.getElementById("footer").innerHTML = data);
-        
+
         fetch("./components/logout-modal.html")
             .then(res => res.text())
             .then(data => document.getElementById("logout-modal").innerHTML = data);
