@@ -1,15 +1,15 @@
 package es.codeurjc.daw.library.controller;
 
-
-
-
+import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Base64;
 
-
-
-
 @Controller
 public class WebController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TourService tourService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -39,7 +39,7 @@ public class WebController {
 
     @GetMapping("/packages")
     public String packages(Model model) {
-        model.addAttribute("packages", true);
+        model.addAttribute("tours", tourService.getAllTours());
         return "user/packages";
     }
 
@@ -72,9 +72,9 @@ public class WebController {
         return "user/cart";
     }
 
-
     @GetMapping("/register")
-    public String register(){return "user/register";
+    public String register() {
+        return "user/register";
     }
 
     @GetMapping("/login")
@@ -84,16 +84,16 @@ public class WebController {
     }
 
     @GetMapping("/profile")
-        public String profile(Model model, Principal principal, HttpServletRequest request) {
-            if (principal != null) {
-                User user = userService.findByEmail(principal.getName());
-                model.addAttribute("user", user);
+    public String profile(Model model, Principal principal, HttpServletRequest request) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("user", user);
 
-                // check if user admin, and set flag accordingly
-                boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
-                model.addAttribute("isAdmin", isAdmin);
-            }
-            return "user/profile";
+            // check if user admin, and set flag accordingly
+            boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
+            model.addAttribute("isAdmin", isAdmin);
+        }
+        return "user/profile";
     }
 
     @GetMapping("/tour-details")
@@ -101,21 +101,23 @@ public class WebController {
     }
 
     @GetMapping("/checkout")
-    public String checkout(){return "user/checkout";
+    public String checkout() {
+        return "user/checkout";
     }
 
     @GetMapping("/invoice")
-    public String invoice(){return  "/user/invoice";
+    public String invoice() {
+        return "/user/invoice";
     }
 
-
-
     @GetMapping("/add-review")
-    public String add_review(){ return "/user/add-review";
+    public String add_review() {
+        return "/user/add-review";
     }
 
     @GetMapping("/forgot-password")
-    public String forgot_password(){ return "/user/forgot-password";
+    public String forgot_password() {
+        return "/user/forgot-password";
     }
 
     @GetMapping("/admin-login")
@@ -124,16 +126,15 @@ public class WebController {
         return "user/admin-login";
     }
 
-
-    @PostMapping ("/profile/update")
-    public String updateProfile (Principal principal,
-                                @RequestParam String name,
-                                @RequestParam String lastName,
-                                @RequestParam String mainPhone,
-                                @RequestParam String secondaryPhone,
-                                @RequestParam(required = false) String newPassword,
-                                @RequestParam MultipartFile imageFile,
-                                @RequestParam String action) throws IOException {
+    @PostMapping("/profile/update")
+    public String updateProfile(Principal principal,
+            @RequestParam String name,
+            @RequestParam String lastName,
+            @RequestParam String mainPhone,
+            @RequestParam String secondaryPhone,
+            @RequestParam(required = false) String newPassword,
+            @RequestParam MultipartFile imageFile,
+            @RequestParam String action) throws IOException {
 
         // get user logged in
         User user = userService.findByEmail(principal.getName());
@@ -169,4 +170,3 @@ public class WebController {
         return "redirect:/profile";
     }
 }
-
