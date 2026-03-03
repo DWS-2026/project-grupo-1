@@ -1,0 +1,89 @@
+<div class="modal fade" id="deleteGuideModal{{id}}" tabindex="-1" role="dialog" aria-labelledby="deleteGuideModalLabel{{id}}" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content border-0 shadow-lg">
+
+
+            <!-- header start -->
+            <div class="modal-header bg-danger text-white border-0">
+                <!-- title -->
+                <h5 class="modal-title font-weight-bold" id="deleteGuideModalLabel{{id}}">
+                    <i class="fas fa-guide-times mr-2"></i>Eliminar guía
+                </h5>
+
+                <!-- close button -->
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- header end -->
+
+
+            <!-- body start -->
+            <div class="modal-body py-4">
+                <div class="text-center mb-4">
+                    <!-- if guide has pfp, show it -->
+                    {{#profilePicture}}
+                    <img src="data:image/png;base64,{{profilePicture}}"
+                         alt="Foto de perfil"
+                         class="rounded-circle border border-5 border-danger shadow-sm mb-3"
+                         style="width: 110px; height: 110px; object-fit: cover;">
+                    {{/profilePicture}}
+
+                    <!-- if no pfp display bootstrap icon (shouldnt trigger) -->
+                    {{^profilePicture}}
+                    <div class="rounded-circle border border-5 border-secondary d-inline-flex align-items-center justify-content-center bg-light mb-3"
+                         style="width: 110px; height: 110px;">
+                        <i class="fas fa-guide fa-4x text-secondary"></i>
+                    </div>
+                    {{/profilePicture}}
+
+                    <!-- guide identification info start -->
+                    <h4 class="text-gray-900 font-weight-bold mb-1">{{name}} {{lastName}}</h4>
+                    <!-- guide identification info end -->
+                </div>
+
+                <!-- warning message start -->
+                <div class="alert alert-warning border-left-danger shadow-sm mx-2" role="alert">
+                    <div class="row no-gutters align-items-center">
+                        <!-- danger icon start -->
+                        <div class="col-auto mr-3">
+                            <i class="fas fa-exclamation-circle fa-2x text-danger"></i>
+                        </div>
+                        <!-- danger icon end -->
+
+                        <!-- text start -->
+                        <div class="col">
+                            <span class="text-gray-800 font-weight-bold">¡Atención!</span><br>
+                            <span class="small">Esta acción borrará permanentemente todos los datos del guía.</span>
+                            <br>
+                            <span class="small">No podrás deshacer este cambio.</span>
+                        </div>
+                        <!-- text end -->
+
+                    </div>
+                </div>
+                <!-- warning message end -->
+
+            </div>
+            <!-- body end -->
+
+
+            <!-- footer start -->
+            <div class="modal-footer bg-light border-0 justify-content-center py-3">
+                <!-- cancel button -->
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4 mr-2 shadow-sm" data-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <!-- confirm button -->
+                <form action="/admin/guides/delete/{{id}}" method="POST" class="d-inline">
+                    <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                    <button type="submit" class="btn btn-danger btn-sm px-4 shadow-sm">
+                        <i class="fas fa-trash-alt mr-1"></i> Confirmar eliminación
+                    </button>
+                </form>
+            </div>
+            <!-- footer end -->
+        </div>
+    </div>
+</div>

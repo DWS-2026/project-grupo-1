@@ -1,0 +1,92 @@
+<div class="modal fade" id="guideViewModal{{id}}" tabindex="-1" role="dialog"
+     aria-labelledby="guideViewModalLabel{{id}}" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="guideViewModalLabel{{id}}">
+                    <i class="fas fa-user-tie mr-2"></i>Ficha de Guía
+                </h5>
+
+                <button type="button" class="close text-white"
+                        data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <div class="text-center mb-4">
+
+                    <!-- FOTO -->
+                    {{#profilePicture}}
+                    <img src="data:image/png;base64,{{profilePicture}}"
+                         alt="Foto de perfil"
+                         class="rounded-circle border border-5 border-primary shadow-sm"
+                         style="width: 120px; height: 120px; object-fit: cover;">
+                    {{/profilePicture}}
+
+                    {{^profilePicture}}
+                    <div class="rounded-circle border border-5 border-secondary d-inline-flex align-items-center justify-content-center bg-light"
+                         style="width: 120px; height: 120px;">
+                        <i class="fas fa-user fa-4x text-secondary"></i>
+                    </div>
+                    {{/profilePicture}}
+
+                    <!-- NOMBRE -->
+                    <h4 class="mt-3 mb-1 font-weight-bold text-gray-800">
+                        {{name}} {{lastName}}
+                    </h4>
+
+                    <!-- ESTADO -->
+                    <span class="badge {{#enabled}}badge-success{{/enabled}}{{^enabled}}badge-danger{{/enabled}} px-3 py-2">
+                        {{#enabled}}Activo{{/enabled}}
+                        {{^enabled}}Inactivo{{/enabled}}
+                    </span>
+
+                </div>
+
+                <!-- INFORMACIÓN -->
+                <div class="px-3">
+
+                    <div class="row py-2 border-bottom">
+                        <div class="col-5 font-weight-bold text-gray-800">
+                            Especialidad:
+                        </div>
+                        <div class="col-7 text-muted">
+                            {{tour.name}}
+                        </div>
+                    </div>
+
+                    <div class="row py-2">
+                        <div class="col-5 font-weight-bold text-gray-800">
+                            Precio por tour:
+                        </div>
+                        <div class="col-7 font-weight-bold text-success">
+                            {{price}} €
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- FOOTER -->
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary btn-sm"
+                        data-dismiss="modal">
+                    Cerrar
+                </button>
+
+                <a href="/admin/guides/edit/{{id}}"
+                   class="btn btn-warning btn-sm">
+                    <i class="fas fa-edit mr-1"></i>Editar
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>

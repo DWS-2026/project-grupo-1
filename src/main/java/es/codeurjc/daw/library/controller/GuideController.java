@@ -66,14 +66,35 @@ public class GuideController {
     }
 
     @PostMapping("/save")
-    public String saveGuide(@RequestParam Long id, @RequestParam String name, @RequestParam String lastName, @RequestParam double price, @RequestParam Long tourId) {
-        Guide guide = guideService.findById(id);
+    public String saveGuide(
+            @RequestParam Long id,
+            @RequestParam String name,
+            @RequestParam String lastName,
+            @RequestParam double price,
+            @RequestParam Long tourId,
+            @RequestParam(required = false) MultipartFile imageFile,
+            @RequestParam(required = false) Boolean enabled
+    ) throws IOException {
+
+        Guide guide = guideService.findById(id);    
+
         guide.setName(name);
         guide.setLastName(lastName);
         guide.setPrice(price);
+
         Tour tour = tourService.findById(tourId);
         guide.setTour(tour);
+
+        guide.setEnabled(enabled != null);
+
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String base64Image =
+                    Base64.getEncoder().encodeToString(imageFile.getBytes());
+            guide.setProfilePicture(base64Image);
+        }
+
         guideService.save(guide);
+
         return "redirect:/admin/guides";
     }
 
@@ -121,6 +142,12 @@ public class GuideController {
 
         return "redirect:/admin/guides";
     }
+
+    @PostMapping("/delete/{id}")
+    public String deleteGuide(@PathVariable Long id) {
+        guideService.deleteById(id);
+        return "redirect:/admin/guides";
+}
 
     /**
      * generates default pfp

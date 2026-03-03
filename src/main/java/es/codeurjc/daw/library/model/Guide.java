@@ -14,6 +14,7 @@ public class Guide {
     private String name;
     private String lastName;
     private double price;
+    private boolean Estado = true;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tour_id")
@@ -70,5 +71,13 @@ public class Guide {
     }
     public void setProfilePicture(String profilePicture) { 
         this.profilePicture = profilePicture; 
+    }
+
+    public boolean isEnabled() {
+        return Estado;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.Estado = enabled;
     }
 }

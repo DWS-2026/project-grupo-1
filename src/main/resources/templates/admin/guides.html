@@ -7,21 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>SB Admin 2 - Guides</title>
-
-
     <link rel="icon" href="/images/favicon_admin.png" type="image/png">
 
-    <!-- Custom fonts for this template -->
+    <title>SB Admin 2 - Usuarios</title>
+
+    <!-- custom fonts for template -->
     <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
-    <!-- Custom styles for this template -->
+    <!-- custom styles for template -->
     <link href="/css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom styles for this page -->
+    <!-- custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
@@ -76,16 +75,31 @@
                                             <td>{{tour.name}}</td>
                                             <td>{{price}} €</td>
                                             <td>
-                                                <span class="badge badge-success">Activo</span>
+                                                {{#enabled}}
+                                                    <span class="badge badge-success">Activo</span>
+                                                {{/enabled}}
+                                                {{^enabled}}
+                                                    <span class="badge badge-danger">Inactivo</span>
+                                                {{/enabled}}
                                             </td>
                                             <td>
+                                                 <button type="button"
+                                                                class="btn btn-info btn-sm shadow-sm mr-2"
+                                                            data-toggle="modal"
+                                                            data-target="#guideViewModal{{id}}">
+                                                        <i class="fas fa-eye mr-1"></i> <span>Ver</span>
+                                                    </button>
                                                 <a href="/admin/guides/edit/{{id}}" class="btn btn-warning btn-sm">
                                                     <i class="fas fa-edit"></i> Editar
                                                 </a>
-                                                <a href="/admin/guides/delete/{{id}}" class="btn btn-danger btn-sm"
-                                                    onclick="return confirm('¿Seguro que quieres borrar este guía?');">
-                                                    <i class="fas fa-trash"></i> Borrar
-                                                </a>
+                                                <button type="button"
+                                                                class="btn btn-danger btn-sm shadow-sm mr-2"
+                                                                data-toggle="modal"
+                                                                data-target="#deleteGuideModal{{id}}">
+                                                            <i class="fas fa-trash mr-1"></i> <span>Eliminar</span>
+                                                        </button>
+                                                        {{>admin/partials/guide-delete}}
+                                                {{>admin/partials/guide-view}}
                                             </td>
                                         </tr>
                                         {{/guides}}
@@ -106,6 +120,8 @@
 
             </div>
             <!-- End of Main Content -->
+
+            
 
             <!-- Footer -->
             <footer id="footer">
