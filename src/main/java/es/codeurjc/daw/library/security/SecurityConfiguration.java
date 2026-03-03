@@ -13,6 +13,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.RememberMeServices;
+import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
 
 
 
@@ -29,6 +34,8 @@ public class SecurityConfiguration {
     @Autowired
     private UserDetailsService userDetailsService;
 
+
+
     // key value taken from properties
     @Value("${security.rememberme.key}")
     private String rememberMeKey;
@@ -43,6 +50,30 @@ public class SecurityConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Algoritmo de encriptación seguro [cite: 17]
+    }
+
+
+
+    @Bean
+    public RememberMeServices rememberMeServices() {
+        TokenBasedRememberMeServices services = new TokenBasedRememberMeServices (rememberMeKey, userDetailsService) {
+            @Override
+            public void onLoginSuccess (HttpServletRequest request, HttpServletResponse response, Authentication auth) {
+
+                // if user is admin, no cookie
+                boolean isAdmin = auth.getAuthorities().stream()
+                        .anyMatch (a -> a.getAuthority().equals("ROLE_ADMIN"));
+                if (isAdmin) { return;
+                }
+
+                // else, cookie remember-me for 7 days
+                super.onLoginSuccess (request, response, auth);
+            }
+        };
+
+        services.setTokenValiditySeconds (7 * 24 * 60 * 60); // duration
+        services.setParameter ("remember-me"); // html input name
+        return services;
     }
 
 
@@ -126,10 +157,7 @@ public class SecurityConfiguration {
 
                 // remember me cookie functionality
                 .rememberMe((remember) -> remember
-                        .key (rememberMeKey) // key to sign token
-                        .tokenValiditySeconds (7 * 24 * 60 * 60) // 7 day duration
-                        .userDetailsService (userDetailsService) // reload user
-                        .rememberMeParameter ("remember-me") // html input (remember me check) name
+                        .rememberMeServices(rememberMeServices())
                 )
 
                 // trigger 403 if anon tries to visit admin or user exclusive pages
