@@ -22,6 +22,7 @@ import java.util.Base64;
 
 
 
+
 /**
  * controller to manage administrative tasks for users
  * all routes prefixed with /admin/users.
@@ -29,15 +30,13 @@ import java.util.Base64;
 @Controller
 @RequestMapping ("/admin/users") // group user management routes
 public class UserController {
-
     @Autowired // to be able to use user service methods
     private UserService userService;
-
     @Autowired // for password protection before db storage
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
-
     @Autowired // to generate notifications
     private NotificationService notificationService;
+
 
 
     /**
@@ -51,7 +50,7 @@ public class UserController {
 
         // filter to exclude admin
         List<User> customersOnly = allUsers.stream()
-                .filter(user -> !user.getRoles().contains("ADMIN"))
+                .filter (user -> !user.getRoles().contains("ADMIN"))
                 .toList();
 
         model.addAttribute ("users", customersOnly);
@@ -118,14 +117,14 @@ public class UserController {
 
 
     // deletes user
-    @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
+    @PostMapping ("/delete/{id}")
+    public String deleteUser (@PathVariable Long id) {
         // search target user by id
         User user = userService.findById(id);
 
         // if user exists, delete him
         if (user != null) {
-            userService.delete(user);
+            userService.delete (user);
         }
 
         // notification user deletion
@@ -136,9 +135,10 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
+
     
     // display user creation form
-    @GetMapping("/add")
+    @GetMapping ("/add")
     public String showAddUserForm() {
         return "admin/user-add";
     }
@@ -187,7 +187,7 @@ public class UserController {
             newUser.setProfilePicture(avatar);
         }
 
-        userService.save(newUser);
+        userService.save (newUser);
 
         // notification user creation
         notificationService.notify ("Usuario creado: " + name, "fas fa-user", "bg-success");

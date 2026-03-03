@@ -11,6 +11,7 @@ import java.util.List; // for role lists
 
 
 
+
 @Entity // represents user in app
 @Table (name = "users") // map to users table in db (user is reserved SQL keyword)
 public class User {
@@ -20,7 +21,7 @@ public class User {
     private Long id; // unique identifier for each user in db
 
 
-    // ATTRIBUTES START =====================================================
+    // ===== ATTRIBUTES START
     // personal info
     private String name;
     private String lastName;
@@ -44,10 +45,11 @@ public class User {
 
     // business data
     private double moneySpent = 0.0;
-    // ATTRIBUTES END =====================================================
+    // ===== ATTRIBUTES END
 
 
-    // CONSTRUCTORS START =====================================================
+
+    // ===== CONSTRUCTORS START
     public User() {} // default empty constructor required by jpa
 
 
@@ -77,10 +79,10 @@ public class User {
         this.mainPhone = mainPhone;
         this.secondaryPhone = secondaryPhone;
     }
-    // CONSTRUCTORS END =====================================================
+    // ===== CONSTRUCTORS END
 
 
-    // GETTERS AND SETTERS START =====================================================
+    // ===== GETTERS AND SETTERS START
     // id
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -140,5 +142,5 @@ public class User {
     // money spent
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
-    // GETTERS AND SETTERS END =====================================================
+    // ===== GETTERS AND SETTERS END
 }   

@@ -2,7 +2,6 @@ package es.codeurjc.daw.library.security;
 
 
 
-
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,16 +11,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 
-@Service // service to bridge db with spring security
-public class RepositoryUserDetailsService implements UserDetailsService { // implementation to define how users are loaded during auth
 
+
+@Service // service to bridge db with spring security
+// implementation to define how users are loaded during auth
+public class RepositoryUserDetailsService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
@@ -36,17 +36,17 @@ public class RepositoryUserDetailsService implements UserDetailsService { // imp
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // retrieve user from db using email
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail (email);
 
         // if user doesnt exist, throw exception required by spring security
         if (user == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado");
+            throw new UsernameNotFoundException ("Usuario no encontrado");
         }
 
         // convert apps custom roles (strings) to spring security authorities
         List<GrantedAuthority> roles = new ArrayList<>();
         for (String role : user.getRoles()) {
-            roles.add(new SimpleGrantedAuthority("ROLE_" + role));
+            roles.add (new SimpleGrantedAuthority("ROLE_" + role));
         }
 
         // return standard spring security user object

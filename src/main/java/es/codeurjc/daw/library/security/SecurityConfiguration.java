@@ -11,12 +11,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-// for 403 redirection
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
+
+
+
 
 
 /**
@@ -26,13 +26,14 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
     @Autowired
     private UserDetailsService userDetailsService;
 
-    // key value taken from definition in properties
+    // key value taken from properties
     @Value("${security.rememberme.key}")
     private String rememberMeKey;
+
+
 
     /**
      * define password encoder bean
@@ -43,6 +44,7 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Algoritmo de encriptación seguro [cite: 17]
     }
+
 
 
     /**
@@ -57,7 +59,8 @@ public class SecurityConfiguration {
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http.authorizeHttpRequests ((requests) -> requests
                         // public paths (accesible without loggin in)
-                        .requestMatchers(
+                        // user navigation
+                        .requestMatchers (
                                 "/",                 // index
                                 "/about",
                                 "/contact",
@@ -72,7 +75,8 @@ public class SecurityConfiguration {
                                 "/login-check"
                         ).permitAll()
 
-                        .requestMatchers(
+                        // static
+                        .requestMatchers (
                                 "/css/**",
                                 "/js/**",
                                 "/images/**",
@@ -80,6 +84,7 @@ public class SecurityConfiguration {
                                 "/vendor/**"
                         ).permitAll()
 
+                        // errors
                         .requestMatchers(
                                 "/error/**"
                         ).permitAll()
@@ -92,19 +97,20 @@ public class SecurityConfiguration {
                 )
 
 
+
                 // configure form-based login
-                .formLogin((form) -> form
-                        .loginPage("/login") // custom normal user login url
-                        .loginProcessingUrl("/login-check") // internal url used by spring for validation (POST processing)
-                        .failureUrl("/login?error") // error url to redirect
+                .formLogin ((form) -> form
+                        .loginPage ("/login") // custom normal user login url
+                        .loginProcessingUrl ("/login-check") // internal url used by spring for validation (POST processing)
+                        .failureUrl ("/login?error") // error url to redirect
 
                         // redirection logic after successful login
-                        .successHandler((request, response, authentication) -> {
+                        .successHandler ((request, response, authentication) -> {
                             if (authentication.getAuthorities().stream()
                                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                                response.sendRedirect("/admin"); // if admin, go to admin control panel
+                                response.sendRedirect ("/admin"); // if admin, go to admin control panel
                             } else {
-                                response.sendRedirect("/"); // if admin, go to index
+                                response.sendRedirect ("/"); // if not admin, go to index
                             }
                         })
                         .permitAll()
@@ -113,30 +119,30 @@ public class SecurityConfiguration {
 
                 // configure logout behavior
                 .logout((logout) -> logout
-                        .logoutUrl("/logout") // url that triggers logout
-                        .logoutSuccessUrl("/") // redirection after succesful logout
+                        .logoutUrl ("/logout") // url that triggers logout
+                        .logoutSuccessUrl ("/") // redirection after succesful logout
                         .permitAll()
                 )
 
                 // remember me cookie functionality
                 .rememberMe((remember) -> remember
-                        .key(rememberMeKey) // key to sign token
-                        .tokenValiditySeconds(7 * 24 * 60 * 60) // 7 day duration
-                        .userDetailsService(userDetailsService) // reload user
-                        .rememberMeParameter("remember-me") // html input (remember me check) name
+                        .key (rememberMeKey) // key to sign token
+                        .tokenValiditySeconds (7 * 24 * 60 * 60) // 7 day duration
+                        .userDetailsService (userDetailsService) // reload user
+                        .rememberMeParameter ("remember-me") // html input (remember me check) name
                 )
 
                 // trigger 403 if anon tries to visit admin or user exclusive pages
-                .exceptionHandling((exception) -> exception
-                    .authenticationEntryPoint((request, response, authException) -> {
+                .exceptionHandling ((exception) -> exception
+                    .authenticationEntryPoint( (request, response, authException) -> {
                         String uri = request.getRequestURI();
                         // conditions to trigger
-                        if (uri.startsWith("/admin") || // admin pages
-                                uri.startsWith("/cart") || uri.startsWith("/checkout") || uri.startsWith("/invoice")) { // user pages
-                                    response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denegado");
+                        if (uri.startsWith ("/admin") || // admin pages
+                        uri.startsWith("/cart") || uri.startsWith("/checkout") || uri.startsWith("/invoice")) { // user pages
+                            response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denegado");
                         } else {
                             // default redirect to login
-                            response.sendRedirect("/login");
+                            response.sendRedirect ("/login");
                         }
                 })
         );

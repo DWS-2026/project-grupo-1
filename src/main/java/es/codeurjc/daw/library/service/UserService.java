@@ -2,21 +2,21 @@ package es.codeurjc.daw.library.service;
 
 
 
-import es.codeurjc.daw.library.model.User; // to work with users
-import es.codeurjc.daw.library.repository.UserRepository; // to search by email
+// ===== IMPORTS
+import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired; // to inject repository
 import org.springframework.stereotype.Service; // to define service
-
+import es.codeurjc.daw.library.model.User; // to work with users
+import es.codeurjc.daw.library.repository.UserRepository; // to search by email
 import java.util.List; // for user lists
-
-// for pfp generation
-import javax.imageio.ImageIO;
+import javax.imageio.ImageIO; // for pfp generation
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
-import jakarta.annotation.Nullable;
+// ===== IMPORTS
+
 
 
 
@@ -24,43 +24,36 @@ import jakarta.annotation.Nullable;
 
 /**
  * service layer class that handles business logic related to users
- * acts as intermediary between webcontroller and userrepository
+ * acts as intermediary between WebController and UserRepository
  */
 @Service
 public class UserService {
-    // repository injection for db access
-    @Autowired
+    @Autowired // repository injection for db access
     private UserRepository userRepository;
 
-
+    // ===== DERIVED QUERY METHODS
     // search user by email
     public User findByEmail (String email) {
         return userRepository.findByEmail(email);
     }
-
-
-    // persist user object into db
+    // store user object into db
     public void save (User user) {
         userRepository.save(user);
     }
-
-
     // deletes user from db
-    public void delete(User user) {
+    public void delete (User user) {
         userRepository.delete(user);
     }
-
-
     // retrieve all users from db
     public List<User> findAll() {
         return userRepository.findAll();
     }
-
-
     // find user by db id
-    public User findById(Long id) {
+    public User findById (Long id) {
         return userRepository.findById(id).orElse(null);
     }
+    // ===== DERIVED QUERY METHODS
+
 
 
     /**
@@ -76,20 +69,20 @@ public class UserService {
         int height = 200;
 
         // buffered image
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage image = new BufferedImage (width, height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g = image.createGraphics();
 
         // anti-analising for smoother text
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint (RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint (RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         // add background
-        g.setColor(bgColor);
-        g.fillRect(0, 0, width, height);
+        g.setColor (bgColor);
+        g.fillRect (0, 0, width, height);
 
         // add text
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 28));
+        g.setColor (Color.WHITE);
+        g.setFont (new Font ("Arial", Font.BOLD, 28));
         FontMetrics metrics = g.getFontMetrics();
 
         // calculate center for role and name
@@ -105,7 +98,7 @@ public class UserService {
 
         // convert generated image to b64
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
-            ImageIO.write(image, "png", baos);
+            ImageIO.write (image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
             return Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {

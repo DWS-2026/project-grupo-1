@@ -1,41 +1,33 @@
 package es.codeurjc.daw.library.service;
 
+
+
+// ===== IMPORTS
 import java.time.LocalDateTime;
 import java.util.Arrays;
-
+import java.awt.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
-
-// for pfp generation
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
-import jakarta.annotation.Nullable;
+// ===== IMPORTS
 
 
 
 
 
-// populates db with user sample data
+
+// populates db with user samples
 @Component
 @Order (1) // ensures users are created before other entities that might depend on them
 public class UserInitializer implements CommandLineRunner {
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserService userService;
 
@@ -44,32 +36,25 @@ public class UserInitializer implements CommandLineRunner {
     // auto-runs on app startup
     @Override
     public void run (String... args) {
-
         // if there are already users, do nothing (ddl-auto is set to create)
         if (userRepository.count() != 0) return;
 
         // create 5 users
-        createUser("Luis", "Coca", "luis@email.com", "1234", "600111222", "910112233",
+        createUser ("Luis", "Coca", "luis@email.com", "1234", "600111222", "910112233",
                 120.50, true, LocalDateTime.now().minusDays(5));
-
-        createUser("Ana", "García", "ana@email.com", "1234", "611222333", null,
+        createUser ("Ana", "García", "ana@email.com", "1234", "611222333", null,
                 450.75, true, LocalDateTime.now().minusMonths(2));
-
-        createUser("Carlos", "López", "carlos@email.com", "1234", "622333444", "922333444",
+        createUser ("Carlos", "López", "carlos@email.com", "1234", "622333444", "922333444",
                 0.0, true, LocalDateTime.now().minusDays(1)); // Usuario recién registrado sin compras
-
-        createUser("Marta", "Sánchez", "marta@email.com", "1234", "633444555", "933444555",
+        createUser ("Marta", "Sánchez", "marta@email.com", "1234", "633444555", "933444555",
                 89.90, false, LocalDateTime.now().minusYears(1)); // Usuario con cuenta deshabilitada
-
-        createUser("David", "Martín", "david@email.com", "1234", "644555666", null,
+        createUser ("David", "Martín", "david@email.com", "1234", "644555666", null,
                 1500.00, true, LocalDateTime.now().minusMonths(6));
-
-        System.out.println(">>> Users initialized");
+        System.out.println (">>> Users initialized");
 
         // create admin
-        createAdmin("NombreAdmin", "ApellidoAdmin", "admin@apexexpeditions.com", "1234", "700111222", "800111222");
-
-        System.out.println(">>> Admin initialized");
+        createAdmin ("NombreAdmin", "ApellidoAdmin", "admin@apexexpeditions.com", "1234", "700111222", "800111222");
+        System.out.println (">>> Admin initialized");
     }
 
 
@@ -87,7 +72,6 @@ public class UserInitializer implements CommandLineRunner {
         user.setRoles (Arrays.asList("USER"));
         userRepository.save (user);
     }
-
 
 
 

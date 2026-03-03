@@ -23,61 +23,75 @@ import java.util.Base64;
 
 @Controller
 public class WebController {
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private TourService tourService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/")
-    public String index(Model model) {
-        model.addAttribute("home", true);
+
+
+    @GetMapping ("/")
+    public String index (Model model) {
+        model.addAttribute ("home", true);
         return "user/index";
     }
 
-    @GetMapping("/packages")
-    public String packages(Model model) {
-        model.addAttribute("tours", tourService.getAllTours());
+
+
+    @GetMapping ("/packages")
+    public String packages (Model model) {
+        model.addAttribute ("tours", tourService.getAllTours());
         return "user/packages";
     }
 
-    @GetMapping("/guides")
-    public String guides(Model model) {
+
+
+    @GetMapping ("/guides")
+    public String guides (Model model) {
         return "user/guides";
     }
 
-    @GetMapping("/services")
-    public String services(Model model) {
-        model.addAttribute("services", true);
+
+
+    @GetMapping ("/services")
+    public String services (Model model) {
+        model.addAttribute ("services", true);
         return "user/services";
     }
 
-    @GetMapping("/about")
-    public String about(Model model) {
-        model.addAttribute("about", true);
+
+
+    @GetMapping ("/about")
+    public String about (Model model) {
+        model.addAttribute ("about", true);
         return "user/about";
     }
 
-    @GetMapping("/contact")
-    public String contact(Model model) {
-        model.addAttribute("contact", true);
+
+
+    @GetMapping ("/contact")
+    public String contact (Model model) {
+        model.addAttribute ("contact", true);
         return "user/contact";
     }
 
-    @GetMapping("/cart")
-    public String cart(Model model) {
-        model.addAttribute("cart", true);
+
+
+    @GetMapping ("/cart")
+    public String cart (Model model) {
+        model.addAttribute ("cart", true);
         return "user/cart";
     }
 
-    @GetMapping("/register")
+
+
+    @GetMapping ("/register")
     public String register() {
         return "user/register";
     }
+
 
 
     @PostMapping ("/register")
@@ -107,61 +121,75 @@ public class WebController {
 
 
 
-
-
-    @GetMapping("/login")
-    public String login(@RequestParam(required = false) String error, Model model) {
-        model.addAttribute("error", error != null);
+    @GetMapping ("/login")
+    public String login (@RequestParam(required = false) String error, Model model) {
+        model.addAttribute ("error", error != null);
         return "user/login";
     }
 
-    @GetMapping("/profile")
-    public String profile(Model model, Principal principal, HttpServletRequest request) {
+
+
+    @GetMapping ("/profile")
+    public String profile (Model model, Principal principal, HttpServletRequest request) {
         if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
+            User user = userService.findByEmail (principal.getName());
+            model.addAttribute ("user", user);
 
             // check if user admin, and set flag accordingly
             boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
-            model.addAttribute("isAdmin", isAdmin);
+            model.addAttribute ("isAdmin", isAdmin);
         }
         return "user/profile";
     }
 
-    @GetMapping("/tour-details/{id}")
-    public String showDetails(@PathVariable Long id, Model model) {
-    model.addAttribute("tour", tourService.findById(id));
+
+
+    @GetMapping ("/tour-details/{id}")
+    public String showDetails (@PathVariable Long id, Model model) {
+    model.addAttribute ("tour", tourService.findById(id));
         return "user/tour-details";
     }
 
-    @GetMapping("/checkout")
+
+
+    @GetMapping ("/checkout")
     public String checkout() {
         return "user/checkout";
     }
 
-    @GetMapping("/invoice")
+
+
+    @GetMapping ("/invoice")
     public String invoice() {
         return "/user/invoice";
     }
 
-    @GetMapping("/add-review")
+
+
+    @GetMapping ("/add-review")
     public String add_review() {
         return "/user/add-review";
     }
 
-    @GetMapping("/forgot-password")
+
+
+    @GetMapping ("/forgot-password")
     public String forgot_password() {
         return "/user/forgot-password";
     }
 
-    @GetMapping("/admin-login")
-    public String adminLogin(@RequestParam(required = false) String error, Model model) {
-        model.addAttribute("error", error != null);
+
+
+    @GetMapping ("/admin-login")
+    public String adminLogin (@RequestParam(required = false) String error, Model model) {
+        model.addAttribute ("error", error != null);
         return "user/admin-login";
     }
 
-    @PostMapping("/profile/update")
-    public String updateProfile(Principal principal,
+
+
+    @PostMapping ("/profile/update")
+    public String updateProfile (Principal principal,
             @RequestParam String name,
             @RequestParam String lastName,
             @RequestParam String mainPhone,
@@ -179,7 +207,7 @@ public class WebController {
             return "redirect:/logout";
         }
 
-        // 3. Actualizar datos básicos
+        // update info
         user.setName(name);
         user.setLastName(lastName);
         user.setMainPhone(mainPhone);
