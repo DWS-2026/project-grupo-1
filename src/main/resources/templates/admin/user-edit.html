@@ -144,17 +144,17 @@
                                     <div class="col-md-4 text-center pfp-column-center">
                                         <label>Foto de perfil</label>
                                         <div class="pfp-container mx-auto">
-                                            {{^user.profilePicture}}
+                                            {{^user.hasProfilePicture}}
                                             <div id="pfp-placeholder">
                                                 <i class="fas fa-user fa-5x text-secondary"></i>
                                             </div>
-                                            {{/user.profilePicture}}
+                                            {{/user.hasProfilePicture}}
 
                                             <!-- load users pfp -->
                                             <img id="pfp-preview"
-                                                src="{{#user.profilePicture}}data:image/png;base64,{{user.profilePicture}}{{/user.profilePicture}}"
-                                                class="img-fluid {{^user.profilePicture}}d-none{{/user.profilePicture}}"
-                                                style="width: 100%; height: 100%; object-fit: cover;">
+                                                 src="{{#user.hasProfilePicture}}/user/{{user.id}}/image{{/user.hasProfilePicture}}"
+                                                 class="img-fluid {{^user.hasProfilePicture}}d-none{{/user.hasProfilePicture}}"
+                                                 style="width: 100%; height: 100%; object-fit: cover;">
                                         </div>
                                         <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
 

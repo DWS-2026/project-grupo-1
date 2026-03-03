@@ -165,17 +165,17 @@
 
                                 <!-- pfp start  -->
                                 <!-- if user has pfp: display that -->
-                                {{#currentUser.profilePicture}}
+                                {{#currentUser.hasProfilePicture}}
                                 <img class="img-profile rounded-circle"
-                                     src="data:image/jpeg;base64,{{currentUser.profilePicture}}"
+                                     src="/user/{{currentUser.id}}/image"
                                      style="object-fit: cover;">
-                                {{/currentUser.profilePicture}}
+                                {{/currentUser.hasProfilePicture}}
 
                                 <!-- if not: display default sb_admin_2 pfp -->
-                                {{^currentUser.profilePicture}}
+                                {{^currentUser.hasProfilePicture}}
                                 <img class="img-profile rounded-circle"
                                      src="/img/undraw_profile.svg">
-                                {{/currentUser.profilePicture}}
+                                {{/currentUser.hasProfilePicture}}
                                 <!-- pfp end  -->
 
                             </a>
