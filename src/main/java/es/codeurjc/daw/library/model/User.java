@@ -28,8 +28,9 @@ public class User {
     private String mainPhone;
     private String secondaryPhone;
 
-    @Lob // for b64 encoded image
-    private String profilePicture;
+    @Lob // for image
+    @Column (name = "profile_picture", columnDefinition = "LONGBLOB") // explicitly define as longblob for mysql
+    private byte[] profilePicture;
 
     // account and security credentials
     @Column (unique = true) // unique email used as username for auth
@@ -104,8 +105,8 @@ public class User {
     public void setSecondaryPhone(String secondaryPhone) { this.secondaryPhone = secondaryPhone; }
 
     // pfp
-    public String getProfilePicture() { return profilePicture; }
-    public void setProfilePicture(String profilePicture) { this.profilePicture = profilePicture; }
+    public byte[] getProfilePicture() { return profilePicture; }
+    public void setProfilePicture (byte[] profilePicture) { this.profilePicture = profilePicture; }
 
     // email
     public String getEmail() { return email; }
@@ -143,4 +144,12 @@ public class User {
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
     // ===== GETTERS AND SETTERS END
+
+
+
+    // ===== AUX
+    public boolean isHasProfilePicture() {
+        return this.profilePicture != null && this.profilePicture.length > 0;
+    }
+    // ===== AUX
 }   

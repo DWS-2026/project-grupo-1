@@ -70,14 +70,14 @@
                 {{! --- profile and logout start --- }}
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown">
-                        {{#currentUser.profilePicture}}
-                        <img src="data:image/png;base64,{{currentUser.profilePicture}}"
+                        {{#currentUser.hasProfilePicture}}
+                        <img src="/user/{{currentUser.id}}/image"
                              class="rounded-circle me-2"
                              style="width: 25px; height: 25px; object-fit: cover; border: 1px solid white;">
-                        {{/currentUser.profilePicture}}
-                        {{^currentUser.profilePicture}}
+                        {{/currentUser.hasProfilePicture}}
+                        {{^currentUser.hasProfilePicture}}
                         <i class="fa fa-user me-2"></i>
-                        {{/currentUser.profilePicture}}
+                        {{/currentUser.hasProfilePicture}}
 
                         Hola, {{currentUser.name}}
                     </a>

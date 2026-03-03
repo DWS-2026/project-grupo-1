@@ -145,15 +145,15 @@
                                 <div class="row g-3 text-center">
                                     <h4 class="mb-4 mt-0">Foto de perfil</h4>
                                     <div class="square position-relative mb-3">
-                                        {{^currentUser.profilePicture}}
+                                        {{^currentUser.hasProfilePicture}}
                                         <div id="pfp-placeholder" class="h-100 w-100 d-flex align-items-center justify-content-center">
                                             <i class="fas fa-fw fa-user text-secondary display-1"></i>
                                         </div>
-                                        {{/currentUser.profilePicture}}
+                                        {{/currentUser.hasProfilePicture}}
 
                                         <img id="pfp-preview"
-                                             src="{{#currentUser.profilePicture}}data:image/png;base64,{{currentUser.profilePicture}}{{/currentUser.profilePicture}}"
-                                             class="img-fluid rounded {{^currentUser.profilePicture}}d-none{{/currentUser.profilePicture}}"
+                                             src="{{#currentUser.hasProfilePicture}}/user/{{currentUser.id}}/image{{/currentUser.hasProfilePicture}}"
+                                             class="img-fluid rounded {{^currentUser.hasProfilePicture}}d-none{{/currentUser.hasProfilePicture}}"
                                              style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
                                     <input type="file" id="customFile" name="imageFile" hidden accept="image/*">

@@ -66,7 +66,7 @@ public class UserInitializer implements CommandLineRunner {
                 moneySpent, enabled, creationDate);
 
         // if user, pfp bg is blue
-        String avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
+        byte[] avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
         user.setProfilePicture (avatar);
 
         user.setRoles (Arrays.asList("USER"));
@@ -80,7 +80,7 @@ public class UserInitializer implements CommandLineRunner {
         User admin = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone);
 
         // if admin, pfp bg is black
-        String avatar = userService.generateDefaultAvatar ("Admin", name, new Color(0, 0, 0));
+        byte[] avatar = userService.generateDefaultAvatar ("Admin", name, new Color(0, 0, 0));
         admin.setProfilePicture (avatar);
 
         admin.setRoles (Arrays.asList("USER", "ADMIN"));

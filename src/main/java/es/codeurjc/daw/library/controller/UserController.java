@@ -16,7 +16,6 @@ import es.codeurjc.daw.library.service.NotificationService;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-import java.util.Base64;
 
 
 
@@ -104,9 +103,8 @@ public class UserController {
 
             // update image if added
             if (imageFile != null && !imageFile.isEmpty()) {
-                byte[] bytes = imageFile.getBytes();
-                String base64Image = Base64.getEncoder().encodeToString(bytes);
-                existingUser.setProfilePicture (base64Image);
+                byte[] imageBytes = imageFile.getBytes();
+                existingUser.setProfilePicture(imageBytes);
             }
         }
 
@@ -176,14 +174,13 @@ public class UserController {
 
         // if an image is added, store it too
         if (imageFile != null && !imageFile.isEmpty()) {
-            byte[] bytes = imageFile.getBytes();
-            String base64Image = java.util.Base64.getEncoder().encodeToString(bytes);
-            newUser.setProfilePicture(base64Image);
+            byte[] imageBytes = imageFile.getBytes();
+            newUser.setProfilePicture(imageBytes);
         }
 
         else {
             // if no picture, generate default
-            String avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
             newUser.setProfilePicture(avatar);
         }
 

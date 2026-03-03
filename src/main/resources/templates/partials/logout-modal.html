@@ -10,16 +10,16 @@
             <div class="modal-body">
                 {{#currentUser}}
                 <div class="mb-3">
-                    {{#profilePicture}}
-                    <img src="data:image/png;base64,{{profilePicture}}"
+                    {{#hasProfilePicture}}
+                    <img src="/user/{{id}}/image"
                          alt="Foto de perfil"
                          class="rounded-circle border border-3 border-primary"
                          style="width: 100px; height: 100px; object-fit: cover;">
-                    {{/profilePicture}}
+                    {{/hasProfilePicture}}
 
-                    {{^profilePicture}}
+                    {{^hasProfilePicture}}
                     <i class="fas fa-user-circle fa-5x text-secondary"></i>
-                    {{/profilePicture}}
+                    {{/hasProfilePicture}}
                 </div>
 
                 <h4 class="mb-1">{{name}} {{lastName}}</h4>

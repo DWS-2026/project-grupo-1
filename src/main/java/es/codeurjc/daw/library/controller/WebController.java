@@ -1,11 +1,14 @@
 package es.codeurjc.daw.library.controller;
 
-import es.codeurjc.daw.library.model.Tour;
+
+
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +22,12 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
-import java.util.Base64;
+
+
+
+
+
+
 
 @Controller
 public class WebController {
@@ -110,12 +118,12 @@ public class WebController {
         newUser.setMainPhone (mainPhone);
         newUser.setEnabled (true);
 
-        newUser.setRoles(Arrays.asList("USER")); // assign user role
-        newUser.setPassword(passwordEncoder.encode(password)); // encrypt password
-        String avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
-        newUser.setProfilePicture(avatar);  // default user pfp
+        newUser.setRoles (Arrays.asList("USER")); // assign user role
+        newUser.setPassword (passwordEncoder.encode(password)); // encrypt password
+        byte[] avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
+        newUser.setProfilePicture (avatar);  // default user pfp
 
-        userService.save(newUser); // save user
+        userService.save (newUser); // save user
         return "redirect:/login"; // go login
     }
 
@@ -194,30 +202,29 @@ public class WebController {
             @RequestParam String lastName,
             @RequestParam String mainPhone,
             @RequestParam String secondaryPhone,
-            @RequestParam(required = false) String newPassword,
+            @RequestParam (required = false) String newPassword,
             @RequestParam MultipartFile imageFile,
             @RequestParam String action) throws IOException {
 
         // get user logged in
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByEmail (principal.getName());
 
         // process user deletion
-        if ("delete".equals(action)) {
-            userService.delete(user);
+        if ("delete".equals (action)) {
+            userService.delete (user);
             return "redirect:/logout";
         }
 
         // update info
-        user.setName(name);
-        user.setLastName(lastName);
-        user.setMainPhone(mainPhone);
-        user.setSecondaryPhone(secondaryPhone);
+        user.setName (name);
+        user.setLastName (lastName);
+        user.setMainPhone (mainPhone);
+        user.setSecondaryPhone (secondaryPhone);
 
         // process new image (if uploaded)
         if (!imageFile.isEmpty()) {
             byte[] bytes = imageFile.getBytes();
-            String base64Image = Base64.getEncoder().encodeToString(bytes);
-            user.setProfilePicture(base64Image);
+            user.setProfilePicture(imageFile.getBytes());
         }
 
         // change password (if there is a new one)
@@ -230,5 +237,18 @@ public class WebController {
 
         // return to profile page
         return "redirect:/profile";
+    }
+
+
+    // retrieve an image for a specific user
+    @GetMapping("/user/{id}/image")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
+        User user = userService.findById(id);
+        if (user != null && user.getProfilePicture() != null) {
+            return ResponseEntity.ok()
+                    .header (HttpHeaders.CONTENT_TYPE, "image/png")
+                    .body (user.getProfilePicture());
+        }
+        return ResponseEntity.notFound().build();
     }
 }
