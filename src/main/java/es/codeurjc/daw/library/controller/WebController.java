@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Controller
@@ -76,6 +78,36 @@ public class WebController {
     public String register() {
         return "user/register";
     }
+
+
+    @PostMapping ("/register")
+    public String registerUser (@RequestParam String name,
+                               @RequestParam String lastName,
+                               @RequestParam String email,
+                               @RequestParam String mainPhone,
+                               @RequestParam String password,
+                               Model model) {
+
+        // create user instance
+        User newUser = new User();
+        newUser.setName (name);
+        newUser.setLastName (lastName);
+        newUser.setEmail (email);
+        newUser.setMainPhone (mainPhone);
+        newUser.setEnabled (true);
+
+        newUser.setRoles(Arrays.asList("USER")); // assign user role
+        newUser.setPassword(passwordEncoder.encode(password)); // encrypt password
+        String avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+        newUser.setProfilePicture(avatar);  // default user pfp
+
+        userService.save(newUser); // save user
+        return "redirect:/login"; // go login
+    }
+
+
+
+
 
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String error, Model model) {
