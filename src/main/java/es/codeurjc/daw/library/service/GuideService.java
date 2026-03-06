@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Base64;
 import jakarta.annotation.Nullable;
 
 
@@ -58,7 +57,7 @@ public class GuideService {
      * @param bgColor image bg color
      * @return b64 string ready to store in db
      */
-    public @Nullable String generateDefaultAvatar (String roleText, String nameText, Color bgColor) {
+    public @Nullable byte[] generateDefaultAvatar (String roleText, String nameText, Color bgColor) {
         // image size
         int width = 200;
         int height = 200;
@@ -95,7 +94,7 @@ public class GuideService {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             ImageIO.write(image, "png", baos);
             byte[] imageBytes = baos.toByteArray();
-            return Base64.getEncoder().encodeToString(imageBytes);
+            return imageBytes;
         } catch (IOException e) {
             e.printStackTrace();
             return null; // generation error fallback

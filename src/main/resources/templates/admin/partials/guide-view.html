@@ -22,19 +22,19 @@
                 <div class="text-center mb-4">
 
                     <!-- FOTO -->
-                    {{#profilePicture}}
-                    <img src="data:image/png;base64,{{profilePicture}}"
+                    {{#hasProfilePicture}}
+                    <img src="guides/{{id}}/image"
                          alt="Foto de perfil"
                          class="rounded-circle border border-5 border-primary shadow-sm"
                          style="width: 120px; height: 120px; object-fit: cover;">
-                    {{/profilePicture}}
+                    {{/hasProfilePicture}}
 
-                    {{^profilePicture}}
+                    {{^hasProfilePicture}}
                     <div class="rounded-circle border border-5 border-secondary d-inline-flex align-items-center justify-content-center bg-light"
                          style="width: 120px; height: 120px;">
                         <i class="fas fa-user fa-4x text-secondary"></i>
                     </div>
-                    {{/profilePicture}}
+                    {{/hasProfilePicture}}
 
                     <!-- NOMBRE -->
                     <h4 class="mt-3 mb-1 font-weight-bold text-gray-800">

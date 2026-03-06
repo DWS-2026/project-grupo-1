@@ -137,15 +137,15 @@
                                     <label>Foto de perfil</label>
 
                                     <div class="pfp-container mx-auto">
-                                        {{^guide.profilePicture}}
+                                        {{^guide.hasProfilePicture}}
                                         <div id="pfp-placeholder">
                                             <i class="fas fa-user fa-5x text-secondary"></i>
                                         </div>
-                                        {{/guide.profilePicture}}
+                                        {{/guide.hasProfilePicture}}
 
                                         <img id="pfp-preview"
-                                            src="{{#guide.profilePicture}}data:image/png;base64,{{guide.profilePicture}}{{/guide.profilePicture}}"
-                                            class="img-fluid {{^guide.profilePicture}}d-none{{/guide.profilePicture}}"
+                                            src="/admin/guides/{{guide.id}}/image"
+                                            class="img-fluid {{^guide.hasProfilePicture}}d-none{{/guide.hasProfilePicture}}"
                                             style="width: 100%; height: 100%; object-fit: cover;">
                                     </div>
 
@@ -216,7 +216,8 @@
                 reader.readAsDataURL(file);
             }
         });
-        </script>
+    </script>
+    
 
 </body>
 

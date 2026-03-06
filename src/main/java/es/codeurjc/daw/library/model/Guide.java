@@ -21,8 +21,9 @@ public class Guide {
     @JsonBackReference
     private Tour tour;
 
-    @Lob // for b64 encoded image
-    private String profilePicture;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] profilePicture;
 
     public Guide() {}
 
@@ -66,10 +67,10 @@ public class Guide {
         this.tour = tour;
     }
 
-    public String getProfilePicture() { 
+    public byte[] getProfilePicture() { 
         return profilePicture; 
     }
-    public void setProfilePicture(String profilePicture) { 
+    public void setProfilePicture(byte[] profilePicture) { 
         this.profilePicture = profilePicture; 
     }
 
@@ -79,5 +80,8 @@ public class Guide {
 
     public void setEnabled(boolean enabled) {
         this.Estado = enabled;
+    }
+    public boolean isHasProfilePicture() {
+        return this.profilePicture != null && this.profilePicture.length > 0;
     }
 }

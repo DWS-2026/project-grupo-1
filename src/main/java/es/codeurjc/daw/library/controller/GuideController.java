@@ -6,10 +6,13 @@ import es.codeurjc.daw.library.service.GuideService;
 import es.codeurjc.daw.library.service.TourService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+/*import org.springframework.http.ResponseEntity;*/
+import org.springframework.http.HttpHeaders;
 import es.codeurjc.daw.library.service.NotificationService;
 
 import java.io.IOException;
@@ -20,9 +23,8 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Base64;
 import jakarta.annotation.Nullable;
+
 
 @Controller
 @RequestMapping("/admin/guides")
@@ -88,9 +90,7 @@ public class GuideController {
         guide.setEnabled(enabled != null);
 
         if (imageFile != null && !imageFile.isEmpty()) {
-            String base64Image =
-                    Base64.getEncoder().encodeToString(imageFile.getBytes());
-            guide.setProfilePicture(base64Image);
+        guide.setProfilePicture(imageFile.getBytes());
         }
 
         guideService.save(guide);
@@ -103,7 +103,24 @@ public class GuideController {
     public String showAddGuideForm(Model model) {
         model.addAttribute("tours", tourService.findAll());
         return "admin/guide-add";
-}
+    }
+
+
+
+    @GetMapping("/{id}/image")
+        @ResponseBody
+        public ResponseEntity<byte[]> getGuideImage(@PathVariable Long id) {
+
+            Guide guide = guideService.findById(id);
+
+            if (guide.getProfilePicture() == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .body(guide.getProfilePicture());
+        }
 
 
 
@@ -129,10 +146,9 @@ public class GuideController {
 
         // Imagen opcional
         if (imageFile != null && !imageFile.isEmpty()) {
-            String base64Image = Base64.getEncoder().encodeToString(imageFile.getBytes());
-            newGuide.setProfilePicture(base64Image);
+            newGuide.setProfilePicture(imageFile.getBytes());
         } else {
-            String avatar = guideService.generateDefaultAvatar("Guía", name, new Color(13,110,253));
+            byte[] avatar = guideService.generateDefaultAvatar("Guía", name, new Color(13,110,253));
             newGuide.setProfilePicture(avatar);
         }
 
