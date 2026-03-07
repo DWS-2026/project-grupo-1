@@ -9,7 +9,7 @@
     <meta name="description" content="Gestión de Tours">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Tours</title>
+    <title>SB Admin 2 - Reviews</title>
 
 
     <link rel="icon" href="/images/favicon_admin.png" type="image/png">
@@ -55,70 +55,58 @@
                     <!-- DataTables Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Tours disponibles</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Reviews de <a
+                                    href="/tour-details/{{tour.id}}">{{tour.name}}</a></h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Imagen</th>
-                                            <th>Nombre del Tour</th>
-                                            <th>Precio</th>
-                                            <th>Duración</th>
-                                            <th>Personas</th>
-                                            <th>Hotel</th>
+                                            <th>Usuario</th>
+                                            <th>Valoración</th>
                                             <th>Descripción</th>
-                                            <th>Reviews</th>
                                             <th>Acciones</th>
+
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        {{#tours}}
+                                        {{#reviews}}
                                         <tr>
+                                            <td>{{user.name}}</td>
                                             <td>
-                                                {{#tourImage}}
-                                                <img src="data:image/jpeg;base64,{{tourImage}}" alt="{{name}}"
-                                                    style="width:80px; height:auto;" />
-                                                {{/tourImage}}
-                                                {{^tourImage}}
-                                                <span>No disponible</span>
-                                                {{/tourImage}}
-                                            </td>
-                                            <td><a href="/tour-details/{{id}}">{{name}}</a></td>
-                                            <td>{{price}} €</td>
-                                            <td>{{duration}}</td>
-                                            <td>{{numPeople}} Personas</td>
-                                            <td>
-                                                {{#hotelIncluded}}Incluido{{/hotelIncluded}}
-                                                {{^hotelIncluded}}No incluido{{/hotelIncluded}}
+                                                <i class="fas fa-star text-warning"></i> {{rating}}
                                             </td>
                                             <td>{{description}}</td>
-                                            <td>{{#reviews}}
-                                                <a href="/admin/reviews/tour/{{tour.id}}">{{reviews.size}}</a>
-                                                {{/reviews}}
-                                                {{^reviews}}
-                                                0
-                                                {{/reviews}}</td>
+
                                             <td>
-                                                <a href="/admin/tour-edit/{{id}}"
-                                                    class="btn btn-warning btn-sm">Editar</a>
+
+                                                <a href="/admin/review-edit/{{id}}" class="btn btn-warning btn-sm">
+                                                    Editar
+                                                </a>
+
+                                                <a href="/admin/review-delete/{{id}}" class="btn btn-danger btn-sm">
+                                                    Eliminar
+                                                </a>
+
                                             </td>
                                         </tr>
-                                        {{/tours}}
-                                        {{^tours}}
+                                        {{/reviews}}
+
+                                        {{^reviews}}
                                         <tr>
-                                            <td colspan="8" class="text-center">No hay tours disponibles</td>
+                                            <td colspan="4" class="text-center">
+                                                No hay reviews para este tour
+                                            </td>
                                         </tr>
-                                        {{/tours}}
+                                        {{/reviews}}
                                     </tbody>
 
 
 
 
                                 </table>
-                                <a href="/admin/tour-add" class="btn btn-primary btn-sm">Añadir nuevo Tour</a>
 
                             </div>
                         </div>

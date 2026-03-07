@@ -22,4 +22,8 @@ public class ReviewService {
     public Review save(Review review) {
         return reviewRepository.save(review);
     }
+
+    public List<Review> findByTourId(Long tourId) {
+        return reviewRepository.findByTourId(tourId);
+    }
 }

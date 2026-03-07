@@ -18,11 +18,8 @@ import es.codeurjc.daw.library.service.NotificationService;
 import java.io.IOException;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import jakarta.annotation.Nullable;
+
 
 
 @Controller

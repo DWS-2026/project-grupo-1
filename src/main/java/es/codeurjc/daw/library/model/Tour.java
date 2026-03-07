@@ -2,7 +2,7 @@ package es.codeurjc.daw.library.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -16,8 +16,8 @@ public class Tour {
 
     private String name;
 
-    @Lob     // for b64 encoded image
-    private String tour_image;    
+    @Lob // for b64 encoded image
+    private String tour_image;
 
     @Lob
     private String description;
@@ -32,8 +32,12 @@ public class Tour {
     private boolean hotelIncluded; // true = Incluido, false = No incluido
 
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
-    private List<Guide> guides;
+    @JsonManagedReference("tour-guides")
+    private List<Guide> guides = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("tour-reviews")
+    private List<Review> reviews = new ArrayList<>();
 
     @Transient
     private boolean selected;
@@ -59,14 +63,14 @@ public class Tour {
         this.name = name;
     }
 
-   public String getTourImage() {
-     return tour_image; 
-    
-}
+    public String getTourImage() {
+        return tour_image;
+
+    }
 
     public void setTourImage(String image) {
-         this.tour_image = image;
-         }
+        this.tour_image = image;
+    }
 
     public String getDescription() {
         return description;
@@ -122,5 +126,37 @@ public class Tour {
 
     public void setSelected(boolean selected) {
         this.selected = selected;
+
     }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public void addReview(Review review) {
+        if (review != null) {
+            reviews.add(review);
+            review.setTour(this);
+        }
+    }
+
+    public void removeReview(Review review) {
+        if (review != null) {
+            reviews.remove(review);
+            review.setTour(null);
+        }
+    }
+
+    public double getAverageRating() {
+
+    if (reviews == null || reviews.isEmpty()) {
+        return 0;
+    }
+
+    return reviews.stream().mapToInt(Review::getRating).average().orElse(0);
+}
 }

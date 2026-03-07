@@ -18,7 +18,7 @@ public class Guide {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tour_id")
-    @JsonBackReference
+    @JsonBackReference("tour-guides")
     private Tour tour;
 
     @Lob

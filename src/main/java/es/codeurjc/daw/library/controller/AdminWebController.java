@@ -155,4 +155,19 @@ public class AdminWebController {
         return "admin/utilities-other";
     }
 
+    @GetMapping("/reviews/tour/{tourId}")
+    public String showReviews(@PathVariable Long tourId, Model model) {
+
+        Tour tour = tourService.findById(tourId);
+
+        if (tour == null) {
+            return "redirect:/admin/tours";
+        }
+
+        model.addAttribute("tour", tour);
+        model.addAttribute("reviews", tour.getReviews());
+
+        return "admin/tour-review";
+    }
+
 }
