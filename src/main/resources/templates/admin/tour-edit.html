@@ -56,27 +56,28 @@
                                 <!-- Nombre -->
                                 <div class="form-group">
                                     <label>Nombre del tour</label>
-                                    <input type="text" class="form-control" name="name" value="{{tour.name}}">
+                                    <input type="text" class="form-control" name="name" value="{{tour.name}}" required>
                                 </div>
 
                                 <!-- Precio -->
                                 <div class="form-group">
                                     <label>Precio (€)</label>
-                                    <input type="number" step="0.01" class="form-control" name="price"
-                                        value="{{tour.price}}">
+                                    <input type="number" class="form-control" name="price" min="0" step="0.01"
+                                        inputmode="decimal" value="{{tour.price}}" required>
                                 </div>
 
                                 <!-- Duración -->
                                 <div class="form-group">
                                     <label>Duración</label>
-                                    <input type="text" class="form-control" name="duration" value="{{tour.duration}}">
+                                    <input type="number" class="form-control" name="duration" min="0" step="1"
+                                        inputmode="numeric" value="{{tour.duration}}" required>
                                 </div>
 
                                 <!-- Personas -->
                                 <div class="form-group">
                                     <label>Número de personas</label>
-                                    <input type="number" class="form-control" name="numPeople"
-                                        value="{{tour.numPeople}}">
+                                    <input type="number" class="form-control" name="numPeople" min="1" step="1"
+                                        inputmode="numeric" value="{{tour.numPeople}}" required>
                                 </div>
 
                                 <!-- Hotel -->
@@ -93,14 +94,18 @@
                                 <!-- Descripción -->
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" name="description"
-                                        rows="4">{{tour.description}}</textarea>
+                                    <textarea class="form-control" name="description" rows="4"
+                                        required">{{tour.description}}</textarea>
                                 </div>
 
                                 <!-- Imagen -->
                                 <div class="form-group">
                                     <label>Imagen del tour</label>
-                                    <input type="file" class="form-control-file" name="imageFile">
+                                    <input type="file" class="form-control-file" name="imageFile"
+                                        accept="image/*">
+                                    <small class="form-text text-muted">
+                                        Formatos permitidos: JPG, PNG, WEBP
+                                    </small>
                                 </div>
 
                                 {{#tour.tourImage}}

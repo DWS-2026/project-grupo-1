@@ -23,7 +23,7 @@ public class Tour {
     private String description;
 
     private double price;
-    private String duration;
+    private int duration;
 
     // Nueva propiedad
     private int numPeople;
@@ -84,11 +84,11 @@ public class Tour {
         this.price = price;
     }
 
-    public String getDuration() {
+    public int getDuration() {
         return duration;
     }
 
-    public void setDuration(String duration) {
+    public void setDuration(int duration) {
         this.duration = duration;
     }
 

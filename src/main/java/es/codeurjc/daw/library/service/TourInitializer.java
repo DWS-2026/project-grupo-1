@@ -29,7 +29,7 @@ public class TourInitializer implements CommandLineRunner {
                 "imagen1.jpg",
                 "Explora ciudades futuristas...",
                 4349.00,
-                "3 días",
+                8,
                 2,
                 true);
 
@@ -38,7 +38,7 @@ public class TourInitializer implements CommandLineRunner {
                 "futuro1.1.jpg",
                 "Explora ciudades del pasado...",
                 2222.00,
-                "8 días",
+                8,
                 7,
                 false);
 
@@ -46,7 +46,7 @@ public class TourInitializer implements CommandLineRunner {
     }
 
     private void createTour(String name, String imagePath, String description,
-                            double price, String duration,
+                            double price, int duration,
                             int numPeople, boolean hotelIncluded) {
 
         Tour tour = new Tour();

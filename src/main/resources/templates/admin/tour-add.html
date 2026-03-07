@@ -56,29 +56,32 @@
 
                                 <div class="form-group">
                                     <label>Nombre del tour</label>
-                                    <input type="text" class="form-control" name="name" placeholder="Nombre" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Nombre del tour"
+                                        required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Precio (€)</label>
-                                    <input type="number" step="0.01" class="form-control" name="price"
-                                        placeholder="Precio" required>
+                                    <input type="number" class="form-control" name="price" placeholder="Precio" min="0"
+                                        step="0.01" inputmode="decimal" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Duración</label>
-                                    <input type="text" class="form-control" name="duration" placeholder="Duración">
+                                    <input type="number" class="form-control" name="duration" min="0"
+                                        step="1" inputmode="numeric" placeholder="Ej: 2 días" required>
                                 </div>
 
                                 <div class="form-group">
-                                    <label>Número de personas</label>
+                                    <label>Número máximo de personas</label>
                                     <input type="number" class="form-control" name="numPeople"
-                                        placeholder="Número de personas">
+                                        placeholder="Número de personas" min="1" step="1" inputmode="numeric" required>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Hotel incluido</label>
-                                    <select class="form-control" name="hotelIncluded">
+                                    <select class="form-control" name="hotelIncluded" required>
+                                        <option value="">Seleccionar opción</option>
                                         <option value="true">Incluido</option>
                                         <option value="false">No incluido</option>
                                     </select>
@@ -86,12 +89,14 @@
 
                                 <div class="form-group">
                                     <label>Descripción</label>
-                                    <textarea class="form-control" name="description" rows="4"></textarea>
+                                    <textarea class="form-control" name="description" rows="4"
+                                        placeholder="Descripción del tour" required></textarea>
                                 </div>
 
                                 <div class="form-group">
                                     <label>Imagen del tour</label>
-                                    <input type="file" class="form-control-file" name="imageFile">
+                                    <input type="file" class="form-control-file" name="imageFile" accept="image/*"
+                                        required>
                                 </div>
 
                                 <hr>

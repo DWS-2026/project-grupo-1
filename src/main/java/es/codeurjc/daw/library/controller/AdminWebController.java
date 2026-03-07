@@ -22,7 +22,6 @@ import jakarta.servlet.http.HttpServletRequest;
 @RequestMapping("/admin")
 public class AdminWebController {
 
-
     @Autowired
     private TourService tourService;
 
@@ -104,6 +103,10 @@ public class AdminWebController {
     public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData,
             @RequestParam(required = false) MultipartFile imageFile) {
         Tour tour = tourService.findById(id);
+
+        if (tour == null) {
+            return "redirect:/admin/tours";
+        }
 
         // Actualizamos campos
         tour.setName(tourData.getName());
