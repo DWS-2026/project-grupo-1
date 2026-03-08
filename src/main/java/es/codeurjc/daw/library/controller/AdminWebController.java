@@ -1,6 +1,7 @@
 package es.codeurjc.daw.library.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,16 +15,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
+import es.codeurjc.daw.library.service.ReviewService;
 import es.codeurjc.daw.library.service.TourService;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminWebController {
 
+    private final ReviewService reviewService;
+
     @Autowired
     private TourService tourService;
+
+    AdminWebController(ReviewService reviewService) {
+        this.reviewService = reviewService;
+    }
 
     @GetMapping({ "", "/index" })
     public String adminHome() {
@@ -126,13 +136,40 @@ public class AdminWebController {
     }
 
     @GetMapping("/reviews")
-    public String reviews() {
+    public String allReviews(@RequestParam(required = false) Long tourId, Model model) {
+
+        List<Review> reviews;
+
+        if (tourId != null) {
+            reviews = reviewService.findByTourId(tourId);
+        } else {
+            reviews = reviewService.findAll();
+        }
+
+        model.addAttribute("reviews", reviews);
+
         return "admin/reviews";
     }
 
-    @GetMapping("/review-edit")
-    public String review_edit() {
-        return "admin/review-edit";
+    @PostMapping("/review-hide/{id}")
+    public String occultReview(@PathVariable Long id, @RequestParam boolean hide) {
+
+        reviewService.findById(id).ifPresent(review -> {
+            review.setHidden(hide);
+            reviewService.save(review);
+        });
+
+        return "redirect:/admin/reviews";
+    }
+
+    @PostMapping("/review-delete/{id}")
+    public String deleteReview(@PathVariable Long id) {
+
+        reviewService.findById(id).ifPresent(review -> {
+            reviewService.deleteById(id);
+        });
+
+        return "redirect:/admin/reviews";
     }
 
     @GetMapping("/utilities-animation")

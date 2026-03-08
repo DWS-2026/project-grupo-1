@@ -2,10 +2,11 @@
 <html lang="es">
 
 <head>
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Gestión de Reviews">
+    <meta name="description" content="Gestión de Tours">
     <meta name="author" content="">
 
     <title>SB Admin 2 - Reviews</title>
@@ -24,6 +25,7 @@
 
     <!-- Custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
 </head>
 
 <body id="page-top">
@@ -50,58 +52,94 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Reviews Card -->
+                    <!-- DataTables Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Reviews de Tours</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">Reviews</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="reviewsTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Nombre del Tour</th>
-                                            <th>Duración</th>
-                                            <th>Autor</th>
-                                            <th>Hotel</th>
+                                            <th>Tour</th>
+                                            <th>Usuario</th>
+                                            <th>Valoración</th>
                                             <th>Descripción</th>
+                                            <th>Oculta</th>
                                             <th>Acciones</th>
+
                                         </tr>
                                     </thead>
 
                                     <tbody>
+                                        {{#reviews}}
                                         <tr>
+                                            <td><a href="/tour-details/{{tour.id}}">{{tour.name}}</a></td>
+                                            <td>{{user.name}}</td>
                                             <td>
-                                                <a href="/tour-details">Viaje al futuro</a>
-
+                                                <i class="fas fa-star text-warning"></i> {{rating}}
                                             </td>
-                                            <td>3 días</td>
-                                            <td>John Doe</td>
-                                            <td>Incluido</td>
-                                            <td>Una experiencia inolvidable. La guía fue excelente y los lugares
-                                                visitados superaron mis expectativas. ¡Muy recomendado!</td>
+                                            <td>{{description}}</td>
+                                            <td>{{#hidden}}
+                                                Sí
+                                                {{/hidden}}
+
+                                                {{^hidden}}
+                                                No
+                                                {{/hidden}}
+                                            </td>
                                             <td>
-                                                <a href="/admin/review-edit" class="btn btn-warning btn-sm">Editar</a>
+                                                {{#hidden}}
+                                                <form action="/admin/review-hide/{{id}}?hide=false" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
+                                                    <button class="btn btn-warning btn-sm">
+                                                        Mostrar
+                                                    </button>
+                                                </form>
+                                                {{/hidden}}
+
+                                                {{^hidden}}
+                                                <form action="/admin/review-hide/{{id}}?hide=true" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
+                                                    <button class="btn btn-warning btn-sm">
+                                                        Ocultar
+                                                    </button>
+                                                </form>
+                                                {{/hidden}}
+                                                
+
+                                                <form action="/admin/review-delete/{{id}}" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+
+                                                    <button class="btn btn-danger btn-sm">
+                                                        Eliminar
+                                                    </button>
+                                                </form>
+
                                             </td>
                                         </tr>
+                                        {{/reviews}}
 
+                                        {{^reviews}}
                                         <tr>
-                                            <td>
-                                                <a href="/tour-details">Viaje al futuro</a>
-                                            </td>
-                                            <td>3 días</td>
-                                            <td>Ana García</td>
-                                            <td>Incluido</td>
-                                            <td>Todo muy bien organizado, aunque el transporte se retrasó un poco. Por
-                                                lo demás, el tour es fantástico.</td>
-                                            <td>
-                                                <a href="/admin/review-edit" class="btn btn-warning btn-sm">Editar</a>
+                                            <td colspan="4" class="text-center">
+                                                No hay reviews para este tour
                                             </td>
                                         </tr>
-
+                                        {{/reviews}}
                                     </tbody>
 
+
+
+
                                 </table>
+
                             </div>
                         </div>
                     </div>
@@ -151,23 +189,7 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
 
-    <script>
-        fetch("./components/sidebar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("sidebar").innerHTML = data);
 
-        fetch("./components/topbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("topbar").innerHTML = data);
-
-        fetch("./components/footer.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("footer").innerHTML = data);
-
-        fetch("./components/logout-modal.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("logout-modal").innerHTML = data);
-    </script>
 
 </body>
 

@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.controller;
 
 
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.service.ReviewService;
 import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,6 +36,8 @@ public class WebController {
     private UserService userService;
     @Autowired
     private TourService tourService;
+     @Autowired
+    private ReviewService reviewService;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -155,6 +158,7 @@ public class WebController {
     @GetMapping ("/tour-details/{id}")
     public String showDetails (@PathVariable Long id, Model model) {
     model.addAttribute ("tour", tourService.findById(id));
+    model.addAttribute("reviews", reviewService.findByTourIdAndHiddenFalse(id));
         return "user/tour-details";
     }
 

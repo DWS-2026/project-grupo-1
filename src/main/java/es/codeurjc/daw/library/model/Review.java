@@ -30,6 +30,8 @@ public class Review {
     @Lob
     private String description;
 
+    private boolean hidden;
+
     public Review() {
     }
 
@@ -75,5 +77,13 @@ public class Review {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
     }
 }
