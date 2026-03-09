@@ -305,7 +305,6 @@ public class WebController {
 
         // process new image (if uploaded)
         if (!imageFile.isEmpty()) {
-            byte[] bytes = imageFile.getBytes();
             user.setProfilePicture(imageFile.getBytes());
         }
 
