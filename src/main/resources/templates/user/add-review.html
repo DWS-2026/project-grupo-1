@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Travela - Tour: futuro</title>
+    <title>Travela - Añadir reseña: {{tour.name}}</title>
     <link rel="icon" href="/images/favicon_triangle.png" type="image/png">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
@@ -107,207 +107,234 @@
 
 {{>partials/navbar}}
 
-    <div class="container-fluid bg-breadcrumb">
-        <div class="container text-center py-5" style="max-width: 900px;">
-            <h3 class="text-white display-3 mb-4">Viaje al futuro</h3>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item"><a href="/packages">Tours</a></li>
-                <li class="breadcrumb-item active text-white">Viaje al futuro</li>
-            </ol>
-        </div>
+<div class="container-fluid bg-breadcrumb">
+    <div class="container text-center py-5" style="max-width: 900px;">
+        <h3 class="text-white display-3 mb-4">{{tour.name}}</h3>
+        <ol class="breadcrumb justify-content-center mb-0">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item"><a href="/packages">Tours</a></li>
+            <li class="breadcrumb-item active text-white">{{tour.name}}</li>
+        </ol>
     </div>
-    <div class="container-fluid py-5">
-        <div class="container py-5">
-            <div class="row g-5">
+</div>
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="row g-5">
 
-                <div class="col-lg-8">
+            <div class="col-lg-8">
 
-                    <div class="mb-5 position-relative">
-                        <img src="/images/futuro1.7.jpg" class="img-fluid rounded w-100" alt="Mediterranean Adventure"
-                            style="min-height: 400px; object-fit: cover;">
-                        <div class="bg-white border border-top-0 rounded-bottom p-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="badge bg-primary px-3 py-2"><i class="fa fa-calendar-alt me-2"></i>12
-                                    Días</span>
-                                <span class="text-primary fw-bold"><i class="fa fa-star me-1"></i> 4.8 (124
-                                    reseñas)</span>
-                            </div>
-                            <h2 class="mb-3">Viaje al futuro</h2>
-                            <p class="text-muted mb-0"><i class="fa fa-map-marker-alt me-2 text-primary"></i> Lugar que
-                                tu selecciones en el futuro (no estan permitidos viajes al pasado)</p>
+                <div class="mb-5 position-relative">
+                    {{#tour.tourImage}}
+                    <img src="data:image/jpeg;base64,{{tour.tourImage}}" class="img-fluid rounded w-100" alt="{{tour.name}}"
+                         style="min-height: 400px; object-fit: cover;">
+                    {{/tour.tourImage}}
+
+                    {{^tour.tourImage}}
+                    <p>No hay imagen disponible</p>
+                    {{/tour.tourImage}}
+                    <div class="bg-white border border-top-0 rounded-bottom p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                             <span class="badge bg-primary px-3 py-2">
+                             <i class="fa fa-calendar-alt me-2"></i>{{tour.duration}} días</span>
+                            <span class="text-primary fw-bold">
+                                <i class="fa fa-star me-1"></i> {{averageRating}} ({{totalReviews}} reseñas)
+                                </span>
                         </div>
-                    </div>
-
-
-
-                    <!-- reviews -->
-                    <div class="tour-reviews mt-5">
-                        <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
-
-                        <div class="card border-0 shadow-sm p-4">
-                            <div class="row mb-5">
-                                <div
-                                    class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
-                                    <div class="rating-number">4.5</div>
-                                    <div class="mb-2">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star-half-alt text-primary"></i>
-                                    </div>
-                                    <p class="text-muted mb-0">Basado en 24 opiniones</p>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="text-muted me-2">5 <i class="fas fa-star text-warning"></i></span>
-                                        <div class="progress flex-grow-1 me-3">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 70%"
-                                                aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="text-muted">18</span>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="text-muted me-2">4 <i class="fas fa-star text-warning"></i></span>
-                                        <div class="progress flex-grow-1 me-3">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 20%"
-                                                aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="text-muted">4</span>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="text-muted me-2">3 <i class="fas fa-star text-warning"></i></span>
-                                        <div class="progress flex-grow-1 me-3">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 5%"
-                                                aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="text-muted">1</span>
-                                    </div>
-                                    <div class="d-flex align-items-center mb-2">
-                                        <span class="text-muted me-2">2 <i class="fas fa-star text-warning"></i></span>
-                                        <div class="progress flex-grow-1 me-3">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 5%"
-                                                aria-valuenow="5" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="text-muted">1</span>
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <span class="text-muted me-2">1 <i class="fas fa-star text-warning"></i></span>
-                                        <div class="progress flex-grow-1 me-3">
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%"
-                                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <span class="text-muted">0</span>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <!-- Formulario de Opinión -->
-                            <div class="review-form">
-                                <h3>Deja tu opinión sobre el tour</h3>
-                                <form>
-                                    <!-- Valoración con estrellas -->
-                                    <div class="mb-3">
-                                        <label class="form-label">Valoración</label>
-                                        <div class="star-rating d-flex flex-row-reverse justify-content-end">
-                                            <input type="radio" id="star5" name="rating" value="5"><label for="star5"><i
-                                                    class="fas fa-star"></i></label>
-                                            <input type="radio" id="star4" name="rating" value="4"><label for="star4"><i
-                                                    class="fas fa-star"></i></label>
-                                            <input type="radio" id="star3" name="rating" value="3"><label for="star3"><i
-                                                    class="fas fa-star"></i></label>
-                                            <input type="radio" id="star2" name="rating" value="2"><label for="star2"><i
-                                                    class="fas fa-star"></i></label>
-                                            <input type="radio" id="star1" name="rating" value="1"><label for="star1"><i
-                                                    class="fas fa-star"></i></label>
-                                        </div>
-                                    </div>
-
-                                    <!-- Descripción de la opinión -->
-                                    <div class="mb-3">
-                                        <label for="reviewText" class="form-label">Comentario</label>
-                                        <textarea class="form-control" id="reviewText" rows="5"
-                                            placeholder="Escribe tu opinión aquí..." required></textarea>
-                                    </div>
-                                    <div class="d-grid">
-                                        <a href="/tour-details" class="btn btn-primary rounded-pill py-2">Enviar
-                                            Opinión</a>
-                                    </div>
-
-                                </form>
-                            </div>
-                        </div>
+                        <h2 class="mb-3">{{tour.name}}</h2>
+                        <p class="text-muted mb-0">
+                            <i class="fa fa-map-marker-alt me-2 text-primary"></i>
+                            Lugar que tu selecciones en el futuro (no estan permitidos viajes al pasado)
+                        </p>
                     </div>
                 </div>
 
 
 
-                <div class="col-lg-4">
+                <!-- reviews -->
+                <div class="tour-reviews mt-5">
+                    <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
 
-                    <div class="tour-price-box p-4 rounded border mb-4">
-                        <div class="d-flex align-items-center justify-content-between mb-4">
-                            <h3 class="text-primary mb-0">4349.00€</h3>
-                            <span class="text-muted"> cada grupo de 3 personas</span>
+                    <div class="card border-0 shadow-sm p-4">
+                        <div class="row mb-5">
+                            <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
+                                <h3 class="mb-2">{{averageRating}}</h3>
+
+                                <div class="mb-2">
+                                    {{#avgStar1}}<i class="fas fa-star text-primary"></i>{{/avgStar1}}
+                                    {{^avgStar1}}<i class="far fa-star text-primary"></i>{{/avgStar1}}
+
+                                    {{#avgStar2}}<i class="fas fa-star text-primary"></i>{{/avgStar2}}
+                                    {{^avgStar2}}<i class="far fa-star text-primary"></i>{{/avgStar2}}
+
+                                    {{#avgStar3}}<i class="fas fa-star text-primary"></i>{{/avgStar3}}
+                                    {{^avgStar3}}<i class="far fa-star text-primary"></i>{{/avgStar3}}
+
+                                    {{#avgStar4}}<i class="fas fa-star text-primary"></i>{{/avgStar4}}
+                                    {{^avgStar4}}<i class="far fa-star text-primary"></i>{{/avgStar4}}
+
+                                    {{#avgStar5}}<i class="fas fa-star text-primary"></i>{{/avgStar5}}
+                                    {{^avgStar5}}<i class="far fa-star text-primary"></i>{{/avgStar5}}
+                                </div>
+
+                                <p class="text-muted mb-0">Basado en {{totalReviews}} opiniones</p>
+                            </div>
+
+                            <div class="col-md-8">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="text-muted me-2">5 <i class="fas fa-star text-warning"></i></span>
+                                    <div class="progress flex-grow-1 me-3">
+                                        <div class="progress-bar bg-primary" style="width: {{percent5Width}}"></div>
+                                    </div>
+                                    <span class="text-muted">{{count5}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="text-muted me-2">4 <i class="fas fa-star text-warning"></i></span>
+                                    <div class="progress flex-grow-1 me-3">
+                                        <div class="progress-bar bg-primary" style="width: {{percent4Width}}"></div>
+                                    </div>
+                                    <span class="text-muted">{{count4}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="text-muted me-2">3 <i class="fas fa-star text-warning"></i></span>
+                                    <div class="progress flex-grow-1 me-3">
+                                        <div class="progress-bar bg-primary" style="width: {{percent3Width}}"></div>
+                                    </div>
+                                    <span class="text-muted">{{count3}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center mb-2">
+                                    <span class="text-muted me-2">2 <i class="fas fa-star text-warning"></i></span>
+                                    <div class="progress flex-grow-1 me-3">
+                                        <div class="progress-bar bg-primary" style="width: {{percent2Width}}"></div>
+                                    </div>
+                                    <span class="text-muted">{{count2}}</span>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <span class="text-muted me-2">1 <i class="fas fa-star text-warning"></i></span>
+                                    <div class="progress flex-grow-1 me-3">
+                                        <div class="progress-bar bg-primary" style="width: {{percent1Width}}"></div>
+                                    </div>
+                                    <span class="text-muted">{{count1}}</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <ul class="list-group list-group-flush mb-4">
-                            <li class="list-group-item"><i class="fa fa-clock text-primary me-2"></i> 3 días</li>
-                            <li class="list-group-item"><i class="fa fa-user-friends text-primary me-2"></i> Personas
-                                máximas: 15</li>
-                            <li class="list-group-item"><i class="fa fa-map-marker-alt text-primary me-2"></i> Lugar que
-                                tu selecciones en el futuro</li>
-                            <li class="list-group-item"><i class="fa fa-globe text-primary me-2"></i> Español</li>
-                        </ul>
 
+                        <!-- Formulario de Opinión -->
+                        <div class="review-form">
+                            <h3>Deja tu opinión sobre el tour</h3>
+                            <form>
+                                <!-- Valoración con estrellas -->
+                                <div class="mb-3">
+                                    <label class="form-label">Valoración</label>
+                                    <div class="star-rating d-flex flex-row-reverse justify-content-end">
+                                        <input type="radio" id="star5" name="rating" value="5"><label for="star5"><i
+                                            class="fas fa-star"></i></label>
+                                        <input type="radio" id="star4" name="rating" value="4"><label for="star4"><i
+                                            class="fas fa-star"></i></label>
+                                        <input type="radio" id="star3" name="rating" value="3"><label for="star3"><i
+                                            class="fas fa-star"></i></label>
+                                        <input type="radio" id="star2" name="rating" value="2"><label for="star2"><i
+                                            class="fas fa-star"></i></label>
+                                        <input type="radio" id="star1" name="rating" value="1"><label for="star1"><i
+                                            class="fas fa-star"></i></label>
+                                    </div>
+                                </div>
+
+                                <!-- Descripción de la opinión -->
+                                <div class="mb-3">
+                                    <label for="reviewText" class="form-label">Comentario</label>
+                                    <textarea class="form-control" id="reviewText" rows="5"
+                                              placeholder="Escribe tu opinión aquí..." required></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <a href="/tour-details" class="btn btn-primary rounded-pill py-2">Enviar
+                                        Opinión</a>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="col-lg-4">
+                <div class="tour-price-box p-4 rounded border mb-4">
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h3 class="text-primary mb-0">{{tour.price}}€</h3>
+                        <span class="text-muted"> cada grupo de {{tour.numPeople}} personas</span>
+                    </div>
+
+                    <ul class="list-group list-group-flush mb-4">
+                        <li class="list-group-item">
+                            <i class="fa fa-clock text-primary me-2"></i> {{tour.duration}} días
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-user-friends text-primary me-2"></i> Personas máximas: 15
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-map-marker-alt text-primary me-2"></i> Lugar que tu selecciones en el futuro
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-globe text-primary me-2"></i> Español
+                        </li>
+                    </ul>
+
+                    <div class="d-grid gap-2">
+                        <a href="contact.html" class="btn btn-primary rounded-pill py-3">
+                            Guardar reseña
+                        </a>
                     </div>
 
                 </div>
             </div>
-        </div>
-    </div>
 
 
 
-   {{>partials/footer}}
+{{>partials/footer}}
 
 
 
 
-    <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
-            class="fa fa-arrow-up"></i></a>
+<a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
+        class="fa fa-arrow-up"></i></a>
 
 
-    <!-- MODAL CARRITO -->
-    <div class="modal fade" id="cartModal" tabindex="-1">
-        <div class="modal-dialog modal-lg modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">🛒 Tu carrito</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
+<!-- MODAL CARRITO -->
+<div class="modal fade" id="cartModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">🛒 Tu carrito</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
 
-                <div class="modal-body">
-                    <ul id="cart-items" class="list-group mb-3"></ul>
-                    <h5 class="text-end">
-                        Total: €<span id="cart-total">0</span>
-                    </h5>
-                </div>
+            <div class="modal-body">
+                <ul id="cart-items" class="list-group mb-3"></ul>
+                <h5 class="text-end">
+                    Total: €<span id="cart-total">0</span>
+                </h5>
+            </div>
 
-                <div class="modal-footer">
-                    <a href="/checkout" class="btn btn-success">
-                        Continuar compra
-                    </a>
-                </div>
+            <div class="modal-footer">
+                <a href="/checkout" class="btn btn-success">
+                    Continuar compra
+                </a>
             </div>
         </div>
     </div>
+</div>
 
 
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
