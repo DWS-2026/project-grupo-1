@@ -37,21 +37,7 @@ public class ReviewInitializer implements CommandLineRunner {
         createReview(user, tour, 3, "Una experiencia increíble");
         createReview(user, tour, 5, "Una locura ");
         createReview(user, tour, 2, " locura ");
-        createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
-        createReview(user, tour, 2, " locura ");
-        createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
-        createReview(user, tour, 2, " locura ");
-        createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
-        createReview(user, tour, 2, " locura ");
-        createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
-        createReview(user, tour, 2, " locura ");
-        createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
-        createReview(user, tour, 2, " locura ");
+
 
 
 

@@ -86,6 +86,12 @@ public class Review {
     public boolean isStar4() { return rating >= 4; }
     public boolean isStar5() { return rating >= 5; }
 
+    public boolean isRating1() { return rating == 1; }
+    public boolean isRating2() { return rating == 2; }
+    public boolean isRating3() { return rating == 3; }
+    public boolean isRating4() { return rating == 4; }
+    public boolean isRating5() { return rating == 5; }
+
     public String getDescription() {
         return description;
     }
