@@ -2,6 +2,8 @@ package es.codeurjc.daw.library.service;
 
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.repository.ReviewRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,5 +45,9 @@ public class ReviewService {
     public void deleteById(Long id){
         reviewRepository.deleteById(id);
     };
+
+    public Page<Review> findPagedByTourIdAndHiddenFalse(Long tourId, int page) {
+        return reviewRepository.findByTourIdAndHiddenFalse(tourId, PageRequest.of(page, 3));
+    }
 
 }

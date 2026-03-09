@@ -3,6 +3,7 @@ package es.codeurjc.daw.library.controller;
 
 
 import es.codeurjc.daw.library.model.Guide;
+import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.service.GuideService;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ReviewService;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
 
 import java.awt.*;
 import java.io.IOException;
@@ -153,9 +155,23 @@ public class WebController {
 
 
     @GetMapping ("/tour-details/{id}")
-    public String showDetails (@PathVariable Long id, Model model) {
-    model.addAttribute ("tour", tourService.findById(id));
-    model.addAttribute("reviews", reviewService.findByTourIdAndHiddenFalse(id));
+    public String showDetails(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
+                              Model model) {
+
+        var tour = tourService.findById(id);
+        Page<Review> reviewPage = reviewService.findPagedByTourIdAndHiddenFalse(id, page);
+
+        model.addAttribute("tour", tour);
+        model.addAttribute("reviews", reviewPage.getContent());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("hasNext", reviewPage.hasNext());
+        model.addAttribute("nextPage", page + 1);
+
+        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
+        model.addAttribute("previousPage", page - 1);
+
         return "user/tour-details";
     }
 
