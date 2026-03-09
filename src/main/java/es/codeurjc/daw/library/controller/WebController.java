@@ -2,6 +2,8 @@ package es.codeurjc.daw.library.controller;
 
 
 
+import es.codeurjc.daw.library.model.Guide;
+import es.codeurjc.daw.library.service.GuideService;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ReviewService;
 import es.codeurjc.daw.library.service.TourService;
@@ -23,6 +25,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
+import java.util.List;
 
 
 
@@ -40,6 +43,8 @@ public class WebController {
     private ReviewService reviewService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private GuideService guideService;
 
 
 
@@ -56,14 +61,6 @@ public class WebController {
         model.addAttribute ("tours", tourService.getAllTours());
         return "user/packages";
     }
-
-
-
-    @GetMapping ("/guides")
-    public String guides (Model model) {
-        return "user/guides";
-    }
-
 
 
     @GetMapping ("/services")
@@ -255,4 +252,19 @@ public class WebController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/guides")
+    public String guides(Model model) {
+
+        List<Guide> guides = guideService.findAll();
+
+        if (guides.size() > 6) {
+            guides = guides.subList(0, 6);
+        }
+
+        model.addAttribute("guides", guides);
+
+        return "user/guides";
+    }
+
 }
