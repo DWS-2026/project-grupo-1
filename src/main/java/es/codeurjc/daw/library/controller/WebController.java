@@ -56,7 +56,7 @@ public class WebController {
 
     @GetMapping ("/packages")
     public String packages (Model model) {
-        model.addAttribute ("tours", tourService.getAllTours());
+        model.addAttribute ("tours", tourService.findAll());
         return "user/packages";
     }
 
