@@ -15,6 +15,7 @@ public class Review {
     // Muchas reviews para 1 usuario
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
+    @JsonBackReference("user-reviews")
     private User user;
 
     // Muchas reviews para 1 tour
@@ -23,17 +24,20 @@ public class Review {
     @JsonBackReference("tour-reviews")
     private Tour tour;
 
-    // 0..5
+    // 1..5
     @Column(nullable = false)
     private int rating;
 
     @Lob
+    @Column(nullable = false)
     private String description;
 
     private boolean hidden;
 
     public Review() {
     }
+
+
 
     public Long getId() {
         return id;
@@ -65,8 +69,8 @@ public class Review {
 
     public void setRating(int rating) {
         // validación simple (evita valores fuera de rango)
-        if (rating < 0 || rating > 5) {
-            throw new IllegalArgumentException("rating must be between 0 and 5");
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("rating must be between 1 and 5");
         }
         this.rating = rating;
     }

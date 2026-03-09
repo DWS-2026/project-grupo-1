@@ -2,9 +2,11 @@ package es.codeurjc.daw.library.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*; // for jpa annotations: mapping java class as persistent db entity
 import java.time.LocalDateTime; // to manage timestamps
 import java.time.format.DateTimeFormatter; // to format creation timestamp
+import java.util.ArrayList;
 import java.util.List; // for role lists
 
 
@@ -145,6 +147,10 @@ public class User {
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
     // ===== GETTERS AND SETTERS END
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-reviews")
+    private List<Review> reviews = new ArrayList<>();
 
 
     // ===== AUX
