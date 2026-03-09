@@ -37,7 +37,13 @@ public class Review {
     public Review() {
     }
 
-
+    public Review(User user, Tour tour, int rating, String description) {
+        this.user = user;
+        this.tour = tour;
+        setRating(rating); // usa la validación que ya tienes
+        this.description = description;
+        this.hidden = false;
+    }
 
     public Long getId() {
         return id;
