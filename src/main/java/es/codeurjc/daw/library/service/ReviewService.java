@@ -50,4 +50,30 @@ public class ReviewService {
         return reviewRepository.findByTourIdAndHiddenFalse(tourId, PageRequest.of(page, 3));
     }
 
+    public double getAverageRating(Long tourId) {
+        List<Review> reviews = reviewRepository.findByTourIdAndHiddenFalse(tourId);
+
+        if (reviews.isEmpty()) {
+            return 0.0;
+        }
+
+        double sum = 0;
+        for (Review review : reviews) {
+            sum += review.getRating();
+        }
+
+        return sum / reviews.size();
+    }
+
+    public int getTotalReviews(Long tourId) {
+        return reviewRepository.findByTourIdAndHiddenFalse(tourId).size();
+    }
+
+    public long countByRating(Long tourId, int rating) {
+        return reviewRepository.findByTourIdAndHiddenFalse(tourId)
+                .stream()
+                .filter(review -> review.getRating() == rating)
+                .count();
+    }
+
 }

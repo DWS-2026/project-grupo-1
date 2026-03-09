@@ -172,6 +172,36 @@ public class WebController {
         model.addAttribute("hasPrevious", reviewPage.hasPrevious());
         model.addAttribute("previousPage", page - 1);
 
+        double averageRating = reviewService.getAverageRating(id);
+        int totalReviews = reviewService.getTotalReviews(id);
+
+        long count5 = reviewService.countByRating(id, 5);
+        long count4 = reviewService.countByRating(id, 4);
+        long count3 = reviewService.countByRating(id, 3);
+        long count2 = reviewService.countByRating(id, 2);
+        long count1 = reviewService.countByRating(id, 1);
+
+        model.addAttribute("averageRating", String.format("%.1f", averageRating));
+        model.addAttribute("totalReviews", totalReviews);
+
+        model.addAttribute("count5", count5);
+        model.addAttribute("count4", count4);
+        model.addAttribute("count3", count3);
+        model.addAttribute("count2", count2);
+        model.addAttribute("count1", count1);
+
+        model.addAttribute("percent5", totalReviews == 0 ? 0 : (count5 * 100 / totalReviews));
+        model.addAttribute("percent4", totalReviews == 0 ? 0 : (count4 * 100 / totalReviews));
+        model.addAttribute("percent3", totalReviews == 0 ? 0 : (count3 * 100 / totalReviews));
+        model.addAttribute("percent2", totalReviews == 0 ? 0 : (count2 * 100 / totalReviews));
+        model.addAttribute("percent1", totalReviews == 0 ? 0 : (count1 * 100 / totalReviews));
+
+        model.addAttribute("avgStar1", averageRating >= 1);
+        model.addAttribute("avgStar2", averageRating >= 2);
+        model.addAttribute("avgStar3", averageRating >= 3);
+        model.addAttribute("avgStar4", averageRating >= 4);
+        model.addAttribute("avgStar5", averageRating >= 5);
+
         return "user/tour-details";
     }
 

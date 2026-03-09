@@ -98,7 +98,7 @@ public class SecurityConfiguration {
                                 "/guides",
                                 "/packages",
                                 "/services",
-                                "/tour-details",
+                                "/tour-details/**",
                                 "/forgot-password",
                                 "/login",
                                 "/register",

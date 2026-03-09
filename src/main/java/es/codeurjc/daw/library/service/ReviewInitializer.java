@@ -34,7 +34,15 @@ public class ReviewInitializer implements CommandLineRunner {
         User user = userRepository.findAll().get(0);
         Tour tour = tourRepository.findAll().get(0);
 
-        createReview(user, tour, 5, "Una experiencia increíble");
+        createReview(user, tour, 3, "Una experiencia increíble");
+        createReview(user, tour, 5, "Una locura ");
+        createReview(user, tour, 2, " locura ");
+
+        createReview(user, tour, 5, "Una  ");
+        createReview(user, tour, 1, "fihsdfUna locura ");
+
+
+
 
         System.out.println(">>> Reviews initialized");
     }

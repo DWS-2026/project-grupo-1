@@ -80,6 +80,11 @@ public class Review {
         }
         this.rating = rating;
     }
+    public boolean isStar1() { return rating >= 1; }
+    public boolean isStar2() { return rating >= 2; }
+    public boolean isStar3() { return rating >= 3; }
+    public boolean isStar4() { return rating >= 4; }
+    public boolean isStar5() { return rating >= 5; }
 
     public String getDescription() {
         return description;
