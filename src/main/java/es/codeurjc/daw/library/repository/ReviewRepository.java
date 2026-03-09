@@ -13,7 +13,4 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByTourIdAndHiddenFalse(Long tourId);
 
     List<Review> findByHiddenFalse();
-
-    void deleteById(Long id);
-
 }
