@@ -19,4 +19,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findByTourIdAndHiddenFalse(Long tourId, Pageable pageable);
 
     List<Review> findByUserId(Long userId);
+
+    Page<Review> findByUserId(Long userId, Pageable pageable);
 }

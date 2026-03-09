@@ -159,6 +159,20 @@
       </div>
       {{/reviews}}
 
+      <div class="text-center mt-4">
+        {{#hasPrevious}}
+        <a href="/review-user?page={{previousPage}}" class="btn btn-outline-primary rounded-pill px-4 py-2 me-2">
+          Anteriores
+        </a>
+        {{/hasPrevious}}
+
+        {{#hasNext}}
+        <a href="/review-user?page={{nextPage}}" class="btn btn-primary rounded-pill px-4 py-2">
+          Ver más reseñas
+        </a>
+        {{/hasNext}}
+      </div>
+
     </div>
   </div>
 </div>

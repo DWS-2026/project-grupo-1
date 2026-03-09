@@ -258,7 +258,10 @@ public class WebController {
     }
 
     @GetMapping("/review-user")
-    public String myReviews(Principal principal, Model model) {
+    public String myReviews(Principal principal,
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
+
         if (principal == null) {
             return "redirect:/login";
         }
@@ -268,7 +271,17 @@ public class WebController {
             return "redirect:/";
         }
 
-        model.addAttribute("reviews", reviewService.findByUserId(user.getId()));
+        Page<Review> reviewPage = reviewService.findPagedByUserId(user.getId(), page);
+
+        model.addAttribute("reviews", reviewPage.getContent());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("hasNext", reviewPage.hasNext());
+        model.addAttribute("nextPage", page + 1);
+
+        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
+        model.addAttribute("previousPage", page - 1);
+
         return "user/review-user";
     }
 

@@ -102,4 +102,7 @@ public class ReviewService {
         return reviewRepository.findByUserId(userId);
     }
 
+    public Page<Review> findPagedByUserId(Long userId, int page) {
+        return reviewRepository.findByUserId(userId, PageRequest.of(page, 5));
+    }
 }
