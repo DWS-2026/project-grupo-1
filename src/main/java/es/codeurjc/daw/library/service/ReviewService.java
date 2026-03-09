@@ -97,4 +97,9 @@ public class ReviewService {
         Review review = new Review(user, tour, rating, description);
         reviewRepository.save(review);
     }
+
+    public List<Review> findByUserId(Long userId) {
+        return reviewRepository.findByUserId(userId);
+    }
+
 }

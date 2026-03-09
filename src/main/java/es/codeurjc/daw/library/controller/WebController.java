@@ -28,11 +28,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
-
-
-
-
-
+import java.util.Optional;
 
 
 @Controller
@@ -259,6 +255,42 @@ public class WebController {
         model.addAttribute("avgStar5", averageRating >= 5);
 
         return "user/add-review";
+    }
+
+    @GetMapping("/review-user")
+    public String myReviews(Principal principal, Model model) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.findByEmail(principal.getName());
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("reviews", reviewService.findByUserId(user.getId()));
+        return "user/review-user";
+    }
+
+    @GetMapping("/mis-reviews/{id}/edit-review")
+    public String editReview(@PathVariable Long id, Principal principal, Model model) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        Optional<Review> optionalReview = reviewService.findById(id);
+
+        if (optionalReview.isEmpty()) {
+            return "redirect:/review-user";
+        }
+
+        Review review = optionalReview.get();
+
+        model.addAttribute("review", review);
+        model.addAttribute("tour", review.getTour());
+
+        return "user/edit-review";
     }
 
 

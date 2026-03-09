@@ -11,17 +11,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.repository.ReviewRepository;
 import es.codeurjc.daw.library.service.ReviewService;
+import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.repository.UserRepository;
 
 @Controller
 public class ReviewController {
 
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
-
+    private final UserRepository userRepository;
     public ReviewController(ReviewRepository reviewRepository,
-                            ReviewService reviewService) {
+                            ReviewService reviewService, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
         this.reviewService = reviewService;
+        this.userRepository = userRepository;
     }
 
     // Crear review
@@ -42,17 +45,31 @@ public class ReviewController {
 
     // Borrar review
     @PostMapping("/reviews/{id}/delete")
-    public String deleteReview(@PathVariable Long id) {
+    public String deleteReview(@PathVariable Long id, Principal principal) {
 
-        Optional<Review> optionalReview = reviewRepository.findById(id);
-        if (optionalReview.isEmpty()) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = userRepository.findByEmail(principal.getName());
+        if (user == null) {
             return "redirect:/";
         }
 
-        Long tourId = optionalReview.get().getTour().getId();
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isEmpty()) {
+            return "redirect:/review-user";
+        }
+
+        Review review = optionalReview.get();
+
+        if (!review.getUser().getId().equals(user.getId())) {
+            return "redirect:/review-user";
+        }
+
         reviewRepository.deleteById(id);
 
-        return "redirect:/tour-details/" + tourId;
+        return "redirect:/review-user";
     }
 
     // Editar review
