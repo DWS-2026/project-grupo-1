@@ -1,7 +1,11 @@
 package es.codeurjc.daw.library.service;
 
 import es.codeurjc.daw.library.model.Review;
+import es.codeurjc.daw.library.model.Tour;
+import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.ReviewRepository;
+import es.codeurjc.daw.library.repository.TourRepository;
+import es.codeurjc.daw.library.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,9 +17,15 @@ import java.util.Optional;
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
+    private final TourRepository tourRepository;
+    private final UserRepository userRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository,
+                         TourRepository tourRepository,
+                         UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
+        this.tourRepository = tourRepository;
+        this.userRepository = userRepository;
     }
 
     public List<Review> findAll() {
@@ -42,9 +52,9 @@ public class ReviewService {
         return reviewRepository.findByHiddenFalse();
     }
 
-    public void deleteById(Long id){
+    public void deleteById(Long id) {
         reviewRepository.deleteById(id);
-    };
+    }
 
     public Page<Review> findPagedByTourIdAndHiddenFalse(Long tourId, int page) {
         return reviewRepository.findByTourIdAndHiddenFalse(tourId, PageRequest.of(page, 3));
@@ -76,4 +86,15 @@ public class ReviewService {
                 .count();
     }
 
+    public void addReview(Long tourId, String email, int rating, String description) {
+        Tour tour = tourRepository.findById(tourId).orElse(null);
+        User user = userRepository.findByEmail(email);
+
+        if (tour == null || user == null) {
+            throw new RuntimeException("Tour o usuario no encontrado");
+        }
+
+        Review review = new Review(user, tour, rating, description);
+        reviewRepository.save(review);
+    }
 }

@@ -9,25 +9,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import es.codeurjc.daw.library.model.Review;
-import es.codeurjc.daw.library.model.Tour;
-import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.ReviewRepository;
-import es.codeurjc.daw.library.repository.TourRepository;
-import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.service.ReviewService;
 
 @Controller
 public class ReviewController {
 
     private final ReviewRepository reviewRepository;
-    private final TourRepository tourRepository;
-    private final UserRepository userRepository;
+    private final ReviewService reviewService;
 
     public ReviewController(ReviewRepository reviewRepository,
-                            TourRepository tourRepository,
-                            UserRepository userRepository) {
+                            ReviewService reviewService) {
         this.reviewRepository = reviewRepository;
-        this.tourRepository = tourRepository;
-        this.userRepository = userRepository;
+        this.reviewService = reviewService;
     }
 
     // Crear review
@@ -41,23 +35,7 @@ public class ReviewController {
             return "redirect:/login";
         }
 
-        Optional<Tour> optionalTour = tourRepository.findById(tourId);
-
-        if (optionalTour.isEmpty()) {
-            return "redirect:/";
-        }
-
-        Tour tour = optionalTour.get();
-
-        // buscar usuario por email (username)
-        User user = userRepository.findByEmail(principal.getName());
-
-        if (user == null) {
-            return "redirect:/";
-        }
-
-        Review review = new Review(user, tour, rating, description);
-        reviewRepository.save(review);
+        reviewService.addReview(tourId, principal.getName(), rating, description);
 
         return "redirect:/tour-details/" + tourId;
     }
