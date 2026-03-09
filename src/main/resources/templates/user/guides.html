@@ -125,116 +125,44 @@
 
             <!-- guide cards start -->
             <div class="row g-4">
-
-                <!-- guide 1 (mario) start -->
+                {{#guides}}
                 <div class="col-md-6 col-lg-3">
                     <div class="guide-item">
                         <div class="guide-img">
-                            <img src="/images/Rob.webp" class="img-fluid w-100 rounded-top" alt="Image">
+
+                            {{#hasProfilePicture}}
+                            <img src="/admin/guides/{{id}}/image" class="img-fluid w-100 rounded-top">
+                            {{/hasProfilePicture}}
+
+                            {{^hasProfilePicture}}
+                            <img src="/images/default-guide.jpg" class="img-fluid w-100 rounded-top">
+                            {{/hasProfilePicture}}
+
                             <div class="guide-icon rounded-pill p-2">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i class="fab fa-linkedin-in"></i></a>
                             </div>
+
                         </div>
+
                         <div class="guide-title text-center rounded-bottom p-4">
                             <div class="guide-title-inner">
-                                <h4 class="mt-3">Mario Ortiz Lopo</h4>
-                                <p class="mb-0">Guía astronauta</p>
+
+                                <h4 class="mt-3">{{name}} {{lastName}}</h4>
+
+                                <p class="mb-0">
+                                    {{tour.name}}
+                                </p>
+
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- guide 1 (mario) end -->
+                {{/guides}}
 
-
-                <!-- guide 2 (pablo) start -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="guide-item">
-                        <div class="guide-img">
-                            <img src="/images/Rep.webp" class="img-fluid w-100 rounded-top" alt="Image">
-                            <div class="guide-icon rounded-pill p-2">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="guide-title text-center rounded-bottom p-4">
-                            <div class="guide-title-inner">
-                                <h4 class="mt-3">Pablo Sánchez Martín</h4>
-                                <p class="mb-0">Guía superviviente</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <!-- guide 2 (pablo) end -->
-
-
-                <!-- guide 3 (javier) start -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="guide-item">
-                        <div class="guide-img">
-                            <img src="/images/OIP.webp" class="img-fluid w-100 rounded-top" alt="Image">
-                            <div class="guide-icon rounded-pill p-2">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="guide-title text-center rounded-bottom p-4">
-                            <div class="guide-title-inner">
-                                <h4 class="mt-3">Javier Hérnandez Campano</h4>
-                                <p class="mb-0">Guía extraterrestre</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- guide 3 (javier) end -->
-
-
-                <!-- guide 4 (andrés) start -->
-                <div class="col-md-6 col-lg-3">
-                    <div class="guide-item">
-                        <div class="guide-img">
-                            <img src="/images/OIPo.webp" class="img-fluid w-100 rounded-top" alt="Image">
-                            <div class="guide-icon rounded-pill p-2">
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-primary rounded-circle mx-1" href="#"><i
-                                        class="fab fa-linkedin-in"></i></a>
-                            </div>
-                        </div>
-                        <div class="guide-title text-center rounded-bottom p-4">
-                            <div class="guide-title-inner">
-                                <h4 class="mt-3">Andrés Sánchez Nogales</h4>
-                                <p class="mb-0">Guía de alto riesgo</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- guide 4 (andrés) end -->
-            </div>
-            <!-- guide cards end -->
-
         </div>
     </div>
     <!-- page content end -->

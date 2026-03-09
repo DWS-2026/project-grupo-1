@@ -118,6 +118,20 @@ public class GuideController {
                     .body(guide.getProfilePicture());
         }
 
+    
+    @GetMapping("/guides")
+        public String showGuides(Model model) {
+
+            List<Guide> guides = guideService.findAll();
+
+            if (guides.size() > 6) {
+                guides = guides.subList(0, 6); // máximo 6 guías
+            }
+
+            model.addAttribute("guides", guides);
+
+            return "guides";
+        }
 
 
     /**
