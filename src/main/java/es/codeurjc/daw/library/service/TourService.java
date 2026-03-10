@@ -24,16 +24,23 @@ public class TourService {
         return tourRepository.findAll();
     }
 
-    public long count(){
-        return tourRepository.count();
-    }
-
     public Page<Tour> findAll(Pageable pageable) {
         return tourRepository.findAll(pageable);
     }
 
     public Tour findById(Long id) {
         return tourRepository.findById(id).orElse(null);
+    }
+
+    public List<Tour> findByHiddenFalse() {
+        return tourRepository.findByHiddenFalse();
+    }
+    public Page<Tour> findByHiddenFalse(Pageable pageable) {
+        return tourRepository.findByHiddenFalse(pageable);
+    }
+
+    public Tour findByIdAndHiddenFalse(Long id) {
+        return tourRepository.findByIdAndHiddenFalse(id).orElse(null);
     }
 
     public Tour save(Tour tour, MultipartFile file) throws Exception {
@@ -45,5 +52,17 @@ public class TourService {
         }
 
         return tourRepository.save(tour);
+    }
+
+    public Tour save(Tour tour) {
+        return tourRepository.save(tour);
+    }
+
+    public void deleteById(Long id) {
+        tourRepository.deleteById(id);
+    }
+
+    public long count() {
+        return tourRepository.count();
     }
 }

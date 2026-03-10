@@ -95,7 +95,7 @@
                             </small>
 
                             <div class="my-3">
-                               
+
                             </div>
 
                             <div class="mb-3 border-bottom pb-3">
@@ -127,6 +127,40 @@
             </div>
 
             <!-- cards end -->
+
+            <!-- pagination start -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+
+                            {{#hasPrev}}
+                            <li class="page-item">
+                                <a class="page-link" href="/packages?page={{prev}}&size={{size}}">
+                                    <i class="fa fa-angle-left"></i> Anterior
+                                </a>
+                            </li>
+                            {{/hasPrev}}
+
+                            <li class="page-item active">
+                                <span class="page-link">
+                                    Página {{currentPage}} de {{totalPages}}
+                                </span>
+                            </li>
+
+                            {{#hasNext}}
+                            <li class="page-item">
+                                <a class="page-link" href="/packages?page={{next}}&size={{size}}">
+                                    Siguiente <i class="fa fa-angle-right"></i>
+                                </a>
+                            </li>
+                            {{/hasNext}}
+
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- pagination end -->
 
         </div>
     </div>

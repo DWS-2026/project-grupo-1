@@ -4,6 +4,7 @@ package es.codeurjc.daw.library.controller;
 
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.model.Review;
+import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.GuideService;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ReviewService;
@@ -22,6 +23,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 
 import java.awt.*;
 import java.io.IOException;
@@ -55,8 +58,20 @@ public class WebController {
 
 
     @GetMapping ("/packages")
-    public String packages (Model model) {
-        model.addAttribute ("tours", tourService.findAll());
+    public String packages (Model model, @PageableDefault(size = 6) Pageable pageable) {
+        Page<Tour> page = tourService.findByHiddenFalse(pageable);
+
+        model.addAttribute("tours", page.getContent());
+
+        model.addAttribute("hasPrev", page.hasPrevious());
+        model.addAttribute("hasNext", page.hasNext());
+        model.addAttribute("prev", page.getNumber() - 1);
+        model.addAttribute("next", page.getNumber() + 1);
+        model.addAttribute("currentPage", page.getNumber());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("size", pageable.getPageSize());
+
+
         return "user/packages";
     }
 

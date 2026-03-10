@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,13 +86,40 @@ public class AdminWebController {
         model.addAttribute("next", page.getNumber() + 1);
         model.addAttribute("currentPage", page.getNumber() + 1);
         model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("size", pageable.getPageSize());
 
         return "admin/tours";
+    }
+
+    @PostMapping("tour-hide/{id}")
+    public String changeTourVisibility(@PathVariable Long id) {
+
+        Tour tour = tourService.findById(id);
+
+        if (tour != null) {
+            tour.setHidden(!tour.isHidden());
+            tourService.save(tour);
+        }
+
+        return "redirect:/admin/tours";
     }
 
     @GetMapping("/tour-add")
     public String addTour() {
         return "admin/tour-add";
+    }
+
+    @PostMapping("/tour-delete/{id}")
+    public String deleteTour(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+
+        if (tourService.findById(id) != null) {
+            tourService.deleteById(id);
+            redirectAttributes.addFlashAttribute("successMessage", "Tour eliminado correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("errorMessage", "El tour no existe.");
+        }
+
+        return "redirect:/admin/tours";
     }
 
     @PostMapping("/tour-add")

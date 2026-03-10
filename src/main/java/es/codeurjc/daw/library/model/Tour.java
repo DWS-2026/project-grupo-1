@@ -31,6 +31,8 @@ public class Tour {
     // Nueva propiedad
     private boolean hotelIncluded; // true = Incluido, false = No incluido
 
+    private boolean hidden = false;
+
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference("tour-guides")
     private List<Guide> guides = new ArrayList<>();
@@ -110,6 +112,15 @@ public class Tour {
 
     public void setHotelIncluded(boolean hotelIncluded) {
         this.hotelIncluded = hotelIncluded;
+    }
+
+
+    public boolean isHidden(){
+        return this.hidden;
+    }
+
+    public void setHidden(boolean bool){
+        this.hidden = bool;
     }
 
     public List<Guide> getGuides() {

@@ -70,6 +70,7 @@
                                             <th>Hotel</th>
                                             <th>Descripción</th>
                                             <th>Reviews</th>
+                                            <th>Visibilidad</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -100,8 +101,39 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="/admin/tour-edit/{{id}}"
-                                                    class="btn btn-warning btn-sm">Editar</a>
+                                                {{#hidden}}
+                                                <form action="/admin/tour-hide/{{id}}" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                                                    <button class="btn btn-success btn-sm">
+                                                        Mostrar
+                                                    </button>
+                                                </form>
+                                                {{/hidden}}
+
+                                                {{^hidden}}
+                                                <form action="/admin/tour-hide/{{id}}" method="post"
+                                                    style="display:inline;">
+                                                    <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                                                    <button class="btn btn-danger btn-sm">
+                                                        Ocultar
+                                                    </button>
+                                                </form>
+                                                {{/hidden}}
+                                            </td>
+                                            <td>
+                                                <div class="d-flex gap-4">
+                                                    <!-- Botón Editar -->
+                                                    <a href="/admin/tour-edit/{{id}}"
+                                                        class="btn btn-warning btn-sm">Editar</a>
+
+                                                    <!-- Botón Eliminar -->
+                                                    <form action="/admin/tour-delete/{{id}}" method="post">
+                                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm">Eliminar</button>
+                                                    </form>
+                                                </div>
                                             </td>
                                         </tr>
                                         {{/tours}}
@@ -121,7 +153,8 @@
                                     <ul class="pagination justify-content-center">
                                         {{#hasPrev}}
                                         <li class="page-item">
-                                            <a class="page-link" href="/admin/tours?page={{prev}}&size=5">Anterior</a>
+                                            <a class="page-link"
+                                                href="/admin/tours?page={{prev}}&size={{size}}">Anterior</a>
                                         </li>
                                         {{/hasPrev}}
 
@@ -133,7 +166,8 @@
 
                                         {{#hasNext}}
                                         <li class="page-item">
-                                            <a class="page-link" href="/admin/tours?page={{next}}&size=5">Siguiente</a>
+                                            <a class="page-link"
+                                                href="/admin/tours?page={{next}}&size={{size}}">Siguiente</a>
                                         </li>
                                         {{/hasNext}}
                                     </ul>
@@ -179,10 +213,6 @@
 
     <!-- Custom scripts for all pages-->
     <script src="/js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
