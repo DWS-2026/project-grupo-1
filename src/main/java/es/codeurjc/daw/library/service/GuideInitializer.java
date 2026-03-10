@@ -29,6 +29,20 @@ public class GuideInitializer implements CommandLineRunner {
     @Autowired
     private TourRepository tourRepository;
 
+
+    private byte[] loadImage(String path) {
+        try (var is = getClass().getClassLoader().getResourceAsStream(path)) {
+            if (is == null) {
+                throw new RuntimeException("Image not found: " + path);
+            }
+            return is.readAllBytes();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
     @Override
     public void run(String... args) {
         if (guideRepository.count() != 0)
@@ -36,24 +50,21 @@ public class GuideInitializer implements CommandLineRunner {
 
         Tour tour = tourRepository.findAll().get(0);
 
-        createGuide("Laura", "Méndez", 199.99, tour);
-        createGuide("Carlos", "García", 249.99, tour);
-        createGuide("María", "López", 299.99, tour);
-        createGuide("Javier", "Sánchez", 149.99, tour);
+        createGuide("Laura", "Méndez", 199.99, tour, loadImage("static/images/guides/laura.webp"));
+        createGuide("Carlos", "García", 249.99, tour, loadImage("static/images/guides/carlos.webp"));
+        createGuide("María", "López", 299.99, tour, loadImage("static/images/guides/maria.webp"));
+        createGuide("Javier", "Sánchez", 149.99, tour, loadImage("static/images/guides/javier.webp"));
 
         System.out.println(">>> Guides initialized");
     }
 
-    private void createGuide(String name, String lastName, double price, Tour tour) {
+    private void createGuide(String name, String lastName, double price, Tour tour, byte[] profilePicture) {
         Guide g = new Guide();
         g.setName(name);
         g.setLastName(lastName);
         g.setPrice(price);
         g.setTour(tour);
-
-        // Generamos el avatar (usando color verde oscuro por ejemplo)
-        byte[] avatar = generateDefaultAvatar("Guía", name, new Color(25, 135, 84));
-        g.setProfilePicture(avatar); // Asegúrate de que el modelo Guide tenga este atributo
+        g.setProfilePicture(profilePicture); // Asegúrate de que el modelo Guide tenga este atributo
 
         guideRepository.save(g);
     }
