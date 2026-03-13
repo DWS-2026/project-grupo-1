@@ -51,6 +51,15 @@ public class UserService {
     public User findById (Long id) {
         return userRepository.findById(id).orElse(null);
     }
+    // check if email is registered in db already
+    public boolean emailExists (String email) { return userRepository.existsByEmail(email); }
+    // check if a phone is already in use (as primary or secondary and by any user)
+    public boolean phoneExists (String phone) {
+        if (phone == null || phone.trim().isEmpty()) {
+            return false;
+        }
+        return userRepository.existsByMainPhone(phone) || userRepository.existsBySecondaryPhone(phone);
+    }
     // ===== DERIVED QUERY METHODS
 
 

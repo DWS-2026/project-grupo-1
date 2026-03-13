@@ -123,10 +123,35 @@ public class WebController {
                                 @RequestParam String password,
                                 @RequestParam(required = false) String secondaryPhone,
                                 @RequestParam(required = false) MultipartFile imageFile, // pfp
-                                Model model) {
+                                Model model) throws IOException {
 
-        // create user instance
-        User newUser = new User(name, lastName, email, passwordEncoder.encode(password), mainPhone, secondaryPhone);
+        // check email in use
+        if (userService.emailExists (email)) {
+            model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
+            return "user/register";
+        }
+
+        // check main phone in use
+        if (userService.phoneExists (mainPhone)) {
+            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
+            return "user/register";
+        }
+
+        // check secondary phone (if sent) is used
+        if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
+            if (userService.phoneExists (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
+                return "user/register";
+            }
+            // check main and secondary arent same
+            if (mainPhone.equals (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
+                return "user/register";
+            }
+        }
+
+        // if no repetitions, create user
+        User newUser = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone);
 
         // LÓGICA DE LA FOTO DE PERFIL
         try {
