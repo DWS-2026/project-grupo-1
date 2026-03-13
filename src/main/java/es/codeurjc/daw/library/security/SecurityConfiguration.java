@@ -133,7 +133,18 @@ public class SecurityConfiguration {
                 .formLogin ((form) -> form
                         .loginPage ("/login") // custom normal user login url
                         .loginProcessingUrl ("/login-check") // internal url used by spring for validation (POST processing)
-                        .failureUrl ("/login?error") // error url to redirect
+
+                        // dynamic failure handler (to separate user vs admin)
+                        .failureHandler ((request, response, exception) -> {
+                            String referer = request.getHeader ("Referer");
+                            // case admin
+                            if (referer != null && referer.contains ("/admin-login")) {
+                                response.sendRedirect ("/admin-login?error");
+                            } else {
+                                // case user
+                                response.sendRedirect ("/login?error");
+                            }
+                        })
 
                         // redirection logic after successful login
                         .successHandler ((request, response, authentication) -> {
