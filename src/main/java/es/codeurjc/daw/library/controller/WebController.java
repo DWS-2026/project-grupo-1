@@ -117,11 +117,12 @@ public class WebController {
 
     @PostMapping ("/register")
     public String registerUser (@RequestParam String name,
-                               @RequestParam String lastName,
-                               @RequestParam String email,
-                               @RequestParam String mainPhone,
-                               @RequestParam String password,
-                               Model model) {
+                                @RequestParam String lastName,
+                                @RequestParam String email,
+                                @RequestParam String mainPhone,
+                                @RequestParam String password,
+                                @RequestParam(required = false) MultipartFile imageFile, // pfp
+                                Model model) {
 
         // create user instance
         User newUser = new User();
@@ -133,8 +134,23 @@ public class WebController {
 
         newUser.setRoles (Arrays.asList("USER")); // assign user role
         newUser.setPassword (passwordEncoder.encode(password)); // encrypt password
-        byte[] avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
-        newUser.setProfilePicture (avatar);  // default user pfp
+
+        // LÓGICA DE LA FOTO DE PERFIL
+        try {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // 1. Si el usuario ha adjuntado una imagen, guardamos sus bytes
+                newUser.setProfilePicture(imageFile.getBytes());
+            } else {
+                // 2. Si no adjunta imagen, generamos la predeterminada automáticamente
+                byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+                newUser.setProfilePicture(avatar);
+            }
+        } catch (IOException e) {
+            // En caso de error leyendo el archivo, asignamos el avatar por defecto como salvavidas
+            e.printStackTrace();
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+            newUser.setProfilePicture(avatar);
+        }
 
         userService.save (newUser); // save user
         return "redirect:/login"; // go login

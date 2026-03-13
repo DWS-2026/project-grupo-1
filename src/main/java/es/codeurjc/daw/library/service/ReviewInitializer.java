@@ -35,7 +35,7 @@ public class ReviewInitializer implements CommandLineRunner {
         Tour tour = tourRepository.findAll().get(0);
 
         createReview(user, tour, 3, "Una experiencia increíble");
-        createReview(user, tour, 5, "Una locura ");
+        createReview(user, tour, 5, "   Una locura ");
         createReview(user, tour, 2, " locura ");
 
 
