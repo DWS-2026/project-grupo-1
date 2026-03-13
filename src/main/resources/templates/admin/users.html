@@ -30,6 +30,23 @@
 
     <!-- custom styles for this page -->
     <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        .btn-purple {
+            color: #fff;
+            background-color: #6f42c1;
+            border-color: #6f42c1;
+        }
+        .btn-purple:hover {
+            color: #fff;
+            background-color: #59359a;
+            border-color: #4e2d8a;
+        }
+        /* Para que el icono se vea bien */
+        .btn-purple .icon {
+            background: rgba(0, 0, 0, 0.15);
+        }
+    </style>
 </head>
 
 
@@ -151,6 +168,17 @@
 
                                 </table>
                             </div>
+
+
+                            <div class="mt-3 text-left">
+                                <button onclick="location.reload()" class="btn btn-purple btn-icon-split shadow-sm">
+                                    <span class="icon text-white-50">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </span>
+                                    <span class="text">Actualizar</span>
+                                </button>
+                            </div>
+
                         </div>
                         <!-- card body end -->
 
