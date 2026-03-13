@@ -29,10 +29,8 @@
   <!-- css external file -->
   <link href="/css/style.css" rel="stylesheet">
 
-
   <!-- in-file css start -->
   <style>
-    /* Small page-specific styling to make the register card look good */
     .auth-card {
       max-width: 520px;
       margin: 0 auto;
@@ -62,7 +60,6 @@
     }
   </style>
   <!-- in-file css end -->
-
 </head>
 
 
@@ -72,9 +69,6 @@
 
 <body>
 {{>partials/navbar}}
-
-
-
 
 <!-- banner + breadcrumbs start -->
   <div class="container-fluid bg-breadcrumb">
@@ -87,8 +81,6 @@
     </div>
   </div>
   <!-- banner + breadcrumbs end -->
-
-
 
   <!-- register start -->
   <div class="container py-5">
@@ -105,38 +97,40 @@
       <!-- card head end -->
 
       <div class="p-4 p-md-5">
-
-        <form action="/register" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="_csrf" value="{{_csrf.token}}">
+        <form action="/register" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>          <input type="hidden" name="_csrf" value="{{_csrf.token}}">
           <div class="row g-3">
 
             <!-- pfp start -->
             <div class="col-12 text-center mb-3">
+              <!-- pfp preview start -->
               <div class="position-relative mb-3 mx-auto border border-danger rounded-circle p-1" style="height: 150px; width: 150px; border-width: 3px !important; background-color: #fff; display: flex; align-items: center; justify-content: center;">
-
                 <div id="pfp-placeholder" class="h-100 w-100 d-flex align-items-center justify-content-center rounded-circle" style="background-color: rgba(208, 212, 217, 0.1); overflow: hidden;">
                   <i class="fas fa-fw fa-user display-3" style="color: rgba(208, 212, 217, 0.5);"></i>
                 </div>
-
                 <img id="pfp-preview" src="" class="img-fluid d-none rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
               </div>
-
+              <!-- pfp preview end -->
+              <!-- button + text start -->
               <input type="file" id="customFile" name="imageFile" hidden accept="image/*">
               <label class="btn btn-sm text-dark fw-normal border border-danger" for="customFile" style="background-color: rgba(220, 53, 69, 0.06); cursor: pointer;">Seleccionar imagen</label>
-              <p class="text-muted mt-2 mb-0" style="font-size: 0.8rem;">Formatos: JPG, PNG. Máx 2MB.</p>
+              <p class="text-muted mt-2 mb-0" style="font-size: 0.8rem;">Formatos: JPG, PNG. Máx 2MB.<br>No obligatoria.</p>
+              <!-- button + text end -->
             </div>
             <!-- pfp end -->
 
             <!-- text input start -->
+            <!-- name start -->
             <div class="col-md-6">
               <label for="name" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Nombre</label>
               <input type="text" class="form-control custom-input" name="name" id="name"
                      placeholder="Ej: Juan"
-                     title="Nombre"
                      pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}"
                      required>
+              <div class="invalid-feedback"></div>
             </div>
+            <!-- name end -->
 
+            <!-- last name start -->
             <div class="col-md-6">
               <label for="lastName" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Apellidos</label>
               <input type="text" class="form-control custom-input" name="lastName" id="lastName"
@@ -144,26 +138,33 @@
                      title="Apellidos"
                      pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,100}"
                      required>
+              <div class="invalid-feedback"></div>
             </div>
+            <!-- last name end -->
 
+            <!-- email start -->
             <div class="col-12">
               <label for="email" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Correo electrónico</label>
               <input type="email" class="form-control custom-input" name="email" id="email"
                      placeholder="ejemplo@correo.com"
-                     title="name@example.com"
                      pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                      required>
+              <div class="invalid-feedback"></div>
             </div>
+            <!-- email end -->
 
+            <!-- main phone start -->
             <div class="col-12">
               <label for="mainPhone" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Teléfono móvil</label>
               <input type="tel" class="form-control custom-input" name="mainPhone" id="mainPhone"
                      placeholder="Ej: 612345678"
-                     title="600000000"
                      pattern="[0-9]{9}"
                      required>
+              <div class="invalid-feedback"></div>
             </div>
+            <!-- main phone end -->
 
+            <!-- password start -->
             <div class="col-12">
               <label for="password" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Contraseña</label>
               <input type="password" class="form-control custom-input" name="password" id="password"
@@ -171,7 +172,9 @@
                      title="Password"
                      pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
                      required>
+              <div class="invalid-feedback"></div>
             </div>
+            <!-- password end -->
             <!-- text input end -->
 
             <!-- terms start -->
@@ -181,6 +184,7 @@
                 <label class="form-check-label text-muted" for="iAgree">
                   Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" style="cursor: pointer;" class="link-primary text-decoration-none fw-bold">términos y condiciones</a>
                 </label>
+                <div class="invalid-feedback"></div>
               </div>
             </div>
             <!-- terms end -->
@@ -250,11 +254,100 @@
 <script>
   // when modal button clicked, checkbox with id 'iAgree' is marked
   document.getElementById('acceptTermsBtn').addEventListener('click', function() {
-    document.getElementById('iAgree').checked = true;
+    var checkbox = document.getElementById('iAgree');
+    checkbox.checked = true;
+    checkbox.dispatchEvent(new Event('change'));
   });
 </script>
 <!-- connected terms to check button -->
 
-</body>
+<!-- input validation -->
+<script>
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
 
+    // generates custom error messages
+    function getErrorMessage(input) {
+      // case field empty
+      if (input.validity.valueMissing) {
+        if (input.type === 'checkbox') return 'Debes aceptar los términos y condiciones para continuar.';
+        return 'Este campo es obligatorio.';
+      }
+
+      // case format wrong
+      if (input.validity.typeMismatch) {
+        if (input.type === 'email') return 'Ha de incluir un "@" y un dominio válido.';
+      }
+
+      // case doesnt match defined pattern
+      if (input.validity.patternMismatch) {
+        switch (input.name) {
+          case 'name':
+            return 'El nombre sólo debe contener letras (mínimo 2).';
+          case 'lastName':
+            return 'Los apellidos sólo deben contener letras (mínimo 2).';
+          case 'mainPhone':
+            return 'Debe contener exactamente 9 números, sin espacios ni letras.';
+          case 'password':
+            return 'Debe tener al menos 8 caracteres e incluir al menos una letra y un número.';
+          default:
+            return 'El formato introducido no es válido.';
+        }
+      }
+
+      return 'Entrada inválida.';
+    }
+
+    // function to give visual feedback and error messages
+    function validateInput(input) {
+      var feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
+
+      if (input.checkValidity()) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+      } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        // Actualizamos el texto del div de error dinámicamente
+        if (feedbackDiv) {
+          feedbackDiv.textContent = getErrorMessage(input);
+        }
+      }
+    }
+
+    Array.prototype.slice.call(forms).forEach(function (form) {
+
+      // create account button validation
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        // force visual feedback for all inputs
+        var inputs = form.querySelectorAll('input');
+        inputs.forEach(function(input) {
+          validateInput(input);
+        });
+
+        form.classList.add('was-validated')
+      }, false)
+
+      // individual validation in real time
+      var inputs = form.querySelectorAll('input');
+      inputs.forEach(function (input) {
+        ['blur', 'input', 'change'].forEach(function(evt) {
+          input.addEventListener(evt, function () {
+            validateInput(input);
+          });
+        });
+      });
+
+    })
+  })()
+</script>
+<!-- input validation -->
+
+</body>
 </html>
