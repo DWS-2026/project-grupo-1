@@ -121,19 +121,12 @@ public class WebController {
                                 @RequestParam String email,
                                 @RequestParam String mainPhone,
                                 @RequestParam String password,
+                                @RequestParam(required = false) String secondaryPhone,
                                 @RequestParam(required = false) MultipartFile imageFile, // pfp
                                 Model model) {
 
         // create user instance
-        User newUser = new User();
-        newUser.setName (name);
-        newUser.setLastName (lastName);
-        newUser.setEmail (email);
-        newUser.setMainPhone (mainPhone);
-        newUser.setEnabled (true);
-
-        newUser.setRoles (Arrays.asList("USER")); // assign user role
-        newUser.setPassword (passwordEncoder.encode(password)); // encrypt password
+        User newUser = new User(name, lastName, email, passwordEncoder.encode(password), mainPhone, secondaryPhone);
 
         // LÓGICA DE LA FOTO DE PERFIL
         try {

@@ -121,7 +121,7 @@
             <!-- text input start -->
             <!-- name start -->
             <div class="col-md-6">
-              <label for="name" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Nombre</label>
+              <label for="name" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Nombre<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
               <input type="text" class="form-control custom-input" name="name" id="name"
                      placeholder="Ej: Juan"
                      pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}"
@@ -132,7 +132,7 @@
 
             <!-- last name start -->
             <div class="col-md-6">
-              <label for="lastName" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Apellidos</label>
+              <label for="lastName" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Apellidos<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
               <input type="text" class="form-control custom-input" name="lastName" id="lastName"
                      placeholder="Ej: Pérez García"
                      title="Apellidos"
@@ -144,7 +144,7 @@
 
             <!-- email start -->
             <div class="col-12">
-              <label for="email" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Correo electrónico</label>
+              <label for="email" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Correo electrónico<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
               <input type="email" class="form-control custom-input" name="email" id="email"
                      placeholder="ejemplo@correo.com"
                      pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
@@ -155,7 +155,7 @@
 
             <!-- main phone start -->
             <div class="col-12">
-              <label for="mainPhone" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Teléfono móvil</label>
+              <label for="mainPhone" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Teléfono móvil<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
               <input type="tel" class="form-control custom-input" name="mainPhone" id="mainPhone"
                      placeholder="Ej: 612345678"
                      pattern="[0-9]{9}"
@@ -164,9 +164,18 @@
             </div>
             <!-- main phone end -->
 
+            <!-- secondary phone start -->
+            <div class="col-12">
+              <label for="secondaryPhone" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Teléfono secundario</label>
+              <input type="tel" class="form-control custom-input" name="secondaryPhone" id="secondaryPhone"
+                     placeholder="Ej: 912345678"
+                     pattern="[0-9]{9}"> <div class="invalid-feedback"></div>
+            </div>
+            <!-- secondary phone end -->
+
             <!-- password start -->
             <div class="col-12">
-              <label for="password" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Contraseña</label>
+              <label for="password" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Contraseña<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
               <input type="password" class="form-control custom-input" name="password" id="password"
                      placeholder="Ej: Secreta123"
                      title="Password"
@@ -282,6 +291,9 @@
 
       // case doesnt match defined pattern
       if (input.validity.patternMismatch) {
+        if (input.name === 'secondaryPhone') {
+          return 'Si introduces un teléfono, debe tener exactamente 9 números.';
+        }
         switch (input.name) {
           case 'name':
             return 'El nombre sólo debe contener letras (mínimo 2).';
@@ -303,13 +315,21 @@
     function validateInput(input) {
       var feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
 
+      // case empty and non-required field (secondary phone), do not apply visual feedback
+      if (input.value.trim() === "" && !input.hasAttribute('required')) {
+        input.classList.remove('is-valid');
+        input.classList.remove('is-invalid');
+        if (feedbackDiv) feedbackDiv.textContent = "";
+        return;
+      }
+
+      // if it has content (filled in secondary phone) or is required, apply normal logic
       if (input.checkValidity()) {
         input.classList.remove('is-invalid');
         input.classList.add('is-valid');
       } else {
         input.classList.remove('is-valid');
         input.classList.add('is-invalid');
-        // Actualizamos el texto del div de error dinámicamente
         if (feedbackDiv) {
           feedbackDiv.textContent = getErrorMessage(input);
         }

@@ -152,10 +152,10 @@ public class UserController {
                            @RequestParam String lastName,
                            @RequestParam String email,
                            @RequestParam String mainPhone,
-                           @RequestParam String secondaryPhone,
                            @RequestParam String password,
                            @RequestParam double moneySpent,
                            @RequestParam boolean enabled,
+                            @RequestParam(required = false) String secondaryPhone,
                            @RequestParam(required = false) MultipartFile imageFile) throws IOException {
 
         // create the instance
