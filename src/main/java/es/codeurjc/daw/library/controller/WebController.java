@@ -173,7 +173,7 @@ public class WebController {
         userService.save (newUser); // save user
 
         // notificaction: user creation via user (registration page)
-        notificationService.notify ("Nuevo usuario registrado: " + name, "fas fa-user-plus", "bg-primary");
+        notificationService.notify ("Nuevo usuario registrado: " + name, "fas fa-user-plus", "bg-success");
 
         return "redirect:/login"; // go login
     }
@@ -420,7 +420,7 @@ public class WebController {
         if ("delete".equals (action)) {
             userService.delete (user);
             // notificaction: user deletion via admin (delete button in users page)
-            notificationService.notify ("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-times", "bg-warning");
+            notificationService.notify ("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus", "bg-warning");
             return "redirect:/logout";
         }
 

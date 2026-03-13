@@ -11,13 +11,6 @@ import java.util.List;
 
 
 
-/* Notification cases
-* User:
-*  - Created: by user (register.html) or admin (user-add.html)
-*  - Deleted: by user (profile.html) or admin (delete button on users.html)
- */
-
-
 @Service
 public class NotificationService {
     @Autowired

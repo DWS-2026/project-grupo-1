@@ -6,6 +6,11 @@ import java.time.format.DateTimeFormatter;
 
 
 
+/* Notification cases
+ * User:
+ *  - Created: by user (register.html) or admin (user-add.html): icon fas fa-user-plus and bg bg-success
+ *  - Deleted: by user (profile.html) or admin (delete button on users.html): icon fas fa-user-minus and bg-warning
+ */
 
 @Entity
 public class Notification {
