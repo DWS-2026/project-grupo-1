@@ -387,7 +387,8 @@ public class WebController {
             @RequestParam String secondaryPhone,
             @RequestParam (required = false) String newPassword,
             @RequestParam MultipartFile imageFile,
-            @RequestParam String action) throws IOException {
+            @RequestParam String action,
+                                 Model model) throws IOException {
 
         // get user logged in
         User user = userService.findByEmail (principal.getName());
@@ -396,6 +397,32 @@ public class WebController {
         if ("delete".equals (action)) {
             userService.delete (user);
             return "redirect:/logout";
+        }
+
+        // clean invisible spaces
+        mainPhone = mainPhone.trim();
+        secondaryPhone = (secondaryPhone != null) ? secondaryPhone.trim() : "";
+
+        // check if main phone repeated
+        if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
+            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
+            model.addAttribute ("currentUser", user);
+            return "user/profile";
+        }
+
+        // check if secondary phone repeated
+        if (!secondaryPhone.isEmpty()) {
+            if (!secondaryPhone.equals(user.getSecondaryPhone()) && userService.phoneExists(secondaryPhone)) {
+                model.addAttribute("errorMessage", "El teléfono secundario ya está en uso.");
+                model.addAttribute("currentUser", user);
+                return "user/profile";
+            }
+            // case: main == secondary
+            if (mainPhone.equals (secondaryPhone)) {
+                model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser iguales.");
+                model.addAttribute("currentUser", user);
+                return "user/profile";
+            }
         }
 
         // update info
