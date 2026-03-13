@@ -156,9 +156,35 @@ public class UserController {
                            @RequestParam double moneySpent,
                            @RequestParam boolean enabled,
                             @RequestParam(required = false) String secondaryPhone,
-                           @RequestParam(required = false) MultipartFile imageFile) throws IOException {
+                           @RequestParam(required = false) MultipartFile imageFile,
+                            Model model) throws IOException {
 
-        // create the instance
+        // check email in use
+        if (userService.emailExists (email)) {
+            model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
+            return "admin/user-add";
+        }
+
+        // check main phone in use
+        if (userService.phoneExists (mainPhone)) {
+            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
+            return "admin/user-add";
+        }
+
+        // check secondary phone (if sent) is used
+        if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
+            if (userService.phoneExists (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
+                return "admin/user-add";
+            }
+            // check main and secondary arent same
+            if (mainPhone.equals (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
+                return "admin/user-add";
+            }
+        }
+
+        // if no repetitions, create user
         User newUser = new User();
         newUser.setName (name);
         newUser.setLastName (lastName);
