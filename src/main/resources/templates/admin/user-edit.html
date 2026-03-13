@@ -89,7 +89,17 @@
 
                         <!-- card content start -->
                         <div class="card-body">
-                            <form action="/admin/users/edit/{{user.id}}" method="post" enctype="multipart/form-data">
+                            {{#errorMessage}}
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <i class="fas fa-exclamation-circle mr-2"></i>
+                                <strong>Error:</strong> {{errorMessage}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            {{/errorMessage}}
+
+                            <form action="/admin/users/edit/{{user.id}}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
 
                                 <div class="row">
@@ -97,44 +107,77 @@
 
                                         <!-- name start -->
                                         <div class="form-group">
-                                            <label>Nombre</label>
+                                            <label>Nombre<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
                                             <input type="text" name="name" class="form-control" value="{{user.name}}"
+                                                   placeholder="Ej: Juan"
+                                                   pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}"
                                                 required>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         <!-- name end -->
 
                                         <!-- surname start -->
                                         <div class="form-group">
-                                            <label>Apellidos</label>
+                                            <label>Apellidos<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
                                             <input type="text" name="lastName" class="form-control"
-                                                value="{{user.lastName}}" required>
+                                                value="{{user.lastName}}"
+                                                   placeholder="Ej: Pérez García"
+                                                   pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,100}"
+                                                   required>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         <!-- surname end -->
 
                                         <!-- email start -->
                                         <div class="form-group">
-                                            <label>Email</label>
+                                            <label>Correo electrónico<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
                                             <input type="email" name="email" class="form-control" value="{{user.email}}"
+                                                   placeholder="ejemplo@correo.com"
+                                                   pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
                                                 required>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         <!-- email end -->
 
+                                        <!-- main phone start -->
+                                        <div class="form-group">
+                                            <label>Teléfono principal<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
+                                            <input type="text" name="mainPhone" class="form-control" value="{{user.mainPhone}}"
+                                                   placeholder="Ej: 612345678"
+                                                   pattern="[0-9]{9}"
+                                                   required>
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- main phone end -->
+
+                                        <!-- secondary phone start -->
+                                        <div class="form-group">
+                                            <label>Teléfono Secundario</label>
+                                            <input type="text" name="secondaryPhone" class="form-control" value="{{#user.secondaryPhone}}{{user.secondaryPhone}}{{/user.secondaryPhone}}"
+                                                   placeholder="Ej: 912345678"
+                                                   pattern="[0-9]{9}">
+                                            <div class="invalid-feedback"></div>
+                                        </div>
+                                        <!-- secondary phone end -->
+
                                         <!-- money spent start -->
                                         <div class="form-group">
-                                            <label>Dinero gastado (€)</label>
+                                            <label>Dinero gastado (€)<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
                                             <input type="number" step="0.01" name="moneySpent" class="form-control"
-                                                value="{{user.moneySpent}}">
+                                                value="{{user.moneySpent}}"
+                                            placeholder="Ej: 2100.95"
+                                                   pattern="^[0-9]+([.,][0-9]{1,2})?$"
+                                            required>
+                                            <div class="invalid-feedback"></div>
                                         </div>
                                         <!-- money spent end -->
 
                                         <!-- enabled start -->
                                         <div class="form-group">
-                                            <label>Estado del usuario</label>
+                                            <label>Estado del usuario<i class="fas fa-asterisk" style="font-size: 0.5rem; vertical-align: super;"></i></label>
                                             <select name="enabled" class="form-control">
-                                                <option value="true" {{#user.enabled}}selected{{/user.enabled}}>Activo
-                                                </option>
-                                                <option value="false" {{^user.enabled}}selected{{/user.enabled}}>
-                                                    Inactivo</option>
+                                                <option value="true" {{#user.enabled}}selected{{/user.enabled}}>Activo</option>
+                                                <option value="false" {{^user.enabled}}selected{{/user.enabled}}>Inactivo</option>
                                             </select>
                                         </div>
                                         <!-- enabled end -->
@@ -142,28 +185,32 @@
 
                                     <!-- pfp section start -->
                                     <div class="col-md-4 text-center pfp-column-center">
-                                        <label>Foto de perfil</label>
-                                        <div class="pfp-container mx-auto">
-                                            {{^user.hasProfilePicture}}
-                                            <div id="pfp-placeholder">
-                                                <i class="fas fa-user fa-5x text-secondary"></i>
-                                            </div>
-                                            {{/user.hasProfilePicture}}
+                                        <label class="font-weight-bold">Foto de perfil</label>
 
-                                            <!-- load users pfp -->
+                                        <div class="position-relative mb-3 mx-auto border border-danger p-1"
+                                             style="height: 200px; width: 200px; border-width: 3px !important; border-radius: 12px; background-color: #fff; display: flex; align-items: center; justify-content: center; box-shadow: 0 .125rem .25rem 0 rgba(58, 59, 69, .2);">
+
+                                            <div id="pfp-placeholder" class="h-100 w-100 d-flex align-items-center justify-content-center {{#user.hasProfilePicture}}d-none{{/user.hasProfilePicture}}"
+                                                 style="background-color: rgba(208, 212, 217, 0.1); border-radius: 8px; overflow: hidden;">
+                                                <i class="fas fa-fw fa-user fa-5x" style="color: rgba(208, 212, 217, 0.5);"></i>
+                                            </div>
+
                                             <img id="pfp-preview"
                                                  src="{{#user.hasProfilePicture}}/user/{{user.id}}/image{{/user.hasProfilePicture}}"
                                                  class="img-fluid {{^user.hasProfilePicture}}d-none{{/user.hasProfilePicture}}"
-                                                 style="width: 100%; height: 100%; object-fit: cover;">
+                                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
                                         </div>
+
                                         <input type="file" id="imageFile" name="imageFile" hidden accept="image/*">
 
-                                        <!-- confirme change image button start -->
-                                        <label class="btn btn-success-soft btn-sm" for="imageFile"
-                                            style="cursor: pointer;">
+                                        <label class="btn btn-sm text-dark fw-normal border border-danger" for="imageFile"
+                                               style="background-color: rgba(220, 53, 69, 0.06); cursor: pointer;">
                                             <i class="fas fa-camera mr-2"></i>Cambiar imagen
                                         </label>
-                                        <!-- confirme change image button end -->
+
+                                        <p class="text-muted mt-2 mb-0" style="font-size: 0.8rem;">
+                                            Formatos: JPG, PNG. Máx 2MB.<br>No obligatoria.
+                                        </p>
                                     </div>
                                     <!-- pfp section end -->
 
@@ -198,7 +245,7 @@
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- display new image before confirmation -->
+    <!-- pfp preview -->
     <script>
         document.getElementById('imageFile').addEventListener('change', function (event) {
             const file = event.target.files[0];
@@ -215,6 +262,102 @@
             }
         });
     </script>
+   <!-- pfp preview -->
+
+
+    <!-- input validation -->
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // generate custom message based on error case
+            function getErrorMessage(input) {
+                // case: required field empty
+                if (input.validity.valueMissing) {
+                    return 'Este campo es obligatorio.';
+                }
+
+                // case: incorrect email format
+                if (input.validity.typeMismatch && input.type === 'email') {
+                    return 'Debe ser un correo válido (ejemplo@correo.com).';
+                }
+
+                // case: pattern (regex) doesnt match
+                if (input.validity.patternMismatch || !input.checkValidity()) {
+                    switch (input.name) {
+                        case 'name':
+                            return 'El nombre sólo debe contener letras (mínimo 2).';
+                        case 'lastName':
+                            return 'Los apellidos sólo deben contener letras (mínimo 2).';
+                        case 'mainPhone':
+                            return 'Debe contener exactamente 9 números.';
+                        case 'secondaryPhone':
+                            return 'Si lo introduces, debe tener exactamente 9 números.';
+                        case 'email':
+                            return 'El formato del correo no es válido.';
+                        case 'moneySpent':
+                            return 'Usa números con hasta 2 decimales (ej: 2100.95).';
+                        default:
+                            return 'El formato introducido no es válido.';
+                    }
+                }
+                return 'Entrada inválida.';
+            }
+
+            // function to apply bootstrap styling and display the text
+            function validateInput(input) {
+                var feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
+
+                // if field is secondary phone and is empty (its not mandatory), no styling
+                if (input.name === 'secondaryPhone' && input.value.trim() === "") {
+                    input.classList.remove('is-valid', 'is-invalid');
+                    if (feedbackDiv) feedbackDiv.textContent = "";
+                    return;
+                }
+
+                if (input.checkValidity()) {
+                    input.classList.remove('is-invalid');
+                    input.classList.add('is-valid');
+                } else {
+                    input.classList.remove('is-valid');
+                    input.classList.add('is-invalid');
+                    if (feedbackDiv) {
+                        feedbackDiv.textContent = getErrorMessage(input);
+                    }
+                }
+            }
+
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                // validation upon submit
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+
+                    // apply visual validation to all fields
+                    var inputs = form.querySelectorAll('input:not([type="hidden"])');
+                    inputs.forEach(function(input) {
+                        validateInput(input);
+                    });
+
+                    form.classList.add('was-validated');
+                }, false);
+
+                // in real time validation for all fields
+                var inputs = form.querySelectorAll('input:not([type="hidden"])');
+                inputs.forEach(function (input) {
+                    ['blur', 'input', 'change'].forEach(function(evt) {
+                        input.addEventListener(evt, function () {
+                            validateInput(input);
+                        });
+                    });
+                });
+            });
+        })()
+    </script>
+    <!-- input validation -->
 </body>
 
 </html>

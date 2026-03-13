@@ -87,28 +87,69 @@ public class UserController {
                              @RequestParam String name,
                              @RequestParam String lastName,
                              @RequestParam String email,
+                              @RequestParam String mainPhone,
+                              @RequestParam(required = false) String secondaryPhone,
                              @RequestParam double moneySpent,
                              @RequestParam boolean enabled,
-                             @RequestParam(required = false) MultipartFile imageFile) throws IOException {
+                              @RequestParam(required = false) String newPassword,
+                             @RequestParam(required = false) MultipartFile imageFile,
+                              Model model) throws IOException {
 
-        User existingUser = userService.findById(id);
-
-        // update as requested if user exist
-        if (existingUser != null) {
-            existingUser.setName(name);
-            existingUser.setLastName(lastName);
-            existingUser.setEmail(email);
-            existingUser.setMoneySpent(moneySpent);
-            existingUser.setEnabled(enabled);
-
-            // update image if added
-            if (imageFile != null && !imageFile.isEmpty()) {
-                byte[] imageBytes = imageFile.getBytes();
-                existingUser.setProfilePicture(imageBytes);
-            }
+        // check user exists
+        User updatedUser = userService.findById (id);
+        if (updatedUser == null) {
+            return "redirect:/admin/users";
         }
 
-        userService.save (existingUser);
+        // check email
+        if (!email.equals (updatedUser.getEmail()) && userService.emailExists (email)) {
+            model.addAttribute ("errorMessage", "El correo electrónico ya está registrado por otro usuario.");
+            model.addAttribute ("user", updatedUser);
+            return "admin/user-edit";
+        }
+
+        // check main phone
+        if (!mainPhone.equals (updatedUser.getMainPhone()) && userService.phoneExists (mainPhone)) {
+            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
+            model.addAttribute ("user", updatedUser);
+            return "admin/user-edit";
+        }
+
+        // check secondary phone
+        if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
+            // case already in use
+            if (!secondaryPhone.equals (updatedUser.getSecondaryPhone()) && userService.phoneExists (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otro usuario.");
+                model.addAttribute ("user", updatedUser);
+                return "admin/user-edit";
+            }
+            // case primary is secondary too
+            if (mainPhone.equals (secondaryPhone)) {
+                model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
+                model.addAttribute ("user", updatedUser);
+                return "admin/user-edit";
+            }
+        }
+        // if no errors
+        updatedUser.setName(name);
+        updatedUser.setLastName(lastName);
+        updatedUser.setEmail(email);
+        updatedUser.setMainPhone(mainPhone);
+        updatedUser.setSecondaryPhone(secondaryPhone);
+        updatedUser.setMoneySpent(moneySpent);
+        updatedUser.setEnabled(enabled);
+        // encode password
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+            updatedUser.setPassword (passwordEncoder.encode(newPassword));
+        }
+        // set pfp
+        if (imageFile != null && !imageFile.isEmpty()) {
+            updatedUser.setProfilePicture (imageFile.getBytes());
+        }
+
+        userService.save (updatedUser);
+        notificationService.notify ("Usuario actualizado: " + name, "fas fa-user-edit", "bg-info");
+
         return "redirect:/admin/users";
     }
 
