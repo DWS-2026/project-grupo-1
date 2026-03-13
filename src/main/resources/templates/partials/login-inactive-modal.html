@@ -1,0 +1,40 @@
+{{#isInactive}}
+<div class="modal fade show" id="inactiveModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" style="color: white">
+                    <i class="fas fa-exclamation-triangle me-2 text-white"></i>Cuenta Inactiva
+                </h5>
+                <a href="/login" class="btn-close btn-close-white"></a>
+            </div>
+
+            <div class="modal-body text-center py-4">
+                <p class="mb-3" style="font-size: 1rem;">
+                    Lo sentimos, parece que tu cuenta ha sido desactivada.<br>
+                    Puede que se deba a motivos técnicos o una suspensión manual.
+                </p>
+
+                <div class="my-4">
+                    <i class="fas fa-user-lock fa-4x text-danger opacity-75"></i>
+                </div>
+
+                <p class="mb-0 text-muted" style="font-size: 1rem;">
+                    Contacta con el equipo de administración para más información.
+                </p>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between bg-light">
+                <a href="/contact" class="btn btn-outline-primary rounded-pill px-4">
+                    <i class="fas fa-envelope me-2"></i>Contactar
+                </a>
+                <a href="/login" class="btn btn-danger rounded-pill px-4">
+                    Entendido
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{/isInactive}}

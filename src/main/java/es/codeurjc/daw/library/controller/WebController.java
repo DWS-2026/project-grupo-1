@@ -177,8 +177,15 @@ public class WebController {
 
 
     @GetMapping ("/login")
-    public String login (@RequestParam(required = false) String error, Model model) {
-        model.addAttribute ("error", error != null);
+    public String login(@RequestParam(required = false) String inactive,
+                        @RequestParam(required = false) String error,
+                        Model model) {
+
+        // if ur includes ?inactive, set inactive flag to true
+        if (inactive != null) {
+            model.addAttribute("isInactive", true);
+        }
+
         return "user/login";
     }
 

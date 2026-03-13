@@ -51,9 +51,11 @@ public class RepositoryUserDetailsService implements UserDetailsService {
 
         // return standard spring security user object
         // includes: username (email), hashed password and permissions
-        return new org.springframework.security.core.userdetails.User(
+        return new org.springframework.security.core.userdetails.User (
                 user.getEmail(),
                 user.getPassword(),
+                user.isEnabled(),
+                true, true, true,
                 roles);
     }
 }
