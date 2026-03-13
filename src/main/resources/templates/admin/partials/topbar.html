@@ -36,37 +36,50 @@
 
                         <!-- notifications start -->
                         <li class="nav-item dropdown no-arrow mx-1">
-                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
-                                {{#hasNotifications}}
-                                <span class="badge badge-danger badge-counter">!</span>
-                                {{/hasNotifications}}
+                                {{#unreadCount}}
+                                <span class="badge badge-danger badge-counter" style="background-color: red !important;">
+            {{unreadCount}}
+        </span>
+                                {{/unreadCount}}
                             </a>
 
-                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="alertsDropdown">
                                 <h6 class="dropdown-header">
-                                    Centro de Alertas
+                                    Centro de Notificaciones
                                 </h6>
 
                                 {{#notifications}}
-                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                <div class="dropdown-item d-flex align-items-center {{^readStatus}}bg-light{{/readStatus}}">
                                     <div class="mr-3">
                                         <div class="icon-circle {{color}}">
                                             <i class="{{icon}} text-white"></i>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="w-100">
                                         <div class="small text-gray-500">{{formattedDate}}</div>
-                                        <span class="font-weight-bold">{{message}}</span>
+                                        <span class="{{^readStatus}}font-weight-bold{{/readStatus}} text-dark">{{message}}</span>
                                     </div>
-                                </a>
+
+                                    {{^readStatus}}
+                                    <form action="/notifications/read/{{id}}" method="post" class="ml-2">
+                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                        <button type="submit" class="btn btn-sm btn-circle btn-outline-success border-0" title="Marcar como leído">
+                                            <i class="fas fa-check fa-xs"></i>
+                                        </button>
+                                    </form>
+                                    {{/readStatus}}
+                                </div>
                                 {{/notifications}}
 
                                 {{^notifications}}
-                                <a class="dropdown-item text-center small text-gray-500" href="#">No hay notificaciones nuevas</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">No hay notificaciones</a>
                                 {{/notifications}}
 
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Mostrar todas</a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Ver todas las alertas</a>
                             </div>
                         </li>
                         <!-- notifications end -->

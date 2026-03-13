@@ -30,8 +30,7 @@ public class UserInitializer implements CommandLineRunner {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
-
-
+    
 
     // auto-runs on app startup
     @Override

@@ -11,17 +11,38 @@ import java.util.List;
 
 
 
+/* Notification cases
+* User:
+*  - Created: by user (register.html) or admin (user-add.html)
+*  - Deleted: by user (profile.html) or admin (delete button on users.html)
+ */
+
 
 @Service
 public class NotificationService {
     @Autowired
     private NotificationRepository repository;
 
+    // create notification
     public void notify (String msg, String icon, String color) {
-        repository.save (new Notification(msg, icon, color));
+        repository.save (new Notification (msg, icon, color));
     }
 
-    public List<Notification> getRecent() {
-        return repository.findTop5ByOrderByDateDesc();
+    // retrieve 10 most recent notificactions
+    public List<Notification> getRecent10() {
+        return repository.findFirst10ByOrderByDateDesc();
+    }
+
+    // count unread notificactions
+    public long getUnreadCount() {
+        return repository.countByReadStatusFalse();
+    }
+
+    // mark notification as read
+    public void markAsRead (Long id) {
+        repository.findById(id).ifPresent(n -> {
+            n.setReadStatus (true);
+            repository.save (n);
+        });
     }
 }

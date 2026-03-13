@@ -70,8 +70,15 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     }
 
     @ModelAttribute
-    public void addNotifications(Model model) {
-        model.addAttribute ("notifications", notificationService.getRecent());
-        model.addAttribute ("hasNotifications", !notificationService.getRecent().isEmpty());
+    public void addNotifications (Model model) {
+        // retrieve latest 10 notifications
+        model.addAttribute ("notifications", notificationService.getRecent10());
+
+        // count unread notifications to update red background counter
+        long unreadCount = notificationService.getUnreadCount();
+        model.addAttribute("unreadCount", unreadCount);
+
+        // flag
+        model.addAttribute ("hasNotifications", unreadCount > 0);
     }
 }

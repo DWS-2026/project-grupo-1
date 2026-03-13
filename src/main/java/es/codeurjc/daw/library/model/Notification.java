@@ -18,6 +18,7 @@ public class Notification {
     private String icon;  // eg "fas fa-user", "fas fa-map-marked-alt"
     private String color; // eg "bg-primary", "bg-danger"
     private LocalDateTime date = LocalDateTime.now();
+    private boolean readStatus = false;
     // attributes end
 
     // jpa required empty constructor
@@ -31,8 +32,13 @@ public class Notification {
     }
 
     // getters
+    public Long getId() { return id; }
     public String getMessage() { return message; }
     public String getIcon() { return icon; }
     public String getColor() { return color; }
+    public boolean isReadStatus() { return readStatus; }
     public String getFormattedDate() { return date.format (DateTimeFormatter.ofPattern("dd MMM, HH:mm")); }
+
+    // setters
+    public void setReadStatus(boolean readStatus) { this.readStatus = readStatus; }
 }

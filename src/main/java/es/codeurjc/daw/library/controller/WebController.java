@@ -5,11 +5,8 @@ package es.codeurjc.daw.library.controller;
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
-import es.codeurjc.daw.library.service.GuideService;
+import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.service.ReviewService;
-import es.codeurjc.daw.library.service.TourService;
-import es.codeurjc.daw.library.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,8 @@ public class WebController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private GuideService guideService;
+    @Autowired
+    private NotificationService notificationService;
 
 
 
@@ -172,6 +171,10 @@ public class WebController {
         }
 
         userService.save (newUser); // save user
+
+        // notificaction: user creation via user (registration page)
+        notificationService.notify ("Nuevo usuario registrado: " + name, "fas fa-user-plus", "bg-primary");
+
         return "redirect:/login"; // go login
     }
 
@@ -416,6 +419,8 @@ public class WebController {
         // process user deletion
         if ("delete".equals (action)) {
             userService.delete (user);
+            // notificaction: user deletion via admin (delete button in users page)
+            notificationService.notify ("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-times", "bg-warning");
             return "redirect:/logout";
         }
 
@@ -517,5 +522,16 @@ public class WebController {
 
         return "user/guides";
     }
+
+
+    // marks single notification as read
+    @PostMapping ("/notifications/read/{id}")
+    public String markAsRead (@PathVariable Long id, HttpServletRequest request) {
+        notificationService.markAsRead (id);
+        // reload page
+        String referer = request.getHeader ("Referer");
+        return "redirect:" + (referer != null ? referer : "/admin/index");
+    }
+
 
 }

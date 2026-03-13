@@ -166,8 +166,8 @@ public class UserController {
             userService.delete (user);
         }
 
-        // notification user deletion
-        notificationService.notify ("Usuario eliminado: " + user.getName(), "fas fa-user", "bg-danger");
+        // notificaction: user deletion via admin (delete button in users page)
+        notificationService.notify("Usuario eliminado por admin: " + user.getName(), "fas fa-user-minus", "bg-danger");
 
 
         // redirect to users
@@ -253,8 +253,8 @@ public class UserController {
 
         userService.save (newUser);
 
-        // notification user creation
-        notificationService.notify ("Usuario creado: " + name, "fas fa-user", "bg-success");
+        // notificaction: user creation via admin (user-add page)
+        notificationService.notify ("Admin ha creado al usuario: " + name, "fas fa-user-shield", "bg-success");
 
         return "redirect:/admin/users";
     }
