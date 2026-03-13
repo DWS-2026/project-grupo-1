@@ -50,6 +50,16 @@
     .auth-logo {
       max-height: 70px;
     }
+
+    .custom-input {
+      min-height: 55px;
+      border-radius: 8px;
+    }
+
+    .custom-input::placeholder {
+      color: #adb5bd !important;
+      font-weight: 400;
+    }
   </style>
   <!-- in-file css end -->
 </head>
@@ -63,8 +73,6 @@
 {{>partials/navbar}}
 
 
-
-
 <!-- banner + breadcrumbs start -->
     <div class="container-fluid bg-breadcrumb">
       <div class="container text-center py-5">
@@ -76,7 +84,6 @@
       </div>
     </div>
     <!-- banner + breadcrumbs start -->
-
 
 
     <!-- login start -->
@@ -97,31 +104,38 @@
         <div class="p-4 p-md-5">
           <!-- Mensaje de error -->
           {{#error}}
-          <div class="alert alert-danger">
-            Credenciales incorrectas
+          <div class="alert alert-danger d-flex align-items-center px-4 py-3 mb-4 shadow-sm" role="alert"
+               style="border-radius: 8px; background-color: rgba(220, 53, 69, 0.08); border: 1px solid rgba(220, 53, 69, 0.2); border-left: 4px solid #dc3545;">
+            <i class="fas fa-exclamation-triangle text-danger me-3 fs-5"></i>
+            <div>
+              <span class="fw-bold text-danger">¡Vaya!</span><br><span class="text-dark">Las credenciales introducidas son incorrectas.</brspan>
+            </div>
           </div>
           {{/error}}
 
           <!-- login implementation -->
-          <form action="/login-check" method="post">
+          <form action="/login-check" method="post" class="needs-validation" novalidate>
             <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
             <div class="row g-3">
 
               <!-- email start -->
               <div class="col-12">
-                <div class="form-floating">
-                  <input type="email" class="form-control" id="email" name="username" placeholder="name@example.com" required>
-                  <label for="email">Correo electrónico</label>
-                </div>
+                <label for="email" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Correo electrónico</label>
+                <input type="email" class="form-control custom-input" id="email" name="username"
+                       placeholder="ejemplo@correo.com"
+                       pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                       required>
+                <div class="invalid-feedback"></div>
               </div>
               <!-- email end -->
 
               <!-- password start -->
               <div class="col-12">
-                <div class="form-floating">
-                  <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
-                  <label for="password">Contraseña</label>
-                </div>
+                <label for="password" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Contraseña</label>
+                <input type="password" class="form-control custom-input" id="password" name="password"
+                       placeholder="Ej: Secreta123"
+                       required>
+                <div class="invalid-feedback"></div>
               </div>
               <!-- password end -->
 
@@ -175,17 +189,78 @@
 
 {{>partials/footer}}
 
-
     <!-- back to top -->
     <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i
         class="fa fa-arrow-up"></i></a>
-
-
 
     <!-- js libraries -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
-</body>
+<!-- input validation -->
+<script>
+  (function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
 
+    function getErrorMessage(input) {
+      if (input.validity.valueMissing) {
+        return 'Este campo es obligatorio.';
+      }
+
+      if (input.validity.typeMismatch) {
+        if (input.type === 'email') return 'Ha de incluir un "@" y un dominio válido.';
+      }
+
+      if (input.validity.patternMismatch) {
+        return 'El formato introducido no es válido.';
+      }
+
+      return 'Entrada inválida.';
+    }
+
+    function validateInput(input) {
+      var feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
+
+      if (input.checkValidity()) {
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+      } else {
+        input.classList.remove('is-valid');
+        input.classList.add('is-invalid');
+        if (feedbackDiv) {
+          feedbackDiv.textContent = getErrorMessage(input);
+        }
+      }
+    }
+
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        var inputs = form.querySelectorAll('input:not([type="hidden"])');
+        inputs.forEach(function(input) {
+          validateInput(input);
+        });
+
+        form.classList.add('was-validated')
+      }, false)
+
+      var inputs = form.querySelectorAll('input:not([type="hidden"])');
+      inputs.forEach(function (input) {
+        ['blur', 'input', 'change'].forEach(function(evt) {
+          input.addEventListener(evt, function () {
+            validateInput(input);
+          });
+        });
+      });
+    })
+  })()
+</script>
+<!-- input validation -->
+
+</body>
 </html>
