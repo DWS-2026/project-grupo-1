@@ -10,6 +10,7 @@ import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ReviewService;
 import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.UserService;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -179,11 +180,17 @@ public class WebController {
     @GetMapping ("/login")
     public String login(@RequestParam(required = false) String inactive,
                         @RequestParam(required = false) String error,
+                        @RequestParam(required = false) String changed,
                         Model model) {
 
         // if ur includes ?inactive, set inactive flag to true
         if (inactive != null) {
             model.addAttribute("isInactive", true);
+        }
+
+        // if URL includes ?changed, set flag to display related message
+        if (changed != null) {
+            model.addAttribute("changed", true);
         }
 
         return "user/login";
@@ -196,6 +203,13 @@ public class WebController {
         if (principal != null) {
             User user = userService.findByEmail (principal.getName());
             model.addAttribute ("user", user);
+
+            // if user doesnt exist in db, return
+            if (user == null) {
+                return "redirect:/logout";
+            }
+
+            model.addAttribute ("currentUser", user);
 
             // check if user admin, and set flag accordingly
             boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
@@ -381,17 +395,23 @@ public class WebController {
 
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
+                                 HttpServletRequest request,
             @RequestParam String name,
             @RequestParam String lastName,
             @RequestParam String mainPhone,
             @RequestParam String secondaryPhone,
+                                 @RequestParam (required = false) String oldPassword,
             @RequestParam (required = false) String newPassword,
+                                 @RequestParam (required = false) String confirmPassword,
             @RequestParam MultipartFile imageFile,
             @RequestParam String action,
-                                 Model model) throws IOException {
+                                 Model model) throws IOException, ServletException {
 
         // get user logged in
         User user = userService.findByEmail (principal.getName());
+
+        // flag for password change
+        boolean passwordChanged = false;
 
         // process user deletion
         if ("delete".equals (action)) {
@@ -425,6 +445,28 @@ public class WebController {
             }
         }
 
+        // password validation
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+            // old password matches
+            if (oldPassword == null || oldPassword.isEmpty() || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+                model.addAttribute("errorMessage", "La contraseña antigua es incorrecta.");
+                model.addAttribute("currentUser", user);
+                return "user/profile";
+            }
+
+            // new and confirmation match
+            if (!newPassword.equals(confirmPassword)) {
+                model.addAttribute("errorMessage", "Las nuevas contraseñas no coinciden.");
+                model.addAttribute("currentUser", user);
+                return "user/profile";
+            }
+
+            // encrypt and store
+            user.setPassword (passwordEncoder.encode(newPassword));
+            passwordChanged = true;
+        }
+
+
         // update info
         user.setName (name);
         user.setLastName (lastName);
@@ -436,13 +478,14 @@ public class WebController {
             user.setProfilePicture(imageFile.getBytes());
         }
 
-        // change password (if there is a new one)
-        if (newPassword != null && !newPassword.trim().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(newPassword));
-        }
-
         // save changes
-        userService.save(user);
+        userService.save (user);
+
+        // password was changed, logout and go to login p
+        if (passwordChanged) {
+            request.logout();
+            return "redirect:/login?changed=true";
+        }
 
         // return to profile page
         return "redirect:/profile";

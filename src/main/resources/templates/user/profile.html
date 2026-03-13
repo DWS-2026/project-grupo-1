@@ -218,31 +218,46 @@
                             </div>
                         </div>
                         <!-- pfp section end -->
-
                     </div>
 
                     <!-- password start -->
                     <div class="row mb-5 gx-5">
-
                         <div class="col-xxl-8 mb-4 mb-xxl-0">
                             <div class="bg-secondary-soft px-4 py-5 rounded h-100">
                                 <div class="row g-3">
                                     <h4 class="mb-4 mt-0">Cambiar contraseña</h4>
+
+                                    <!-- old password -->
                                     <div class="col-md-6">
-                                        <label for="exampleInputPassword1" class="form-label">Contraseña antigua</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword1">
+                                        <label for="oldPassword" class="form-label">Contraseña antigua</label>
+                                        <input type="password" class="form-control" id="oldPassword" name="oldPassword">
+                                        <div class="invalid-feedback"></div>
                                     </div>
+                                    <!-- old password -->
+
+                                    <!-- new password -->
                                     <div class="col-md-6">
-                                        <label for="exampleInputPassword2" class="form-label">Contraseña nueva</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword2" name="newPassword">
+                                        <label for="newPassword" class="form-label">Contraseña nueva</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                               pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+                                        <div class="invalid-feedback"></div>
                                     </div>
+                                    <!-- new password -->
+
+                                    <!-- new password confirmation -->
                                     <div class="col-md-12">
-                                        <label for="exampleInputPassword3" class="form-label">Confirmar contraseña nueva</label>
-                                        <input type="password" class="form-control" id="exampleInputPassword3">
+                                        <label for="confirmPassword" class="form-label">Confirmar contraseña nueva</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                                               pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+                                        <div class="invalid-feedback"></div>
                                     </div>
+                                    <!-- new password confirmation -->
+
                                 </div>
                             </div>
                         </div>
+                        <!-- password end -->
+
                         <div class="col-xxl-4 d-flex flex-column justify-content-end align-items-xxl-end align-items-center">
 
                             <div class="d-flex flex-column gap-3 w-100" style="max-width: 450px;">
@@ -311,45 +326,58 @@
 
 <!-- input validation -->
 <script>
+    // Actualización del script de validación en profile.html
     (function () {
         'use strict'
-        // identify pages form via class
         const form = document.querySelector('.file-upload');
 
-        // generates custom error messages
         function getErrorMessage(input) {
-            if (input.validity.valueMissing) {
-                return 'Este campo es obligatorio.';
+            if (input.validity.valueMissing) return 'Este campo es obligatorio.';
+
+            // Error específico para coincidencia de contraseñas
+            if (input.id === 'confirmPassword' && input.getAttribute('data-match-error')) {
+                return 'Las contraseñas nuevas no coinciden.';
             }
 
             if (input.validity.patternMismatch) {
                 switch (input.name) {
-                    case 'name':
-                        return 'El nombre sólo debe contener letras (mínimo 2).';
-                    case 'lastName':
-                        return 'Los apellidos sólo deben contener letras (mínimo 2).';
-                    case 'mainPhone':
-                        return 'Debe contener exactamente 9 números.';
-                    case 'secondaryPhone':
-                        return 'Si lo introduces, debe tener exactamente 9 números.';
-                    case 'newPassword':
-                        return 'La contraseña debe tener al menos 8 caracteres, una letra y un número.';
-                    default:
-                        return 'El formato introducido no es válido.';
+                    case 'name': return 'El nombre sólo debe contener letras (mínimo 2).';
+                    case 'lastName': return 'Los apellidos sólo deben contener letras (mínimo 2).';
+                    case 'mainPhone': return 'Debe contener exactamente 9 números.';
+                    case 'newPassword': return 'Debe tener al menos 8 caracteres, una letra y un número.';
+                    default: return 'Formato no válido.';
                 }
             }
             return 'Entrada inválida.';
         }
 
-        // applies boostrap visual feedback
-        function validateInput (input) {
+        function validateInput(input) {
             const feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
 
-            // case: secondary phone field empty (not required)
-            if (input.name === 'secondaryPhone' && input.value.trim() === "") {
-                input.classList.remove('is-valid', 'is-invalid');
-                if (feedbackDiv) feedbackDiv.textContent = "";
-                return;
+            // Lógica de dependencia: Si hay algo en New Password, Old y Confirm son requeridos
+            const oldPass = document.getElementById('oldPassword');
+            const newPass = document.getElementById('newPassword');
+            const confPass = document.getElementById('confirmPassword');
+
+            if (newPass.value.length > 0 || oldPass.value.length > 0 || confPass.value.length > 0) {
+                oldPass.setAttribute('required', '');
+                newPass.setAttribute('required', '');
+                confPass.setAttribute('required', '');
+            } else {
+                oldPass.removeAttribute('required');
+                newPass.removeAttribute('required');
+                confPass.removeAttribute('required');
+            }
+
+            // Validar coincidencia de contraseñas
+            if (input.id === 'confirmPassword') {
+                if (input.value !== newPass.value) {
+                    input.setCustomValidity('No coinciden');
+                    input.setAttribute('data-match-error', 'true');
+                } else {
+                    input.setCustomValidity('');
+                    input.removeAttribute('data-match-error');
+                }
             }
 
             if (input.checkValidity()) {
@@ -358,38 +386,30 @@
             } else {
                 input.classList.remove('is-valid');
                 input.classList.add('is-invalid');
-                if (feedbackDiv) {
-                    feedbackDiv.textContent = getErrorMessage(input);
-                }
+                if (feedbackDiv) feedbackDiv.textContent = getErrorMessage(input);
             }
         }
 
         if (form) {
-            // on submit validation
             form.addEventListener('submit', function (event) {
-                // no validation if profile deletion
                 const action = event.submitter ? event.submitter.value : null;
                 if (action === 'delete') return;
+
+                // Re-validar todo antes de enviar
+                const inputs = form.querySelectorAll('input:not([type="hidden"]):not([readonly])');
+                inputs.forEach(validateInput);
 
                 if (!form.checkValidity()) {
                     event.preventDefault();
                     event.stopPropagation();
                 }
-
-                // force visual feedback for all inputs
-                const inputs = form.querySelectorAll('input:not([type="hidden"]):not([readonly])');
-                inputs.forEach(validateInput);
-
                 form.classList.add('was-validated');
             }, false);
 
-            // in real time visual feedback
             const inputs = form.querySelectorAll('input:not([type="hidden"]):not([readonly])');
-            inputs.forEach(function (input) {
-                ['blur', 'input'].forEach(function(evt) {
-                    input.addEventListener(evt, function () {
-                        validateInput(input);
-                    });
+            inputs.forEach(input => {
+                ['blur', 'input'].forEach(evt => {
+                    input.addEventListener(evt, () => validateInput(input));
                 });
             });
         }
