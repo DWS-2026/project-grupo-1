@@ -51,6 +51,15 @@
     .auth-logo {
       max-height: 70px;
     }
+
+    .custom-input {
+      min-height: 55px;
+      border-radius: 8px;
+    }
+    .custom-input::placeholder {
+      color: #adb5bd !important;
+      font-weight: 400;
+    }
   </style>
   <!-- in-file css end -->
 
@@ -91,7 +100,7 @@
           <img src="/images/logo_apex.png" alt="Apex Expeditions" class="auth-logo">
         </a>
         <h2 class="h4 mb-1">Crea tu cuenta</h2>
-        <p class="text-muted mb-0">Registrese para pedir presupuestos y poder comprar viajes.</p>
+        <p class="text-muted mb-0">Regístrate para poder gestionar tu carrito, finalizar compras y mucho más.</p>
       </div>
       <!-- card head end -->
 
@@ -103,75 +112,74 @@
 
             <!-- pfp start -->
             <div class="col-12 text-center mb-3">
-              <div class="square position-relative mb-3 mx-auto" style="height: 150px; width: 150px; background-color: #fff; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+              <div class="position-relative mb-3 mx-auto border border-danger rounded-circle p-1" style="height: 150px; width: 150px; border-width: 3px !important; background-color: #fff; display: flex; align-items: center; justify-content: center;">
 
-                <div id="pfp-placeholder" class="h-100 w-100 d-flex align-items-center justify-content-center" style="background-color: rgba(208, 212, 217, 0.1);">
+                <div id="pfp-placeholder" class="h-100 w-100 d-flex align-items-center justify-content-center rounded-circle" style="background-color: rgba(208, 212, 217, 0.1); overflow: hidden;">
                   <i class="fas fa-fw fa-user display-3" style="color: rgba(208, 212, 217, 0.5);"></i>
                 </div>
 
-                <img id="pfp-preview" src="" class="img-fluid d-none" style="width: 100%; height: 100%; object-fit: cover;">
+                <img id="pfp-preview" src="" class="img-fluid d-none rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
               </div>
 
               <input type="file" id="customFile" name="imageFile" hidden accept="image/*">
-              <label class="btn btn-sm text-success" for="customFile" style="background-color: rgba(40, 167, 69, 0.1); cursor: pointer;">Seleccionar imagen</label>
+              <label class="btn btn-sm text-dark fw-normal border border-danger" for="customFile" style="background-color: rgba(220, 53, 69, 0.06); cursor: pointer;">Seleccionar imagen</label>
               <p class="text-muted mt-2 mb-0" style="font-size: 0.8rem;">Formatos: JPG, PNG. Máx 2MB.</p>
             </div>
             <!-- pfp end -->
 
-            <!-- name start -->
+            <!-- text input start -->
             <div class="col-md-6">
-              <div class="form-floating">
-                <input type="text" class="form-control" name="name" id="name" placeholder="Nombre" required>
-                <label for="name">Nombre</label>
-              </div>
+              <label for="name" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Nombre</label>
+              <input type="text" class="form-control custom-input" name="name" id="name"
+                     placeholder="Ej: Juan"
+                     title="Nombre"
+                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,50}"
+                     required>
             </div>
-            <!-- name end -->
 
-            <!-- surname start -->
             <div class="col-md-6">
-              <div class="form-floating">
-                <input type="text" class="form-control" name="lastName" id="lastName" placeholder="Apellidos" required>
-                <label for="lastName">Apellidos</label>
-              </div>
+              <label for="lastName" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Apellidos</label>
+              <input type="text" class="form-control custom-input" name="lastName" id="lastName"
+                     placeholder="Ej: Pérez García"
+                     title="Apellidos"
+                     pattern="[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,100}"
+                     required>
             </div>
-            <!-- surname end -->
 
-            <!-- email start -->
             <div class="col-12">
-              <div class="form-floating">
-                <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com"
-                  required>
-                <label for="email">Correo electrónico</label>
-              </div>
+              <label for="email" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Correo electrónico</label>
+              <input type="email" class="form-control custom-input" name="email" id="email"
+                     placeholder="ejemplo@correo.com"
+                     title="name@example.com"
+                     pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$"
+                     required>
             </div>
-            <!-- email end -->
 
-
-            <!-- main phone start -->
             <div class="col-12">
-              <div class="form-floating">
-                <input type="text" class="form-control" name="mainPhone" id="mainPhone" placeholder="600000000" required>
-                <label for="mainPhone">Teléfono móvil</label>
-              </div>
+              <label for="mainPhone" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Teléfono móvil</label>
+              <input type="tel" class="form-control custom-input" name="mainPhone" id="mainPhone"
+                     placeholder="Ej: 612345678"
+                     title="600000000"
+                     pattern="[0-9]{9}"
+                     required>
             </div>
-            <!-- main phone end -->
 
-            <!-- password start -->
             <div class="col-12">
-              <div class="form-floating">
-                <input type="password" class="form-control" name="password" id="password" placeholder="Password"
-                  required>
-                <label for="password">Contraseña</label>
-              </div>
+              <label for="password" class="form-label text-muted fw-bold mb-1" style="font-size: 0.9rem;">Contraseña</label>
+              <input type="password" class="form-control custom-input" name="password" id="password"
+                     placeholder="Ej: Secreta123"
+                     title="Password"
+                     pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                     required>
             </div>
-            <!-- password end -->
+            <!-- text input end -->
 
             <!-- terms start -->
             <div class="col-12">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" value="" name="iAgree" id="iAgree" required>
                 <label class="form-check-label text-muted" for="iAgree">
-                  Acepto los <a href="#" class="link-primary text-decoration-none">términos y condiciones</a>
+                  Acepto los <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal" style="cursor: pointer;" class="link-primary text-decoration-none fw-bold">términos y condiciones</a>
                 </label>
               </div>
             </div>
@@ -204,6 +212,7 @@
 
 {{>partials/footer}}
 
+{{>partials/terms-conditions}}
 
   <!-- back to top -->
   <a href="#" class="btn btn-primary btn-primary-outline-0 btn-md-square back-to-top"><i class="fa fa-arrow-up"></i></a>
@@ -236,6 +245,15 @@
   });
 </script>
 <!-- pfp preview -->
+
+<!-- connected terms to check button -->
+<script>
+  // when modal button clicked, checkbox with id 'iAgree' is marked
+  document.getElementById('acceptTermsBtn').addEventListener('click', function() {
+    document.getElementById('iAgree').checked = true;
+  });
+</script>
+<!-- connected terms to check button -->
 
 </body>
 
