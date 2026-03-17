@@ -3,6 +3,8 @@ package es.codeurjc.daw.library.controller;
 import java.security.Principal;
 import java.util.Optional;
 
+import es.codeurjc.daw.library.service.NotificationService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +15,7 @@ import es.codeurjc.daw.library.repository.ReviewRepository;
 import es.codeurjc.daw.library.service.ReviewService;
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
+import es.codeurjc.daw.library.service.TourService;
 
 @Controller
 public class ReviewController {
@@ -20,11 +23,17 @@ public class ReviewController {
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
     private final UserRepository userRepository;
+    @Autowired // to generate notifications
+    private NotificationService notificationService;
+    @Autowired
+    private  TourService tourService;
     public ReviewController(ReviewRepository reviewRepository,
                             ReviewService reviewService, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
         this.reviewService = reviewService;
         this.userRepository = userRepository;
+
+
     }
 
     // Crear review
@@ -39,6 +48,12 @@ public class ReviewController {
         }
 
         reviewService.addReview(tourId, principal.getName(), rating, description);
+
+        String tourName = tourService.findById(tourId).getName();
+
+        // ajustar para que notifique
+        notificationService.notify("Nueva review creada por: " + principal.getName() + " para el tour "+ tourName, "fas fa-star", "bg-success");
+
 
         return "redirect:/tour-details/" + tourId;
     }
