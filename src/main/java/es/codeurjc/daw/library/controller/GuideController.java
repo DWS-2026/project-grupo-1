@@ -103,18 +103,18 @@ public class GuideController {
 
 
 
-    @GetMapping("/{id}/image")
+    @GetMapping("/guides/{id}/image")
         @ResponseBody
         public ResponseEntity<byte[]> getGuideImage(@PathVariable Long id) {
 
             Guide guide = guideService.findById(id);
 
-            if (guide.getProfilePicture() == null) {
+            if (guide == null || guide.getProfilePicture() == null) {
                 return ResponseEntity.notFound().build();
             }
 
             return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "image/jpeg")
+                    .header(HttpHeaders.CONTENT_TYPE, "image/webp")
                     .body(guide.getProfilePicture());
         }
 
