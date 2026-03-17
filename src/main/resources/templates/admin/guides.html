@@ -162,24 +162,6 @@
     <!-- Page level custom scripts -->
     <script src="/js/demo/datatables-demo.js"></script>
 
-    <script>
-        fetch("/admin/components/sidebar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("sidebar").innerHTML = data);
-
-        fetch("/admin/components/topbar.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("topbar").innerHTML = data);
-
-        fetch("/admin/components/footer.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("footer").innerHTML = data);
-
-        fetch("/admin/components/logout-modal.html")
-            .then(res => res.text())
-            .then(data => document.getElementById("logout-modal").innerHTML = data);
-    </script>
-
 </body>
 
 </html>
