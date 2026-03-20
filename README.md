@@ -20,10 +20,11 @@ Aplicación web para una agencia de viajes que ofrece paquetes turísticos organ
 Indicar las entidades principales que gestionará la aplicación y las relaciones entre ellas:
 
 1. *Usuario*
-2. *Destino*
+2. *Tour*
 3. *Reserva / Solicitud de Presupuesto*
-4. *Categoría de Experiencia* (Adventure, Beach, Nature, Camping, etc.)
-5. *Hotel* (1 por destino)
+4. *Guía* (Adventure, Beach, Nature, Camping, etc.)
+5. *Carrito* (1 por destino)
+6. "Notificación
 
 
 **Relaciones entre entidades:**
