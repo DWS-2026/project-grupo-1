@@ -83,7 +83,7 @@
 <div class="container mb-5">
     <div class="row justify-content-center">
         <div class="col-xl-9">
-            <div class="card">
+            <div class="card" id="invoice-card">
                 <div class="card-body p-5"> 
                     
 
@@ -152,69 +152,40 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
-                                    <!-- tour bought 1 start -->
+                                    {{#cartItems}}
                                     <tr>
-                                        <th scope="row">01</th>
+                                        <th scope="row">-</th>
                                         <td>
                                             <div>
-                                                <h5 class="text-truncate font-size-14 mb-1">Viaje al futuro</h5>
-                                                <p class="text-muted mb-0">Paquete Turístico (3 Días)</p>
+                                                <h5 class="text-truncate font-size-14 mb-1">{{name}}</h5>
+                                                <p class="text-muted mb-0">Paquete Turístico ({{duration}} Días)</p>
                                             </div>
                                         </td>
-                                        <td>4,349.00€ </td>
+                                        <td>{{price}}€</td>
                                         <td>1</td>
-                                        <td class="text-end">4,349.00€ </td>
+                                        <td class="text-end">{{price}}€</td>
                                     </tr>
-                                    <!-- tour bought 1 end -->
-
-                                    <!-- insurance bought start -->
-                                    <tr>
-                                        <th scope="row">02</th>
-                                        <td>
-                                            <div>
-                                                <h5 class="text-truncate font-size-14 mb-1">Seguro de Viaje Plus</h5>
-                                                <p class="text-muted mb-0">Cobertura completa</p>
-                                            </div>
-                                        </td>
-                                        <td>€ 50.00</td>
-                                        <td>1</td>
-                                        <td class="text-end">€ 50.00</td>
-                                    </tr>
-                                    <!-- insurance bought end -->
+                                    {{/cartItems}}
                                     
-                                    <!-- pre-discount price start -->
                                     <tr>
                                         <th scope="row" colspan="4" class="text-end border-0">Subtotal</th>
-                                        <td class="text-end border-0">4,349.00€</td>
+                                        <td class="text-end border-0">{{subtotal}}€</td>
                                     </tr>
-                                    <!-- pre-discount price end -->
-
-                                    <!-- discount start -->
+                                    
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">
-                                            Descuento :
-                                        </th>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Descuento :</th>
                                         <td class="border-0 text-end">- € 0.00</td>
                                     </tr>
-                                    <!-- discount end -->
-
-                                    <!-- taxes start -->
+                                    
                                     <tr>
-                                        <th scope="row" colspan="4" class="border-0 text-end">
-                                            Impuestos (IVA) :
-                                        </th>
-                                        <td class="border-0 text-end">913.29€ </td>
+                                        <th scope="row" colspan="4" class="border-0 text-end">Impuestos (IVA incl.) :</th>
+                                        <td class="border-0 text-end">{{tax}}€</td>
                                     </tr>
-                                    <!-- taxes end -->
-
-                                    <!-- final price start -->
+                                    
                                     <tr>
                                         <th scope="row" colspan="4" class="border-0 text-end">Total</th>
-                                        <td class="border-0 text-end"><h4 class="m-0 fw-bold text-primary">5.262,29€</h4></td>
+                                        <td class="border-0 text-end"><h4 class="m-0 fw-bold text-primary">{{total}}€</h4></td>
                                     </tr>
-                                    <!-- final price end -->
-
                                 </tbody>
                             </table>
                         </div>
@@ -223,13 +194,13 @@
                         <!-- bottom buttons start -->
                         <div class="d-print-none mt-5">
 
-                            <!-- email button start -->
+                            <!-- pdf button start -->
                             <div class="float-end">                    
-                                <a href="#" class="btn btn-primary w-md shadow-sm">
-                                    <i class="fa fa-paper-plane me-1"></i> Enviar por Correo
-                                </a>
+                                <button onclick="exportarPDF()" class="btn btn-danger w-md shadow-sm">
+                                    <i class="fa fa-file-pdf me-1"></i> Exportar a PDF
+                                </button>
                             </div>
-                            <!-- email button end -->
+                            <!-- PDF button end -->
 
                             <!-- return index button start -->
                             <div class="float-start">
@@ -251,5 +222,28 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        function exportarPDF() {
+            const elemento = document.getElementById('invoice-card');
+            
+            const opciones = {
+                margin:       [10, 10, 10, 10], // márgenes: top, left, bottom, right
+                filename:     'Factura_Apex_Expeditions.pdf',
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { 
+                    scale: 3, // Mayor escala para que no se vea borroso
+                    letterRendering: true,
+                    useCORS: true 
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Ejecutar la exportación
+            html2pdf().set(opciones).from(elemento).save();
+        }
+    </script>
+</body>
 </body>
 </html>

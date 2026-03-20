@@ -9,12 +9,16 @@ import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -48,6 +52,11 @@ public class WebController {
     private NotificationService notificationService;
 
 
+    @ModelAttribute("cartSize")
+    public int getCartSize(jakarta.servlet.http.HttpSession session) {
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        return (cart != null) ? cart.size() : 0;
+    }
 
     @GetMapping ("/")
     public String index (Model model) {
@@ -100,9 +109,57 @@ public class WebController {
 
 
 
+    @GetMapping("/cart/add/{id}")
+    public String addToCart(@PathVariable Long id, HttpSession session) {
+        //Obtenemos carrito de sesión
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        if (cart == null) {
+            cart = new ArrayList<>();
+        }
+
+        // Buscamos el tour en la base de datos
+        Tour tour = tourService.findById(id);
+
+        if (tour != null) {
+            // existe un tour con este mismo ID en el carrito?
+            boolean alreadyInCart = cart.stream()
+                    .anyMatch(t -> t.getId().equals(id));
+
+            // añadimos si no está presente
+            if (!alreadyInCart) {
+                cart.add(tour);
+            } else {
+                // enviar un mensaje de error o simplemente no hacer nada (LUEGO)
+                System.out.println("El tour " + tour.getName() + " ya está en el carrito.");
+            }
+        }
+
+        //Guardamos la lista en la sesión
+        session.setAttribute("cartItems", cart);
+
+        return "redirect:/cart";
+    }
+
+    @GetMapping("/cart/remove/{id}")
+    public String removeFromCart(@PathVariable Long id, HttpSession session) {
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        if (cart != null) {
+            // Buscamos el tour en la lista por su ID y lo eliminamos
+            cart.removeIf(t -> t.getId().equals(id));
+            // Actualizamos sesión
+            session.setAttribute("cartItems", cart);
+        }
+        return "redirect:/cart";
+    }
+
     @GetMapping ("/cart")
-    public String cart (Model model) {
-        model.addAttribute ("cart", true);
+    public String cart (Model model, HttpSession session) {
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
+        
+        model.addAttribute("cartItems", cart);
+        model.addAttribute("total", String.format("%.2f", total));
+        model.addAttribute("cart", true);
         return "user/cart";
     }
 
@@ -277,15 +334,34 @@ public class WebController {
 
 
     @GetMapping ("/checkout")
-    public String checkout() {
+    public String checkout(Model model, HttpSession session) {
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
+        
+        model.addAttribute("cartItems", cart);
+        model.addAttribute("total", String.format("%.2f", total));
         return "user/checkout";
     }
 
 
-
     @GetMapping ("/invoice")
-    public String invoice() {
-        return "/user/invoice";
+    public String invoice(Model model, HttpSession session) {
+        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
+        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
+        
+        // Calcular impuestos básicos (ejemplo 21% IVA)
+        double tax = total * 0.21;
+        double subtotal = total - tax;
+        
+        model.addAttribute("cartItems", cart);
+        model.addAttribute("total", String.format("%.2f", total));
+        model.addAttribute("subtotal", String.format("%.2f", subtotal));
+        model.addAttribute("tax", String.format("%.2f", tax));
+        
+        // Opcional: Vaciar el carrito después de facturar
+        // session.removeAttribute("cartItems"); 
+        
+        return "user/invoice";
     }
 
 

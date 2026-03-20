@@ -103,36 +103,39 @@
                                 <th>Tour</th>
                                 <th>Duración</th>
                                 <th>Precio por persona</th>
+                                <th>Eliminar</th>
                                 <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                            {{#cartItems}}
                             <tr>
-
-                                <!-- tour-specific info start -->
                                 <td>
-                                    <strong>Viaje al futuro</strong><br>
-                                    <small class="text-muted"><i
-                                            class="fa fa-map-marker-alt text-primary me-1"></i>Lugar que tu selecciones
-                                        en el futuro</small>
+                                    <strong>{{name}}</strong><br>
+                                    <small class="text-muted"><i class="fa fa-map-marker-alt text-primary me-1"></i>Para {{numPeople}} personas</small>
                                 </td>
-                                <td><i class="fa fa-calendar-alt text-primary me-2"></i>3 días</td>
-                                <td class="fw-bold">4349.00€</td>
-                                <!-- tour-specific info start -->
+                                <td><i class="fa fa-calendar-alt text-primary me-2"></i>{{duration}} días</td>
+                                <td class="fw-bold">{{price}}€</td>
 
-                                <!-- tour-specific buttons start -->
                                 <td class="text-center">
-                                    <a href="/tour-details"
-                                        class="btn btn-sm btn-outline-primary rounded-pill px-3">
-                                        <i class="fa fa-eye me-1"></i> Ver detalle
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger rounded-pill px-3 ms-2">
+                                    <a href="/cart/remove/{{id}}" class="btn btn-sm btn-outline-danger rounded-pill">
                                         <i class="fa fa-trash me-1"></i> Eliminar
                                     </a>
                                 </td>
-                                <!-- tour-specific buttons end -->
-
+                                
+                                <td class="text-center">
+                                    <a href="/tour-details/{{id}}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                                        <i class="fa fa-eye me-1"></i> Ver
+                                    </a>
+                                    </td>
                             </tr>
+                            {{/cartItems}}
+                            
+                            {{^cartItems}}
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-muted">No hay tours en tu carrito todavía.</td>
+                            </tr>
+                            {{/cartItems}}
                         </tbody>
                     </table>
                     <!-- saved tours table end -->
@@ -154,7 +157,7 @@
                     <div class="col-md-6">
                         <div class="cart-total p-4 text-md-end">
                             <h4 class="fw-bold mb-2">Total estimado</h4>
-                            <p class="fs-2 text-primary fw-bold mb-3">4349.00€</p>
+                            <p class="fs-2 text-primary fw-bold mb-3">{{total}}€</p>
                             <a href="/checkout" class="btn btn-primary rounded-pill py-3 px-5">
                                 <i class="fa fa-file-alt me-2"></i> Pago
                             </a>

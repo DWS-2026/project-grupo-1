@@ -206,12 +206,12 @@
 
                         <div class="card-body p-4">
 
-                            <!-- chosen tour 1 start -->
+                            {{#cartItems}}
                             <div class="d-flex justify-content-between mb-2">
-                                <span>Aventura Mediterránea</span>
-                                <span>€1,200.00</span>
+                                <span class="text-truncate" style="max-width: 250px;">{{name}}</span>
+                                <span>€{{price}}</span>
                             </div>
-                            <!-- chosen tour 1 end -->
+                            {{/cartItems}}>
 
                             <!-- discount start -->
                             <div class="d-flex justify-content-between mb-2">
@@ -225,7 +225,7 @@
                             <!-- total price start -->
                             <div class="d-flex justify-content-between mb-4">
                                 <span class="fw-bold fs-5">Total</span>
-                                <span class="fw-bold fs-5 text-primary">€1,200.00</span>
+                                <span class="fw-bold fs-5 text-primary">{{total}}€</span>
                             </div>
                             <!-- total price end -->
 
