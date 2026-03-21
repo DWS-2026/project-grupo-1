@@ -3,10 +3,12 @@ package es.codeurjc.daw.library.controller;
 
 
 import es.codeurjc.daw.library.model.Guide;
+import es.codeurjc.daw.library.model.Reserva;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.repository.ReservaRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -24,6 +26,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -50,12 +53,21 @@ public class WebController {
     private GuideService guideService;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private ReservaRepository reservaRepository;
 
 
+    // 6. NUMERITO DE LA NAVBAR (GLOBAL)
     @ModelAttribute("cartSize")
-    public int getCartSize(jakarta.servlet.http.HttpSession session) {
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        return (cart != null) ? cart.size() : 0;
+    public int getCartSize(Principal principal) {
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+            if (reservaOpt.isPresent()) {
+                return reservaOpt.get().getTours().size();
+            }
+        }
+        return 0; // Si no está logueado o no tiene reserva, es 0
     }
 
     @GetMapping ("/")
@@ -107,59 +119,75 @@ public class WebController {
         return "user/contact";
     }
 
-
-
     @GetMapping("/cart/add/{id}")
-    public String addToCart(@PathVariable Long id, HttpSession session) {
-        //Obtenemos carrito de sesión
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        if (cart == null) {
-            cart = new ArrayList<>();
-        }
-
-        // Buscamos el tour en la base de datos
-        Tour tour = tourService.findById(id);
-
-        if (tour != null) {
-            // existe un tour con este mismo ID en el carrito?
-            boolean alreadyInCart = cart.stream()
-                    .anyMatch(t -> t.getId().equals(id));
-
-            // añadimos si no está presente
-            if (!alreadyInCart) {
-                cart.add(tour);
-            } else {
-                // enviar un mensaje de error o simplemente no hacer nada (LUEGO)
-                System.out.println("El tour " + tour.getName() + " ya está en el carrito.");
+        public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
+            if (principal == null) {
+                return "redirect:/login"; // Obligamos a iniciar sesión para reservar
             }
+
+            User user = userService.findByEmail(principal.getName());
+            Tour tour = tourService.findById(id);
+
+            if (tour != null) {
+                // Buscamos si el usuario ya tiene una reserva abierta. Si no, la creamos.
+                Reserva reserva = reservaRepository.findByUserAndCerradaFalse(user)
+                        .orElseGet(() -> new Reserva(user));
+
+                // Evitamos que meta el mismo tour dos veces en la misma reserva
+                if (!reserva.getTours().contains(tour)) {
+                    reserva.getTours().add(tour);
+                    reservaRepository.save(reserva); // GUARDAMOS EN BASE DE DATOS
+                    data.addFlashAttribute("showSuccess", true);
+                } else {
+                    data.addFlashAttribute("showError", true);
+                    data.addFlashAttribute("tourName", tour.getName());
+                }
+            }
+            return "redirect:/cart";
         }
-
-        //Guardamos la lista en la sesión
-        session.setAttribute("cartItems", cart);
-
-        return "redirect:/cart";
-    }
 
     @GetMapping("/cart/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, HttpSession session) {
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        if (cart != null) {
-            // Buscamos el tour en la lista por su ID y lo eliminamos
-            cart.removeIf(t -> t.getId().equals(id));
-            // Actualizamos sesión
-            session.setAttribute("cartItems", cart);
+    public String removeFromCart(@PathVariable Long id, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
+        User user = userService.findByEmail(principal.getName());
+        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+
+        if (reservaOpt.isPresent()) {
+            Reserva reserva = reservaOpt.get();
+            reserva.getTours().removeIf(t -> t.getId().equals(id));
+            
+            // Sincronización total con MySQL
+            reservaRepository.saveAndFlush(reserva); 
         }
-        return "redirect:/cart";
+        
+        // Forzamos una redirección limpia
+        return "redirect:/cart?removed=true"; 
     }
 
-    @GetMapping ("/cart")
-    public String cart (Model model, HttpSession session) {
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
-        
-        model.addAttribute("cartItems", cart);
-        model.addAttribute("total", String.format("%.2f", total));
+    @GetMapping("/cart")
+    public String cart(Model model, Principal principal) {
         model.addAttribute("cart", true);
+        // Inicializamos estas variables por defecto para evitar errores en la vista
+        model.addAttribute("cartItems", new ArrayList<Tour>());
+        model.addAttribute("total", "0.00");
+        model.addAttribute("isEmpty", true); 
+
+        if (principal != null) {
+            User user = userService.findByEmail(principal.getName());
+            Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+
+            if (reservaOpt.isPresent()) {
+                Reserva reserva = reservaOpt.get();
+                List<Tour> tours = reserva.getTours();
+                
+                if (!tours.isEmpty()) {
+                    model.addAttribute("cartItems", tours);
+                    model.addAttribute("total", String.format("%.2f", reserva.getTotalPrice()));
+                    model.addAttribute("isEmpty", false);
+                }
+            }
+        }
         return "user/cart";
     }
 
@@ -333,34 +361,49 @@ public class WebController {
 
 
 
-    @GetMapping ("/checkout")
-    public String checkout(Model model, HttpSession session) {
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
+    // 4. CHECKOUT
+    @GetMapping("/checkout")
+    public String checkout(Model model, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
+        User user = userService.findByEmail(principal.getName());
+        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+
+        if (reservaOpt.isPresent() && !reservaOpt.get().getTours().isEmpty()) {
+            Reserva reserva = reservaOpt.get();
+            model.addAttribute("cartItems", reserva.getTours());
+            model.addAttribute("total", String.format("%.2f", reserva.getTotalPrice()));
+            return "user/checkout";
+        }
         
-        model.addAttribute("cartItems", cart);
-        model.addAttribute("total", String.format("%.2f", total));
-        return "user/checkout";
+        return "redirect:/cart"; // Si no hay reserva abierta, vuelve al carrito
     }
 
 
-    @GetMapping ("/invoice")
-    public String invoice(Model model, HttpSession session) {
-        List<Tour> cart = (List<Tour>) session.getAttribute("cartItems");
-        double total = (cart != null) ? cart.stream().mapToDouble(Tour::getPrice).sum() : 0.0;
-        
-        // Calcular impuestos básicos (ejemplo 21% IVA)
-        double tax = total * 0.21;
-        double subtotal = total - tax;
-        
-        model.addAttribute("cartItems", cart);
-        model.addAttribute("total", String.format("%.2f", total));
-        model.addAttribute("subtotal", String.format("%.2f", subtotal));
-        model.addAttribute("tax", String.format("%.2f", tax));
-        
-        // Opcional: Vaciar el carrito después de facturar
-        // session.removeAttribute("cartItems"); 
-        
+    // 5. INVOICE (CERRAR LA RESERVA)
+    @GetMapping("/invoice")
+    public String invoice(Model model, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
+        User user = userService.findByEmail(principal.getName());
+        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+
+        if (reservaOpt.isPresent() && !reservaOpt.get().getTours().isEmpty()) {
+            Reserva reserva = reservaOpt.get();
+            
+            // Pasamos los datos para pintar la factura final
+            model.addAttribute("cartItems", reserva.getTours());
+            double total = reserva.getTotalPrice();
+            model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
+            model.addAttribute("tax", String.format("%.2f", total * 0.21));
+            model.addAttribute("total", String.format("%.2f", total));
+            model.addAttribute("customerName", user.getName() + " " + user.getLastName());
+
+            // ¡AQUÍ CERRAMOS LA RESERVA! (El carrito se vacía)
+            reserva.setCerrada(true);
+            reservaRepository.save(reserva);
+        }
+
         return "user/invoice";
     }
 

@@ -131,11 +131,14 @@
                             </tr>
                             {{/cartItems}}
                             
-                            {{^cartItems}}
-                            <tr>
-                                <td colspan="4" class="text-center py-4 text-muted">No hay tours en tu carrito todavía.</td>
-                            </tr>
-                            {{/cartItems}}
+                            {{^cartItems.0}}
+                                <div class="text-center py-5">
+                                    <i class="fa fa-shopping-cart fa-4x mb-3 text-muted"></i>
+                                    <h3>Tu carrito está vacío</h3>
+                                    <p>¡Explora nuestros tours y añade tu próxima aventura!</p>
+                                    <a href="/packages" class="btn btn-primary">Ver Paquetes</a>
+                                </div>
+                            {{/cartItems.0}}
                         </tbody>
                     </table>
                     <!-- saved tours table end -->
