@@ -21,21 +21,20 @@
             <!-- body start -->
             <div class="modal-body py-4">
                 <div class="text-center mb-4">
-                    <!-- if guide has pfp, show it -->
-                    {{#profilePicture}}
-                    <img src="data:image/png;base64,{{profilePicture}}"
+                    <!-- FOTO -->
+                    {{#hasProfilePicture}}
+                    <img src="/guides/{{id}}/image"
                          alt="Foto de perfil"
-                         class="rounded-circle border border-5 border-danger shadow-sm mb-3"
-                         style="width: 110px; height: 110px; object-fit: cover;">
-                    {{/profilePicture}}
+                         class="rounded-circle border border-5 border-primary shadow-sm"
+                         style="width: 120px; height: 120px; object-fit: cover;">
+                    {{/hasProfilePicture}}
 
-                    <!-- if no pfp display bootstrap icon (shouldnt trigger) -->
-                    {{^profilePicture}}
-                    <div class="rounded-circle border border-5 border-secondary d-inline-flex align-items-center justify-content-center bg-light mb-3"
-                         style="width: 110px; height: 110px;">
-                        <i class="fas fa-guide fa-4x text-secondary"></i>
+                    {{^hasProfilePicture}}
+                    <div class="rounded-circle border border-5 border-secondary d-inline-flex align-items-center justify-content-center bg-light"
+                         style="width: 120px; height: 120px;">
+                        <i class="fas fa-user fa-4x text-secondary"></i>
                     </div>
-                    {{/profilePicture}}
+                    {{/hasProfilePicture}}
 
                     <!-- guide identification info start -->
                     <h4 class="text-gray-900 font-weight-bold mb-1">{{name}} {{lastName}}</h4>
