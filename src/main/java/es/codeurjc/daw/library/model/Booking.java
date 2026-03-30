@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Reserva {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,25 +14,21 @@ public class Reserva {
     @ManyToOne
     private User user;
 
-    // Una reserva puede tener varios tours (es tu "lista" o carrito)
    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Tour> tours = new ArrayList<>();
 
-    // Estado: false = carrito abierto, true = compra finalizada
     private boolean cerrada = false;
 
-    public Reserva() {}
+    public Booking() {}
 
-    public Reserva(User user) {
+    public Booking(User user) {
         this.user = user;
     }
 
-    // Método para calcular el total
     public double getTotalPrice() {
         return tours.stream().mapToDouble(Tour::getPrice).sum();
     }
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     

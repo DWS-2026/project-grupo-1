@@ -1,4 +1,4 @@
-{{!-- solid (top) navbar start  --}}
+{{!-- solid (top) navbar start --}}
 <div class="container-fluid bg-primary px-5 d-none d-lg-block">
     <div class="row gx-0 align-items-center">
 
@@ -6,11 +6,16 @@
         {{!-- fake social media start --}}
         <div class="col-lg-8 text-start">
             <div class="d-inline-flex align-items-center" style="height: 45px;">
-                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-twitter"></i></a>
-                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-facebook-f"></i></a>
-                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-linkedin-in"></i></a>
-                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i class="fab fa-instagram"></i></a>
-                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href="#"><i class="fab fa-youtube"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i
+                        class="fab fa-twitter"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i
+                        class="fab fa-facebook-f"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i
+                        class="fab fa-linkedin-in"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href="#"><i
+                        class="fab fa-instagram"></i></a>
+                <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href="#"><i
+                        class="fab fa-youtube"></i></a>
             </div>
         </div>
         {{!-- fake social media end --}}
@@ -60,7 +65,8 @@
 
                         <h6 class="dropdown-header">Guías</h6>
                         <a href="/admin/guides" class="dropdown-item">Ver guías</a>
-                        <a href="/admin/guides/add" class="dropdown-item">Añadir guía</a> <div class="dropdown-divider"></div>
+                        <a href="/admin/guides/add" class="dropdown-item">Añadir guía</a>
+                        <div class="dropdown-divider"></div>
                     </div>
                 </div>
                 {{/isAdmin}}
@@ -71,9 +77,8 @@
                 <div class="dropdown">
                     <a href="#" class="dropdown-toggle text-light" data-bs-toggle="dropdown">
                         {{#currentUser.hasProfilePicture}}
-                        <img src="/user/{{currentUser.id}}/image"
-                             class="rounded-circle me-2"
-                             style="width: 25px; height: 25px; object-fit: cover; border: 1px solid white;">
+                        <img src="/user/{{currentUser.id}}/image" class="rounded-circle me-2"
+                            style="width: 25px; height: 25px; object-fit: cover; border: 1px solid white;">
                         {{/currentUser.hasProfilePicture}}
                         {{^currentUser.hasProfilePicture}}
                         <i class="fa fa-user me-2"></i>
@@ -83,7 +88,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded">
                         <a href="/profile" class="dropdown-item"><i class="fas fa-user-alt me-2"></i>Mi perfil</a>
-                        <a href="/review-user" class="dropdown-item"><i class="fas fa-user-alt me-2"></i>Mis reviews</a>
+                        <a href="/review-user" class="dropdown-item"><i class="fas fa-star me-2"></i>Mis reviews</a>
+                        <a href="/booking-user" class="dropdown-item"><i class="fas fa-calendar-alt me-2"></i>Mis reservas</a>
                         <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
                             <i class="fas fa-power-off me-2"></i>Cerrar sesión
                         </a>
@@ -97,11 +103,11 @@
 
     </div>
 </div>
-{{!-- solid (top) navbar end  --}}
+{{!-- solid (top) navbar end --}}
 
 
 
-{{!-- transparent navbar start  --}}
+{{!-- transparent navbar start --}}
 <div class="container-fluid position-relative p-0">
     <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
 
@@ -109,7 +115,7 @@
         <a href="/" class="navbar-brand p-0">
             <h1 class="m-0 text-white d-flex align-items-center">
                 <img src="/images/logo_apex.png" alt="Logo" class="bg-primary rounded me-3"
-                     style="max-height: 80px; padding: 7px 6px;">
+                    style="max-height: 80px; padding: 7px 6px;">
                 Apex Expeditions
             </h1>
         </a>
@@ -130,9 +136,10 @@
                 <a href="/contact" class="nav-item nav-link {{#contact}}active{{/contact}}">Contacto</a>
                 <a href="/cart" class="nav-item nav-link {{#cart}}active{{/cart}}">
                     <i class="fa fa-shopping-cart fa-lg"></i>
-                    {{#cartSize}} 
+                    {{#cartSize}}
                     {{! Este bloque solo se muestra si cartSize es mayor que 0 }}
-                    <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger" style="top: 65%;">
+                    <span class="position-absolute start-100 translate-middle badge rounded-pill bg-danger"
+                        style="top: 65%;">
                         {{cartSize}}
                     </span>
                     {{/cartSize}}

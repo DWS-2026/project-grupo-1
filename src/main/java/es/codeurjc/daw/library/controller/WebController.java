@@ -3,15 +3,13 @@ package es.codeurjc.daw.library.controller;
 
 
 import es.codeurjc.daw.library.model.Guide;
-import es.codeurjc.daw.library.model.Reserva;
+import es.codeurjc.daw.library.model.Booking;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
-import es.codeurjc.daw.library.repository.ReservaRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +32,6 @@ import org.springframework.data.web.PageableDefault;
 import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +51,7 @@ public class WebController {
     @Autowired
     private NotificationService notificationService;
     @Autowired
-    private ReservaRepository reservaRepository;
+    private BookingService bookingService;
 
 
     // 6. NUMERITO DE LA NAVBAR (GLOBAL)
@@ -62,12 +59,12 @@ public class WebController {
     public int getCartSize(Principal principal) {
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
-            Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
-            if (reservaOpt.isPresent()) {
-                return reservaOpt.get().getTours().size();
+            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+            if (bookingOpt.isPresent()) {
+                return bookingOpt.get().getTours().size();
             }
         }
-        return 0; // Si no está logueado o no tiene reserva, es 0
+        return 0; // Si no está logueado o no tiene booking, es 0
     }
 
     @GetMapping ("/")
@@ -122,21 +119,21 @@ public class WebController {
     @GetMapping("/cart/add/{id}")
         public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
             if (principal == null) {
-                return "redirect:/login"; // Obligamos a iniciar sesión para reservar
+                return "redirect:/login"; // Obligamos a iniciar sesión para bookingr
             }
 
             User user = userService.findByEmail(principal.getName());
             Tour tour = tourService.findById(id);
 
             if (tour != null) {
-                // Buscamos si el usuario ya tiene una reserva abierta. Si no, la creamos.
-                Reserva reserva = reservaRepository.findByUserAndCerradaFalse(user)
-                        .orElseGet(() -> new Reserva(user));
+                // Buscamos si el usuario ya tiene una booking abierta. Si no, la creamos.
+                Booking booking = bookingService.findOpenBookingByUser(user)
+                        .orElseGet(() -> new Booking(user));
 
-                // Evitamos que meta el mismo tour dos veces en la misma reserva
-                if (!reserva.getTours().contains(tour)) {
-                    reserva.getTours().add(tour);
-                    reservaRepository.save(reserva); // GUARDAMOS EN BASE DE DATOS
+                // Evitamos que meta el mismo tour dos veces en la misma booking
+                if (!booking.getTours().contains(tour)) {
+                    booking.getTours().add(tour);
+                    bookingService.save(booking); // GUARDAMOS EN BASE DE DATOS
                     data.addFlashAttribute("showSuccess", true);
                 } else {
                     data.addFlashAttribute("showError", true);
@@ -151,14 +148,14 @@ public class WebController {
         if (principal == null) return "redirect:/login";
 
         User user = userService.findByEmail(principal.getName());
-        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
 
-        if (reservaOpt.isPresent()) {
-            Reserva reserva = reservaOpt.get();
-            reserva.getTours().removeIf(t -> t.getId().equals(id));
+        if (bookingOpt.isPresent()) {
+            Booking booking = bookingOpt.get();
+            booking.getTours().removeIf(t -> t.getId().equals(id));
             
             // Sincronización total con MySQL
-            reservaRepository.saveAndFlush(reserva); 
+            bookingService.save(booking); 
         }
         
         // Forzamos una redirección limpia
@@ -175,15 +172,15 @@ public class WebController {
 
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
-            Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
 
-            if (reservaOpt.isPresent()) {
-                Reserva reserva = reservaOpt.get();
-                List<Tour> tours = reserva.getTours();
+            if (bookingOpt.isPresent()) {
+                Booking booking = bookingOpt.get();
+                List<Tour> tours = booking.getTours();
                 
                 if (!tours.isEmpty()) {
                     model.addAttribute("cartItems", tours);
-                    model.addAttribute("total", String.format("%.2f", reserva.getTotalPrice()));
+                    model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
                     model.addAttribute("isEmpty", false);
                 }
             }
@@ -367,16 +364,16 @@ public class WebController {
         if (principal == null) return "redirect:/login";
 
         User user = userService.findByEmail(principal.getName());
-        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
 
-        if (reservaOpt.isPresent() && !reservaOpt.get().getTours().isEmpty()) {
-            Reserva reserva = reservaOpt.get();
-            model.addAttribute("cartItems", reserva.getTours());
-            model.addAttribute("total", String.format("%.2f", reserva.getTotalPrice()));
+        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
+            Booking booking = bookingOpt.get();
+            model.addAttribute("cartItems", booking.getTours());
+            model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
             return "user/checkout";
         }
         
-        return "redirect:/cart"; // Si no hay reserva abierta, vuelve al carrito
+        return "redirect:/cart"; // Si no hay booking abierta, vuelve al carrito
     }
 
 
@@ -386,22 +383,22 @@ public class WebController {
         if (principal == null) return "redirect:/login";
 
         User user = userService.findByEmail(principal.getName());
-        Optional<Reserva> reservaOpt = reservaRepository.findByUserAndCerradaFalse(user);
+        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
 
-        if (reservaOpt.isPresent() && !reservaOpt.get().getTours().isEmpty()) {
-            Reserva reserva = reservaOpt.get();
+        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
+            Booking booking = bookingOpt.get();
             
             // Pasamos los datos para pintar la factura final
-            model.addAttribute("cartItems", reserva.getTours());
-            double total = reserva.getTotalPrice();
+            model.addAttribute("cartItems", booking.getTours());
+            double total = booking.getTotalPrice();
             model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
             model.addAttribute("tax", String.format("%.2f", total * 0.21));
             model.addAttribute("total", String.format("%.2f", total));
             model.addAttribute("customerName", user.getName() + " " + user.getLastName());
 
             // ¡AQUÍ CERRAMOS LA RESERVA! (El carrito se vacía)
-            reserva.setCerrada(true);
-            reservaRepository.save(reserva);
+            booking.setCerrada(true);
+            bookingService.save(booking);
         }
 
         return "user/invoice";
@@ -498,6 +495,34 @@ public class WebController {
         return "user/edit-review";
     }
 
+
+   @GetMapping("/booking-user")
+public String myBookings(Principal principal,
+                        @PageableDefault(size = 10) Pageable pageable,
+                        Model model) {
+
+    if (principal == null) {
+        return "redirect:/login";
+    }
+
+    User user = userService.findByEmail(principal.getName());
+    if (user == null) {
+        return "redirect:/";
+    }
+
+    Page<Booking> bookingPage = bookingService.findClosedBookingsByUser(user, pageable);
+
+    model.addAttribute("bookings", bookingPage.getContent());
+    model.addAttribute("size", pageable.getPageSize());
+    model.addAttribute("currentPage", pageable.getPageNumber());
+    model.addAttribute("hasNext", bookingPage.hasNext());
+    model.addAttribute("nextPage", pageable.getPageNumber() + 1);
+
+    model.addAttribute("hasPrevious", bookingPage.hasPrevious());
+    model.addAttribute("previousPage", pageable.getPageNumber() - 1);
+
+    return "user/user-bookings";
+}
 
 
     @GetMapping ("/forgot-password")
