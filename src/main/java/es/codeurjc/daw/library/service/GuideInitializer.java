@@ -45,8 +45,7 @@ public class GuideInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (guideRepository.count() != 0)
-            return;
+        guideRepository.deleteAll();
 
         Tour tour = tourRepository.findAll().get(0);
 

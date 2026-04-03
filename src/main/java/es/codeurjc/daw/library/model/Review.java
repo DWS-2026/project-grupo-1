@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @Entity
 @Table(name = "reviews")
 public class Review {
@@ -34,16 +37,27 @@ public class Review {
 
     private boolean hidden;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime creationDate;
+
     public Review() {
     }
 
     public Review(User user, Tour tour, int rating, String description) {
         this.user = user;
         this.tour = tour;
-        setRating(rating); // usa la validación que ya tienes
+        setRating(rating);
         this.description = description;
         this.hidden = false;
+        this.creationDate = LocalDateTime.now();
     }
+    @PrePersist
+    public void prePersist() {
+        if (this.creationDate == null) {
+            this.creationDate = LocalDateTime.now();
+        }
+    }
+
 
     public Long getId() {
         return id;
@@ -74,7 +88,6 @@ public class Review {
     }
 
     public void setRating(int rating) {
-        // validación simple (evita valores fuera de rango)
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("rating must be between 1 and 5");
         }
@@ -106,5 +119,17 @@ public class Review {
 
     public void setHidden(boolean hidden) {
         this.hidden = hidden;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    public String getFormattedCreationDate() {
+        if (creationDate == null) {
+            return "";
+        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return creationDate.format(formatter);
     }
 }
