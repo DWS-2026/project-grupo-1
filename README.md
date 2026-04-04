@@ -317,22 +317,23 @@ Solo si han cambiado.
 2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
 
 #### **Credenciales de prueba**
-- **Usuario Admin**: usuario: `admin`, contraseña: `admin`
-- **Usuario Registrado**: usuario: `user`, contraseña: `user`
+- **Usuario Admin**: usuario: `admin@apexexpeditions.com`, contraseña: `1234`
+- **Usuario Registrado**: usuario: `luis@email.com`, contraseña: `1234`
 
 ### **Diagrama de Entidades de Base de Datos**
 
 Diagrama mostrando las entidades, sus campos y relaciones:
 
-![Diagrama Entidad-Relación](images/database-diagram.png)
+![Diagrama Entidad-Relación](src%2Fmain%2Fresources%2Fstatic%2Fimages%2Fdiagrama_BD.png)
 
-> [Descripción opcional: Ej: "El diagrama muestra las 4 entidades principales: Usuario, Producto, Pedido y Categoría, con sus respectivos atributos y relaciones 1:N y N:M."]
+
+> [El diagrama entidad-relación representa la estructura de la base de datos de la aplicación. En él se observan las entidades principales relacionadas con la gestión de usuarios, tours, reseñas, reservas, guías y notificaciones. Entre las relaciones más importantes se encuentran User 1:N Review y Tour 1:N Review, además de la relación entre usuarios y reservas, y entre reservas y tours. Cada entidad incluye sus atributos principales, como identificadores, fechas de creación, descripciones, valoraciones y estados de visibilidad.]
 
 ### **Diagrama de Clases y Templates**
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/classes-diagram.png)
+![Diagrama de Clases](images/diagrama_BD .png)
 
 > [Descripción opcional del diagrama y relaciones principales]
 
