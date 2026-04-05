@@ -7,7 +7,12 @@ package es.codeurjc.daw.library.model;
 
 // region =========== imports =================
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*; // for jpa annotations: mapping java class as persistent db entity
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime; // to manage timestamps
 import java.time.format.DateTimeFormatter; // to format creation timestamp
 import java.util.ArrayList;
@@ -35,8 +40,12 @@ public class User {
 
     // region =========== attributes =================
     // personal info
+    @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
+    @NotBlank(message = "Los apellidos no pueden estar vacíos")
     private String lastName;
+    @NotBlank(message = "El teléfono principal es obligatorio")
+    @Size(min = 9, message = "El teléfono principal debe tener al menos 9 caracteres")
     private String mainPhone;
     private String secondaryPhone;
 
@@ -46,6 +55,8 @@ public class User {
     private byte[] profilePicture;
 
     // account and security credentials
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "Debe proporcionar un formato de email válido")
     @Column (unique = true) // unique email used as username for auth
     private String email;
 

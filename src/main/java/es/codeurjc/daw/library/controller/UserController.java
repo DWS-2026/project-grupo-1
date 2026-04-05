@@ -6,9 +6,11 @@ package es.codeurjc.daw.library.controller;
 
 
 // region =========== imports =================
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
 import org.springframework.stereotype.Controller; // to define class as controller
 import org.springframework.ui.Model; // to pass data from controller to mustache view template
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*; // to add annotation for HTTP method mapping to java methods
 import org.springframework.web.multipart.MultipartFile; // handles file uploads (pfp) from http forms
 
@@ -214,55 +216,44 @@ public class UserController {
      * ensures password is encrypted and handles default avatar generation if no image is uploaded
      */
     @PostMapping ("/add")
-    public String saveUser (@RequestParam String name,
-                           @RequestParam String lastName,
-                           @RequestParam String email,
-                           @RequestParam String mainPhone,
-                           @RequestParam String password,
-                           @RequestParam double moneySpent,
-                           @RequestParam boolean enabled,
-                            @RequestParam(required = false) String secondaryPhone,
-                           @RequestParam(required = false) MultipartFile imageFile,
+    public String saveUser (@Valid @ModelAttribute User newUser,
+                            BindingResult result,
+                            @RequestParam(required = false) MultipartFile imageFile,
                             Model model) throws IOException {
 
+        // return if errors
+        if (result.hasErrors()) {
+            return "admin/user-add";
+        }
+
         // check email in use
-        if (userService.emailExists (email)) {
+        if (userService.emailExists (newUser.getEmail())) {
             model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
             return "admin/user-add";
         }
 
         // check main phone in use
-        if (userService.phoneExists (mainPhone)) {
+        if (userService.phoneExists (newUser.getMainPhone())) {
             model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
             return "admin/user-add";
         }
 
         // check secondary phone (if sent) is used
-        if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
-            if (userService.phoneExists (secondaryPhone)) {
+        if (newUser.getSecondaryPhone() != null && !newUser.getSecondaryPhone().trim().isEmpty()) {
+            if (userService.phoneExists (newUser.getSecondaryPhone())) {
                 model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
                 return "admin/user-add";
             }
             // check main and secondary arent same
-            if (mainPhone.equals (secondaryPhone)) {
+            if (newUser.getMainPhone().equals (newUser.getSecondaryPhone())) {
                 model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
                 return "admin/user-add";
             }
         }
 
-        // if no repetitions, create user
-        User newUser = new User();
-        newUser.setName (name);
-        newUser.setLastName (lastName);
-        newUser.setEmail (email);
-        newUser.setMainPhone (mainPhone);
-        newUser.setSecondaryPhone (secondaryPhone);
-        newUser.setMoneySpent (moneySpent);
-        newUser.setEnabled (enabled);
+        // if no repetitions, apply protection
         newUser.setRoles (java.util.Arrays.asList("USER"));
-
-        // apply password protection
-        newUser.setPassword(passwordEncoder.encode(password));
+        newUser.setPassword (passwordEncoder.encode(newUser.getPassword()));
 
         // if an image is added, store it too
         if (imageFile != null && !imageFile.isEmpty()) {
@@ -272,14 +263,14 @@ public class UserController {
 
         else {
             // if no picture, generate default
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
             newUser.setProfilePicture(avatar);
         }
 
         userService.save (newUser);
 
         // notificaction: user creation via admin (user-add page)
-        notificationService.notify ("Admin ha creado al usuario: " + name, "fas fa-user-plus", "bg-success");
+        notificationService.notify ("Admin ha creado al usuario: " + newUser.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/admin/users";
     }

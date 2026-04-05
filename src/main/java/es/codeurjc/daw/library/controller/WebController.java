@@ -13,11 +13,13 @@ import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -585,9 +587,15 @@ public class WebController {
     // region =========== PostMapping =================
     // region 1. "/register"
     @PostMapping ("/register")
-    public String registerUser (@ModelAttribute User newUser,
+    public String registerUser (@Valid @ModelAttribute User newUser,
+                                BindingResult result,
                                 @RequestParam(required = false) MultipartFile imageFile, // pfp
                                 Model model) throws IOException {
+
+        // if there are errors, return to the page
+        if (result.hasErrors()) {
+            return "user/register";
+        }
 
         // check email in use
         if (userService.emailExists (newUser.getEmail())) {
@@ -602,7 +610,7 @@ public class WebController {
         }
 
         // check secondary phone (if sent) is used
-        String secondaryPhone = newUser.getMainPhone();
+        String secondaryPhone = newUser.getSecondaryPhone();
         if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
             if (userService.phoneExists (secondaryPhone)) {
                 model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
@@ -656,7 +664,8 @@ public class WebController {
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
                                  HttpServletRequest request,
-                                 @ModelAttribute User formUser, // Recoge name, lastName, mainPhone, secondaryPhone
+                                 @Valid @ModelAttribute User formUser, // Recoge name, lastName, mainPhone, secondaryPhone
+                                 BindingResult result,
                                  @RequestParam (required = false) String oldPassword, // No están en User, se piden aparte
                                  @RequestParam (required = false) String newPassword,
                                  @RequestParam (required = false) String confirmPassword,
@@ -673,9 +682,15 @@ public class WebController {
         // process user deletion
         if ("delete".equals (action)) {
             userService.delete (user);
-            // notificaction: user deletion via admin (delete button in users page)
+            // notification: user deletion via admin (delete button in users page)
             notificationService.notify ("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus", "bg-warning");
             return "redirect:/logout";
+        }
+
+        // return if errors
+        if (result.hasErrors()) {
+            model.addAttribute ("currentUser", user);
+            return "user/profile";
         }
 
         // clean invisible spaces
