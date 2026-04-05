@@ -41,6 +41,7 @@ public class User {
     private String secondaryPhone;
 
     @Lob // for image
+    @Basic(fetch = FetchType.LAZY)   // to avoid loading the image unless explicitly required
     @Column (name = "profile_picture", columnDefinition = "LONGBLOB") // explicitly define as longblob for mysql
     private byte[] profilePicture;
 

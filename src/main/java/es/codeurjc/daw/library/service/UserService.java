@@ -8,9 +8,12 @@ package es.codeurjc.daw.library.service;
 // region =========== imports =================
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired; // to inject repository
+import org.springframework.transaction.annotation.Transactional;
+
 import org.springframework.stereotype.Service; // to define service
 import es.codeurjc.daw.library.model.User; // to work with users
 import es.codeurjc.daw.library.repository.UserRepository; // to search by email
+
 import java.util.List; // for user lists
 import javax.imageio.ImageIO; // for pfp generation
 import java.awt.*;
@@ -45,10 +48,12 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
     // store user object into db
+    @Transactional
     public void save (User user) {
         userRepository.save(user);
     }
     // deletes user from db
+    @Transactional
     public void delete (User user) {
         userRepository.delete(user);
     }

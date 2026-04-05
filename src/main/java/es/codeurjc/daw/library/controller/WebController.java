@@ -585,64 +585,66 @@ public class WebController {
     // region =========== PostMapping =================
     // region 1. "/register"
     @PostMapping ("/register")
-    public String registerUser (@RequestParam String name,
-                                @RequestParam String lastName,
-                                @RequestParam String email,
-                                @RequestParam String mainPhone,
-                                @RequestParam String password,
-                                @RequestParam(required = false) String secondaryPhone,
+    public String registerUser (@ModelAttribute User newUser,
                                 @RequestParam(required = false) MultipartFile imageFile, // pfp
                                 Model model) throws IOException {
 
         // check email in use
-        if (userService.emailExists (email)) {
+        if (userService.emailExists (newUser.getEmail())) {
             model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
             return "user/register";
         }
 
         // check main phone in use
-        if (userService.phoneExists (mainPhone)) {
+        if (userService.phoneExists (newUser.getMainPhone())) {
             model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
             return "user/register";
         }
 
         // check secondary phone (if sent) is used
+        String secondaryPhone = newUser.getMainPhone();
         if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
             if (userService.phoneExists (secondaryPhone)) {
                 model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
                 return "user/register";
             }
             // check main and secondary arent same
-            if (mainPhone.equals (secondaryPhone)) {
+            if (newUser.getMainPhone().equals (secondaryPhone)) {
                 model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
                 return "user/register";
             }
         }
 
-        // if no repetitions, create user
-        User newUser = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone);
+        // encode password
+        newUser.setPassword (passwordEncoder.encode(newUser.getPassword()));
 
-        // LÓGICA DE LA FOTO DE PERFIL
+        // fill other fields
+        newUser.setRoles (java.util.Arrays.asList("USER"));
+        newUser.setEnabled (true);
+        newUser.setMoneySpent (0.0);
+
+
+        // pfp logic
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 // 1. Si el usuario ha adjuntado una imagen, guardamos sus bytes
                 newUser.setProfilePicture(imageFile.getBytes());
             } else {
                 // 2. Si no adjunta imagen, generamos la predeterminada automáticamente
-                byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+                byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
                 newUser.setProfilePicture(avatar);
             }
         } catch (IOException e) {
             // En caso de error leyendo el archivo, asignamos el avatar por defecto como salvavidas
             e.printStackTrace();
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", name, new Color(13, 110, 253));
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
             newUser.setProfilePicture(avatar);
         }
 
         userService.save (newUser); // save user
 
         // notificaction: user creation via user (registration page)
-        notificationService.notify ("Nuevo usuario registrado: " + name, "fas fa-user-plus", "bg-success");
+        notificationService.notify ("Nuevo usuario registrado: " + newUser.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/login"; // go login
     }
@@ -654,15 +656,12 @@ public class WebController {
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
                                  HttpServletRequest request,
-            @RequestParam String name,
-            @RequestParam String lastName,
-            @RequestParam String mainPhone,
-            @RequestParam String secondaryPhone,
-                                 @RequestParam (required = false) String oldPassword,
-            @RequestParam (required = false) String newPassword,
+                                 @ModelAttribute User formUser, // Recoge name, lastName, mainPhone, secondaryPhone
+                                 @RequestParam (required = false) String oldPassword, // No están en User, se piden aparte
+                                 @RequestParam (required = false) String newPassword,
                                  @RequestParam (required = false) String confirmPassword,
-            @RequestParam MultipartFile imageFile,
-            @RequestParam String action,
+                                 @RequestParam MultipartFile imageFile,
+                                 @RequestParam String action,
                                  Model model) throws IOException, ServletException {
 
         // get user logged in
@@ -680,8 +679,8 @@ public class WebController {
         }
 
         // clean invisible spaces
-        mainPhone = mainPhone.trim();
-        secondaryPhone = (secondaryPhone != null) ? secondaryPhone.trim() : "";
+        String mainPhone = formUser.getMainPhone() != null ? formUser.getMainPhone().trim() : "";
+        String secondaryPhone = formUser.getSecondaryPhone() != null ? formUser.getSecondaryPhone().trim() : "";
 
         // check if main phone repeated
         if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
@@ -728,8 +727,8 @@ public class WebController {
 
 
         // update info
-        user.setName (name);
-        user.setLastName (lastName);
+        user.setName (formUser.getName());
+        user.setLastName (formUser.getLastName());
         user.setMainPhone (mainPhone);
         user.setSecondaryPhone (secondaryPhone);
 
