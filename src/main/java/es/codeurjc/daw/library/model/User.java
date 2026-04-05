@@ -2,12 +2,17 @@ package es.codeurjc.daw.library.model;
 
 
 
+
+
+
+// region =========== imports =================
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*; // for jpa annotations: mapping java class as persistent db entity
 import java.time.LocalDateTime; // to manage timestamps
 import java.time.format.DateTimeFormatter; // to format creation timestamp
 import java.util.ArrayList;
 import java.util.List; // for role lists
+// endregion
 
 
 
@@ -17,13 +22,18 @@ import java.util.List; // for role lists
 @Entity // represents user in app
 @Table (name = "users") // map to users table in db (user is reserved SQL keyword)
 public class User {
+    // region =========== id =================
     // primary key (increases automatically per new user)
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id; // unique identifier for each user in db
+    // endregion
 
 
-    // ===== ATTRIBUTES START
+
+
+
+    // region =========== attributes =================
     // personal info
     private String name;
     private String lastName;
@@ -48,12 +58,21 @@ public class User {
 
     // business data
     private double moneySpent = 0.0;
-    // ===== ATTRIBUTES END
+    // endregion
 
 
 
-    // ===== CONSTRUCTORS START
+    // region =========== relationships =================
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-reviews")
+    private List<Review> reviews = new ArrayList<>();
+    // endregion
+
+
+
+    // region =========== constructors =================
     public User() {} // default empty constructor required by jpa
+
 
 
     // client constructor (has attributes for client metrics: money, enabled and date)
@@ -83,9 +102,11 @@ public class User {
         this.secondaryPhone = secondaryPhone;
     }
     // ===== CONSTRUCTORS END
+    // endregion
 
 
-    // ===== GETTERS AND SETTERS START
+
+    // region =========== getters and setters =================
     // id
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -145,17 +166,13 @@ public class User {
     // money spent
     public double getMoneySpent() { return moneySpent; }
     public void setMoneySpent(double moneySpent) { this.moneySpent = moneySpent; }
-    // ===== GETTERS AND SETTERS END
+    // endregion
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("user-reviews")
-    private List<Review> reviews = new ArrayList<>();
 
-
-    // ===== AUX
+    // region =========== aux methods =================
     public boolean isHasProfilePicture() {
         return this.profilePicture != null && this.profilePicture.length > 0;
     }
-    // ===== AUX
+    // endregion
 }   
