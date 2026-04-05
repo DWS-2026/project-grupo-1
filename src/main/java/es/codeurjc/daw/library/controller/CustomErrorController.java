@@ -70,7 +70,7 @@ public class CustomErrorController implements ErrorController {
                 return "error/403";
             }
 
-            // Triggered when user requests URL that does not map to any Controller
+            // triggered when user requests URL that does not map to any controller
             if (statusCode == 404) {
                 return "error/404";
             }

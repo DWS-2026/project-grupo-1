@@ -199,7 +199,7 @@ public class UserController {
             userService.delete (user);
         }
 
-        // notificaction: user deletion via admin (delete button in users page)
+        // notification: user deletion via admin (delete button in users page)
         notificationService.notify("Admin ha eliminado al usuario: " + user.getName(), "fas fa-user-minus", "bg-warning");
 
 

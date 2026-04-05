@@ -63,7 +63,7 @@ public class SecurityConfiguration {
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Algoritmo de encriptación seguro [cite: 17]
+        return new BCryptPasswordEncoder();
     }
     // endregion
 
