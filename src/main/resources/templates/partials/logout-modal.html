@@ -2,7 +2,9 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content text-center">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="logoutModalLabel">Cerrar Sesión</h5>
+                <h5 class="modal-title fw-bold text-white" id="logoutModalLabel">
+                    <i class="fas fa-sign-out-alt me-2 text-white"></i>Cerrar sesión
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -28,8 +30,8 @@
                 {{/currentUser}}
             </div>
 
-            <div class="modal-footer justify-content-center">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <div class="modal-footer justify-content-center bg-light">
+                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">Cancelar</button>
 
                 <form action="/logout" method="post">
                     <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
