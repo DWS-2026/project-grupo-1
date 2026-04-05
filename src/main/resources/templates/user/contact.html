@@ -107,7 +107,8 @@
                 <!-- form section start -->
                 <div class="col-lg-8">
                     <h2 class="mb-3">Formulario de mensaje</h2>
-                    <form>
+                    <form action="/contact" method="POST">
+                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
 
                         <div class="row g-3">
 
@@ -179,7 +180,7 @@
     </div>
     <!-- contact end -->
 
-
+{{>partials/contact-wip-modal}}
 {{>partials/footer}}
 
 

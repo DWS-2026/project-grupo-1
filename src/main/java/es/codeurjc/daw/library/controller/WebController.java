@@ -139,8 +139,12 @@ public class WebController {
 
     // region 5. "/contact"
     @GetMapping ("/contact")
-    public String contact (Model model) {
+    public String contact (@RequestParam(required = false) String wip, Model model) {
         model.addAttribute ("contact", true);
+        if (wip != null) {   // if user tries to send message, set flag to true (and then display popup)
+            model.addAttribute ("showContactWip", true);
+        }
+
         return "user/contact";
     }
     // endregion
@@ -758,6 +762,15 @@ public class WebController {
         // reload page
         String referer = request.getHeader ("Referer");
         return "redirect:" + (referer != null ? referer : "/admin/index");
+    }
+    // endregion
+
+
+
+    // region 4. "/contact"
+    @PostMapping("/contact")
+    public String handleContactSubmit() {
+        return "redirect:/contact?wip=true";
     }
     // endregion
     // endregion
