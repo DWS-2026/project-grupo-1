@@ -3,14 +3,19 @@ package es.codeurjc.daw.library.controller;
 
 
 
+
+
+// region =========== imports =================
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
+
 import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model; // used for isadminattempt flag
+// endregion
 
-// used for isadminattempt flag
-import org.springframework.ui.Model;
+
 
 
 
@@ -21,7 +26,6 @@ import org.springframework.ui.Model;
  */
 @Controller
 public class CustomErrorController implements ErrorController {
-
     /**
      * main entry point for all errors occurring within app
      * Spring Boot automatically redirects requests to "/error" when exception or HTTP error occurs
