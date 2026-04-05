@@ -2,18 +2,23 @@ package es.codeurjc.daw.library.service;
 
 
 
-// ===== IMPORTS
+
+
+
+// region =========== imports =================
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.awt.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
-// ===== IMPORTS
+// endregion
 
 
 
@@ -24,14 +29,21 @@ import es.codeurjc.daw.library.repository.UserRepository;
 @Component
 @Order (1) // ensures users are created before other entities that might depend on them
 public class UserInitializer implements CommandLineRunner {
+    // region =========== autowired =================
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserService userService;
-    
+    // endregion
 
+
+
+
+
+    // region =========== methods =================
+    // region 1. run
     // auto-runs on app startup
     @Override
     public void run (String... args) {
@@ -55,9 +67,11 @@ public class UserInitializer implements CommandLineRunner {
         createAdmin ("NombreAdmin", "ApellidoAdmin", "admin@apexexpeditions.com", "1234", "700111222", "800111222");
         System.out.println (">>> Admin initialized");
     }
+    // endregion
 
 
 
+    // region 2. createuser
     //  method to create user
     private void createUser (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone,
                              double moneySpent, boolean enabled, LocalDateTime creationDate) {
@@ -71,9 +85,11 @@ public class UserInitializer implements CommandLineRunner {
         user.setRoles (Arrays.asList("USER"));
         userRepository.save (user);
     }
+    // endregion
 
 
 
+    // region 3. createAdmin
     // method to create admin
     private void createAdmin (String name, String lastName, String email, String password, String mainPhone, String secondaryPhone) {
         User admin = new User (name, lastName, email, passwordEncoder.encode (password), mainPhone, secondaryPhone);
@@ -85,4 +101,6 @@ public class UserInitializer implements CommandLineRunner {
         admin.setRoles (Arrays.asList("USER", "ADMIN"));
         userRepository.save (admin);
     }
+    // endregion
+    // endregion
 }

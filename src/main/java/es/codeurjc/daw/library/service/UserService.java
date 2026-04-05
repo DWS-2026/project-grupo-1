@@ -2,7 +2,10 @@ package es.codeurjc.daw.library.service;
 
 
 
-// ===== IMPORTS
+
+
+
+// region =========== imports =================
 import jakarta.annotation.Nullable;
 import org.springframework.beans.factory.annotation.Autowired; // to inject repository
 import org.springframework.stereotype.Service; // to define service
@@ -14,7 +17,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-// ===== IMPORTS
+// endregion
 
 
 
@@ -27,10 +30,16 @@ import java.io.IOException;
  */
 @Service
 public class UserService {
+    // region =========== autowired =================
     @Autowired // repository injection for db access
     private UserRepository userRepository;
+    // endregion
 
-    // ===== DERIVED QUERY METHODS
+
+
+
+
+    // region =========== derived query methods =================
     // search user by email
     public User findByEmail (String email) {
         return userRepository.findByEmail(email);
@@ -60,10 +69,13 @@ public class UserService {
         }
         return userRepository.existsByMainPhone(phone) || userRepository.existsBySecondaryPhone(phone);
     }
-    // ===== DERIVED QUERY METHODS
+    // endregion
 
 
 
+
+
+    // region =========== method: generateDefaultAvatar =================
     /**
      * generates default pfp
      * @param roleText first line text (user role)
@@ -113,4 +125,5 @@ public class UserService {
             return null;
         }
     }
+    // endregion
 }
