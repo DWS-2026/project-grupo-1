@@ -416,5 +416,16 @@
     })();
 </script>
 <!-- input validation -->
+
+
+<!-- use: display logout popup when user comes from admin portal -->
+{{#openLogoutModal}}
+<script>
+    var modalElement = document.getElementById('logoutModal');
+    var instance = new bootstrap.Modal(modalElement);
+    instance.show();
+</script>
+{{/openLogoutModal}}
+
 </body>
 </html>

@@ -269,7 +269,11 @@ public class WebController {
 
     // region 9. "/profile"
     @GetMapping ("/profile")
-    public String profile (Model model, Principal principal, HttpServletRequest request) {
+    public String profile (Model model,
+                           Principal principal,
+                           HttpServletRequest request,
+                           @RequestParam(required = false) boolean showLogout) {
+
         if (principal != null) {
             User user = userService.findByEmail (principal.getName());
             model.addAttribute ("user", user);
@@ -277,6 +281,11 @@ public class WebController {
             // if user doesnt exist in db, return
             if (user == null) {
                 return "redirect:/logout";
+            }
+
+            // if a param showLogout is received, set flag
+            if (showLogout) {
+                model.addAttribute("openLogoutModal", true);
             }
 
             model.addAttribute ("currentUser", user);
