@@ -2,15 +2,16 @@ package es.codeurjc.daw.library.controller;
 
 
 
+
+
+
+// region =========== imports =================
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.model.Booking;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -29,20 +30,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
+import java.util.ArrayList;
 import java.awt.*;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+// endregion
 
+
+
+
+
+
+// use: manage administrative tasks for users
 @Controller
 public class WebController {
+    // region =========== Autowired =================
     @Autowired
     private UserService userService;
     @Autowired
     private TourService tourService;
-     @Autowired
+    @Autowired
     private ReviewService reviewService;
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -52,70 +64,91 @@ public class WebController {
     private NotificationService notificationService;
     @Autowired
     private BookingService bookingService;
+    // endregion
 
 
-    // 6. NUMERITO DE LA NAVBAR (GLOBAL)
-    @ModelAttribute("cartSize")
-    public int getCartSize(Principal principal) {
+
+
+
+    // region =========== ModelAttribute =================
+    @ModelAttribute ("cartSize")
+    public int getCartSize (Principal principal) {
         if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+            User user = userService.findByEmail (principal.getName());
+            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser (user);
             if (bookingOpt.isPresent()) {
                 return bookingOpt.get().getTours().size();
             }
         }
-        return 0; // Si no está logueado o no tiene booking, es 0
+        return 0; // triggered if: user has no bookings or isnt logged in
     }
+    // endregion
 
+
+
+
+
+    // region =========== GetMapping =================
+    // region 1. "/"
     @GetMapping ("/")
     public String index (Model model) {
         model.addAttribute ("home", true);
         return "user/index";
     }
+    // endregion
 
 
 
+    // region 2. "/packages"
     @GetMapping ("/packages")
     public String packages (Model model, @PageableDefault(size = 6) Pageable pageable) {
-        Page<Tour> page = tourService.findByHiddenFalse(pageable);
-
-        model.addAttribute("tours", page.getContent());
-
-        model.addAttribute("hasPrev", page.hasPrevious());
-        model.addAttribute("hasNext", page.hasNext());
-        model.addAttribute("prev", page.getNumber() - 1);
-        model.addAttribute("next", page.getNumber() + 1);
-        model.addAttribute("currentPage", page.getNumber());
-        model.addAttribute("totalPages", page.getTotalPages());
-        model.addAttribute("size", pageable.getPageSize());
-
-
+        Page<Tour> page = tourService.findByHiddenFalse (pageable);
+        model.addAttribute ("tours", page.getContent());
+        model.addAttribute ("hasPrev", page.hasPrevious());
+        model.addAttribute ("hasNext", page.hasNext());
+        model.addAttribute ("prev", page.getNumber() - 1);
+        model.addAttribute ("next", page.getNumber() + 1);
+        model.addAttribute ("currentPage", page.getNumber());
+        model.addAttribute ("totalPages", page.getTotalPages());
+        model.addAttribute ("size", pageable.getPageSize());
         return "user/packages";
     }
+    // endregion
 
 
+
+    // region 3. "/services"
     @GetMapping ("/services")
     public String services (Model model) {
         model.addAttribute ("services", true);
         return "user/services";
     }
+    // endregion
 
 
 
+    // region 4. "/about"
     @GetMapping ("/about")
     public String about (Model model) {
         model.addAttribute ("about", true);
         return "user/about";
     }
+    // endregion
 
 
 
+    // region 5. "/contact"
     @GetMapping ("/contact")
     public String contact (Model model) {
         model.addAttribute ("contact", true);
         return "user/contact";
     }
+    // endregion
 
+
+
+    // region 6. "/cart/"
+    // region 6.1. "/cart/add/"
     @GetMapping("/cart/add/{id}")
         public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
             if (principal == null) {
@@ -142,7 +175,9 @@ public class WebController {
             }
             return "redirect:/cart";
         }
+        // endregion
 
+    // region 6.2. "/cart/remove/"
     @GetMapping("/cart/remove/{id}")
     public String removeFromCart(@PathVariable Long id, Principal principal) {
         if (principal == null) return "redirect:/login";
@@ -161,7 +196,9 @@ public class WebController {
         // Forzamos una redirección limpia
         return "redirect:/cart?removed=true"; 
     }
+    // endregion
 
+    // region 6.3. "/cart"
     @GetMapping("/cart")
     public String cart(Model model, Principal principal) {
         model.addAttribute("cart", true);
@@ -187,16 +224,362 @@ public class WebController {
         }
         return "user/cart";
     }
+    // endregion
+    // endregion
 
 
 
+    // region 7. "/register"
     @GetMapping ("/register")
     public String register() {
         return "user/register";
     }
+    // endregion
 
 
 
+    // region 8. "/login"
+    @GetMapping ("/login")
+    public String login(@RequestParam(required = false) String inactive,
+                        @RequestParam(required = false) String error,
+                        @RequestParam(required = false) String changed,
+                        Model model) {
+
+        // if ur includes ?inactive, set inactive flag to true
+        if (inactive != null) {
+            model.addAttribute("isInactive", true);
+        }
+
+        // if URL includes ?changed, set flag to display related message
+        if (changed != null) {
+            model.addAttribute("changed", true);
+        }
+
+        return "user/login";
+    }
+    // endregion
+
+
+
+    // region 9. "/profile"
+    @GetMapping ("/profile")
+    public String profile (Model model, Principal principal, HttpServletRequest request) {
+        if (principal != null) {
+            User user = userService.findByEmail (principal.getName());
+            model.addAttribute ("user", user);
+
+            // if user doesnt exist in db, return
+            if (user == null) {
+                return "redirect:/logout";
+            }
+
+            model.addAttribute ("currentUser", user);
+
+            // check if user admin, and set flag accordingly
+            boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
+            model.addAttribute ("isAdmin", isAdmin);
+        }
+        return "user/profile";
+    }
+    // endregion
+
+
+
+    // region 10. "tour-details/"
+    @GetMapping ("/tour-details/{id}")
+    public String showDetails(@PathVariable Long id,
+                              @RequestParam(defaultValue = "0") int page,
+                              Model model) {
+
+        var tour = tourService.findById(id);
+        Page<Review> reviewPage = reviewService.findPagedByTourIdAndHiddenFalse(id, page);
+
+        model.addAttribute("tour", tour);
+        model.addAttribute("reviews", reviewPage.getContent());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("hasNext", reviewPage.hasNext());
+        model.addAttribute("nextPage", page + 1);
+
+        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
+        model.addAttribute("previousPage", page - 1);
+
+        double averageRating = reviewService.getAverageRating(id);
+        int totalReviews = reviewService.getTotalReviews(id);
+
+        long count5 = reviewService.countByRating(id, 5);
+        long count4 = reviewService.countByRating(id, 4);
+        long count3 = reviewService.countByRating(id, 3);
+        long count2 = reviewService.countByRating(id, 2);
+        long count1 = reviewService.countByRating(id, 1);
+
+        model.addAttribute("averageRating", String.format("%.1f", averageRating));
+        model.addAttribute("totalReviews", totalReviews);
+
+        model.addAttribute("count5", count5);
+        model.addAttribute("count4", count4);
+        model.addAttribute("count3", count3);
+        model.addAttribute("count2", count2);
+        model.addAttribute("count1", count1);
+
+        model.addAttribute("percent5", totalReviews == 0 ? 0 : (count5 * 100 / totalReviews));
+        model.addAttribute("percent4", totalReviews == 0 ? 0 : (count4 * 100 / totalReviews));
+        model.addAttribute("percent3", totalReviews == 0 ? 0 : (count3 * 100 / totalReviews));
+        model.addAttribute("percent2", totalReviews == 0 ? 0 : (count2 * 100 / totalReviews));
+        model.addAttribute("percent1", totalReviews == 0 ? 0 : (count1 * 100 / totalReviews));
+
+        model.addAttribute("avgStar1", averageRating >= 1);
+        model.addAttribute("avgStar2", averageRating >= 2);
+        model.addAttribute("avgStar3", averageRating >= 3);
+        model.addAttribute("avgStar4", averageRating >= 4);
+        model.addAttribute("avgStar5", averageRating >= 5);
+
+        return "user/tour-details";
+    }
+    // endregion
+
+
+
+    // region 11. "/checkout"
+    @GetMapping("/checkout")
+    public String checkout(Model model, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
+        User user = userService.findByEmail(principal.getName());
+        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+
+        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
+            Booking booking = bookingOpt.get();
+            model.addAttribute("cartItems", booking.getTours());
+            model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
+            return "user/checkout";
+        }
+
+        return "redirect:/cart"; // Si no hay booking abierta, vuelve al carrito
+    }
+    // endregion
+
+
+    // region 12. "/invoice"
+    @GetMapping("/invoice")
+    public String invoice(Model model, Principal principal) {
+        if (principal == null) return "redirect:/login";
+
+        User user = userService.findByEmail(principal.getName());
+        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+
+        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
+            Booking booking = bookingOpt.get();
+
+            // Pasamos los datos para pintar la factura final
+            model.addAttribute("cartItems", booking.getTours());
+            double total = booking.getTotalPrice();
+            model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
+            model.addAttribute("tax", String.format("%.2f", total * 0.21));
+            model.addAttribute("total", String.format("%.2f", total));
+            model.addAttribute("customerName", user.getName() + " " + user.getLastName());
+
+            // ¡AQUÍ CERRAMOS LA RESERVA! (El carrito se vacía)
+            booking.setCerrada(true);
+            bookingService.save(booking);
+        }
+
+        return "user/invoice";
+    }
+    // endregion
+
+
+
+    // region 13. /"add-review/"
+    @GetMapping("/add-review/{id}")
+    public String showAddReview(@PathVariable Long id, Model model) {
+
+        var tour = tourService.findById(id);
+
+        double averageRating = reviewService.getAverageRating(id);
+        int totalReviews = reviewService.getTotalReviews(id);
+
+        long count5 = reviewService.countByRating(id, 5);
+        long count4 = reviewService.countByRating(id, 4);
+        long count3 = reviewService.countByRating(id, 3);
+        long count2 = reviewService.countByRating(id, 2);
+        long count1 = reviewService.countByRating(id, 1);
+
+        model.addAttribute("tour", tour);
+
+        model.addAttribute("averageRating", String.format("%.1f", averageRating));
+        model.addAttribute("totalReviews", totalReviews);
+
+        model.addAttribute("count5", count5);
+        model.addAttribute("count4", count4);
+        model.addAttribute("count3", count3);
+        model.addAttribute("count2", count2);
+        model.addAttribute("count1", count1);
+
+        model.addAttribute("percent5Width", (totalReviews == 0 ? 0 : (count5 * 100 / totalReviews)) + "%");
+        model.addAttribute("percent4Width", (totalReviews == 0 ? 0 : (count4 * 100 / totalReviews)) + "%");
+        model.addAttribute("percent3Width", (totalReviews == 0 ? 0 : (count3 * 100 / totalReviews)) + "%");
+        model.addAttribute("percent2Width", (totalReviews == 0 ? 0 : (count2 * 100 / totalReviews)) + "%");
+        model.addAttribute("percent1Width", (totalReviews == 0 ? 0 : (count1 * 100 / totalReviews)) + "%");
+
+        model.addAttribute("avgStar1", averageRating >= 1);
+        model.addAttribute("avgStar2", averageRating >= 2);
+        model.addAttribute("avgStar3", averageRating >= 3);
+        model.addAttribute("avgStar4", averageRating >= 4);
+        model.addAttribute("avgStar5", averageRating >= 5);
+
+        return "user/add-review";
+    }
+    // endregion
+
+
+
+    // region 14. "/review-user"
+    @GetMapping("/review-user")
+    public String myReviews(Principal principal,
+                            @RequestParam(defaultValue = "0") int page,
+                            Model model) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.findByEmail(principal.getName());
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        Page<Review> reviewPage = reviewService.findPagedByUserId(user.getId(), page);
+
+        model.addAttribute("reviews", reviewPage.getContent());
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("hasNext", reviewPage.hasNext());
+        model.addAttribute("nextPage", page + 1);
+
+        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
+        model.addAttribute("previousPage", page - 1);
+
+        return "user/review-user";
+    }
+    // endregion
+
+
+
+    // region 15. /"mis-reviews/{id}/edit-review"
+    @GetMapping("/mis-reviews/{id}/edit-review")
+    public String editReview(@PathVariable Long id, Principal principal, Model model) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        Optional<Review> optionalReview = reviewService.findById(id);
+
+        if (optionalReview.isEmpty()) {
+            return "redirect:/review-user";
+        }
+
+        Review review = optionalReview.get();
+
+        model.addAttribute("review", review);
+        model.addAttribute("tour", review.getTour());
+
+        return "user/edit-review";
+    }
+    // endregion
+
+
+    // region 16. "/booking-user"
+    @GetMapping("/booking-user")
+    public String myBookings(Principal principal,
+                             @PageableDefault(size = 10) Pageable pageable,
+                             Model model) {
+
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = userService.findByEmail(principal.getName());
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        Page<Booking> bookingPage = bookingService.findClosedBookingsByUser(user, pageable);
+
+        model.addAttribute("bookings", bookingPage.getContent());
+        model.addAttribute("size", pageable.getPageSize());
+        model.addAttribute("currentPage", pageable.getPageNumber());
+        model.addAttribute("hasNext", bookingPage.hasNext());
+        model.addAttribute("nextPage", pageable.getPageNumber() + 1);
+
+        model.addAttribute("hasPrevious", bookingPage.hasPrevious());
+        model.addAttribute("previousPage", pageable.getPageNumber() - 1);
+
+        return "user/user-bookings";
+    }
+    // endregion
+
+
+
+    // region 17. "/forgot-password"
+    @GetMapping ("/forgot-password")
+    public String forgot_password() {
+        return "/user/forgot-password";
+    }
+    // endregion
+
+
+
+    // region 18. "/admin-login"
+    @GetMapping ("/admin-login")
+    public String adminLogin (@RequestParam(required = false) String error, Model model) {
+        model.addAttribute ("error", error != null);
+        return "user/admin-login";
+    }
+    // endregion
+
+
+    // region 19. "/user/{id}/image"
+    // retrieve an image for a specific user
+    @GetMapping("/user/{id}/image")
+    public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
+        User user = userService.findById(id);
+        if (user != null && user.getProfilePicture() != null) {
+            return ResponseEntity.ok()
+                    .header (HttpHeaders.CONTENT_TYPE, "image/png")
+                    .body (user.getProfilePicture());
+        }
+        return ResponseEntity.notFound().build();
+    }
+    // endregion
+
+
+
+    // region 20. "/guides"
+    @GetMapping("/guides")
+    public String guides(Model model) {
+
+        List<Guide> guides = guideService.findAll();
+
+        if (guides.size() > 6) {
+            guides = guides.subList(0, 6);
+        }
+
+        model.addAttribute("guides", guides);
+
+        return "user/guides";
+    }
+
+    // endregion
+    // endregion
+
+
+
+
+
+    // region =========== PostMapping =================
+    // region 1. "/register"
     @PostMapping ("/register")
     public String registerUser (@RequestParam String name,
                                 @RequestParam String lastName,
@@ -259,287 +642,11 @@ public class WebController {
 
         return "redirect:/login"; // go login
     }
+    // endregion
 
 
 
-    @GetMapping ("/login")
-    public String login(@RequestParam(required = false) String inactive,
-                        @RequestParam(required = false) String error,
-                        @RequestParam(required = false) String changed,
-                        Model model) {
-
-        // if ur includes ?inactive, set inactive flag to true
-        if (inactive != null) {
-            model.addAttribute("isInactive", true);
-        }
-
-        // if URL includes ?changed, set flag to display related message
-        if (changed != null) {
-            model.addAttribute("changed", true);
-        }
-
-        return "user/login";
-    }
-
-
-
-    @GetMapping ("/profile")
-    public String profile (Model model, Principal principal, HttpServletRequest request) {
-        if (principal != null) {
-            User user = userService.findByEmail (principal.getName());
-            model.addAttribute ("user", user);
-
-            // if user doesnt exist in db, return
-            if (user == null) {
-                return "redirect:/logout";
-            }
-
-            model.addAttribute ("currentUser", user);
-
-            // check if user admin, and set flag accordingly
-            boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
-            model.addAttribute ("isAdmin", isAdmin);
-        }
-        return "user/profile";
-    }
-
-
-
-    @GetMapping ("/tour-details/{id}")
-    public String showDetails(@PathVariable Long id,
-                              @RequestParam(defaultValue = "0") int page,
-                              Model model) {
-
-        var tour = tourService.findById(id);
-        Page<Review> reviewPage = reviewService.findPagedByTourIdAndHiddenFalse(id, page);
-
-        model.addAttribute("tour", tour);
-        model.addAttribute("reviews", reviewPage.getContent());
-
-        model.addAttribute("currentPage", page);
-        model.addAttribute("hasNext", reviewPage.hasNext());
-        model.addAttribute("nextPage", page + 1);
-
-        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
-        model.addAttribute("previousPage", page - 1);
-
-        double averageRating = reviewService.getAverageRating(id);
-        int totalReviews = reviewService.getTotalReviews(id);
-
-        long count5 = reviewService.countByRating(id, 5);
-        long count4 = reviewService.countByRating(id, 4);
-        long count3 = reviewService.countByRating(id, 3);
-        long count2 = reviewService.countByRating(id, 2);
-        long count1 = reviewService.countByRating(id, 1);
-
-        model.addAttribute("averageRating", String.format("%.1f", averageRating));
-        model.addAttribute("totalReviews", totalReviews);
-
-        model.addAttribute("count5", count5);
-        model.addAttribute("count4", count4);
-        model.addAttribute("count3", count3);
-        model.addAttribute("count2", count2);
-        model.addAttribute("count1", count1);
-
-        model.addAttribute("percent5", totalReviews == 0 ? 0 : (count5 * 100 / totalReviews));
-        model.addAttribute("percent4", totalReviews == 0 ? 0 : (count4 * 100 / totalReviews));
-        model.addAttribute("percent3", totalReviews == 0 ? 0 : (count3 * 100 / totalReviews));
-        model.addAttribute("percent2", totalReviews == 0 ? 0 : (count2 * 100 / totalReviews));
-        model.addAttribute("percent1", totalReviews == 0 ? 0 : (count1 * 100 / totalReviews));
-
-        model.addAttribute("avgStar1", averageRating >= 1);
-        model.addAttribute("avgStar2", averageRating >= 2);
-        model.addAttribute("avgStar3", averageRating >= 3);
-        model.addAttribute("avgStar4", averageRating >= 4);
-        model.addAttribute("avgStar5", averageRating >= 5);
-
-        return "user/tour-details";
-    }
-
-
-
-    // 4. CHECKOUT
-    @GetMapping("/checkout")
-    public String checkout(Model model, Principal principal) {
-        if (principal == null) return "redirect:/login";
-
-        User user = userService.findByEmail(principal.getName());
-        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
-
-        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
-            Booking booking = bookingOpt.get();
-            model.addAttribute("cartItems", booking.getTours());
-            model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
-            return "user/checkout";
-        }
-        
-        return "redirect:/cart"; // Si no hay booking abierta, vuelve al carrito
-    }
-
-
-    // 5. INVOICE (CERRAR LA RESERVA)
-    @GetMapping("/invoice")
-    public String invoice(Model model, Principal principal) {
-        if (principal == null) return "redirect:/login";
-
-        User user = userService.findByEmail(principal.getName());
-        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
-
-        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
-            Booking booking = bookingOpt.get();
-            
-            // Pasamos los datos para pintar la factura final
-            model.addAttribute("cartItems", booking.getTours());
-            double total = booking.getTotalPrice();
-            model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
-            model.addAttribute("tax", String.format("%.2f", total * 0.21));
-            model.addAttribute("total", String.format("%.2f", total));
-            model.addAttribute("customerName", user.getName() + " " + user.getLastName());
-
-            // ¡AQUÍ CERRAMOS LA RESERVA! (El carrito se vacía)
-            booking.setCerrada(true);
-            bookingService.save(booking);
-        }
-
-        return "user/invoice";
-    }
-
-
-
-    @GetMapping("/add-review/{id}")
-    public String showAddReview(@PathVariable Long id, Model model) {
-
-        var tour = tourService.findById(id);
-
-        double averageRating = reviewService.getAverageRating(id);
-        int totalReviews = reviewService.getTotalReviews(id);
-
-        long count5 = reviewService.countByRating(id, 5);
-        long count4 = reviewService.countByRating(id, 4);
-        long count3 = reviewService.countByRating(id, 3);
-        long count2 = reviewService.countByRating(id, 2);
-        long count1 = reviewService.countByRating(id, 1);
-
-        model.addAttribute("tour", tour);
-
-        model.addAttribute("averageRating", String.format("%.1f", averageRating));
-        model.addAttribute("totalReviews", totalReviews);
-
-        model.addAttribute("count5", count5);
-        model.addAttribute("count4", count4);
-        model.addAttribute("count3", count3);
-        model.addAttribute("count2", count2);
-        model.addAttribute("count1", count1);
-
-        model.addAttribute("percent5Width", (totalReviews == 0 ? 0 : (count5 * 100 / totalReviews)) + "%");
-        model.addAttribute("percent4Width", (totalReviews == 0 ? 0 : (count4 * 100 / totalReviews)) + "%");
-        model.addAttribute("percent3Width", (totalReviews == 0 ? 0 : (count3 * 100 / totalReviews)) + "%");
-        model.addAttribute("percent2Width", (totalReviews == 0 ? 0 : (count2 * 100 / totalReviews)) + "%");
-        model.addAttribute("percent1Width", (totalReviews == 0 ? 0 : (count1 * 100 / totalReviews)) + "%");
-
-        model.addAttribute("avgStar1", averageRating >= 1);
-        model.addAttribute("avgStar2", averageRating >= 2);
-        model.addAttribute("avgStar3", averageRating >= 3);
-        model.addAttribute("avgStar4", averageRating >= 4);
-        model.addAttribute("avgStar5", averageRating >= 5);
-
-        return "user/add-review";
-    }
-
-    @GetMapping("/review-user")
-    public String myReviews(Principal principal,
-                            @RequestParam(defaultValue = "0") int page,
-                            Model model) {
-
-        if (principal == null) {
-            return "redirect:/login";
-        }
-
-        User user = userService.findByEmail(principal.getName());
-        if (user == null) {
-            return "redirect:/";
-        }
-
-        Page<Review> reviewPage = reviewService.findPagedByUserId(user.getId(), page);
-
-        model.addAttribute("reviews", reviewPage.getContent());
-
-        model.addAttribute("currentPage", page);
-        model.addAttribute("hasNext", reviewPage.hasNext());
-        model.addAttribute("nextPage", page + 1);
-
-        model.addAttribute("hasPrevious", reviewPage.hasPrevious());
-        model.addAttribute("previousPage", page - 1);
-
-        return "user/review-user";
-    }
-
-    @GetMapping("/mis-reviews/{id}/edit-review")
-    public String editReview(@PathVariable Long id, Principal principal, Model model) {
-
-        if (principal == null) {
-            return "redirect:/login";
-        }
-
-        Optional<Review> optionalReview = reviewService.findById(id);
-
-        if (optionalReview.isEmpty()) {
-            return "redirect:/review-user";
-        }
-
-        Review review = optionalReview.get();
-
-        model.addAttribute("review", review);
-        model.addAttribute("tour", review.getTour());
-
-        return "user/edit-review";
-    }
-
-
-   @GetMapping("/booking-user")
-public String myBookings(Principal principal,
-                        @PageableDefault(size = 10) Pageable pageable,
-                        Model model) {
-
-    if (principal == null) {
-        return "redirect:/login";
-    }
-
-    User user = userService.findByEmail(principal.getName());
-    if (user == null) {
-        return "redirect:/";
-    }
-
-    Page<Booking> bookingPage = bookingService.findClosedBookingsByUser(user, pageable);
-
-    model.addAttribute("bookings", bookingPage.getContent());
-    model.addAttribute("size", pageable.getPageSize());
-    model.addAttribute("currentPage", pageable.getPageNumber());
-    model.addAttribute("hasNext", bookingPage.hasNext());
-    model.addAttribute("nextPage", pageable.getPageNumber() + 1);
-
-    model.addAttribute("hasPrevious", bookingPage.hasPrevious());
-    model.addAttribute("previousPage", pageable.getPageNumber() - 1);
-
-    return "user/user-bookings";
-}
-
-
-    @GetMapping ("/forgot-password")
-    public String forgot_password() {
-        return "/user/forgot-password";
-    }
-
-
-
-    @GetMapping ("/admin-login")
-    public String adminLogin (@RequestParam(required = false) String error, Model model) {
-        model.addAttribute ("error", error != null);
-        return "user/admin-login";
-    }
-
-
-
+    // region 2. "/profile/update"
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
                                  HttpServletRequest request,
@@ -639,35 +746,11 @@ public String myBookings(Principal principal,
         // return to profile page
         return "redirect:/profile";
     }
+    // endregion
 
 
-    // retrieve an image for a specific user
-    @GetMapping("/user/{id}/image")
-    public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
-        User user = userService.findById(id);
-        if (user != null && user.getProfilePicture() != null) {
-            return ResponseEntity.ok()
-                    .header (HttpHeaders.CONTENT_TYPE, "image/png")
-                    .body (user.getProfilePicture());
-        }
-        return ResponseEntity.notFound().build();
-    }
 
-    @GetMapping("/guides")
-    public String guides(Model model) {
-
-        List<Guide> guides = guideService.findAll();
-
-        if (guides.size() > 6) {
-            guides = guides.subList(0, 6);
-        }
-
-        model.addAttribute("guides", guides);
-
-        return "user/guides";
-    }
-
-
+    // region 3. "/notifications/read/{id}"
     // marks single notification as read
     @PostMapping ("/notifications/read/{id}")
     public String markAsRead (@PathVariable Long id, HttpServletRequest request) {
@@ -676,6 +759,6 @@ public String myBookings(Principal principal,
         String referer = request.getHeader ("Referer");
         return "redirect:" + (referer != null ? referer : "/admin/index");
     }
-
-
+    // endregion
+    // endregion
 }
