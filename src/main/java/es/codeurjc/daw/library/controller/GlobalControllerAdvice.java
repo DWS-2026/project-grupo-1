@@ -3,6 +3,9 @@ package es.codeurjc.daw.library.controller;
 
 
 
+
+
+// region =========== imports =================
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
 import es.codeurjc.daw.library.service.NotificationService;
@@ -13,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import java.security.Principal;
+// endregion
 
 
 
@@ -23,13 +27,20 @@ import java.security.Principal;
  */
 @ControllerAdvice
 public class GlobalControllerAdvice { // controller to manage csrf + session
-
+    // region =========== Autowired =================
     @Autowired
     private UserRepository userRepository;
 
     @Autowired // to manage notifications
     private NotificationService notificationService;
+    // endregion
 
+
+
+
+
+    // region =========== ModelAttribute =================
+    // region 1. "addCommonAttributes"
     /**
      * adds common attributes to model before any controller method is executed
      * runs for every request handled by a controller
@@ -68,7 +79,11 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
             model.addAttribute ("logged", false);
         }
     }
+    // endregion
 
+
+
+    // region 2. "addNotifications"
     @ModelAttribute
     public void addNotifications (Model model) {
         // retrieve latest 10 notifications
@@ -81,4 +96,6 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
         // flag
         model.addAttribute ("hasNotifications", unreadCount > 0);
     }
+    // endregion
+    // endregion
 }

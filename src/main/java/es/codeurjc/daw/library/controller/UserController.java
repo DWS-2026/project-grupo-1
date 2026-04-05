@@ -2,6 +2,10 @@ package es.codeurjc.daw.library.controller;
 
 
 
+
+
+
+// region =========== imports =================
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
 import org.springframework.stereotype.Controller; // to define class as controller
 import org.springframework.ui.Model; // to pass data from controller to mustache view template
@@ -16,6 +20,7 @@ import es.codeurjc.daw.library.service.NotificationService;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+// endregion
 
 
 
@@ -29,15 +34,21 @@ import java.util.List;
 @Controller
 @RequestMapping ("/admin/users") // group user management routes
 public class UserController {
+    // region =========== Autowired =================
     @Autowired // to be able to use user service methods
     private UserService userService;
     @Autowired // for password protection before db storage
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
     @Autowired // to generate notifications
     private NotificationService notificationService;
+    // endregion
 
 
 
+
+
+    // region =========== GetMapping =================
+    // region 1. listUsers
     /**
      * displays list of users
      * fetches all users filtering out those with ADMIN role
@@ -55,9 +66,11 @@ public class UserController {
         model.addAttribute ("users", customersOnly);
         return "admin/users";
     }
+    // endregion
 
 
 
+    // region 2. editUser
     /**
      * prepares editing form for specific user
      * @param id db id of user to edit
@@ -75,9 +88,25 @@ public class UserController {
         model.addAttribute ("user", user);
         return "admin/user-edit";
     }
+    // endregion
 
 
 
+    // region 3. showAddUserForm
+    // display user creation form
+    @GetMapping ("/add")
+    public String showAddUserForm() {
+        return "admin/user-add";
+    }
+    // endregion
+    // endregion
+
+
+
+
+
+    // region =========== PostMapping =================
+    // region 1. updateUser
     /**
      * processes update request from edit form
      * imageFile is optional. If provided, converted to base64 to be stored as string in db
@@ -152,9 +181,11 @@ public class UserController {
 
         return "redirect:/admin/users";
     }
+    // endregion
 
 
 
+    // region 2. deleteUser
     // deletes user
     @PostMapping ("/delete/{id}")
     public String deleteUser (@PathVariable Long id) {
@@ -173,17 +204,11 @@ public class UserController {
         // redirect to users
         return "redirect:/admin/users";
     }
-
-
-    
-    // display user creation form
-    @GetMapping ("/add")
-    public String showAddUserForm() {
-        return "admin/user-add";
-    }
+    // endregion
 
 
 
+    // region 3. saveUser
     /**
      * processes creation of new user
      * ensures password is encrypted and handles default avatar generation if no image is uploaded
@@ -258,4 +283,6 @@ public class UserController {
 
         return "redirect:/admin/users";
     }
+    // endregion
+    // endregion
 }
