@@ -1,5 +1,11 @@
 package es.codeurjc.daw.library.controller;
 
+
+
+
+
+
+// region =========== imports =================
 import java.util.List;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,55 +30,107 @@ import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.ReviewService;
+// endregion
+
+
+
+
+
 
 @Controller
 @RequestMapping("/admin")
 public class AdminWebController {
-
+    // region =========== attributes =================
     private final ReviewService reviewService;
+    // endregion
 
+
+
+
+
+    // region =========== autowired =================
     @Autowired
     private TourService tourService;
+    // endregion
 
+
+
+
+
+    // region =========== constructor =================
     AdminWebController(ReviewService reviewService) {
         this.reviewService = reviewService;
     }
+    // endregion
 
+
+
+
+
+    // region =========== GetMapping =================
+    // region 1. "/index"
     @GetMapping({ "", "/index" })
     public String adminHome() {
         return "admin/admin-index";
     }
+    // endregion
 
+
+
+    // region 2. "/buttons"
     @GetMapping("/buttons")
     public String buttons() {
         return "admin/buttons";
     }
+    // endregion
 
+
+
+    // region 3. "/cards"
     @GetMapping("/cards")
     public String cards() {
         return "admin/cards";
     }
+    // endregion
 
+
+
+    // region 4. "/charts"
     @GetMapping("/charts")
     public String charts() {
         return "admin/charts";
     }
+    // endregion
 
+
+
+    // region 5. "/blank"
     @GetMapping("/blank")
     public String blank() {
         return "admin/blank";
     }
+    // endregion
 
+
+
+    // region 6. "/404"
     @GetMapping("/404")
     public String pagina404() {
         return "admin/404";
     }
+    // endregion
 
+
+
+    // region 7. "/profile"
     @GetMapping("/profile")
     public String profile() {
         return "admin/profile";
     }
+    // endregion
 
+
+    // region 8. "/tours"
     @GetMapping("/tours")
     public String getTours(Model model, @PageableDefault(size = 5) Pageable pageable) {
 
@@ -90,7 +148,115 @@ public class AdminWebController {
 
         return "admin/tours";
     }
+    // endregion
 
+
+
+    // region 9. "/tour-add"
+    @GetMapping("/tour-add")
+    public String addTour() {
+        return "admin/tour-add";
+    }
+    // endregion
+
+
+
+    // region 10. "/tour-edit/{id}"
+    @GetMapping("/tour-edit/{id}")
+    public String tourEdit(@PathVariable Long id, Model model,
+                           HttpServletRequest request) {
+
+        Tour tour = tourService.findById(id);
+
+        CsrfToken csrf = (CsrfToken) request.getAttribute("_csrf");
+
+        model.addAttribute("tour", tour);
+        model.addAttribute("_csrf", csrf);
+
+        return "admin/tour-edit";
+    }
+    // endregion
+
+
+
+    // region 11. "/reviews"
+    @GetMapping("/reviews")
+    public String allReviews(@RequestParam(required = false) Long tourId, Model model) {
+
+        List<Review> reviews;
+
+        if (tourId != null) {
+            reviews = reviewService.findByTourId(tourId);
+        } else {
+            reviews = reviewService.findAll();
+        }
+
+        model.addAttribute("reviews", reviews);
+
+        return "admin/reviews";
+    }
+    // endregion
+
+
+
+    // region 12. /"utilities-animation"
+    @GetMapping("/utilities-animation")
+    public String utilities_animation() {
+        return "admin/utilities-animation";
+    }
+    // endregion
+
+
+
+    // region 13. /"utilities-border"
+    @GetMapping("/utilities-border")
+    public String utilities_border() {
+        return "admin/utilities-border";
+    }
+    //endregion
+
+
+
+    // region 14. /"utilities-color"
+    @GetMapping("/utilities-color")
+    public String utilities_color() {
+        return "admin/utilities-color";
+    }
+    // endregion
+
+
+
+    // region 15. /"utilities-other"
+    @GetMapping("/utilities-other")
+    public String utilities_other() {
+        return "admin/utilities-other";
+    }
+    // endregion
+
+
+    // region 16. /"/reviews/tour/{tourId}"
+    @GetMapping("/reviews/tour/{tourId}")
+    public String showReviews(@PathVariable Long tourId, Model model) {
+
+        Tour tour = tourService.findById(tourId);
+
+        if (tour == null) {
+            return "redirect:/admin/tours";
+        }
+
+        model.addAttribute("tour", tour);
+        model.addAttribute("reviews", tour.getReviews());
+
+        return "admin/tour-review";
+    }
+    // endregion
+    // endregion
+
+
+
+
+    // region =========== PostMapping =================
+    // region 1. "tour-hide/{id}"
     @PostMapping("tour-hide/{id}")
     public String changeTourVisibility(@PathVariable Long id) {
 
@@ -103,12 +269,11 @@ public class AdminWebController {
 
         return "redirect:/admin/tours";
     }
+    // endregion
 
-    @GetMapping("/tour-add")
-    public String addTour() {
-        return "admin/tour-add";
-    }
 
+
+    // region 2. "tour-delete/{id}"
     @PostMapping("/tour-delete/{id}")
     public String deleteTour(@PathVariable Long id, RedirectAttributes redirectAttributes) {
 
@@ -121,7 +286,11 @@ public class AdminWebController {
 
         return "redirect:/admin/tours";
     }
+    // endregion
 
+
+
+    // region 3. "/tour-add"
     @PostMapping("/tour-add")
     public String addTour(@ModelAttribute Tour tour,
             @RequestParam(required = false) MultipartFile imageFile) {
@@ -134,21 +303,11 @@ public class AdminWebController {
 
         return "redirect:/admin/tours";
     }
+    // endregion
 
-    @GetMapping("/tour-edit/{id}")
-    public String tourEdit(@PathVariable Long id, Model model,
-            HttpServletRequest request) {
 
-        Tour tour = tourService.findById(id);
 
-        CsrfToken csrf = (CsrfToken) request.getAttribute("_csrf");
-
-        model.addAttribute("tour", tour);
-        model.addAttribute("_csrf", csrf);
-
-        return "admin/tour-edit";
-    }
-
+    // region 4. "/tour-edit/{id}"
     @PostMapping("/tour-edit/{id}")
     public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData,
             @RequestParam(required = false) MultipartFile imageFile) {
@@ -174,23 +333,11 @@ public class AdminWebController {
 
         return "redirect:/admin/tours";
     }
+    // endregion
 
-    @GetMapping("/reviews")
-    public String allReviews(@RequestParam(required = false) Long tourId, Model model) {
 
-        List<Review> reviews;
 
-        if (tourId != null) {
-            reviews = reviewService.findByTourId(tourId);
-        } else {
-            reviews = reviewService.findAll();
-        }
-
-        model.addAttribute("reviews", reviews);
-
-        return "admin/reviews";
-    }
-
+    // region 5. "/review-hide/{id}"
     @PostMapping("/review-hide/{id}")
     public String occultReview(@PathVariable Long id, @RequestParam boolean hide) {
 
@@ -201,7 +348,11 @@ public class AdminWebController {
 
         return "redirect:/admin/reviews";
     }
+    // endregion
 
+
+
+    // region 6. "/review-delete/{id}"
     @PostMapping("/review-delete/{id}")
     public String deleteReview(@PathVariable Long id) {
 
@@ -211,40 +362,6 @@ public class AdminWebController {
 
         return "redirect:/admin/reviews";
     }
-
-    @GetMapping("/utilities-animation")
-    public String utilities_animation() {
-        return "admin/utilities-animation";
-    }
-
-    @GetMapping("/utilities-border")
-    public String utilities_border() {
-        return "admin/utilities-border";
-    }
-
-    @GetMapping("/utilities-color")
-    public String utilities_color() {
-        return "admin/utilities-color";
-    }
-
-    @GetMapping("/utilities-other")
-    public String utilities_other() {
-        return "admin/utilities-other";
-    }
-
-    @GetMapping("/reviews/tour/{tourId}")
-    public String showReviews(@PathVariable Long tourId, Model model) {
-
-        Tour tour = tourService.findById(tourId);
-
-        if (tour == null) {
-            return "redirect:/admin/tours";
-        }
-
-        model.addAttribute("tour", tour);
-        model.addAttribute("reviews", tour.getReviews());
-
-        return "admin/tour-review";
-    }
-
+    // endregion
+    // endregion
 }
