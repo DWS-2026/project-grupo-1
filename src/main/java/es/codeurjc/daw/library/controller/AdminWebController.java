@@ -133,11 +133,8 @@ public class AdminWebController {
     // region 8. "/tours"
     @GetMapping("/tours")
     public String getTours(Model model, @PageableDefault(size = 5) Pageable pageable) {
-
         Page<Tour> page = tourService.findAll(pageable);
-
         model.addAttribute("tours", page.getContent());
-
         model.addAttribute("hasPrev", page.hasPrevious());
         model.addAttribute("hasNext", page.hasNext());
         model.addAttribute("prev", page.getNumber() - 1);
@@ -145,7 +142,6 @@ public class AdminWebController {
         model.addAttribute("currentPage", page.getNumber() + 1);
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("size", pageable.getPageSize());
-
         return "admin/tours";
     }
     // endregion

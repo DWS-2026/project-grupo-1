@@ -158,21 +158,21 @@ public class WebController {
     @GetMapping("/cart/add/{id}")
         public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
             if (principal == null) {
-                return "redirect:/login"; // Obligamos a iniciar sesión para bookingr
+                return "redirect:/login"; // forces login if to do booking
             }
 
             User user = userService.findByEmail(principal.getName());
             Tour tour = tourService.findById(id);
 
             if (tour != null) {
-                // Buscamos si el usuario ya tiene una booking abierta. Si no, la creamos.
+                // if user has no booking existing, create it
                 Booking booking = bookingService.findOpenBookingByUser(user)
                         .orElseGet(() -> new Booking(user));
 
-                // Evitamos que meta el mismo tour dos veces en la misma booking
+                // avoid having 2 instances of same tour in 1 booking
                 if (!booking.getTours().contains(tour)) {
                     booking.getTours().add(tour);
-                    bookingService.save(booking); // GUARDAMOS EN BASE DE DATOS
+                    bookingService.save(booking); // save to db
                     data.addFlashAttribute("showSuccess", true);
                 } else {
                     data.addFlashAttribute("showError", true);
@@ -195,11 +195,11 @@ public class WebController {
             Booking booking = bookingOpt.get();
             booking.getTours().removeIf(t -> t.getId().equals(id));
             
-            // Sincronización total con MySQL
+            // store to db
             bookingService.save(booking); 
         }
         
-        // Forzamos una redirección limpia
+        // redirect
         return "redirect:/cart?removed=true"; 
     }
     // endregion
@@ -208,7 +208,7 @@ public class WebController {
     @GetMapping("/cart")
     public String cart(Model model, Principal principal) {
         model.addAttribute("cart", true);
-        // Inicializamos estas variables por defecto para evitar errores en la vista
+        // initialize default vars
         model.addAttribute("cartItems", new ArrayList<Tour>());
         model.addAttribute("total", "0.00");
         model.addAttribute("isEmpty", true); 
@@ -251,12 +251,12 @@ public class WebController {
                         @RequestParam(required = false) String changed,
                         Model model) {
 
-        // if ur includes ?inactive, set inactive flag to true
+        // if url includes "?inactive", set inactive flag to true
         if (inactive != null) {
             model.addAttribute("isInactive", true);
         }
 
-        // if URL includes ?changed, set flag to display related message
+        // if URL includes "?changed", set flag to display related message
         if (changed != null) {
             model.addAttribute("changed", true);
         }
@@ -361,7 +361,7 @@ public class WebController {
             return "user/checkout";
         }
 
-        return "redirect:/cart"; // Si no hay booking abierta, vuelve al carrito
+        return "redirect:/cart"; // if no booking open, return to cart
     }
     // endregion
 
@@ -377,7 +377,7 @@ public class WebController {
         if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
             Booking booking = bookingOpt.get();
 
-            // Pasamos los datos para pintar la factura final
+            // pass data to build final invoice
             model.addAttribute("cartItems", booking.getTours());
             double total = booking.getTotalPrice();
             model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
@@ -385,7 +385,7 @@ public class WebController {
             model.addAttribute("total", String.format("%.2f", total));
             model.addAttribute("customerName", user.getName() + " " + user.getLastName());
 
-            // ¡AQUÍ CERRAMOS LA RESERVA! (El carrito se vacía)
+            // close reserve (empty cart)
             booking.setCerrada(true);
             bookingService.save(booking);
         }
@@ -635,15 +635,15 @@ public class WebController {
         // pfp logic
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
-                // 1. Si el usuario ha adjuntado una imagen, guardamos sus bytes
+                // if image was attached, store it2
                 newUser.setProfilePicture(imageFile.getBytes());
             } else {
-                // 2. Si no adjunta imagen, generamos la predeterminada automáticamente
+                // if no image attached, generate default
                 byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
                 newUser.setProfilePicture(avatar);
             }
         } catch (IOException e) {
-            // En caso de error leyendo el archivo, asignamos el avatar por defecto como salvavidas
+            // if error reading file, set default
             e.printStackTrace();
             byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
             newUser.setProfilePicture(avatar);
@@ -664,9 +664,9 @@ public class WebController {
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
                                  HttpServletRequest request,
-                                 @Valid @ModelAttribute User formUser, // Recoge name, lastName, mainPhone, secondaryPhone
+                                 @Valid @ModelAttribute User formUser, // stores:  name, lastName, mainPhone, secondaryPhone
                                  BindingResult result,
-                                 @RequestParam (required = false) String oldPassword, // No están en User, se piden aparte
+                                 @RequestParam (required = false) String oldPassword, // not in user, so requested separately
                                  @RequestParam (required = false) String newPassword,
                                  @RequestParam (required = false) String confirmPassword,
                                  @RequestParam MultipartFile imageFile,
@@ -755,7 +755,7 @@ public class WebController {
         // save changes
         userService.save (user);
 
-        // password was changed, logout and go to login p
+        // password was changed, logout and go to login page
         if (passwordChanged) {
             request.logout();
             return "redirect:/login?changed=true";
