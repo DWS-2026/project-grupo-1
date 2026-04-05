@@ -787,5 +787,17 @@ public class WebController {
         return "redirect:/contact?wip=true";
     }
     // endregion
+
+
+
+    // region 5. "/notifications/delete/{id}"
+    @PostMapping("/notifications/delete/{id}")
+    public String deleteNotification(@PathVariable Long id, HttpServletRequest request) {
+        notificationService.delete(id);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + (referer != null ? referer : "/admin/index");
+    }
+    // endregion
     // endregion
 }

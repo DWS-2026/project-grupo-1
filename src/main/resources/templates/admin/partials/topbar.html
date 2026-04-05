@@ -4,7 +4,7 @@
                     <!-- small screen toggle -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
-                    </button>
+                     </button>
 
                     <!-- navbar start -->
                     <ul class="navbar-nav ml-auto">
@@ -53,7 +53,7 @@
                                 </h6>
 
                                 {{#notifications}}
-                                <div class="dropdown-item d-flex align-items-center {{^readStatus}}bg-light{{/readStatus}}">
+                                <div class="dropdown-item d-flex align-items-center {{^readStatus}}bg-light{{/readStatus}}" style="cursor: default !important;">
                                     <div class="mr-3">
                                         <div class="icon-circle {{color}}">
                                             <i class="{{icon}} text-white"></i>
@@ -64,22 +64,30 @@
                                         <span class="{{^readStatus}}font-weight-bold{{/readStatus}} text-dark">{{message}}</span>
                                     </div>
 
-                                    {{^readStatus}}
-                                    <form action="/notifications/read/{{id}}" method="post" class="ml-2">
-                                        <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
-                                        <button type="submit" class="btn btn-sm btn-circle btn-outline-success border-0" title="Marcar como leído">
-                                            <i class="fas fa-check fa-xs"></i>
-                                        </button>
-                                    </form>
-                                    {{/readStatus}}
+                                    <div class="d-flex">
+                                        {{^readStatus}}
+                                        <form action="/notifications/read/{{id}}" method="post" class="ml-1">
+                                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                            <button type="submit" class="btn btn-sm btn-circle btn-outline-success border-0" title="Marcar como leído">
+                                                <i class="fas fa-check fa-xs"></i>
+                                            </button>
+                                        </form>
+                                        {{/readStatus}}
+
+                                        <form action="/notifications/delete/{{id}}" method="post" class="ml-1">
+                                            <input type="hidden" name="_csrf" value="{{_csrf.token}}"/>
+                                            <button type="submit" class="btn btn-sm btn-circle btn-outline-danger border-0" title="Eliminar notificación">
+                                                <i class="fas fa-trash fa-xs"></i>
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                                 {{/notifications}}
 
                                 {{^notifications}}
-                                <a class="dropdown-item text-center small text-gray-500" href="#">No hay notificaciones</a>
+                                <a class="dropdown-item text-center small text-gray-500" style="cursor: default; pointer-events: none;">No hay notificaciones</a>
                                 {{/notifications}}
 
-                                <a class="dropdown-item text-center small text-gray-500" href="#">Ver todas las alertas</a>
                             </div>
                         </li>
                         <!-- notifications end -->

@@ -60,5 +60,12 @@ public class NotificationService {
             repository.save (n);
         });
     }
+
+
+
+    // delete notification
+    public void delete (Long id) {
+        repository.deleteById(id);
+    }
     // endregion
 }
