@@ -3,6 +3,9 @@ package es.codeurjc.daw.library.security;
 
 
 
+
+
+// region =========== imports =================
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +21,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices;
+// endregion
 
 
 
@@ -31,17 +35,27 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    // region =========== autowired =================
     @Autowired
     private UserDetailsService userDetailsService;
+    // endregion
 
 
 
+
+
+    // region =========== value =================
     // key value taken from properties
     @Value("${security.rememberme.key}")
     private String rememberMeKey;
+    // endregion
 
 
 
+
+
+    // region =========== bean =================
+    // region 1. passwordEncoder
     /**
      * define password encoder bean
      * bcrypt used to securely hash passwords before storing them in db
@@ -51,9 +65,11 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(); // Algoritmo de encriptación seguro [cite: 17]
     }
+    // endregion
 
 
 
+    // region 2. rememberMeServices
     @Bean
     public RememberMeServices rememberMeServices() {
         TokenBasedRememberMeServices services = new TokenBasedRememberMeServices (rememberMeKey, userDetailsService) {
@@ -75,9 +91,11 @@ public class SecurityConfiguration {
         services.setParameter ("remember-me"); // html input name
         return services;
     }
+    // endregion
 
 
 
+    // region 3. filterChain
     /**
      * configures security filter chain
      * defines which URLs are public, require authentication and how login/logout processes work
@@ -191,4 +209,6 @@ public class SecurityConfiguration {
 
         return http.build();
     }
+    // endregion
+    // endregion
 }

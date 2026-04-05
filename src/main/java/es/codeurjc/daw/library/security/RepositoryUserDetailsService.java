@@ -2,8 +2,13 @@ package es.codeurjc.daw.library.security;
 
 
 
+
+
+
+// region =========== imports =================
 import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,8 +16,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import java.util.ArrayList;
 import java.util.List;
+// endregion
 
 
 
@@ -22,9 +29,16 @@ import java.util.List;
 @Service // service to bridge db with spring security
 // implementation to define how users are loaded during auth
 public class RepositoryUserDetailsService implements UserDetailsService {
+    // region =========== autowired =================
     @Autowired
     private UserRepository userRepository;
+    // endregion
 
+
+
+
+
+    // region =========== implementation =================
     /**
      * loads user based on email address.
      * method automatically called by spring security during login process.
@@ -58,4 +72,5 @@ public class RepositoryUserDetailsService implements UserDetailsService {
                 true, true, true,
                 roles);
     }
+    // endregion
 }
