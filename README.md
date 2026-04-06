@@ -292,7 +292,90 @@ Por último, redacté gran parte del README, añadiendo imágenes y descripcione
 
 #### **Diagrama de Navegación**
 
-Solo si ha cambiado.
+```mermaid
+flowchart LR
+ subgraph Public["Zona publica"]
+        NAV["Navbar"]
+        I["index.html"]
+        P["packages.html"]
+        G["guides.html"]
+        SV["services.html"]
+        AB["about.html"]
+        CT["contact.html"]
+        CART["carrito.html"]
+  end
+ subgraph ToursPublic["Tours publico"]
+        TD["tour-details.html"]
+        AR["add-review.html"]
+  end
+ subgraph Purchase["Checkout y factura"]
+        CO["checkout.html"]
+        INV["invoice.html"]
+  end
+ subgraph AuthClient["Auth cliente"]
+        L["login.html"]
+        R["register.html"]
+        FP["forgot-password.html"]
+        PRC["profile.html (cliente)"]
+        NOTIF["Notificaciones (NUEVO)"]
+  end
+ subgraph Admin["Panel admin"]
+        AL["admin-login.html"]
+        AD["index.html (admin dashboard)"]
+        APRO["admin-profile.html"]
+        U["users.html"]
+        UP["profile.html (perfil usuario admin)"]
+        UE["user-edit.html"]
+        T["tours.html"]
+        TE["tour-edit.html"]
+        TA["add-tour.html"]
+        RV["reviews.html"]
+        RVE["review-edit.html"]
+        AG["Gestion Guías (NUEVO)"]
+        ABO["Gestion Reservas (NUEVO)"]
+  end
+
+    NAV <--> I & G & SV & AB & CT & P & CART
+    P <-- Leer mas --> TD
+    TD -- Anadir opinion --> AR
+    AR -- Enviar opinion --> TD
+    TD -- Anadir al carrito --> CART
+    CART -- Ver detalle --> TD
+    CART -- Seguir explorando --> P
+    CART -- Pago --> CO
+    CO -- Pagar ahora --> INV
+    NAV -- Entrar --> L
+    NAV -- Registrarse --> R
+    L -- Olvide contrasena --> FP
+    L -- Ir a registro --> R
+    L -- Login OK --> PRC
+    L -- Acceso admin --> AL
+    AL -- Login OK --> AD
+    
+    AD --- U & T & RV & APRO
+    
+    %% Conexiones de las nuevas funcionalidades de la Entrega 2
+    AD --- AG & ABO
+    PRC --- NOTIF
+    
+    U -- Ver perfil --> UP
+    U -- Editar --> UE
+    UE -- Cancelar o volver --> U
+    T -- Ver detalle tour --> TD
+    T -- Editar tour --> TE
+    TE -- Cancelar o volver --> T
+    T -- Anadir tour --> TA
+    TA -- Cancelar o volver --> T
+    RV -- Editar review --> RVE
+    RVE -- Volver --> RV
+    RV -- Ver detalle tour --> TD
+    I -. URL no encontrada .-> E404["404.html"]
+
+    %% Estilos para destacar lo nuevo de la Entrega 2 en azul claro
+    style AG fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
+    style ABO fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
+    style NOTIF fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
+   ```
 
 #### **Capturas de Pantalla Actualizadas**
 
