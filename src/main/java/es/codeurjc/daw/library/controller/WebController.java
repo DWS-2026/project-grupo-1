@@ -353,6 +353,8 @@ public class WebController {
             // close reserve (empty cart)
             openBooking.setCerrada(true);
             bookingService.save(openBooking);
+            user.addMoneySpent(openBooking.getTotalPrice());
+            userService.save(user);
         }
 
         Optional<Booking> lastClosedOpt = bookingService.findLastClosedBookingByUser(user);
