@@ -58,7 +58,7 @@ public class ReviewService {
 
     public Page<Review> findPagedByTourIdAndHiddenFalse(Long tourId, int page) {
         // Uses a fixed page size for visible reviews in the tour detail view.
-        return reviewRepository.findByTourIdAndHiddenFalse(tourId, PageRequest.of(page, 3));
+        return reviewRepository.findByTourIdAndHiddenFalseOrderByCreationDateDesc(tourId, PageRequest.of(page, 3));
     }
 
     public double getAverageRating(Long tourId) {
@@ -109,6 +109,6 @@ public class ReviewService {
 
     public Page<Review> findPagedByUserId(Long userId, int page) {
         // Uses a larger page size for the user's personal review list.
-        return reviewRepository.findByUserId(userId, PageRequest.of(page, 5));
+        return reviewRepository.findByUserIdOrderByCreationDateDesc(userId, PageRequest.of(page, 5));
     }
 }

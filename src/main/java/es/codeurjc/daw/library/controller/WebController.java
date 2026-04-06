@@ -489,6 +489,11 @@ public class WebController {
             return "redirect:/login";
         }
 
+        User user = userService.findByEmail(principal.getName());
+        if (user == null) {
+            return "redirect:/";
+        }
+
         Optional<Review> optionalReview = reviewService.findById(id);
 
         if (optionalReview.isEmpty()) {
@@ -496,6 +501,9 @@ public class WebController {
         }
 
         Review review = optionalReview.get();
+        if (!review.getUser().getId().equals(user.getId())) {
+            return "redirect:/review-user";
+        }
 
         model.addAttribute("review", review);
         model.addAttribute("tour", review.getTour());

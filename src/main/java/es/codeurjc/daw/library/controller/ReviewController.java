@@ -92,19 +92,33 @@ public class ReviewController {
     @PostMapping("/reviews/{id}/edit")
     public String editReview(@PathVariable Long id,
                              @RequestParam int rating,
-                             @RequestParam String description) {
+                             @RequestParam String description,
+                             Principal principal) {
 
-        Optional<Review> optionalReview = reviewRepository.findById(id);
-        if (optionalReview.isEmpty()) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+
+        User user = userRepository.findByEmail(principal.getName());
+        if (user == null) {
             return "redirect:/";
         }
 
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isEmpty()) {
+            return "redirect:/review-user";
+        }
+
         Review review = optionalReview.get();
+        if (!review.getUser().getId().equals(user.getId())) {
+            return "redirect:/review-user";
+        }
+
         review.setRating(rating);
         review.setDescription(description);
 
         reviewRepository.save(review);
 
-        return "redirect:/tour-details/" + review.getTour().getId();
+        return "redirect:/review-user";
     }
 }

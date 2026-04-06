@@ -20,11 +20,11 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByHiddenFalse();
 
     // Paged version used when visible tour reviews need pagination.
-    Page<Review> findByTourIdAndHiddenFalse(Long tourId, Pageable pageable);
+    Page<Review> findByTourIdAndHiddenFalseOrderByCreationDateDesc(Long tourId, Pageable pageable);
 
     // Returns all reviews written by a specific user.
     List<Review> findByUserId(Long userId);
 
     // Paged version of the user review query.
-    Page<Review> findByUserId(Long userId, Pageable pageable);
+    Page<Review> findByUserIdOrderByCreationDateDesc(Long userId, Pageable pageable);
 }
