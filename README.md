@@ -465,67 +465,81 @@ Diagrama de clases de la aplicación con diferenciación por colores o secciones
 ```mermaid
 graph TD
     %% Capa de Presentación
-    subgraph Vistas [🖥️ Capa de Presentacion - Mustache]
+    subgraph Vistas [Templates]
         direction LR
-        V_User(Templates Usuario)
+        V_Public(Templates Públicos)
+        V_User(Templates Usuario Privado)
         V_Admin(Templates Administrador)
     end
 
     %% Capa de Control
-    subgraph Controladores [🕹️ Capa de Control - WebControllers]
-        C_Main[MainController]
-        C_Tour[TourController]
+    subgraph Controladores [Controllers]
+        C_Web[WebController]
+        C_Admin[AdminWebController]
         C_User[UserController]
-        C_Admin[AdminController]
-        C_Cart[CartController]
+        C_Guide[GuideController]
+        C_GuidePub[GuidePublicController]
         C_Review[ReviewController]
-        C_Email[EmailController]
+        C_Error[CustomErrorController]
     end
 
     %% Capa de Servicio
-    subgraph Servicios [⚙️ Capa de Negocio - Services]
+    subgraph Servicios [Services]
+        S_Booking[BookingService]
+        S_Guide[GuideService]
+        S_Notification[NotificationService]
+        S_Review[ReviewService]
         S_Tour[TourService]
         S_User[UserService]
-        S_Cart[CartService]
-        S_Review[ReviewService]
-        S_Email[EmailService]
     end
 
     %% Capa de Datos
-    subgraph Datos [💾 Capa de Datos - JPA y MySQL]
+    subgraph Datos [Repositories y Models]
         direction RL
         Repositorios[Repositories]
-        Entidades[Entities]
+        Modelos[Models]
     end
 
-    %% Relaciones
-    C_Main -.-> V_User
-    C_Tour -.-> V_User
+    %% Relaciones Controladores -> Vistas (Mustache)
+    C_Web -.-> V_Public
+    C_GuidePub -.-> V_Public
     C_User -.-> V_User
-    C_Cart -.-> V_User
+    C_Guide -.-> V_User
+    C_Review -.-> V_User
     C_Admin -.-> V_Admin
+    C_Error -.-> V_Public
 
-    C_Main --> S_Tour
-    C_Tour --> S_Tour
+    %% Relaciones Controladores -> Servicios
+    C_Web --> S_Tour
+    C_Web --> S_Guide
     C_Admin --> S_Tour
     C_Admin --> S_User
-    C_Cart --> S_Cart
+    C_Admin --> S_Booking
+    C_Admin --> S_Guide
     C_User --> S_User
+    C_User --> S_Booking
+    C_User --> S_Notification
+    C_Guide --> S_Guide
+    C_GuidePub --> S_Guide
     C_Review --> S_Review
-    C_Email --> S_Email
-    
+
+    %% Relaciones Servicios -> Repositorios
+    S_Booking --> Repositorios
+    S_Guide --> Repositorios
+    S_Notification --> Repositorios
+    S_Review --> Repositorios
     S_Tour --> Repositorios
     S_User --> Repositorios
-    S_Cart --> Repositorios
-    S_Review --> Repositorios
     
-    Repositorios --- Entidades
+    %% Relación Repositorios -> Modelos (Entidades)
+    Repositorios --- Modelos
 
     %% Estilos
     style Vistas fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     style Controladores fill:#fff3e0,stroke:#e65100,stroke-width:2px
     style Servicios fill:#f1f8e9,stroke:#33691e,stroke-width:2px
     style Datos fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style V_Public fill:#fff,stroke:#01579b
     style V_User fill:#fff,stroke:#01579b
     style V_Admin fill:#fff,stroke:#01579b
 ```
