@@ -68,7 +68,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- DataTables Example -->
+                    <!-- Reviews table rendered with the admin DataTables styles. -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">Reviews</h6>
@@ -90,6 +90,7 @@
                                     </thead>
 
                                     <tbody>
+                                        <!-- One row per review with visibility and delete actions. -->
                                         {{#reviews}}
                                         <tr>
                                             <td><a href="/tour-details/{{tour.id}}">{{tour.name}}</a></td>
@@ -108,6 +109,7 @@
                                                 {{/hidden}}
                                             </td>
                                             <td>
+                                                <!-- Toggle buttons depend on the current hidden state. -->
                                                 {{#hidden}}
                                                 <form action="/admin/review-hide/{{id}}?hide=false" method="post"
                                                     style="display:inline;">
@@ -145,6 +147,7 @@
                                         {{/reviews}}
 
                                         {{^reviews}}
+                                        <!-- Fallback row shown when there are no reviews to display. -->
                                         <tr>
                                             <td colspan="7" class="text-center">
                                                 No hay reviews para este tour
@@ -160,6 +163,7 @@
 
                             </div>
                             <div class="mt-3 text-left">
+                                <!-- Quick reload button to refresh the current admin listing. -->
                                 <button onclick="location.reload()" class="btn btn-purple btn-icon-split shadow-sm">
                                     <span class="icon text-white-50">
                                         <i class="fas fa-sync-alt"></i>

@@ -23,26 +23,26 @@ public class ReviewController {
     private final ReviewRepository reviewRepository;
     private final ReviewService reviewService;
     private final UserRepository userRepository;
-    @Autowired // to generate notifications
+    @Autowired // Used to create UI notifications after review actions.
     private NotificationService notificationService;
     @Autowired
-    private  TourService tourService;
+    private TourService tourService;
+
     public ReviewController(ReviewRepository reviewRepository,
                             ReviewService reviewService, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
         this.reviewService = reviewService;
         this.userRepository = userRepository;
-
-
     }
 
-    // Crear review
+    // Creates a new review for the selected tour.
     @PostMapping("/tour-details/{tourId}/reviews")
     public String addReview(@PathVariable Long tourId,
                             @RequestParam int rating,
                             @RequestParam String description,
                             Principal principal) {
 
+        // Unauthenticated users must log in before posting reviews.
         if (principal == null) {
             return "redirect:/login";
         }
@@ -51,14 +51,14 @@ public class ReviewController {
 
         String tourName = tourService.findById(tourId).getName();
 
-        // ajustar para que notifique
+        // Sends a success notification with the author and related tour.
         notificationService.notify("Nueva review creada por: " + principal.getName() + " para el tour "+ tourName, "fas fa-star", "bg-success");
 
 
         return "redirect:/tour-details/" + tourId;
     }
 
-    // Borrar review
+    // Deletes a review only if it belongs to the logged-in user.
     @PostMapping("/reviews/{id}/delete")
     public String deleteReview(@PathVariable Long id, Principal principal) {
 
@@ -78,6 +78,7 @@ public class ReviewController {
 
         Review review = optionalReview.get();
 
+        // Prevents users from deleting reviews created by someone else.
         if (!review.getUser().getId().equals(user.getId())) {
             return "redirect:/review-user";
         }
@@ -87,7 +88,7 @@ public class ReviewController {
         return "redirect:/review-user";
     }
 
-    // Editar review
+    // Updates the rating and description of an existing review.
     @PostMapping("/reviews/{id}/edit")
     public String editReview(@PathVariable Long id,
                              @RequestParam int rating,

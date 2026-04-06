@@ -95,6 +95,7 @@
       </div>
 
       {{#reviews}}
+      <!-- Card list showing the current user's published reviews. -->
       <div class="review-card mb-4 overflow-hidden">
         {{#tour.tourImage}}
         <img src="data:image/jpeg;base64,{{tour.tourImage}}" alt="{{tour.name}}" class="tour-image">
@@ -137,6 +138,7 @@
             </div>
 
             <div class="review-actions d-flex flex-column gap-2" style="min-width: 180px;">
+              <!-- Actions available for each owned review. -->
               <a href="/mis-reviews/{{id}}/edit-review" class="btn btn-primary rounded-pill">
                 Editar reseña
               </a>
@@ -154,6 +156,7 @@
       {{/reviews}}
 
       {{^reviews}}
+      <!-- Empty state displayed when the user has not posted any reviews yet. -->
       <div class="empty-box p-5 text-center">
         <i class="fas fa-star-half-alt text-primary mb-3" style="font-size: 3rem;"></i>
         <h4 class="mb-3">Todavía no has escrito ninguna reseña</h4>
@@ -163,6 +166,7 @@
       {{/reviews}}
 
       <div class="text-center mt-4">
+        <!-- Pagination controls for the user's review history. -->
         {{#hasPrevious}}
         <a href="/review-user?page={{previousPage}}" class="btn btn-outline-primary rounded-pill px-4 py-2 me-2">
           Anteriores

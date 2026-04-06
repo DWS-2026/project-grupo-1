@@ -57,10 +57,12 @@ public class ReviewService {
     }
 
     public Page<Review> findPagedByTourIdAndHiddenFalse(Long tourId, int page) {
+        // Uses a fixed page size for visible reviews in the tour detail view.
         return reviewRepository.findByTourIdAndHiddenFalse(tourId, PageRequest.of(page, 3));
     }
 
     public double getAverageRating(Long tourId) {
+        // Only visible reviews are considered in the public average.
         List<Review> reviews = reviewRepository.findByTourIdAndHiddenFalse(tourId);
 
         if (reviews.isEmpty()) {
@@ -76,10 +78,12 @@ public class ReviewService {
     }
 
     public int getTotalReviews(Long tourId) {
+        // Mirrors the same visibility rule used by the average calculation.
         return reviewRepository.findByTourIdAndHiddenFalse(tourId).size();
     }
 
     public long countByRating(Long tourId, int rating) {
+        // Counts how many visible reviews match a specific star value.
         return reviewRepository.findByTourIdAndHiddenFalse(tourId)
                 .stream()
                 .filter(review -> review.getRating() == rating)
@@ -94,6 +98,7 @@ public class ReviewService {
             throw new RuntimeException("Tour o usuario no encontrado");
         }
 
+        // Builds the domain object with linked user and tour before saving it.
         Review review = new Review(user, tour, rating, description);
         reviewRepository.save(review);
     }
@@ -103,6 +108,7 @@ public class ReviewService {
     }
 
     public Page<Review> findPagedByUserId(Long userId, int page) {
+        // Uses a larger page size for the user's personal review list.
         return reviewRepository.findByUserId(userId, PageRequest.of(page, 5));
     }
 }

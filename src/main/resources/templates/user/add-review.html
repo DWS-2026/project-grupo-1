@@ -174,13 +174,14 @@
 
 
 
-                <!-- reviews -->
+                <!-- Review summary and submission area for the current tour. -->
                 <div class="tour-reviews mt-5">
                     <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
 
                     <div class="card border-0 shadow-sm p-4">
                         <div class="row mb-5">
                             <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
+                                <!-- Overall rating block with average value and visual stars. -->
                                 <h3 class="mb-2">{{averageRating}}</h3>
 
                                 <div class="mb-2">
@@ -204,6 +205,7 @@
                             </div>
 
                             <div class="col-md-8">
+                                <!-- Rating distribution bars from 5 stars down to 1 star. -->
                                 <div class="d-flex align-items-center mb-2">
                                     <span class="text-muted me-2">5 <i class="fas fa-star text-warning"></i></span>
                                     <div class="progress flex-grow-1 me-3">
@@ -247,7 +249,7 @@
                         </div>
 
 
-                        <!-- Formulario de Opinión -->
+                        <!-- Form used to submit a new review for this tour. -->
                         <div class="review-form">
                             <h3>Deja tu opinión sobre el tour</h3>
                             <form action="/tour-details/{{tour.id}}/reviews" method="post">
@@ -256,6 +258,7 @@
                                 <div class="mb-3">
                                     <label class="form-label">Valoración</label>
                                     <div class="star-rating">
+                                        <!-- Reverse order keeps the CSS hover effect working left to right. -->
                                         <input type="radio" id="star5" name="rating" value="5" required>
                                         <label for="star5"><i class="fas fa-star"></i></label>
 

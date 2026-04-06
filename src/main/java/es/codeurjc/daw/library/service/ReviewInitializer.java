@@ -29,8 +29,10 @@ public class ReviewInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
+        // Skips seeding if reviews already exist in the database.
         if (reviewRepository.count() != 0) return;
 
+        // Reuses the first available user and tour to create sample reviews.
         User user = userRepository.findAll().get(0);
         Tour tour = tourRepository.findAll().get(0);
 
@@ -51,6 +53,7 @@ public class ReviewInitializer implements CommandLineRunner {
     private void createReview(User user, Tour tour,
                               int rating, String description) {
 
+        // Builds and persists one sample review entry.
         Review review = new Review();
         review.setUser(user);
         review.setTour(tour);
