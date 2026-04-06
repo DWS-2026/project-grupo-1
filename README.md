@@ -468,8 +468,8 @@ graph TB
     %% Definición de Secciones con Colores
     subgraph Vistas [" 🖥️ Capa de Presentación (Mustache) "]
         direction LR
-        V_User[<b>Templates Usuario</b><br/>index.html, tours.html,<br/>tour_detail.html, cart.html,<br/>login.html, register.html,<br/>user_dashboard.html, nosotros.html]
-        V_Admin[<b>Templates Admin</b><br/>admin/dashboard.html,<br/>admin/admin_tours.html,<br/>admin/admin_users.html,<br/>admin/tour_form.html,<br/>admin/user_form.html]
+        V_User["<b>Templates Usuario</b><br/>index.html, tours.html,<br/>tour_detail.html, cart.html,<br/>login.html, register.html,<br/>user_dashboard.html, nosotros.html"]
+        V_Admin["<b>Templates Admin</b><br/>admin/dashboard.html,<br/>admin/admin_tours.html,<br/>admin/admin_users.html,<br/>admin/tour_form.html,<br/>admin/user_form.html"]
     end
 
     subgraph Controladores [" 🕹️ Capa de Control (WebControllers) "]
@@ -492,18 +492,17 @@ graph TB
 
     subgraph Persistencia [" 💾 Capa de Datos (JPA & MySQL) "]
         direction RL
-        R_All[<b>Repositories</b><br/>TourRepository, UserRepository,<br/>CartRepository, ReviewRepository]
-        E_All[<b>Entities</b><br/>Tour, User,<br/>Cart, Review]
+        R_All["<b>Repositories</b><br/>TourRepository, UserRepository,<br/>CartRepository, ReviewRepository"]
+        E_All["<b>Entities</b><br/>Tour, User,<br/>Cart, Review"]
     end
 
-    %% Relaciones de flujo (Controladores a Vistas)
-    C_Main ..> V_User : renderiza
-    C_Tour ..> V_User : renderiza
-    C_User ..> V_User : renderiza
-    C_Cart ..> V_User : renderiza
-    C_Admin ..> V_Admin : renderiza
+    %% Relaciones de flujo
+    C_Main ..> V_User
+    C_Tour ..> V_User
+    C_User ..> V_User
+    C_Cart ..> V_User
+    C_Admin ..> V_Admin
 
-    %% Relaciones de flujo (Controladores a Servicios)
     C_Main --> S_Tour
     C_Tour --> S_Tour
     C_Admin --> S_Tour
@@ -513,7 +512,6 @@ graph TB
     C_Review --> S_Review
     C_Email --> S_Email
     
-    %% Relaciones de flujo (Servicios a Datos)
     S_Tour --> R_All
     S_User --> R_All
     S_Cart --> R_All
