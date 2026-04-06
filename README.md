@@ -463,16 +463,16 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
 ```mermaid
-graph TB
-
-    %% Definición de Secciones con Colores
-    subgraph Vistas [" 🖥️ Capa de Presentación (Mustache) "]
+graph TD
+    %% Capa de Presentación
+    subgraph Vistas [🖥️ Capa de Presentacion - Mustache]
         direction LR
-        V_User["<b>Templates Usuario</b><br/>index.html, tours.html,<br/>tour_detail.html, cart.html,<br/>login.html, register.html,<br/>user_dashboard.html, nosotros.html"]
-        V_Admin["<b>Templates Admin</b><br/>admin/dashboard.html,<br/>admin/admin_tours.html,<br/>admin/admin_users.html,<br/>admin/tour_form.html,<br/>admin/user_form.html"]
+        V_User(Templates Usuario)
+        V_Admin(Templates Administrador)
     end
 
-    subgraph Controladores [" 🕹️ Capa de Control (WebControllers) "]
+    %% Capa de Control
+    subgraph Controladores [🕹️ Capa de Control - WebControllers]
         C_Main[MainController]
         C_Tour[TourController]
         C_User[UserController]
@@ -482,7 +482,8 @@ graph TB
         C_Email[EmailController]
     end
 
-    subgraph Servicios [" ⚙️ Capa de Negocio (Services) "]
+    %% Capa de Servicio
+    subgraph Servicios [⚙️ Capa de Negocio - Services]
         S_Tour[TourService]
         S_User[UserService]
         S_Cart[CartService]
@@ -490,18 +491,19 @@ graph TB
         S_Email[EmailService]
     end
 
-    subgraph Persistencia [" 💾 Capa de Datos (JPA & MySQL) "]
+    %% Capa de Datos
+    subgraph Datos [💾 Capa de Datos - JPA y MySQL]
         direction RL
-        R_All["<b>Repositories</b><br/>TourRepository, UserRepository,<br/>CartRepository, ReviewRepository"]
-        E_All["<b>Entities</b><br/>Tour, User,<br/>Cart, Review"]
+        Repositorios[Repositories]
+        Entidades[Entities]
     end
 
-    %% Relaciones de flujo
-    C_Main ..> V_User
-    C_Tour ..> V_User
-    C_User ..> V_User
-    C_Cart ..> V_User
-    C_Admin ..> V_Admin
+    %% Relaciones
+    C_Main -.-> V_User
+    C_Tour -.-> V_User
+    C_User -.-> V_User
+    C_Cart -.-> V_User
+    C_Admin -.-> V_Admin
 
     C_Main --> S_Tour
     C_Tour --> S_Tour
@@ -512,22 +514,20 @@ graph TB
     C_Review --> S_Review
     C_Email --> S_Email
     
-    S_Tour --> R_All
-    S_User --> R_All
-    S_Cart --> R_All
-    S_Review --> R_All
+    S_Tour --> Repositorios
+    S_User --> Repositorios
+    S_Cart --> Repositorios
+    S_Review --> Repositorios
     
-    R_All --- E_All
+    Repositorios --- Entidades
 
-    %% Estilos de Colores
+    %% Estilos
     style Vistas fill:#e1f5fe,stroke:#01579b,stroke-width:2px
     style Controladores fill:#fff3e0,stroke:#e65100,stroke-width:2px
     style Servicios fill:#f1f8e9,stroke:#33691e,stroke-width:2px
-    style Persistencia fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    
+    style Datos fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
     style V_User fill:#fff,stroke:#01579b
     style V_Admin fill:#fff,stroke:#01579b
-    style E_All fill:#fff,stroke:#4a148c,stroke-dasharray: 5 5
 ```
 
 ### **Participación de Miembros en la Práctica 2**
