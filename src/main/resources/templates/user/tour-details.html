@@ -147,7 +147,7 @@
 
 
 
-                    <!-- img + description start -->
+                    <!-- Hero section with the main image and top-level tour summary. -->
                     <div class="mb-5 position-relative">
                         
                         {{#tour.tourImage}}
@@ -173,7 +173,7 @@
 
 
 
-                    <!-- description + highlights start -->
+                    <!-- Main descriptive content for the selected tour. -->
                     <div class="mb-5">
 
                         <!-- description start -->
@@ -223,11 +223,10 @@
                         <h4 class="mb-4 text-primary font-weight-bold">Opiniones</h4>
                         <div class="card border-0 shadow-sm p-4">
 
-                            <!-- star rating + graph start -->
-                            <!-- star rating + graph start -->
+                            <!-- Rating summary with average score and distribution chart. -->
                             <div class="row mb-5">
 
-                                <!-- rating average start -->
+                                <!-- Average rating block with visual star helpers. -->
                                 <div class="col-md-4 text-center d-flex flex-column justify-content-center align-items-center border-end">
 
                                     <h3 class="mb-2">{{averageRating}}</h3>
@@ -255,7 +254,7 @@
                                 <!-- rating average end -->
 
 
-                                <!-- graph start -->
+                                <!-- Histogram showing how many reviews fall into each rating. -->
                                 <div class="col-md-8">
 
                                     <div class="d-flex align-items-center mb-2">
@@ -305,10 +304,11 @@
                             <!-- star rating + graph end -->
 
 
-                            <!-- written review start -->
+                            <!-- Paginated list of visible reviews for this tour. -->
                             <div class="review-list">
 
                                 {{#reviews}}
+                                <!-- Each review shows author, publication date and star breakdown. -->
                                 <div class="review-item d-flex">
                                     <img src="https://ui-avatars.com/api/?name={{user.name}}+{{user.lastName}}&background=random"
                                          alt="User Avatar" class="user-avatar me-3">
@@ -341,6 +341,7 @@
                                 {{/reviews}}
 
                                 {{^reviews}}
+                                <!-- Empty state shown when the tour has no reviews yet. -->
                                 <div class="text-center py-4">
                                     <p class="text-muted mb-0">Todavía no hay opiniones para este viaje.</p>
                                 </div>
@@ -350,7 +351,7 @@
 
                             <!-- written review end -->
 
-                            <!-- button load more start -->
+                            <!-- Pagination controls for older and newer review pages. -->
                             <div class="text-center mt-3">
                                 {{#hasPrevious}}
                                 <a href="/tour-details/{{tour.id}}?page={{previousPage}}" class="btn btn-outline-primary rounded-pill py-2 px-4 me-2">
@@ -372,7 +373,7 @@
                 </div>
 
 
-                <!-- tour info + buttons start -->
+                <!-- Sidebar with pricing details and purchase/review actions. -->
                 <div class="col-lg-4">
                     <div class="tour-price-box p-4 rounded border mb-4">
 
@@ -393,7 +394,7 @@
                         <!-- tour info end -->
 
 
-                        <!-- buttons start -->
+                        <!-- Calls to action depend on whether the user is logged in. -->
                         <div class="d-grid gap-2">
                             <a href="/cart/add/{{tour.id}}" class="btn btn-success rounded-pill py-3">
                                 <i class="fa fa-shopping-cart me-2"></i> Añadir al carrito

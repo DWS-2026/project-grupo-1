@@ -113,6 +113,7 @@
                 </div>
 
                 <div class="review-box p-4">
+                    <!-- Edit form prefilled with the user's current review data. -->
                     <h3 class="mb-4 text-primary">Editar tu reseña</h3>
 
                     <form action="/reviews/{{review.id}}/edit" method="post">
@@ -121,6 +122,7 @@
                         <div class="mb-4">
                             <label class="form-label fw-bold">Tu valoración</label>
                             <div class="star-rating">
+                                <!-- The checked state is driven by helper flags exposed by the review model. -->
                                 <input type="radio" id="star5" name="rating" value="5" {{#review.rating5}}checked{{/review.rating5}}>
                                 <label for="star5"><i class="fas fa-star"></i></label>
 
