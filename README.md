@@ -310,57 +310,11 @@ Solo si han cambiado.
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/DWS-2026/project-grupo-1.git
-   cd project-grupo-1
+   git clone https://github.com/[usuario]/[nombre-repositorio].git
+   cd [nombre-repositorio]
    ```
 
-2. **Instalar los requisitos previos**
-
-   Antes de ejecutar la aplicación, es necesario tener instalado:
-
-   - `Git`
-   - `Java 21`
-   - `Maven`
-   - `MySQL`
-
-   El proyecto está configurado como una aplicación Spring Boot con Maven y usa Java 21, Mustache, JPA, Spring Security y MySQL. Además, en la raíz del repositorio aparece `pom.xml`, por lo que la ejecución se realiza con Maven.
-
-3. **Crear la base de datos**
-
-   La aplicación está configurada para conectarse a una base de datos MySQL llamada `apex_project`. Por tanto, hay que crearla antes de arrancar la aplicación.
-
-   ```sql
-   CREATE DATABASE apex_project;
-   ```
-
-4. **Revisar la configuración de la base de datos**
-
-   En el fichero `src/main/resources/application.properties` están definidos por defecto:
-
-   - URL: `jdbc:mysql://localhost:3306/apex_project`
-   - Usuario: `root`
-   - Contraseña: `passwd`
-
-   Si en tu equipo MySQL usa otras credenciales, debes modificar esas propiedades antes de ejecutar la aplicación.
-
-5. **Compilar y ejecutar la aplicación**
-
-   Una vez creada la base de datos y revisada la configuración, ejecuta:
-
-   ```bash
-   mvn clean install
-   mvn spring-boot:run
-   ```
-
-   El proyecto incluye el plugin de Spring Boot para Maven y una clase principal `Application`, que es la que arranca la aplicación.
-
-6. **Acceder a la aplicación**
-
-   La aplicación está configurada para arrancar en el puerto `8443` y con `HTTPS`. Por tanto, una vez iniciada, se puede abrir en el navegador en:
-
-   ```text
-   https://localhost:8443
-   ```
+2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `admin@apexexpeditions.com`, contraseña: `1234`
@@ -420,17 +374,28 @@ Más allá del módulo de reseñas, también he participado en el desarrollo de 
 
 
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - [Pablo Sánchez Martín]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Me he encargado de las entidades `User` y `Notification`, y de la implementación de Spring Security. Resumido, mi trabajo ha abarcado las siguientes áreas:
+
+- Backend y vistas: desarrollo de la lógica y las interfaces de acceso (`/login`, `/register`, `/profile`, `/admin-login`), y de la sección del portal de administración para gestionar usuarios (`/admin/users`, `/admin/users/add`, `/admin/users/edit`, y los modales view y delete). También configuré los errores 403 y 404.
+
+- Seguridad y control: implementación de cookies para mantener sesiones prolongadas, un sistema para bloquear el acceso a usuarios (atributo `boolean enabled` y modal `login-inactive`) y validación robusta de formularios (en los vinculados a mi entidad) tanto en frontend como backend.
+
+- Interfaz de Usuario (UI/UX): diseño de ventanas modales para diversas acciones (`logout`, `login-inactive`, `terms-conditions` y `contact-wip`, que avisa de la falta de funcionalidad en `/contact`). Los modales de gestión de usuarios (view y delete) sirvieron como plantilla estándar para el resto del equipo.
+
+- Sistema de notificaciones: creación de la entidad `Notification` para alertar automáticamente al administrador sobre la creación, edición o eliminación de existencias de cada entidad.
+
+- Mejoras en navegación admin: integración de un menú dropdown de acceso rápido al panel de administración desde la web pública (sólo visible para admin). Por otro lado, en el portal admin, aporté dinamismo al topbar (con la foto y nombre del usuario actual), funcionalidad al menú para que admin pueda acceder a ver su perfil y cerrar sesión, y el diseño tanto del sidebar que enlaza a la gestión de cada entidad, como del landing page de admin (panel de control).
+
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementación básica (y posteriormente transferida a un fichero distinto) de la inicialización de usuarios (tanto normales como admin) y generación de pfps default adaptadas al rol de cada usuario](https://github.com/DWS-2026/project-grupo-1/commit/7959f506b94dab726ae0ed31dda78e94ad92bef8)  | [DatabaseInitializer.java](https://github.com/DWS-2026/project-grupo-1/commit/7959f506b94dab726ae0ed31dda78e94ad92bef8#diff-27ca319e78faf0f9b138526aadb0392a04b27f4b21eb5efe9f239937dd3fef14)   |
+|2| [Uso de CSRF y protección de contraseñas (bcrypt)](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499)  | [pom.xml](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-9c5fb3d1b7e3b0f54bc5c4182965c4fe1f9023d449017cece3005d3f90e8e4d8), [GlobalControllerAdvice.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-86ef4963b05c94bffe9778c30dd3f7155f7e4458027dbb71ff55600577978e08), [WebController.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-a486a472198187fdf67ccbae45968eb07fcd263c0158748771d579549ec72b91), [UserRepository.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-9759a4d6218c551e22ba60a440a50735559d0910777bd45277c5cbae6e28a2da), [RepositoryUserDetailsService.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-2361df66feacddd3d7644f0af82d9cb50e6687b2b3061d56ed6be649a0f6465d), [SecurityConfiguration.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-dc4755d7486bfbc5c0479dd942dab410201d81845b4939149c5d24cd5281f183), [DatabaseInitializer.java](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-27ca319e78faf0f9b138526aadb0392a04b27f4b21eb5efe9f239937dd3fef14), [application.properties](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-54eeffbae371fcd1398d4ca5e89a1b8118208b7bb2f8ddf55c1aa2f7d98ab136), [admin-login.html](https://github.com/DWS-2026/project-grupo-1/commit/2a3e757f1b5fc6d307161fabeee85cc30b9d6499#diff-ba8670837ec423cc5b6e9b7fea11b737a20e5c2040e78da298dd808757a1e65e)  |
+|3| [Gestión de errores 403 y 404](https://github.com/DWS-2026/project-grupo-1/commit/6e98b1d7a05892e6b4bee8b76be7e99e3021c715)  | [pom.xml](https://github.com/DWS-2026/project-grupo-1/commit/6e98b1d7a05892e6b4bee8b76be7e99e3021c715#diff-9c5fb3d1b7e3b0f54bc5c4182965c4fe1f9023d449017cece3005d3f90e8e4d8), [CustomErrorController.java](https://github.com/DWS-2026/project-grupo-1/commit/6e98b1d7a05892e6b4bee8b76be7e99e3021c715#diff-faeb75e6d7f0aa105b123a10f93319a7a3545bd8ee51c60eb052bdf255021a9e), [403.html](https://github.com/DWS-2026/project-grupo-1/commit/6e98b1d7a05892e6b4bee8b76be7e99e3021c715#diff-947fd187fbf22f00c4fe881d2c633346fc5fee5f7f81f530ccbc43331925a2a9), [404.html](https://github.com/DWS-2026/project-grupo-1/commit/6e98b1d7a05892e6b4bee8b76be7e99e3021c715#diff-d790ae3f696efd84bbadcb218a2599008732ebf43c91eec917fd5ac30cca13eb)   |
+|4| [Portal login funcional y opción de logout](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550)  | [GlobalControllerAdvice.java](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-86ef4963b05c94bffe9778c30dd3f7155f7e4458027dbb71ff55600577978e08), [WebController.java](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-a486a472198187fdf67ccbae45968eb07fcd263c0158748771d579549ec72b91), [SecurityConfiguration.java](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-dc4755d7486bfbc5c0479dd942dab410201d81845b4939149c5d24cd5281f183), [logout-modal.html](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-f5d6d374ac0597348228591cd0ab198434248c029b79142ce01e6b2f13ff220f), [navbar.html](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-f0323ba3441706a4018060c412cdc7fbb6205e83ebf16ff77fd6d2cd53d86657), [admin-login.html](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-ba8670837ec423cc5b6e9b7fea11b737a20e5c2040e78da298dd808757a1e65e), [login.html](https://github.com/DWS-2026/project-grupo-1/commit/3f6a0491ec1cb845b242b99fabf9a27df6cda550#diff-9f07546694da376e7301b28e339228f4a5c21891dcc9a537735b2cf0dec36782)   |
+|5| [Validación backend en el formulario `/register`](https://github.com/DWS-2026/project-grupo-1/commit/ddd1feffcd3013a8756de2d399f27c2a5523124d)  | [WebController.java](https://github.com/DWS-2026/project-grupo-1/commit/ddd1feffcd3013a8756de2d399f27c2a5523124d#diff-a486a472198187fdf67ccbae45968eb07fcd263c0158748771d579549ec72b91), [UserRepository.java](https://github.com/DWS-2026/project-grupo-1/commit/ddd1feffcd3013a8756de2d399f27c2a5523124d#diff-9759a4d6218c551e22ba60a440a50735559d0910777bd45277c5cbae6e28a2da), [UserService.java](https://github.com/DWS-2026/project-grupo-1/commit/ddd1feffcd3013a8756de2d399f27c2a5523124d#diff-fc9c0748b93d18d6da425799c583b7069eabee943cf3aa00869902ea063caccf), [register.html](https://github.com/DWS-2026/project-grupo-1/commit/ddd1feffcd3013a8756de2d399f27c2a5523124d#diff-16be9745b1320d3207e53a324f3194e5d48299fc59e197fc5f94ddfeddba59d6)   |
 
 ---
 
@@ -460,7 +425,7 @@ Más allá del módulo de reseñas, también he participado en el desarrollo de 
 📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/DWS-2026/project-grupo-1/main/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
