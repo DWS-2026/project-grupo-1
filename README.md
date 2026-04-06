@@ -462,9 +462,75 @@ Diagrama mostrando las entidades, sus campos y relaciones:
 
 Diagrama de clases de la aplicación con diferenciación por colores o secciones:
 
-![Diagrama de Clases](images/diagrama_BD .png)
+```mermaid
+graph TB
 
-> [Descripción opcional del diagrama y relaciones principales]
+    %% Definición de Secciones con Colores
+    subgraph Vistas [" 🖥️ Capa de Presentación (Mustache) "]
+        direction LR
+        V_User[<b>Templates Usuario</b><br/>index.html, tours.html,<br/>tour_detail.html, cart.html,<br/>login.html, register.html,<br/>user_dashboard.html, nosotros.html]
+        V_Admin[<b>Templates Admin</b><br/>admin/dashboard.html,<br/>admin/admin_tours.html,<br/>admin/admin_users.html,<br/>admin/tour_form.html,<br/>admin/user_form.html]
+    end
+
+    subgraph Controladores [" 🕹️ Capa de Control (WebControllers) "]
+        C_Main[MainController]
+        C_Tour[TourController]
+        C_User[UserController]
+        C_Admin[AdminController]
+        C_Cart[CartController]
+        C_Review[ReviewController]
+        C_Email[EmailController]
+    end
+
+    subgraph Servicios [" ⚙️ Capa de Negocio (Services) "]
+        S_Tour[TourService]
+        S_User[UserService]
+        S_Cart[CartService]
+        S_Review[ReviewService]
+        S_Email[EmailService]
+    end
+
+    subgraph Persistencia [" 💾 Capa de Datos (JPA & MySQL) "]
+        direction RL
+        R_All[<b>Repositories</b><br/>TourRepository, UserRepository,<br/>CartRepository, ReviewRepository]
+        E_All[<b>Entities</b><br/>Tour, User,<br/>Cart, Review]
+    end
+
+    %% Relaciones de flujo (Controladores a Vistas)
+    C_Main ..> V_User : renderiza
+    C_Tour ..> V_User : renderiza
+    C_User ..> V_User : renderiza
+    C_Cart ..> V_User : renderiza
+    C_Admin ..> V_Admin : renderiza
+
+    %% Relaciones de flujo (Controladores a Servicios)
+    C_Main --> S_Tour
+    C_Tour --> S_Tour
+    C_Admin --> S_Tour
+    C_Admin --> S_User
+    C_Cart --> S_Cart
+    C_User --> S_User
+    C_Review --> S_Review
+    C_Email --> S_Email
+    
+    %% Relaciones de flujo (Servicios a Datos)
+    S_Tour --> R_All
+    S_User --> R_All
+    S_Cart --> R_All
+    S_Review --> R_All
+    
+    R_All --- E_All
+
+    %% Estilos de Colores
+    style Vistas fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Controladores fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Servicios fill:#f1f8e9,stroke:#33691e,stroke-width:2px
+    style Persistencia fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    
+    style V_User fill:#fff,stroke:#01579b
+    style V_Admin fill:#fff,stroke:#01579b
+    style E_All fill:#fff,stroke:#4a148c,stroke-dasharray: 5 5
+```
 
 ### **Participación de Miembros en la Práctica 2**
 
