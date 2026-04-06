@@ -84,4 +84,8 @@ public class BookingService {
     public void deleteById(Long id) {
         bookingRepository.deleteById(id);
     }
+
+    public Optional<Booking> findLastClosedBookingByUser(User user) {
+        return bookingRepository.findFirstByUserAndCerradaTrueOrderByIdDesc(user);
+    }
 }

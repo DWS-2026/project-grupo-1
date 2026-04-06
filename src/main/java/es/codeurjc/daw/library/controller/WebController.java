@@ -1,10 +1,5 @@
 package es.codeurjc.daw.library.controller;
 
-
-
-
-
-
 // region =========== imports =================
 import es.codeurjc.daw.library.model.Guide;
 import es.codeurjc.daw.library.model.Booking;
@@ -43,11 +38,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 // endregion
 
-
-
-
-
-
 // use: manage administrative tasks for users
 @Controller
 public class WebController {
@@ -68,16 +58,12 @@ public class WebController {
     private BookingService bookingService;
     // endregion
 
-
-
-
-
     // region =========== ModelAttribute =================
-    @ModelAttribute ("cartSize")
-    public int getCartSize (Principal principal) {
+    @ModelAttribute("cartSize")
+    public int getCartSize(Principal principal) {
         if (principal != null) {
-            User user = userService.findByEmail (principal.getName());
-            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser (user);
+            User user = userService.findByEmail(principal.getName());
+            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
             if (bookingOpt.isPresent()) {
                 return bookingOpt.get().getTours().size();
             }
@@ -86,107 +72,94 @@ public class WebController {
     }
     // endregion
 
-
-
-
-
     // region =========== GetMapping =================
     // region 1. "/"
-    @GetMapping ("/")
-    public String index (Model model) {
-        model.addAttribute ("home", true);
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("home", true);
         return "user/index";
     }
     // endregion
 
-
-
     // region 2. "/packages"
-    @GetMapping ("/packages")
-    public String packages (Model model, @PageableDefault(size = 6) Pageable pageable) {
-        Page<Tour> page = tourService.findByHiddenFalse (pageable);
-        model.addAttribute ("tours", page.getContent());
-        model.addAttribute ("hasPrev", page.hasPrevious());
-        model.addAttribute ("hasNext", page.hasNext());
-        model.addAttribute ("prev", page.getNumber() - 1);
-        model.addAttribute ("next", page.getNumber() + 1);
-        model.addAttribute ("currentPage", page.getNumber());
-        model.addAttribute ("totalPages", page.getTotalPages());
-        model.addAttribute ("size", pageable.getPageSize());
+    @GetMapping("/packages")
+    public String packages(Model model, @PageableDefault(size = 6) Pageable pageable) {
+        Page<Tour> page = tourService.findByHiddenFalse(pageable);
+        model.addAttribute("tours", page.getContent());
+        model.addAttribute("hasPrev", page.hasPrevious());
+        model.addAttribute("hasNext", page.hasNext());
+        model.addAttribute("prev", page.getNumber() - 1);
+        model.addAttribute("next", page.getNumber() + 1);
+        model.addAttribute("currentPage", page.getNumber());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("size", pageable.getPageSize());
         return "user/packages";
     }
     // endregion
 
-
-
     // region 3. "/services"
-    @GetMapping ("/services")
-    public String services (Model model) {
-        model.addAttribute ("services", true);
+    @GetMapping("/services")
+    public String services(Model model) {
+        model.addAttribute("services", true);
         return "user/services";
     }
     // endregion
 
-
-
     // region 4. "/about"
-    @GetMapping ("/about")
-    public String about (Model model) {
-        model.addAttribute ("about", true);
+    @GetMapping("/about")
+    public String about(Model model) {
+        model.addAttribute("about", true);
         return "user/about";
     }
     // endregion
 
-
-
     // region 5. "/contact"
-    @GetMapping ("/contact")
-    public String contact (@RequestParam(required = false) String wip, Model model) {
-        model.addAttribute ("contact", true);
-        if (wip != null) {   // if user tries to send message, set flag to true (and then display popup)
-            model.addAttribute ("showContactWip", true);
+    @GetMapping("/contact")
+    public String contact(@RequestParam(required = false) String wip, Model model) {
+        model.addAttribute("contact", true);
+        if (wip != null) { // if user tries to send message, set flag to true (and then display popup)
+            model.addAttribute("showContactWip", true);
         }
 
         return "user/contact";
     }
     // endregion
 
-
-
     // region 6. "/cart/"
     // region 6.1. "/cart/add/"
     @GetMapping("/cart/add/{id}")
-        public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
-            if (principal == null) {
-                return "redirect:/login"; // forces login if to do booking
-            }
-
-            User user = userService.findByEmail(principal.getName());
-            Tour tour = tourService.findById(id);
-
-            if (tour != null) {
-                // if user has no booking existing, create it
-                Booking booking = bookingService.findOpenBookingByUser(user)
-                        .orElseGet(() -> new Booking(user));
-
-                // avoid having 2 instances of same tour in 1 booking
-                if (!booking.getTours().contains(tour)) {
-                    booking.getTours().add(tour);
-                    bookingService.save(booking); // save to db
-                    data.addFlashAttribute("showSuccess", true);
-                } else {
-                    data.addFlashAttribute("showError", true);
-                    data.addFlashAttribute("tourName", tour.getName());
-                }
-            }
-            return "redirect:/cart";
+    public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
+        if (principal == null) {
+            return "redirect:/login"; // forces login if to do booking
         }
-        // endregion
+
+        User user = userService.findByEmail(principal.getName());
+        Tour tour = tourService.findById(id);
+
+        if (tour != null) {
+            // if user has no booking existing, create it
+            Booking booking = bookingService.findOpenBookingByUser(user)
+                    .orElseGet(() -> new Booking(user));
+
+            // avoid having 2 instances of same tour in 1 booking
+            if (!booking.getTours().contains(tour)) {
+                booking.getTours().add(tour);
+                bookingService.save(booking); // save to db
+                data.addFlashAttribute("showSuccess", true);
+            } else {
+                data.addFlashAttribute("showError", true);
+                data.addFlashAttribute("tourName", tour.getName());
+            }
+        }
+        return "redirect:/cart";
+    }
+    // endregion
 
     // region 6.2. "/cart/remove/"
     @GetMapping("/cart/remove/{id}")
     public String removeFromCart(@PathVariable Long id, Principal principal) {
-        if (principal == null) return "redirect:/login";
+        if (principal == null)
+            return "redirect:/login";
 
         User user = userService.findByEmail(principal.getName());
         Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
@@ -194,13 +167,13 @@ public class WebController {
         if (bookingOpt.isPresent()) {
             Booking booking = bookingOpt.get();
             booking.getTours().removeIf(t -> t.getId().equals(id));
-            
+
             // store to db
-            bookingService.save(booking); 
+            bookingService.save(booking);
         }
-        
+
         // redirect
-        return "redirect:/cart?removed=true"; 
+        return "redirect:/cart?removed=true";
     }
     // endregion
 
@@ -211,7 +184,7 @@ public class WebController {
         // initialize default vars
         model.addAttribute("cartItems", new ArrayList<Tour>());
         model.addAttribute("total", "0.00");
-        model.addAttribute("isEmpty", true); 
+        model.addAttribute("isEmpty", true);
 
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
@@ -220,7 +193,7 @@ public class WebController {
             if (bookingOpt.isPresent()) {
                 Booking booking = bookingOpt.get();
                 List<Tour> tours = booking.getTours();
-                
+
                 if (!tours.isEmpty()) {
                     model.addAttribute("cartItems", tours);
                     model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
@@ -233,23 +206,19 @@ public class WebController {
     // endregion
     // endregion
 
-
-
     // region 7. "/register"
-    @GetMapping ("/register")
+    @GetMapping("/register")
     public String register() {
         return "user/register";
     }
     // endregion
 
-
-
     // region 8. "/login"
-    @GetMapping ("/login")
+    @GetMapping("/login")
     public String login(@RequestParam(required = false) String inactive,
-                        @RequestParam(required = false) String error,
-                        @RequestParam(required = false) String changed,
-                        Model model) {
+            @RequestParam(required = false) String error,
+            @RequestParam(required = false) String changed,
+            Model model) {
 
         // if url includes "?inactive", set inactive flag to true
         if (inactive != null) {
@@ -265,18 +234,16 @@ public class WebController {
     }
     // endregion
 
-
-
     // region 9. "/profile"
-    @GetMapping ("/profile")
-    public String profile (Model model,
-                           Principal principal,
-                           HttpServletRequest request,
-                           @RequestParam(required = false) boolean showLogout) {
+    @GetMapping("/profile")
+    public String profile(Model model,
+            Principal principal,
+            HttpServletRequest request,
+            @RequestParam(required = false) boolean showLogout) {
 
         if (principal != null) {
-            User user = userService.findByEmail (principal.getName());
-            model.addAttribute ("user", user);
+            User user = userService.findByEmail(principal.getName());
+            model.addAttribute("user", user);
 
             // if user doesnt exist in db, return
             if (user == null) {
@@ -288,23 +255,21 @@ public class WebController {
                 model.addAttribute("openLogoutModal", true);
             }
 
-            model.addAttribute ("currentUser", user);
+            model.addAttribute("currentUser", user);
 
             // check if user admin, and set flag accordingly
             boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
-            model.addAttribute ("isAdmin", isAdmin);
+            model.addAttribute("isAdmin", isAdmin);
         }
         return "user/profile";
     }
     // endregion
 
-
-
     // region 10. "tour-details/"
-    @GetMapping ("/tour-details/{id}")
+    @GetMapping("/tour-details/{id}")
     public String showDetails(@PathVariable Long id,
-                              @RequestParam(defaultValue = "0") int page,
-                              Model model) {
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
 
         var tour = tourService.findById(id);
         Page<Review> reviewPage = reviewService.findPagedByTourIdAndHiddenFalse(id, page);
@@ -353,12 +318,11 @@ public class WebController {
     }
     // endregion
 
-
-
     // region 11. "/checkout"
     @GetMapping("/checkout")
     public String checkout(Model model, Principal principal) {
-        if (principal == null) return "redirect:/login";
+        if (principal == null)
+            return "redirect:/login";
 
         User user = userService.findByEmail(principal.getName());
         Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
@@ -374,36 +338,42 @@ public class WebController {
     }
     // endregion
 
-
     // region 12. "/invoice"
     @GetMapping("/invoice")
     public String invoice(Model model, Principal principal) {
-        if (principal == null) return "redirect:/login";
+        if (principal == null) {
+            return "redirect:/login";
+        }
 
         User user = userService.findByEmail(principal.getName());
-        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+        Optional<Booking> openBookingOpt = bookingService.findOpenBookingByUser(user);
 
-        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
-            Booking booking = bookingOpt.get();
+        if (openBookingOpt.isPresent() && !openBookingOpt.get().getTours().isEmpty()) {
+            Booking openBooking = openBookingOpt.get();
+            // close reserve (empty cart)
+            openBooking.setCerrada(true);
+            bookingService.save(openBooking);
+        }
+
+        Optional<Booking> lastClosedOpt = bookingService.findLastClosedBookingByUser(user);
+
+        if (lastClosedOpt.isPresent()) {
+            Booking booking = lastClosedOpt.get();
+            double total = booking.getTotalPrice();
 
             // pass data to build final invoice
             model.addAttribute("cartItems", booking.getTours());
-            double total = booking.getTotalPrice();
             model.addAttribute("subtotal", String.format("%.2f", total * 0.79));
             model.addAttribute("tax", String.format("%.2f", total * 0.21));
             model.addAttribute("total", String.format("%.2f", total));
-            model.addAttribute("customerName", user.getName() + " " + user.getLastName());
+            model.addAttribute("user", user);
 
-            // close reserve (empty cart)
-            booking.setCerrada(true);
-            bookingService.save(booking);
+            return "user/invoice";
         }
 
-        return "user/invoice";
+        return "redirect:/";
     }
     // endregion
-
-
 
     // region 13. /"add-review/"
     @GetMapping("/add-review/{id}")
@@ -447,13 +417,11 @@ public class WebController {
     }
     // endregion
 
-
-
     // region 14. "/review-user"
     @GetMapping("/review-user")
     public String myReviews(Principal principal,
-                            @RequestParam(defaultValue = "0") int page,
-                            Model model) {
+            @RequestParam(defaultValue = "0") int page,
+            Model model) {
 
         if (principal == null) {
             return "redirect:/login";
@@ -478,8 +446,6 @@ public class WebController {
         return "user/review-user";
     }
     // endregion
-
-
 
     // region 15. /"mis-reviews/{id}/edit-review"
     @GetMapping("/mis-reviews/{id}/edit-review")
@@ -512,12 +478,11 @@ public class WebController {
     }
     // endregion
 
-
     // region 16. "/booking-user"
     @GetMapping("/booking-user")
     public String myBookings(Principal principal,
-                             @PageableDefault(size = 10) Pageable pageable,
-                             Model model) {
+            @PageableDefault(size = 10) Pageable pageable,
+            Model model) {
 
         if (principal == null) {
             return "redirect:/login";
@@ -543,25 +508,20 @@ public class WebController {
     }
     // endregion
 
-
-
     // region 17. "/forgot-password"
-    @GetMapping ("/forgot-password")
+    @GetMapping("/forgot-password")
     public String forgot_password() {
         return "/user/forgot-password";
     }
     // endregion
 
-
-
     // region 18. "/admin-login"
-    @GetMapping ("/admin-login")
-    public String adminLogin (@RequestParam(required = false) String error, Model model) {
-        model.addAttribute ("error", error != null);
+    @GetMapping("/admin-login")
+    public String adminLogin(@RequestParam(required = false) String error, Model model) {
+        model.addAttribute("error", error != null);
         return "user/admin-login";
     }
     // endregion
-
 
     // region 19. "/user/{id}/image"
     // retrieve an image for a specific user
@@ -570,14 +530,12 @@ public class WebController {
         User user = userService.findById(id);
         if (user != null && user.getProfilePicture() != null) {
             return ResponseEntity.ok()
-                    .header (HttpHeaders.CONTENT_TYPE, "image/png")
-                    .body (user.getProfilePicture());
+                    .header(HttpHeaders.CONTENT_TYPE, "image/png")
+                    .body(user.getProfilePicture());
         }
         return ResponseEntity.notFound().build();
     }
     // endregion
-
-
 
     // region 20. "/guides"
     @GetMapping("/guides")
@@ -597,17 +555,13 @@ public class WebController {
     // endregion
     // endregion
 
-
-
-
-
     // region =========== PostMapping =================
     // region 1. "/register"
-    @PostMapping ("/register")
-    public String registerUser (@Valid @ModelAttribute User newUser,
-                                BindingResult result,
-                                @RequestParam(required = false) MultipartFile imageFile, // pfp
-                                Model model) throws IOException {
+    @PostMapping("/register")
+    public String registerUser(@Valid @ModelAttribute User newUser,
+            BindingResult result,
+            @RequestParam(required = false) MultipartFile imageFile, // pfp
+            Model model) throws IOException {
 
         // if there are errors, return to the page
         if (result.hasErrors()) {
@@ -615,39 +569,38 @@ public class WebController {
         }
 
         // check email in use
-        if (userService.emailExists (newUser.getEmail())) {
-            model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
+        if (userService.emailExists(newUser.getEmail())) {
+            model.addAttribute("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
             return "user/register";
         }
 
         // check main phone in use
-        if (userService.phoneExists (newUser.getMainPhone())) {
-            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
+        if (userService.phoneExists(newUser.getMainPhone())) {
+            model.addAttribute("errorMessage", "El teléfono principal ya está en uso.");
             return "user/register";
         }
 
         // check secondary phone (if sent) is used
         String secondaryPhone = newUser.getSecondaryPhone();
         if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
-            if (userService.phoneExists (secondaryPhone)) {
-                model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
+            if (userService.phoneExists(secondaryPhone)) {
+                model.addAttribute("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
                 return "user/register";
             }
             // check main and secondary arent same
-            if (newUser.getMainPhone().equals (secondaryPhone)) {
-                model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
+            if (newUser.getMainPhone().equals(secondaryPhone)) {
+                model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
                 return "user/register";
             }
         }
 
         // encode password
-        newUser.setPassword (passwordEncoder.encode(newUser.getPassword()));
+        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
         // fill other fields
-        newUser.setRoles (java.util.Arrays.asList("USER"));
-        newUser.setEnabled (true);
-        newUser.setMoneySpent (0.0);
-
+        newUser.setRoles(java.util.Arrays.asList("USER"));
+        newUser.setEnabled(true);
+        newUser.setMoneySpent(0.0);
 
         // pfp logic
         try {
@@ -656,7 +609,8 @@ public class WebController {
                 newUser.setProfilePicture(imageFile.getBytes());
             } else {
                 // if no image attached, generate default
-                byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
+                byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(),
+                        new Color(13, 110, 253));
                 newUser.setProfilePicture(avatar);
             }
         } catch (IOException e) {
@@ -666,43 +620,42 @@ public class WebController {
             newUser.setProfilePicture(avatar);
         }
 
-        userService.save (newUser); // save user
+        userService.save(newUser); // save user
 
         // notificaction: user creation via user (registration page)
-        notificationService.notify ("Nuevo usuario registrado: " + newUser.getName(), "fas fa-user-plus", "bg-success");
+        notificationService.notify("Nuevo usuario registrado: " + newUser.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/login"; // go login
     }
     // endregion
 
-
-
     // region 2. "/profile/update"
-    @PostMapping ("/profile/update")
-    public String updateProfile (Principal principal,
-                                 HttpServletRequest request,
-                                 @RequestParam String name,
-                                 @RequestParam String lastName,
-                                 @RequestParam String mainPhone,
-                                 @RequestParam (required = false) String secondaryPhone,
-                                 @RequestParam (required = false) String oldPassword, // not in user, so requested separately
-                                 @RequestParam (required = false) String newPassword,
-                                 @RequestParam (required = false) String confirmPassword,
-                                 @RequestParam (required = false) MultipartFile imageFile,
-                                 @RequestParam String action,
-                                 Model model) throws IOException, ServletException {
+    @PostMapping("/profile/update")
+    public String updateProfile(Principal principal,
+            HttpServletRequest request,
+            @RequestParam String name,
+            @RequestParam String lastName,
+            @RequestParam String mainPhone,
+            @RequestParam(required = false) String secondaryPhone,
+            @RequestParam(required = false) String oldPassword, // not in user, so requested separately
+            @RequestParam(required = false) String newPassword,
+            @RequestParam(required = false) String confirmPassword,
+            @RequestParam(required = false) MultipartFile imageFile,
+            @RequestParam String action,
+            Model model) throws IOException, ServletException {
 
         // get user logged in
-        User user = userService.findByEmail (principal.getName());
+        User user = userService.findByEmail(principal.getName());
 
         // flag for password change
         boolean passwordChanged = false;
 
         // process user deletion
-        if ("delete".equals (action)) {
-            userService.delete (user);
+        if ("delete".equals(action)) {
+            userService.delete(user);
             // notification: user deletion via admin (delete button in users page)
-            notificationService.notify ("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus", "bg-warning");
+            notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus",
+                    "bg-warning");
             return "redirect:/logout";
         }
 
@@ -712,8 +665,8 @@ public class WebController {
 
         // check if main phone repeated
         if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
-            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
-            model.addAttribute ("currentUser", user);
+            model.addAttribute("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
+            model.addAttribute("currentUser", user);
             return "user/profile";
         }
 
@@ -725,7 +678,7 @@ public class WebController {
                 return "user/profile";
             }
             // case: main == secondary
-            if (mainPhone.equals (secondaryPhone)) {
+            if (mainPhone.equals(secondaryPhone)) {
                 model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser iguales.");
                 model.addAttribute("currentUser", user);
                 return "user/profile";
@@ -735,7 +688,8 @@ public class WebController {
         // password validation
         if (newPassword != null && !newPassword.trim().isEmpty()) {
             // old password matches
-            if (oldPassword == null || oldPassword.isEmpty() || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+            if (oldPassword == null || oldPassword.isEmpty()
+                    || !passwordEncoder.matches(oldPassword, user.getPassword())) {
                 model.addAttribute("errorMessage", "La contraseña antigua es incorrecta.");
                 model.addAttribute("currentUser", user);
                 return "user/profile";
@@ -749,16 +703,15 @@ public class WebController {
             }
 
             // encrypt and store
-            user.setPassword (passwordEncoder.encode(newPassword));
+            user.setPassword(passwordEncoder.encode(newPassword));
             passwordChanged = true;
         }
 
-
         // update info
-        user.setName (name);
-        user.setLastName (lastName);
-        user.setMainPhone (mainPhone);
-        user.setSecondaryPhone (secondaryPhone);
+        user.setName(name);
+        user.setLastName(lastName);
+        user.setMainPhone(mainPhone);
+        user.setSecondaryPhone(secondaryPhone);
 
         // process new image (if uploaded)
         if (!imageFile.isEmpty()) {
@@ -766,7 +719,7 @@ public class WebController {
         }
 
         // save changes
-        userService.save (user);
+        userService.save(user);
 
         // password was changed, logout and go to login page
         if (passwordChanged) {
@@ -779,20 +732,16 @@ public class WebController {
     }
     // endregion
 
-
-
     // region 3. "/notifications/read/{id}"
     // marks single notification as read
-    @PostMapping ("/notifications/read/{id}")
-    public String markAsRead (@PathVariable Long id, HttpServletRequest request) {
-        notificationService.markAsRead (id);
+    @PostMapping("/notifications/read/{id}")
+    public String markAsRead(@PathVariable Long id, HttpServletRequest request) {
+        notificationService.markAsRead(id);
         // reload page
-        String referer = request.getHeader ("Referer");
+        String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/admin/index");
     }
     // endregion
-
-
 
     // region 4. "/contact"
     @PostMapping("/contact")
@@ -800,8 +749,6 @@ public class WebController {
         return "redirect:/contact?wip=true";
     }
     // endregion
-
-
 
     // region 5. "/notifications/delete/{id}"
     @PostMapping("/notifications/delete/{id}")
