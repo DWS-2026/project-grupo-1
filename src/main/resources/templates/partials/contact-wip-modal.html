@@ -1,33 +1,39 @@
 {{#showContactWip}}
-<div class="modal fade show" id="contactWipModal" tabindex="-1" style="display: block; background: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+<div class="modal fade show" id="contactWipModal" tabindex="-1"
+     style="display: block; background: rgba(0,0,0,0.5);" aria-modal="true" role="dialog">
+    
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0 shadow-lg">
+        <div class="modal-content border-0 shadow-sm rounded-0">
 
-            <div class="modal-header bg-warning">
-                <h5 class="modal-title fw-bold text-white">
+            <!-- HEADER -->
+            <div class="modal-header card-header-custom p-4">
+                <h5 class="modal-title text-primary mb-0">
                     <i class="fas fa-tools me-2"></i>Funcionalidad en desarrollo
                 </h5>
                 <a href="/contact" class="btn-close"></a>
             </div>
 
-            <div class="modal-body text-center py-4">
-                <p class="mb-3" style="font-size: 1rem;">
+            <!-- BODY -->
+            <div class="modal-body text-center py-4 px-4">
+                <p class="mb-3">
                     Gracias por querer contactar con nosotros.<br>
                     Actualmente nuestro equipo técnico está trabajando en integrar la bandeja de entrada para los administradores.
                 </p>
 
                 <div class="my-4">
-                    <i class="fas fa-envelope-open-text fa-4x text-warning opacity-75"></i>
+                    <i class="fas fa-envelope-open-text fa-4x text-primary opacity-75"></i>
                 </div>
 
-                <p class="mb-0 text-muted" style="font-size: 1rem;">
+                <p class="mb-0 text-muted">
                     El envío de mensajes a través de este formulario está deshabilitado.<br>
                     Por favor, inténtelo más tarde.
                 </p>
             </div>
 
-            <div class="modal-footer d-flex justify-content-center bg-light">
-                <a href="/contact" class="btn btn-warning rounded-pill px-5 fw-bold text-white">
+            <!-- FOOTER -->
+            <div class="modal-footer d-flex justify-content-center border-0 pb-4">
+                <a href="/contact"
+                   class="btn btn-primary rounded-pill px-5 fw-bold text-uppercase">
                     Entendido
                 </a>
             </div>
