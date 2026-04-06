@@ -384,7 +384,7 @@ Me he encargado de las entidades `User` y `Notification`, y de la implementació
 
 - Interfaz de Usuario (UI/UX): diseño de ventanas modales para diversas acciones (`logout`, `login-inactive`, `terms-conditions` y `contact-wip`, que avisa de la falta de funcionalidad en `/contact`). Los modales de gestión de usuarios (view y delete) sirvieron como plantilla estándar para el resto del equipo.
 
-- Sistema de notificaciones: creación de la entidad `Notification` para alertar automáticamente al administrador sobre la creación, edición o eliminación de existencias de cada entidad.
+- Sistema de notificaciones: creación de la entidad `Notification` para alertar automáticamente al administrador sobre la creación, edición o eliminación de existencias de cada entidad. Avisa tanto en caso de ser provocado por el propio usuario, o el administrador.
 
 - Mejoras en navegación admin: integración de un menú dropdown de acceso rápido al panel de administración desde la web pública (sólo visible para admin). Por otro lado, en el portal admin, aporté dinamismo al topbar (con la foto y nombre del usuario actual), funcionalidad al menú para que admin pueda acceder a ver su perfil y cerrar sesión, y el diseño tanto del sidebar que enlaza a la gestión de cada entidad, como del landing page de admin (panel de control).
 
