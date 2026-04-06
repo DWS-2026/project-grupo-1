@@ -29,8 +29,8 @@ import org.springframework.security.web.authentication.rememberme.TokenBasedReme
 
 
 /**
- * main security configuration class for app
- * define password encryption, URL access rules, login/logout behavior and role-based redirection
+ * Main security configuration class for the application.
+ * Defines password encryption, URL access rules, login/logout behavior, and role-based redirection.
  */
 @Configuration
 @EnableWebSecurity
@@ -45,7 +45,7 @@ public class SecurityConfiguration {
 
 
     // region =========== value =================
-    // key value taken from properties
+    // Key value taken from application properties for the Remember-Me token
     @Value("${security.rememberme.key}")
     private String rememberMeKey;
     // endregion
@@ -57,9 +57,9 @@ public class SecurityConfiguration {
     // region =========== bean =================
     // region 1. passwordEncoder
     /**
-     * define password encoder bean
-     * bcrypt used to securely hash passwords before storing them in db
-     * @return BCryptPasswordEncoder instance
+     * Defines the password encoder bean.
+     * BCrypt is used to securely hash passwords before storing them in the database.
+     * * @return A BCryptPasswordEncoder instance.
      */
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -70,25 +70,31 @@ public class SecurityConfiguration {
 
 
     // region 2. rememberMeServices
+    /**
+     * Configures the Remember-Me services.
+     * Customizes the behavior to prevent administrators from generating a remember-me cookie.
+     * * @return TokenBasedRememberMeServices instance configured with the secret key and user details.
+     */
     @Bean
     public RememberMeServices rememberMeServices() {
         TokenBasedRememberMeServices services = new TokenBasedRememberMeServices (rememberMeKey, userDetailsService) {
             @Override
             public void onLoginSuccess (HttpServletRequest request, HttpServletResponse response, Authentication auth) {
 
-                // if user is admin, no cookie
+                // If the user has the ADMIN role, do not create a remember-me cookie for security reasons
                 boolean isAdmin = auth.getAuthorities().stream()
                         .anyMatch (a -> a.getAuthority().equals("ROLE_ADMIN"));
-                if (isAdmin) { return;
+                if (isAdmin) { 
+                    return;
                 }
 
-                // else, cookie remember-me for 7 days
+                // Otherwise, create a remember-me cookie valid for the configured duration
                 super.onLoginSuccess (request, response, auth);
             }
         };
 
-        services.setTokenValiditySeconds (7 * 24 * 60 * 60); // duration
-        services.setParameter ("remember-me"); // html input name
+        services.setTokenValiditySeconds (7 * 24 * 60 * 60); // Set cookie validity duration to 7 days (in seconds)
+        services.setParameter ("remember-me"); // Define the HTML input name for the remember-me checkbox
         return services;
     }
     // endregion
@@ -97,18 +103,18 @@ public class SecurityConfiguration {
 
     // region 3. filterChain
     /**
-     * configures security filter chain
-     * defines which URLs are public, require authentication and how login/logout processes work
+     * Configures the security filter chain.
+     * Defines which URLs are public, which require authentication, and how the login/logout processes work.
      *
-     * @param http HttpSecurity object to configure
-     * @return built SecurityFilterChain
-     * @throws Exception if error occurs during configuration
+     * @param http The HttpSecurity object to configure.
+     * @return The built SecurityFilterChain.
+     * @throws Exception if an error occurs during configuration.
      */
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity http) throws Exception {
         http.authorizeHttpRequests ((requests) -> requests
-                        // public paths (accesible without loggin in)
-                        // user navigation
+                        // Public paths (accessible without logging in)
+                        // User navigation routes
                         .requestMatchers (
                                 "/",                 // index
                                 "/about",
@@ -125,7 +131,7 @@ public class SecurityConfiguration {
                                 "/login-check"
                         ).permitAll()
 
-                        // static
+                        // Static resources
                         .requestMatchers (
                                 "/css/**",
                                 "/js/**",
@@ -134,77 +140,79 @@ public class SecurityConfiguration {
                                 "/vendor/**"
                         ).permitAll()
 
-                        // errors
+                        // Error pages
                         .requestMatchers(
                                 "/error/**"
                         ).permitAll()
 
-                        // admin private paths (require ADMIN role)
+                        // Admin private paths (strictly require the ADMIN role)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // user (logged in) private paths
+                        // User private paths (require either USER or ADMIN roles)
                         .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**").hasAnyRole("USER", "ADMIN")
 
-                        // paths that dont exist arent blocked, so that custom error controller can throw 404
+                        // Any other paths that do not exist are permitted so the custom error controller can throw a 404
                         .anyRequest().permitAll()
                 )
 
 
 
-                // configure form-based login
+                // Configure form-based login
                 .formLogin ((form) -> form
-                        .loginPage ("/login") // custom normal user login url
-                        .loginProcessingUrl ("/login-check") // internal url used by spring for validation (POST processing)
-                        // dynamic failure handler (to separate user vs admin)
+                        .loginPage ("/login") // Custom normal user login URL
+                        .loginProcessingUrl ("/login-check") // Internal URL used by Spring Security for validation (POST processing)
+                        // Dynamic failure handler to separate redirection for regular users vs admins
                         .failureHandler ((request, response, exception) -> {
                             String referer = request.getHeader("Referer");
-                            // case user set as inactive
+                            // Case: User account is set as inactive (disabled)
                             if (exception instanceof org.springframework.security.authentication.DisabledException) {
                                 response.sendRedirect("/login?inactive");
-                            } else { // creds error
+                            } else { // Case: Invalid credentials error
                                 if (referer != null && referer.contains("/admin-login")) {
+                                    // Redirect back to the admin login page if the attempt came from there
                                     response.sendRedirect("/admin-login?error");
                                 } else {
+                                    // Redirect back to the standard login page
                                     response.sendRedirect("/login?error");
                                 }
                             }
                         })
 
-                        // redirection logic after successful login
+                        // Redirection logic after a successful login
                         .successHandler ((request, response, authentication) -> {
                             if (authentication.getAuthorities().stream()
                                     .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-                                response.sendRedirect ("/admin"); // if admin, go to admin control panel
+                                response.sendRedirect ("/admin"); // If the authenticated user is an admin, go to the admin control panel
                             } else {
-                                response.sendRedirect ("/"); // if not admin, go to index
+                                response.sendRedirect ("/"); // If not an admin, go to the main index page
                             }
                         })
                         .permitAll()
                 )
 
 
-                // configure logout behavior
+                // Configure logout behavior
                 .logout((logout) -> logout
-                        .logoutUrl ("/logout") // url that triggers logout
-                        .logoutSuccessUrl ("/") // redirection after succesful logout
+                        .logoutUrl ("/logout") // URL that triggers the logout process
+                        .logoutSuccessUrl ("/") // Redirection URL after a successful logout
                         .permitAll()
                 )
 
-                // remember me cookie functionality
+                // Configure the Remember-Me cookie functionality
                 .rememberMe((remember) -> remember
                         .rememberMeServices(rememberMeServices())
                 )
 
-                // trigger 403 if anon tries to visit admin or user exclusive pages
+                // Trigger a 403 Forbidden error if an unauthenticated user tries to visit admin or user-exclusive pages directly
                 .exceptionHandling ((exception) -> exception
                     .authenticationEntryPoint( (request, response, authException) -> {
                         String uri = request.getRequestURI();
-                        // conditions to trigger
-                        if (uri.startsWith ("/admin") || // admin pages
-                        uri.startsWith("/cart") || uri.startsWith("/checkout") || uri.startsWith("/invoice")) { // user pages
+                        // Conditions to trigger the 403 error
+                        if (uri.startsWith ("/admin") || // Admin pages
+                        uri.startsWith("/cart") || uri.startsWith("/checkout") || uri.startsWith("/invoice")) { // User-specific pages
                             response.sendError(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN, "Acceso Denegado");
                         } else {
-                            // default redirect to login
+                            // Default behavior: redirect unauthenticated users to the login page
                             response.sendRedirect ("/login");
                         }
                 })

@@ -38,7 +38,9 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 // endregion
 
-// use: manage administrative tasks for users
+/**
+ * Controller to manage general web navigation and user actions.
+ */
 @Controller
 public class WebController {
     // region =========== Autowired =================
@@ -59,6 +61,12 @@ public class WebController {
     // endregion
 
     // region =========== ModelAttribute =================
+    /**
+     * Retrieves the current user's cart size to display in the view.
+     *
+     * @param principal The currently authenticated user.
+     * @return The number of tours in the open booking, or 0 if none.
+     */
     @ModelAttribute("cartSize")
     public int getCartSize(Principal principal) {
         if (principal != null) {
@@ -74,6 +82,9 @@ public class WebController {
 
     // region =========== GetMapping =================
     // region 1. "/"
+    /**
+     * Handles the home page request.
+     */
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("home", true);
@@ -82,6 +93,9 @@ public class WebController {
     // endregion
 
     // region 2. "/packages"
+    /**
+     * Displays available tours with pagination.
+     */
     @GetMapping("/packages")
     public String packages(Model model, @PageableDefault(size = 6) Pageable pageable) {
         Page<Tour> page = tourService.findByHiddenFalse(pageable);
@@ -98,6 +112,9 @@ public class WebController {
     // endregion
 
     // region 3. "/services"
+    /**
+     * Displays the services page.
+     */
     @GetMapping("/services")
     public String services(Model model) {
         model.addAttribute("services", true);
@@ -106,6 +123,9 @@ public class WebController {
     // endregion
 
     // region 4. "/about"
+    /**
+     * Displays the about page.
+     */
     @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("about", true);
@@ -114,6 +134,9 @@ public class WebController {
     // endregion
 
     // region 5. "/contact"
+    /**
+     * Displays the contact page and handles potential WIP messages.
+     */
     @GetMapping("/contact")
     public String contact(@RequestParam(required = false) String wip, Model model) {
         model.addAttribute("contact", true);
@@ -127,6 +150,9 @@ public class WebController {
 
     // region 6. "/cart/"
     // region 6.1. "/cart/add/"
+    /**
+     * Adds a specific tour to the user's active booking/cart.
+     */
     @GetMapping("/cart/add/{id}")
     public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
         if (principal == null) {
@@ -156,6 +182,9 @@ public class WebController {
     // endregion
 
     // region 6.2. "/cart/remove/"
+    /**
+     * Removes a tour from the user's active booking/cart.
+     */
     @GetMapping("/cart/remove/{id}")
     public String removeFromCart(@PathVariable Long id, Principal principal) {
         if (principal == null)
@@ -178,6 +207,9 @@ public class WebController {
     // endregion
 
     // region 6.3. "/cart"
+    /**
+     * Displays the user's shopping cart contents.
+     */
     @GetMapping("/cart")
     public String cart(Model model, Principal principal) {
         model.addAttribute("cart", true);
@@ -207,6 +239,9 @@ public class WebController {
     // endregion
 
     // region 7. "/register"
+    /**
+     * Displays the registration form.
+     */
     @GetMapping("/register")
     public String register() {
         return "user/register";
@@ -214,6 +249,9 @@ public class WebController {
     // endregion
 
     // region 8. "/login"
+    /**
+     * Displays the user login form. Manages error or status flags.
+     */
     @GetMapping("/login")
     public String login(@RequestParam(required = false) String inactive,
             @RequestParam(required = false) String error,
@@ -235,6 +273,9 @@ public class WebController {
     // endregion
 
     // region 9. "/profile"
+    /**
+     * Displays the profile page for the authenticated user.
+     */
     @GetMapping("/profile")
     public String profile(Model model,
             Principal principal,
@@ -266,6 +307,9 @@ public class WebController {
     // endregion
 
     // region 10. "tour-details/"
+    /**
+     * Displays detailed information about a specific tour, including its paginated reviews.
+     */
     @GetMapping("/tour-details/{id}")
     public String showDetails(@PathVariable Long id,
             @RequestParam(defaultValue = "0") int page,
@@ -319,6 +363,9 @@ public class WebController {
     // endregion
 
     // region 11. "/checkout"
+    /**
+     * Renders the checkout page for completing a purchase.
+     */
     @GetMapping("/checkout")
     public String checkout(Model model, Principal principal) {
         if (principal == null)
@@ -339,6 +386,9 @@ public class WebController {
     // endregion
 
     // region 12. "/invoice"
+    /**
+     * Processes a completed booking and displays the generated invoice.
+     */
     @GetMapping("/invoice")
     public String invoice(Model model, Principal principal) {
         if (principal == null) {
@@ -378,6 +428,9 @@ public class WebController {
     // endregion
 
     // region 13. /"add-review/"
+    /**
+     * Shows the form to post a new review for a selected tour.
+     */
     @GetMapping("/add-review/{id}")
     public String showAddReview(@PathVariable Long id, Model model) {
 
@@ -420,6 +473,9 @@ public class WebController {
     // endregion
 
     // region 14. "/review-user"
+    /**
+     * Displays a paginated view of all reviews authored by the current user.
+     */
     @GetMapping("/review-user")
     public String myReviews(Principal principal,
             @RequestParam(defaultValue = "0") int page,
@@ -450,6 +506,9 @@ public class WebController {
     // endregion
 
     // region 15. /"mis-reviews/{id}/edit-review"
+    /**
+     * Displays the form to modify an existing review.
+     */
     @GetMapping("/mis-reviews/{id}/edit-review")
     public String editReview(@PathVariable Long id, Principal principal, Model model) {
 
@@ -481,6 +540,9 @@ public class WebController {
     // endregion
 
     // region 16. "/booking-user"
+    /**
+     * Retrieves the past closed bookings for the user.
+     */
     @GetMapping("/booking-user")
     public String myBookings(Principal principal,
             @PageableDefault(size = 10) Pageable pageable,
@@ -511,6 +573,9 @@ public class WebController {
     // endregion
 
     // region 17. "/forgot-password"
+    /**
+     * Renders the forgot password utility page.
+     */
     @GetMapping("/forgot-password")
     public String forgot_password() {
         return "/user/forgot-password";
@@ -518,6 +583,9 @@ public class WebController {
     // endregion
 
     // region 18. "/admin-login"
+    /**
+     * Displays the administrative login portal.
+     */
     @GetMapping("/admin-login")
     public String adminLogin(@RequestParam(required = false) String error, Model model) {
         model.addAttribute("error", error != null);
@@ -526,7 +594,9 @@ public class WebController {
     // endregion
 
     // region 19. "/user/{id}/image"
-    // retrieve an image for a specific user
+    /**
+     * Retrieves the profile picture data to be rendered by the view.
+     */
     @GetMapping("/user/{id}/image")
     public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
         User user = userService.findById(id);
@@ -540,6 +610,9 @@ public class WebController {
     // endregion
 
     // region 20. "/guides"
+    /**
+     * Shows a list of available guides on the public facing site.
+     */
     @GetMapping("/guides")
     public String guides(Model model) {
 
@@ -559,6 +632,9 @@ public class WebController {
 
     // region =========== PostMapping =================
     // region 1. "/register"
+    /**
+     * Handles new user registration via the public sign-up form.
+     */
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute User newUser,
             BindingResult result,
@@ -632,6 +708,9 @@ public class WebController {
     // endregion
 
     // region 2. "/profile/update"
+    /**
+     * Processes profile updates initiated by the user.
+     */
     @PostMapping("/profile/update")
     public String updateProfile(Principal principal,
             HttpServletRequest request,
@@ -735,7 +814,9 @@ public class WebController {
     // endregion
 
     // region 3. "/notifications/read/{id}"
-    // marks single notification as read
+    /**
+     * Marks a specific notification as read.
+     */
     @PostMapping("/notifications/read/{id}")
     public String markAsRead(@PathVariable Long id, HttpServletRequest request) {
         notificationService.markAsRead(id);
@@ -746,6 +827,9 @@ public class WebController {
     // endregion
 
     // region 4. "/contact"
+    /**
+     * Processes form submissions from the contact page.
+     */
     @PostMapping("/contact")
     public String handleContactSubmit() {
         return "redirect:/contact?wip=true";
@@ -753,6 +837,9 @@ public class WebController {
     // endregion
 
     // region 5. "/notifications/delete/{id}"
+    /**
+     * Deletes a specific notification from the database.
+     */
     @PostMapping("/notifications/delete/{id}")
     public String deleteNotification(@PathVariable Long id, HttpServletRequest request) {
         notificationService.delete(id);
