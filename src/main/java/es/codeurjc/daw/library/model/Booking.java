@@ -17,7 +17,7 @@ public class Booking {
    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Tour> tours = new ArrayList<>();
 
-    private boolean cerrada = false;
+    private boolean close = false;
 
     public Booking() {}
 
@@ -38,6 +38,6 @@ public class Booking {
     public List<Tour> getTours() { return tours; }
     public void setTours(List<Tour> tours) { this.tours = tours; }
     
-    public boolean isCerrada() { return cerrada; }
-    public void setCerrada(boolean cerrada) { this.cerrada = cerrada; }
+    public boolean isClose() { return close; }
+    public void setClose(boolean close) { this.close = close; }
 }

@@ -18,74 +18,74 @@ public class BookingService {
     @Autowired
     private BookingRepository bookingRepository;
 
-    // Obtener todas las reservas
+    // Get all bookings
     public List<Booking> findAll() {
         return bookingRepository.findAll();
     }
 
-    // Obtener todas las reservas (paginado)
+    // Get all bookings (paginated)
     public Page<Booking> findAll(Pageable pageable) {
         return bookingRepository.findAll(pageable);
     }
 
-    // Obtener reserva por ID
+    // Get booking by ID
     public Optional<Booking> findById(Long id) {
         return bookingRepository.findById(id);
     }
 
-    // Obtener la reserva abierta de un usuario (carrito)
+    // Get the open booking of a user (cart)
     public Optional<Booking> findOpenBookingByUser(User user) {
-        return bookingRepository.findByUserAndCerradaFalse(user);
+        return bookingRepository.findByUserAndCloseFalse(user);
     }
 
-    // Obtener todas las reservas de un usuario (paginado)
+    // Get all bookings of a user (paginated)
     public Page<Booking> findPagedByUserId(User user, Pageable pageable) {
         return bookingRepository.findByUser(user, pageable);
     }
 
-    // Obtener reservas cerradas de un usuario / historial (paginado)
+    // Get closed bookings of a user / history (paginated)
     public Page<Booking> findClosedBookingsByUser(User user, Pageable pageable) {
-        return bookingRepository.findByUserAndCerradaTrue(user, pageable);
+        return bookingRepository.findByUserAndCloseTrue(user, pageable);
     }
 
-    // Obtener o crear la reserva abierta de un usuario
+    // Get or create the open booking of a user
     public Booking getOrCreateOpenBooking(User user) {
-        return bookingRepository.findByUserAndCerradaFalse(user)
+        return bookingRepository.findByUserAndCloseFalse(user)
                 .orElseGet(() -> bookingRepository.save(new Booking(user)));
     }
 
-    // Añadir un tour a la reserva abierta del usuario
+    // Add a tour to the open booking of the user
     public Booking addTour(User user, Tour tour) {
         Booking booking = getOrCreateOpenBooking(user);
         booking.getTours().add(tour);
         return bookingRepository.save(booking);
     }
 
-    // Eliminar un tour de la reserva abierta del usuario
+    // Remove a tour from the open booking of the user
     public Booking removeTour(User user, Tour tour) {
         Booking booking = getOrCreateOpenBooking(user);
         booking.getTours().removeIf(t -> t.getId().equals(tour.getId()));
         return bookingRepository.save(booking);
     }
 
-    // Cerrar/confirmar la reserva
+    // Close/confirm the booking
     public Booking closeBooking(User user) {
         Booking booking = getOrCreateOpenBooking(user);
-        booking.setCerrada(true);
+        booking.setClose(true);
         return bookingRepository.save(booking);
     }
 
-    // Guardar reserva
+    // Save booking
     public Booking save(Booking booking) {
         return bookingRepository.save(booking);
     }
 
-    // Eliminar reserva por ID
+    // Delete booking by ID
     public void deleteById(Long id) {
         bookingRepository.deleteById(id);
     }
 
     public Optional<Booking> findLastClosedBookingByUser(User user) {
-        return bookingRepository.findFirstByUserAndCerradaTrueOrderByIdDesc(user);
+        return bookingRepository.findFirstByUserAndCloseTrueOrderByIdDesc(user);
     }
 }

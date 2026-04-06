@@ -115,7 +115,7 @@ public class AdminWebController {
 
     // region 6. "/404"
     @GetMapping("/404")
-    public String pagina404() {
+    public String page404() {
         return "admin/404";
     }
     // endregion
@@ -246,7 +246,6 @@ public class AdminWebController {
         return "admin/tour-review";
     }
     // endregion
-    // endregion
 
 
 
@@ -313,7 +312,7 @@ public class AdminWebController {
             return "redirect:/admin/tours";
         }
 
-        // Actualizamos campos
+        // Update fields
         tour.setName(tourData.getName());
         tour.setPrice(tourData.getPrice());
         tour.setDescription(tourData.getDescription());

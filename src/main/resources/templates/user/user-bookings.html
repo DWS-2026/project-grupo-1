@@ -127,12 +127,12 @@
               <div>
                 <h5 class="mb-1">Reserva #{{id}}</h5>
                 <p class="mb-1 text-muted">Total: <strong>{{totalPrice}} €</strong></p>
-                {{#cerrada}}
+                {{#close}}
                 <span class="badge bg-success">Confirmada</span>
-                {{/cerrada}}
-                {{^cerrada}}
+                {{/close}}
+                {{^close}}
                 <span class="badge bg-warning text-dark">Pendiente</span>
-                {{/cerrada}}
+                {{/close}}
               </div>
 
 

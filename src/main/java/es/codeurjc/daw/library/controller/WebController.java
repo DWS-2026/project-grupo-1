@@ -351,7 +351,7 @@ public class WebController {
         if (openBookingOpt.isPresent() && !openBookingOpt.get().getTours().isEmpty()) {
             Booking openBooking = openBookingOpt.get();
             // close reserve (empty cart)
-            openBooking.setCerrada(true);
+            openBooking.setClose(true);
             bookingService.save(openBooking);
             user.addMoneySpent(openBooking.getTotalPrice());
             userService.save(user);

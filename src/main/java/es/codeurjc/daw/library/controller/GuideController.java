@@ -125,7 +125,7 @@ public class GuideController {
             List<Guide> guides = guideService.findAll();
 
             if (guides.size() > 6) {
-                guides = guides.subList(0, 6); // máximo 6 guías
+                guides = guides.subList(0, 6); // 6 max
             }
 
             model.addAttribute("guides", guides);

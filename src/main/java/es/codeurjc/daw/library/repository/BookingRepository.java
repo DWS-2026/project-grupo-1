@@ -9,9 +9,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-    Optional<Booking> findFirstByUserAndCerradaTrueOrderByIdDesc(User user);
-    Optional<Booking> findByUserAndCerradaFalse(User user);
+    Optional<Booking> findFirstByUserAndCloseTrueOrderByIdDesc(User user);
+    Optional<Booking> findByUserAndCloseFalse(User user);
     Page<Booking> findByUser(User user, Pageable pageable);
-    Page<Booking> findByUserAndCerradaTrue(User user, Pageable pageable); // historial cerradas
+    Page<Booking> findByUserAndCloseTrue(User user, Pageable pageable);
     
 }
