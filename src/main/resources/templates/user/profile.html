@@ -307,13 +307,13 @@
                 const preview = document.getElementById('pfp-preview');
                 const placeholder = document.getElementById('pfp-placeholder');
 
-                // 1. Asignamos la nueva imagen al src
+                // assign new image to src
                 preview.src = e.target.result;
 
-                // 2. Nos aseguramos de que sea visible (quitamos d-none de Bootstrap)
+                // make it invisible
                 preview.classList.remove('d-none');
 
-                // 3. Si el placeholder existía, lo ocultamos para que no estorbe
+                // if there was a placeholder, remove it
                 if (placeholder) {
                     placeholder.classList.add('d-none');
                 }
@@ -326,7 +326,6 @@
 
 <!-- input validation -->
 <script>
-    // Actualización del script de validación en profile.html
     (function () {
         'use strict'
         const form = document.querySelector('.file-upload');
@@ -334,7 +333,7 @@
         function getErrorMessage(input) {
             if (input.validity.valueMissing) return 'Este campo es obligatorio.';
 
-            // Error específico para coincidencia de contraseñas
+            // case: passwords dont match
             if (input.id === 'confirmPassword' && input.getAttribute('data-match-error')) {
                 return 'Las contraseñas nuevas no coinciden.';
             }
@@ -354,7 +353,7 @@
         function validateInput(input) {
             const feedbackDiv = input.parentNode.querySelector('.invalid-feedback');
 
-            // Lógica de dependencia: Si hay algo en New Password, Old y Confirm son requeridos
+            // if user adds new password, old and confirm are required
             const oldPass = document.getElementById('oldPassword');
             const newPass = document.getElementById('newPassword');
             const confPass = document.getElementById('confirmPassword');
@@ -369,7 +368,7 @@
                 confPass.removeAttribute('required');
             }
 
-            // Validar coincidencia de contraseñas
+            // validate that passwords match
             if (input.id === 'confirmPassword') {
                 if (input.value !== newPass.value) {
                     input.setCustomValidity('No coinciden');
@@ -395,7 +394,7 @@
                 const action = event.submitter ? event.submitter.value : null;
                 if (action === 'delete') return;
 
-                // Re-validar todo antes de enviar
+                // validate everything before sending
                 const inputs = form.querySelectorAll('input:not([type="hidden"]):not([readonly])');
                 inputs.forEach(validateInput);
 
