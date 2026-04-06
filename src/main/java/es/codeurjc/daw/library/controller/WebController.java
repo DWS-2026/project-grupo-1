@@ -673,12 +673,14 @@ public class WebController {
     @PostMapping ("/profile/update")
     public String updateProfile (Principal principal,
                                  HttpServletRequest request,
-                                 @Valid @ModelAttribute User formUser, // stores:  name, lastName, mainPhone, secondaryPhone
-                                 BindingResult result,
+                                 @RequestParam String name,
+                                 @RequestParam String lastName,
+                                 @RequestParam String mainPhone,
+                                 @RequestParam (required = false) String secondaryPhone,
                                  @RequestParam (required = false) String oldPassword, // not in user, so requested separately
                                  @RequestParam (required = false) String newPassword,
                                  @RequestParam (required = false) String confirmPassword,
-                                 @RequestParam MultipartFile imageFile,
+                                 @RequestParam (required = false) MultipartFile imageFile,
                                  @RequestParam String action,
                                  Model model) throws IOException, ServletException {
 
@@ -696,15 +698,9 @@ public class WebController {
             return "redirect:/logout";
         }
 
-        // return if errors
-        if (result.hasErrors()) {
-            model.addAttribute ("currentUser", user);
-            return "user/profile";
-        }
-
         // clean invisible spaces
-        String mainPhone = formUser.getMainPhone() != null ? formUser.getMainPhone().trim() : "";
-        String secondaryPhone = formUser.getSecondaryPhone() != null ? formUser.getSecondaryPhone().trim() : "";
+        mainPhone = mainPhone != null ? mainPhone.trim() : "";
+        secondaryPhone = secondaryPhone != null ? secondaryPhone.trim() : "";
 
         // check if main phone repeated
         if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
@@ -751,8 +747,8 @@ public class WebController {
 
 
         // update info
-        user.setName (formUser.getName());
-        user.setLastName (formUser.getLastName());
+        user.setName (name);
+        user.setLastName (lastName);
         user.setMainPhone (mainPhone);
         user.setSecondaryPhone (secondaryPhone);
 
