@@ -310,11 +310,57 @@ Solo si han cambiado.
 
 1. **Clonar el repositorio**
    ```bash
-   git clone https://github.com/[usuario]/[nombre-repositorio].git
-   cd [nombre-repositorio]
+   git clone https://github.com/DWS-2026/project-grupo-1.git
+   cd project-grupo-1
    ```
 
-2. **AQUÍ INDICAR LO SIGUIENTES PASOS**
+2. **Instalar los requisitos previos**
+
+   Antes de ejecutar la aplicación, es necesario tener instalado:
+
+   - `Git`
+   - `Java 21`
+   - `Maven`
+   - `MySQL`
+
+   El proyecto está configurado como una aplicación Spring Boot con Maven y usa Java 21, Mustache, JPA, Spring Security y MySQL. Además, en la raíz del repositorio aparece `pom.xml`, por lo que la ejecución se realiza con Maven.
+
+3. **Crear la base de datos**
+
+   La aplicación está configurada para conectarse a una base de datos MySQL llamada `apex_project`. Por tanto, hay que crearla antes de arrancar la aplicación.
+
+   ```sql
+   CREATE DATABASE apex_project;
+   ```
+
+4. **Revisar la configuración de la base de datos**
+
+   En el fichero `src/main/resources/application.properties` están definidos por defecto:
+
+   - URL: `jdbc:mysql://localhost:3306/apex_project`
+   - Usuario: `root`
+   - Contraseña: `passwd`
+
+   Si en tu equipo MySQL usa otras credenciales, debes modificar esas propiedades antes de ejecutar la aplicación.
+
+5. **Compilar y ejecutar la aplicación**
+
+   Una vez creada la base de datos y revisada la configuración, ejecuta:
+
+   ```bash
+   mvn clean install
+   mvn spring-boot:run
+   ```
+
+   El proyecto incluye el plugin de Spring Boot para Maven y una clase principal `Application`, que es la que arranca la aplicación.
+
+6. **Acceder a la aplicación**
+
+   La aplicación está configurada para arrancar en el puerto `8443` y con `HTTPS`. Por tanto, una vez iniciada, se puede abrir en el navegador en:
+
+   ```text
+   https://localhost:8443
+   ```
 
 #### **Credenciales de prueba**
 - **Usuario Admin**: usuario: `admin@apexexpeditions.com`, contraseña: `1234`
@@ -414,7 +460,7 @@ Más allá del módulo de reseñas, también he participado en el desarrollo de 
 📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
-📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
+📖 **[Documentación API REST (HTML)](https://raw.githack.com/DWS-2026/project-grupo-1/main/api-docs/api-docs.html)**
 
 > La documentación de la API REST se encuentra en la carpeta `/api-docs` del repositorio. Se ha generado automáticamente con SpringDoc a partir de las anotaciones en el código Java.
 
