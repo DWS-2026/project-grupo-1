@@ -63,7 +63,7 @@ public class GuideInitializer implements CommandLineRunner {
         g.setLastName(lastName);
         g.setPrice(price);
         g.setTour(tour);
-        g.setProfilePicture(profilePicture); // Asegúrate de que el modelo Guide tenga este atributo
+        g.setProfilePicture(profilePicture);
 
         guideRepository.save(g);
     }

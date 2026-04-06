@@ -56,7 +56,7 @@ public class UserInitializer implements CommandLineRunner {
         createUser ("Ana", "García", "ana@email.com", "1234", "611222333", null,
                 450.75, true, LocalDateTime.now().minusMonths(2));
         createUser ("Carlos", "López", "carlos@email.com", "1234", "622333444", "922333444",
-                0.0, true, LocalDateTime.now().minusDays(1)); // Usuario recién registrado sin compras
+                0.0, true, LocalDateTime.now().minusDays(1));
         createUser ("Marta", "Sánchez", "marta@email.com", "1234", "633444555", "933444555",
                 89.90, false, LocalDateTime.now().minusYears(1)); // Usuario con cuenta deshabilitada
         createUser ("David", "Martín", "david@email.com", "1234", "644555666", null,
