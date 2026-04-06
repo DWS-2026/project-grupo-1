@@ -722,7 +722,7 @@ public class WebController {
             @RequestParam(required = false) String newPassword,
             @RequestParam(required = false) String confirmPassword,
             @RequestParam(required = false) MultipartFile imageFile,
-            @RequestParam String action,
+            @RequestParam String clickaction,
             Model model) throws IOException, ServletException {
 
         // get user logged in
@@ -732,7 +732,7 @@ public class WebController {
         boolean passwordChanged = false;
 
         // process user deletion
-        if ("delete".equals(action)) {
+        if ("delete".equals(clickaction)) {
             userService.delete(user);
             // notification: user deletion via admin (delete button in users page)
             notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus",
