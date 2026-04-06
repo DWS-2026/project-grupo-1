@@ -737,7 +737,7 @@ public class WebController {
             // notification: user deletion via admin (delete button in users page)
             notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus",
                     "bg-warning");
-            return "redirect:/logout";
+            return "redirect:/login";
         }
 
         // clean invisible spaces
