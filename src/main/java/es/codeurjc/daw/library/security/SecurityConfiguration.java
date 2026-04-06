@@ -142,6 +142,9 @@ public class SecurityConfiguration {
                         // admin private paths (require ADMIN role)
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
+                        // user (logged in) private paths
+                        .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**").hasAnyRole("USER", "ADMIN")
+
                         // paths that dont exist arent blocked, so that custom error controller can throw 404
                         .anyRequest().permitAll()
                 )
