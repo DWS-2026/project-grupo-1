@@ -566,6 +566,15 @@ Me he encargado de la entidad `Tour` y de la entidad `Booking`, así como de la 
 | 5 | [Implementación de paginación de tours](https://github.com/DWS-2026/project-grupo-1/commit/e5fdd834a0127ca89d0dc95a2a78466e6ae00b10) | [TourRepository.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/repository/TourRepository.java), [WebController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/controller/WebController.java), [packages.html](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/resources/templates/user/packages.html) |
 ---
 
+##### Top 5 Archivos más contribuidos por marioortiz-6
+
+1. [WebController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/controller/WebController.java) - 7 commits
+2. [BookingRepository.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/repository/BookingRepository.java) - 3 commits
+3. [BookingService.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/service/BookingService.java) - 3 commits
+4. [profile.html](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/resources/templates/user/profile.html) - 2 commits
+5. [invoice.html](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/resources/templates/user/invoice.html) - 2 commits
+
+   
 #### **Alumno 2 - [Javier Hernández Campano]**
 
 
