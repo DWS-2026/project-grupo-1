@@ -35,7 +35,7 @@ public class UserRestController {
     private UserService userService;
 
     @Autowired
-    private UserMapper userMapper; // Inyectas el traductor
+    private UserMapper userMapper;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
