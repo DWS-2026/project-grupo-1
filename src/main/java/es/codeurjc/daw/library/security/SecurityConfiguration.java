@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -80,43 +81,38 @@ public class SecurityConfiguration {
         http.authenticationProvider(authenticationProvider());
 
         http
-                .securityMatcher("/api/**");
-                //.exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+                .securityMatcher("/api/**")
+                .httpBasic(Customizer.withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-        http
-                .authorizeHttpRequests(authorize -> authorize
-                        // PRIVATE ENDPOINTS
-                        // Images
-                        .requestMatchers(HttpMethod.PUT, "/api/images/*/media").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/books/*/images/*").hasRole("USER")
-                        // Books
-                        .requestMatchers(HttpMethod.POST, "/api/books/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.PUT, "/api/books/**").hasRole("USER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/books/**").hasRole("ADMIN")
-                        // Shops
-                        .requestMatchers(HttpMethod.PUT, "/api/shops/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "/api/shops/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "/api/shops/**").hasRole("ADMIN")
-                        // PUBLIC ENDPOINTS
-                        .anyRequest().permitAll());
+                // error management for api
+                .exceptionHandling(exceptions -> exceptions
+                        // 401: not logged in
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
+                            response.getWriter().write("{\"error\": \"No autorizado\", \"message\": \"Debes iniciar sesión para acceder a la API.\"}");
+                        })
+                        // 403: wrong role
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setContentType("application/json");
+                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
+                            response.getWriter().write("{\"error\": \"Acceso Denegado\", \"message\": \"No tienes permisos suficientes (necesitas rol ADMIN).\"}");
+                        })
+                );
 
-        // Disable Form login Authentication
-        http.formLogin(formLogin -> formLogin.disable());
-
-        // Disable CSRF protection (it is difficult to implement in REST APIs)
-        http.csrf(csrf -> csrf.disable());
-
-        // Disable Basic Authentication
-        http.httpBasic(httpBasic -> httpBasic.disable());
-
-        // Stateless session
-        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        // Add JWT Token filter
-        //http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),UsernamePasswordAuthenticationFilter.class);
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
+                .anyRequest().authenticated()
+        );
 
         return http.build();
     }
+
+
+
+
 
     // region 3. filterChain
     /**
