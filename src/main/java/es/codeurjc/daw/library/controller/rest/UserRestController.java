@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
+import java.awt.Color;
 // endregion
 
 
@@ -91,18 +94,31 @@ public class UserRestController {
 
     // region =========== PostMapping =================
     // region 1. createUser
-    @PostMapping
-    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRequestDTO request) {
+    // combines json and file to allow creation of user with pfp (optional)
+    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
+    public ResponseEntity<UserResponseDTO> createUser (
+            @RequestPart("user") UserRequestDTO request,  // text fields
+            // image
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
+
         User user = new User(
                 request.name(), request.lastName(), request.email(),
-                passwordEncoder.encode(request.password()), // Ciframos la pass
+                passwordEncoder.encode(request.password()),
                 request.mainPhone(), null
         );
         user.setRoles(request.roles());
 
+        // case image attached
+        if (imageFile != null && !imageFile.isEmpty()) {
+            user.setProfilePicture(imageFile.getBytes());
+        } else {
+            // otherwise: set default pfp
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new Color(13, 110, 253));
+            user.setProfilePicture(avatar);
+        }
+
         userService.save(user);
 
-        // Generamos la URL del nuevo recurso para la cabecera Location
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(user.getId())
@@ -111,10 +127,6 @@ public class UserRestController {
         return ResponseEntity.created(location).body(userMapper.toDTO(user));
     }
     // endregion
-
-
-
-
     // endregion
 
 
