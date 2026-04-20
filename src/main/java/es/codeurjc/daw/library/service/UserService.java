@@ -20,6 +20,11 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+// for dto
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import es.codeurjc.daw.library.dto.UserResponseDTO;
 // endregion
 
 
@@ -73,6 +78,12 @@ public class UserService {
             return false;
         }
         return userRepository.existsByMainPhone(phone) || userRepository.existsBySecondaryPhone(phone);
+    }
+
+    // for dto
+    // retrieve all users from db in pageable
+    public Page<User> findAll (Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
     // endregion
 
