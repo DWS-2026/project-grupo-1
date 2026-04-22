@@ -1,28 +1,23 @@
 package es.codeurjc.daw.library.dto;
 
 import es.codeurjc.daw.library.model.Review;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-import java.util.List;
+import java.util.Collection;
 
-@Component
-public class ReviewMapper {
+@Mapper(componentModel = "spring")
+public interface ReviewMapper {
 
-    public ReviewResponseDTO toDTO(Review review) {
-        return new ReviewResponseDTO(
-                review.getId(),
-                review.getTour().getId(),
-                review.getUser().getId(),
-                review.getRating(),
-                review.getDescription(),
-                review.isHidden(),
-                review.getCreationDate()
-        );
-    }
+    @Mapping(target = "tourId", source = "tour.id")
+    @Mapping(target = "userId", source = "user.id")
+    ReviewResponseDTO toDTO(Review review);
 
-    public List<ReviewResponseDTO> toDTOs(List<Review> reviews) {
-        return reviews.stream()
-                .map(this::toDTO)
-                .toList();
-    }
+    Collection<ReviewResponseDTO> toDTOs(Collection<Review> reviews);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "tour", ignore = true)
+    @Mapping(target = "hidden", ignore = true)
+    Review toDomain(ReviewRequestDTO reviewDTO);
 }

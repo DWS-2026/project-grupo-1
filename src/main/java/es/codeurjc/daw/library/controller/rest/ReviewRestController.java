@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,16 +31,16 @@ public class ReviewRestController {
 
     // Returns all reviews stored in the database.
     @GetMapping
-    public ResponseEntity<List<ReviewResponseDTO>> listarReviews() {
+    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviews() {
         List<Review> reviews = reviewService.findAll();
-        return ResponseEntity.ok(reviewMapper.toDTOs(reviews));
+        return ResponseEntity.ok(toDTOs(reviews));
     }
 
     // Returns all reviews marked as hidden.
     @GetMapping("/hidden")
-    public ResponseEntity<List<ReviewResponseDTO>> listarReviewsOcultas() {
+    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsOcultas() {
         List<Review> reviews = reviewService.findHidden();
-        return ResponseEntity.ok(reviewMapper.toDTOs(reviews));
+        return ResponseEntity.ok(toDTOs(reviews));
     }
 
     // Returns one review by its id, or 404 if it does not exist.
@@ -51,34 +52,35 @@ public class ReviewRestController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(reviewMapper.toDTO(review.get()));
+        return ResponseEntity.ok(toDTO(review.get()));
     }
 
     // Returns all reviews written for a specific tour.
     @GetMapping("/tour/{tourId}")
-    public ResponseEntity<List<ReviewResponseDTO>> listarReviewsPorTour(@PathVariable Long tourId) {
+    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorTour(@PathVariable Long tourId) {
         List<Review> reviews = reviewService.findByTourId(tourId);
-        return ResponseEntity.ok(reviewMapper.toDTOs(reviews));
+        return ResponseEntity.ok(toDTOs(reviews));
     }
 
     // Returns all reviews written by a specific user.
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ReviewResponseDTO>> listarReviewsPorUsuario(@PathVariable Long userId) {
+    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorUsuario(@PathVariable Long userId) {
         List<Review> reviews = reviewService.findByUserId(userId);
-        return ResponseEntity.ok(reviewMapper.toDTOs(reviews));
+        return ResponseEntity.ok(toDTOs(reviews));
     }
 
     // Creates a new review linked to an existing tour and user.
     @PostMapping
     public ResponseEntity<ReviewResponseDTO> createReview(@Valid @RequestBody ReviewRequestDTO request) {
         Optional<Review> savedReview;
+        Review reviewRequest = toDomain(request);
 
         try {
             savedReview = reviewService.createReview(
                     request.tourId(),
                     request.userId(),
-                    request.rating(),
-                    request.description()
+                    reviewRequest.getRating(),
+                    reviewRequest.getDescription()
             );
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
@@ -92,7 +94,7 @@ public class ReviewRestController {
                 .buildAndExpand(savedReview.get().getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(reviewMapper.toDTO(savedReview.get()));
+        return ResponseEntity.created(location).body(toDTO(savedReview.get()));
     }
 
     // Deletes one review by its id, or returns 404 if it does not exist.
@@ -104,7 +106,7 @@ public class ReviewRestController {
             return ResponseEntity.notFound().build();
         }
 
-        ReviewResponseDTO deletedReview = reviewMapper.toDTO(review.get());
+        ReviewResponseDTO deletedReview = toDTO(review.get());
         reviewService.deleteById(id);
         return ResponseEntity.ok(deletedReview);
     }
@@ -127,7 +129,7 @@ public class ReviewRestController {
         }
 
         Review savedReview = reviewService.save(existingReview);
-        return ResponseEntity.ok(reviewMapper.toDTO(savedReview));
+        return ResponseEntity.ok(toDTO(savedReview));
     }
 
     // Updates only the visibility state of a review.
@@ -144,6 +146,18 @@ public class ReviewRestController {
         existingReview.setHidden(visibility.hidden());
 
         Review savedReview = reviewService.save(existingReview);
-        return ResponseEntity.ok(reviewMapper.toDTO(savedReview));
+        return ResponseEntity.ok(toDTO(savedReview));
+    }
+
+    private ReviewResponseDTO toDTO(Review review) {
+        return reviewMapper.toDTO(review);
+    }
+
+    private Review toDomain(ReviewRequestDTO reviewDTO) {
+        return reviewMapper.toDomain(reviewDTO);
+    }
+
+    private Collection<ReviewResponseDTO> toDTOs(Collection<Review> reviews) {
+        return reviewMapper.toDTOs(reviews);
     }
 }
