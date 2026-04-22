@@ -19,6 +19,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // Returns every review that is not marked as hidden.
     List<Review> findByHiddenFalse();
 
+    // Returns every review marked as hidden.
+    List<Review> findByHiddenTrue();
+
     // Paged version used when visible tour reviews need pagination.
     Page<Review> findByTourIdAndHiddenFalseOrderByCreationDateDesc(Long tourId, Pageable pageable);
 

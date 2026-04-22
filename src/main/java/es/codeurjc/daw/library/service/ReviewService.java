@@ -52,6 +52,10 @@ public class ReviewService {
         return reviewRepository.findByHiddenFalse();
     }
 
+    public List<Review> findHidden() {
+        return reviewRepository.findByHiddenTrue();
+    }
+
     public void deleteById(Long id) {
         reviewRepository.deleteById(id);
     }
