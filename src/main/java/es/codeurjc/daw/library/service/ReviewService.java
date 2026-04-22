@@ -107,6 +107,18 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    public Optional<Review> createReview(Long tourId, Long userId, int rating, String description) {
+        Tour tour = tourRepository.findById(tourId).orElse(null);
+        User user = userRepository.findById(userId).orElse(null);
+
+        if (tour == null || user == null) {
+            return Optional.empty();
+        }
+
+        Review review = new Review(user, tour, rating, description);
+        return Optional.of(reviewRepository.save(review));
+    }
+
     public List<Review> findByUserId(Long userId) {
         return reviewRepository.findByUserId(userId);
     }

@@ -59,16 +59,31 @@ public class ReviewRestController {
         return ResponseEntity.ok(reviews);
     }
 
-    // Creates a new review and returns its location URI.
+    // Creates a new review linked to an existing tour and user.
     @PostMapping
-    public ResponseEntity<Review> createReview(@RequestBody Review review) {
-        Review savedReview = reviewService.save(review);
+    public ResponseEntity<Review> createReview(@RequestBody CreateReviewRequest request) {
+        Optional<Review> savedReview;
+
+        try {
+            savedReview = reviewService.createReview(
+                    request.tourId(),
+                    request.userId(),
+                    request.rating(),
+                    request.description()
+            );
+        } catch (IllegalArgumentException exception) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (savedReview.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
         URI location = fromCurrentRequest().path("/{id}")
-                .buildAndExpand(savedReview.getId())
+                .buildAndExpand(savedReview.get().getId())
                 .toUri();
 
-        return ResponseEntity.created(location).body(savedReview);
+        return ResponseEntity.created(location).body(savedReview.get());
     }
 
     // Deletes one review by its id, or returns 404 if it does not exist.
@@ -99,5 +114,13 @@ public class ReviewRestController {
 
         Review savedReview = reviewService.save(existingReview);
         return ResponseEntity.ok(savedReview);
+    }
+
+    public record CreateReviewRequest(
+            Long tourId,
+            Long userId,
+            int rating,
+            String description
+    ) {
     }
 }
