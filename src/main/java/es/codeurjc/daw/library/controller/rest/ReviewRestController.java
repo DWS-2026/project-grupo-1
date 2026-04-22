@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -113,7 +114,9 @@ public class ReviewRestController {
 
     // Updates only the editable fields of a review: rating and description.
     @PutMapping("/{id}")
-    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long id, @Valid @RequestBody ReviewUpdateDTO updatedReview) {
+    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long id,
+                                                          @Valid @RequestBody ReviewUpdateDTO updatedReview,
+                                                          Principal principal) {
         Optional<Review> review = reviewService.findById(id);
 
         if (review.isEmpty()) {
@@ -121,6 +124,15 @@ public class ReviewRestController {
         }
 
         Review existingReview = review.get();
+
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        if (!existingReview.getUser().getEmail().equals(principal.getName())) {
+            return ResponseEntity.status(403).build();
+        }
+
         try {
             existingReview.setRating(updatedReview.rating());
             existingReview.setDescription(updatedReview.description());
