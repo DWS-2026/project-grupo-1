@@ -16,8 +16,10 @@ public class Tour {
 
     private String name;
 
-    @Lob // for b64 encoded image
-    private String tour_image;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id")
+    @Lob
+    private Image tour_image;
 
     @Lob
     private String description;
@@ -65,12 +67,12 @@ public class Tour {
         this.name = name;
     }
 
-    public String getTourImage() {
+    public Image getTourImage() {
         return tour_image;
 
     }
 
-    public void setTourImage(String image) {
+    public void setTourImage(Image image) {
         this.tour_image = image;
     }
 
@@ -114,12 +116,11 @@ public class Tour {
         this.hotelIncluded = hotelIncluded;
     }
 
-
-    public boolean isHidden(){
+    public boolean isHidden() {
         return this.hidden;
     }
 
-    public void setHidden(boolean bool){
+    public void setHidden(boolean bool) {
         this.hidden = bool;
     }
 
@@ -164,10 +165,10 @@ public class Tour {
 
     public double getAverageRating() {
 
-    if (reviews == null || reviews.isEmpty()) {
-        return 0;
-    }
+        if (reviews == null || reviews.isEmpty()) {
+            return 0;
+        }
 
-    return reviews.stream().mapToInt(Review::getRating).average().orElse(0);
-}
+        return reviews.stream().mapToInt(Review::getRating).average().orElse(0);
+    }
 }

@@ -1,5 +1,6 @@
 package es.codeurjc.daw.library.service;
 
+import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
 
@@ -48,7 +49,8 @@ public class TourService {
         if (file != null && !file.isEmpty()) {
             byte[] bytes = file.getBytes();
             String base64 = Base64.getEncoder().encodeToString(bytes);
-            tour.setTourImage(base64);
+            Image tour_image = new Image(base64);
+            tour.setTourImage(tour_image);
         }
 
         return tourRepository.save(tour);

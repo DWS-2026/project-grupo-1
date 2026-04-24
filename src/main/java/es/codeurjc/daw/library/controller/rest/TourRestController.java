@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.TourService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/tours")

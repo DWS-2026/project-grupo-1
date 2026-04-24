@@ -11,12 +11,12 @@ public class Image {
     private Long id;
 
     @Lob
-    private byte[] imageFile;
+    private String imageFile;
 
     public Image() {
     }
 
-    public Image(byte[] imageFile) {
+    public Image(String imageFile) {
         this.imageFile = imageFile;
     }
 
@@ -28,11 +28,11 @@ public class Image {
         this.id = id;
     }
 
-    public byte[] getImageFile() {
+    public String getImageFile() {
         return imageFile;
     }
 
-    public void setImageFile(byte[] imageFile) {
+    public void setImageFile(String imageFile) {
         this.imageFile = imageFile;
     }
 }
