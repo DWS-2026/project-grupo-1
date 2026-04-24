@@ -3,8 +3,10 @@ package es.codeurjc.daw.library.dto;
 import es.codeurjc.daw.library.model.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 
 import java.util.Collection;
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ReviewMapper {
@@ -20,4 +22,14 @@ public interface ReviewMapper {
     @Mapping(target = "tour", ignore = true)
     @Mapping(target = "hidden", ignore = true)
     Review toDomain(ReviewRequestDTO reviewDTO);
+
+    @Named("toTourDTO")
+    ReviewTourDTO toTourDTO(Review review);
+
+    @Named("toTourDTOList")
+    default List<ReviewTourDTO> toTourDTOList(List<Review> reviews) {
+        if (reviews == null) return List.of();
+        return reviews.stream().map(this::toTourDTO).toList();
+    }
+
 }

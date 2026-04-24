@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import es.codeurjc.daw.library.dto.TourDTO;
+import es.codeurjc.daw.library.dto.TourMapper;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.TourService;
 
@@ -23,18 +25,22 @@ public class TourRestController {
     @Autowired
     private TourService tourService;
 
+    
+    @Autowired
+    private TourMapper tourMapper;
+
     @GetMapping
-    public ResponseEntity<List<Tour>> listarTours() {
-        List<Tour> tours = tourService.findAll();
-        return ResponseEntity.ok(tours);
+    public ResponseEntity<List<TourDTO>> listarTours() {
+        List<TourDTO> toursDTO = tourMapper.toDTOs(tourService.findAll());
+        return ResponseEntity.ok(toursDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tour> obtenerTour(@PathVariable Long id) {
+    public ResponseEntity<TourDTO> obtenerTour(@PathVariable Long id) {
         Tour tour = tourService.findById(id);
         if (tour == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(tour);
+        return ResponseEntity.ok(tourMapper.toDTO(tour));
     }
 }
