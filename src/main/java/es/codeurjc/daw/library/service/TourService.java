@@ -4,18 +4,21 @@ import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.repository.TourRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
 public class TourService {
 
     private final TourRepository tourRepository;
+
+    @Autowired
+    ImageService imageService;
 
     public TourService(TourRepository tourRepository) {
         this.tourRepository = tourRepository;
@@ -47,10 +50,7 @@ public class TourService {
     public Tour save(Tour tour, MultipartFile file) throws Exception {
 
         if (file != null && !file.isEmpty()) {
-            byte[] bytes = file.getBytes();
-            String base64 = Base64.getEncoder().encodeToString(bytes);
-            Image tour_image = new Image(base64);
-            tour.setTourImage(tour_image);
+            tour.setTourImage(imageService.createImage(file));
         }
 
         return tourRepository.save(tour);
