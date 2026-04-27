@@ -7,13 +7,18 @@ import es.codeurjc.daw.library.dto.TourMapper;
 import es.codeurjc.daw.library.dto.TourRequestDTO;
 import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.Tour;
+import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ImageService;
 import es.codeurjc.daw.library.service.TourService;
+import es.codeurjc.daw.library.service.UserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -37,6 +42,9 @@ public class TourRestController {
 
     @Autowired
     private ImageMapper imageMapper;
+
+    @Autowired
+    private UserService userService;
 
     // =========================================================
     // CRUD TOURS
@@ -79,6 +87,13 @@ public class TourRestController {
             throw new NoSuchElementException("Tour not found");
         }
 
+        // Broken Access Control
+        User user = userService.getLoggedUser();
+
+        if (!userService.isAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         Tour updated = tourService.replaceTour(id, tourDTO, imageFile);
 
         return ResponseEntity.ok(tourMapper.toDTO(updated));
@@ -86,6 +101,14 @@ public class TourRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TourResponseDTO> deleteTour(@PathVariable long id) {
+
+        // Broken Access Control
+        User user = userService.getLoggedUser();
+
+        if (!userService.isAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         Tour tour = tourService.deleteById(id);
         return ResponseEntity.ok(tourMapper.toDTO(tour));
     }
@@ -127,6 +150,13 @@ public class TourRestController {
             @PathVariable long id,
             @RequestParam MultipartFile imageFile) throws IOException {
 
+        // Broken Access Control
+        User user = userService.getLoggedUser();
+
+        if (!userService.isAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
@@ -149,6 +179,14 @@ public class TourRestController {
 
     @DeleteMapping("/{id}/image")
     public ResponseEntity<ImageDTO> deleteTourImage(@PathVariable long id) {
+
+        // Broken Access Control
+        User user = userService.getLoggedUser();
+
+        if (!userService.isAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         Tour tour = tourService.findById(id);
         Image image = tour.getTourImage();
 
