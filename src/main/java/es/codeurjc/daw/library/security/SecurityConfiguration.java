@@ -24,7 +24,6 @@ import org.springframework.security.web.SecurityFilterChain;
 //import es.codeurjc.daw.library.security.jwt.UnauthorizedHandlerJwt;
 // endregion
 
-
 /**
  * Dual security configuration:
  * - Order(1): REST API chain (/api/**) — stateless, JWT-based, JSON error
@@ -39,11 +38,13 @@ public class SecurityConfiguration {
     @Autowired
     private UserDetailsService userDetailService;
 
-    //@Autowired
-    //private UnauthorizedHandlerJwt unauthorizedHandlerJwt; // Returns JSON 401 for REST errors
+    // @Autowired
+    // private UnauthorizedHandlerJwt unauthorizedHandlerJwt; // Returns JSON 401
+    // for REST errors
 
-    //@Autowired
-    //private JwtRequestFilter jwtRequestFilter; // Validates JWT on every /api/** request
+    // @Autowired
+    // private JwtRequestFilter jwtRequestFilter; // Validates JWT on every /api/**
+    // request
     // endregion
 
     @Bean
@@ -62,7 +63,6 @@ public class SecurityConfiguration {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
-
         return authProvider;
     }
     // endregion
@@ -92,27 +92,23 @@ public class SecurityConfiguration {
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setContentType("application/json");
                             response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write("{\"error\": \"No autorizado\", \"message\": \"Debes iniciar sesión para acceder a la API.\"}");
+                            response.getWriter().write(
+                                    "{\"error\": \"No autorizado\", \"message\": \"Debes iniciar sesión para acceder a la API.\"}");
                         })
                         // 403: wrong role
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.setContentType("application/json");
                             response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write("{\"error\": \"Acceso Denegado\", \"message\": \"No tienes permisos suficientes (necesitas rol ADMIN).\"}");
-                        })
-                );
+                            response.getWriter().write(
+                                    "{\"error\": \"Acceso Denegado\", \"message\": \"No tienes permisos suficientes (necesitas rol ADMIN).\"}");
+                        }));
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
-                .anyRequest().authenticated()
-        );
+                .anyRequest().authenticated());
 
         return http.build();
     }
-
-
-
-
 
     // region 3. filterChain
     /**
@@ -211,7 +207,6 @@ public class SecurityConfiguration {
                         .logoutSuccessUrl("/") // Redirection URL after a successful logout
                         .permitAll())
 
-               
                 // Trigger a 403 Forbidden error if an unauthenticated user tries to visit admin
                 // or user-exclusive pages directly
                 .exceptionHandling((exception) -> exception
