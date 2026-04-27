@@ -164,10 +164,7 @@ public class AdminWebController {
 
         Tour tour = tourService.findById(id);
 
-        CsrfToken csrf = (CsrfToken) request.getAttribute("_csrf");
-
         model.addAttribute("tour", tour);
-        model.addAttribute("_csrf", csrf);
 
         return "admin/tour-edit";
     }
