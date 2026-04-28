@@ -18,10 +18,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-//import es.codeurjc.daw.library.security.jwt.JwtRequestFilter;
-//import es.codeurjc.daw.library.security.jwt.JwtTokenProvider;
-//import es.codeurjc.daw.library.security.jwt.UnauthorizedHandlerJwt;
+import es.codeurjc.daw.library.security.jwt.JwtRequestFilter;
+import es.codeurjc.daw.library.security.jwt.JwtTokenProvider;
+import es.codeurjc.daw.library.security.jwt.UnauthorizedHandlerJwt;
 // endregion
 
 /**
@@ -36,16 +37,13 @@ public class SecurityConfiguration {
 
     // region =========== autowired =================
     @Autowired
-    private UserDetailsService userDetailService;
+    private JwtTokenProvider jwtTokenProvider;
 
-    // @Autowired
-    // private UnauthorizedHandlerJwt unauthorizedHandlerJwt; // Returns JSON 401
-    // for REST errors
+    @Autowired
+    public RepositoryUserDetailsService userDetailService;
 
-    // @Autowired
-    // private JwtRequestFilter jwtRequestFilter; // Validates JWT on every /api/**
-    // request
-    // endregion
+    @Autowired
+    private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -63,6 +61,7 @@ public class SecurityConfiguration {
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailService);
         authProvider.setPasswordEncoder(passwordEncoder());
+
         return authProvider;
     }
     // endregion
@@ -82,30 +81,47 @@ public class SecurityConfiguration {
 
         http
                 .securityMatcher("/api/**")
-                .httpBasic(Customizer.withDefaults())
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
-                // error management for api
-                .exceptionHandling(exceptions -> exceptions
-                        // 401: not logged in
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_UNAUTHORIZED);
-                            response.getWriter().write(
-                                    "{\"error\": \"No autorizado\", \"message\": \"Debes iniciar sesión para acceder a la API.\"}");
-                        })
-                        // 403: wrong role
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.setContentType("application/json");
-                            response.setStatus(jakarta.servlet.http.HttpServletResponse.SC_FORBIDDEN);
-                            response.getWriter().write(
-                                    "{\"error\": \"Acceso Denegado\", \"message\": \"No tienes permisos suficientes (necesitas rol ADMIN).\"}");
-                        }));
+        // error management for api
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.GET, "/api/v1/users").hasRole("ADMIN")
+                // PRIVATE ENDPOINTS
+                // IMAGES
+                .requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/images/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/images/**").hasRole("ADMIN")
+                // TOURS
+                .requestMatchers(HttpMethod.POST, "/api/v1/tours").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*").hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*/image/media").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
+
+                // PUBLIC ENDPOINTS
+                // IMAGES
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
+                // TOURS
+                .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
+
                 .anyRequest().authenticated());
+
+        // Disable Form login Authentication
+        http.formLogin(formLogin -> formLogin.disable());
+
+        // Disable CSRF protection (it is difficult to implement in REST APIs)
+        http.csrf(csrf -> csrf.disable());
+
+        // Disable Basic Authentication
+        http.httpBasic(httpBasic -> httpBasic.disable());
+
+        // Stateless session
+        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // Add JWT Token filter
+        http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -123,49 +139,53 @@ public class SecurityConfiguration {
     @Bean
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests((requests) -> requests
-                // Public paths (accessible without logging in)
-                // User navigation routes
-                .requestMatchers(
-                        "/", // index
-                        "/about",
-                        "/contact",
-                        "/guides",
-                        "/guides/**",
-                        "/packages",
-                        "/services",
-                        "/tour-details/**",
-                        "/forgot-password",
-                        "/login",
-                        "/register",
-                        "/admin-login",
-                        "/login-check")
-                .permitAll()
 
-                // Static resources
-                .requestMatchers(
-                        "/css/**",
-                        "/js/**",
-                        "/images/**",
-                        "/img/**",
-                        "/vendor/**")
-                .permitAll()
+        http.authenticationProvider(authenticationProvider());
 
-                // Error pages
-                .requestMatchers(
-                        "/error/**")
-                .permitAll()
+        http
+                .authorizeHttpRequests((requests) -> requests
+                        // Public paths (accessible without logging in)
+                        // User navigation routes
+                        .requestMatchers(
+                                "/", // index
+                                "/about",
+                                "/contact",
+                                "/guides",
+                                "/guides/**",
+                                "/packages",
+                                "/services",
+                                "/tour-details/**",
+                                "/forgot-password",
+                                "/login",
+                                "/register",
+                                "/admin-login",
+                                "/login-check")
+                        .permitAll()
 
-                // Admin private paths (strictly require the ADMIN role)
-                .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // Static resources
+                        .requestMatchers(
+                                "/css/**",
+                                "/js/**",
+                                "/images/**",
+                                "/img/**",
+                                "/vendor/**")
+                        .permitAll()
 
-                // User private paths (require either USER or ADMIN roles)
-                .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**")
-                .hasAnyRole("USER", "ADMIN")
+                        // Error pages
+                        .requestMatchers(
+                                "/error/**")
+                        .permitAll()
 
-                // Any other paths that do not exist are permitted so the custom error
-                // controller can throw a 404
-                .anyRequest().permitAll())
+                        // Admin private paths (strictly require the ADMIN role)
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // User private paths (require either USER or ADMIN roles)
+                        .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**")
+                        .hasAnyRole("USER", "ADMIN")
+
+                        // Any other paths that do not exist are permitted so the custom error
+                        // controller can throw a 404
+                        .anyRequest().permitAll())
 
                 // Configure form-based login
                 .formLogin((form) -> form
