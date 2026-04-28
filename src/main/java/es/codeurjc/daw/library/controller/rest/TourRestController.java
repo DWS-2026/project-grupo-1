@@ -52,19 +52,48 @@ public class TourRestController {
 
     @GetMapping("")
     public ResponseEntity<List<TourResponseDTO>> getAllTours() {
-        List<TourResponseDTO> tours = tourMapper.toDTOs(tourService.findAll());
+
+        User user = userService.getLoggedUser();
+        List<TourResponseDTO> tours;
+
+        // Broken Access Control
+        if (user != null && userService.isAdmin(user)) {
+            tours = tourMapper.toDTOs(tourService.findAll());
+        } else {
+            tours = tourMapper.toDTOs(tourService.findByHiddenFalse());
+        }
+
         return ResponseEntity.ok(tours);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TourResponseDTO> getTour(@PathVariable long id) {
+
         Tour tour = tourService.findById(id);
+        User user = userService.getLoggedUser();
+
+        // Broken Access Control
+        if (tour.isHidden() && (user == null || !userService.isAdmin(user))) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
         return ResponseEntity.ok(tourMapper.toDTO(tour));
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<TourResponseDTO> createTour(
             @ModelAttribute TourRequestDTO tourDTO, @ModelAttribute MultipartFile imageFile) throws Exception {
+
+        User user = userService.getLoggedUser();
+
+        // Broken Access Control
+        if (user == null || !userService.isAdmin(user)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        if (imageFile.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
 
         Tour saved = tourService.createTour(tourDTO, imageFile);
 
@@ -90,7 +119,7 @@ public class TourRestController {
         // Broken Access Control
         User user = userService.getLoggedUser();
 
-        if (!userService.isAdmin(user)) {
+        if (user == null || !userService.isAdmin(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
@@ -102,10 +131,10 @@ public class TourRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<TourResponseDTO> deleteTour(@PathVariable long id) {
 
-        // Broken Access Control
         User user = userService.getLoggedUser();
 
-        if (!userService.isAdmin(user)) {
+        // Broken Access Control
+        if (user == null || !userService.isAdmin(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
@@ -121,9 +150,15 @@ public class TourRestController {
     public ResponseEntity<ImageDTO> getTourImage(@PathVariable long id) {
         Tour tour = tourService.findById(id);
         Image image = tour.getTourImage();
+        User user = userService.getLoggedUser();
 
         if (image == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        // Broken Access Control
+        if ((user == null || !userService.isAdmin(user)) && tour.isHidden()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
         return ResponseEntity.ok(imageMapper.toDTO(image));
@@ -131,11 +166,25 @@ public class TourRestController {
 
     @GetMapping("/{id}/image/media")
     public ResponseEntity<byte[]> getTourImageFile(@PathVariable long id) {
+
         Tour tour = tourService.findById(id);
-        if (tour.getTourImage() == null) {
+        User user = userService.getLoggedUser();
+        Image image = tour.getTourImage();
+
+        if (image == null) {
             return ResponseEntity.notFound().build();
         }
-        String base64 = imageService.getImageFile(tour.getTourImage().getId());
+
+        // Broken Access Control
+        if ((user == null || !userService.isAdmin(user)) && tour.isHidden()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        String base64 = imageService.getImageFile(image.getId());
+
+        if (base64 == null) {
+            return ResponseEntity.notFound().build();
+        }
 
         byte[] imageBytes = java.util.Base64.getDecoder().decode(base64);
 
@@ -153,7 +202,7 @@ public class TourRestController {
         // Broken Access Control
         User user = userService.getLoggedUser();
 
-        if (!userService.isAdmin(user)) {
+        if (user == null || !userService.isAdmin(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
@@ -183,7 +232,7 @@ public class TourRestController {
         // Broken Access Control
         User user = userService.getLoggedUser();
 
-        if (!userService.isAdmin(user)) {
+        if (user == null || !userService.isAdmin(user)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
