@@ -7,6 +7,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 
+import es.codeurjc.daw.library.dto.GuideMapper;
+import es.codeurjc.daw.library.dto.GuideRequestDTO;
+import es.codeurjc.daw.library.dto.GuideResponseDTO;
+import es.codeurjc.daw.library.model.Tour;
+import es.codeurjc.daw.library.repository.TourRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.transaction.annotation.Transactional;
+
+
 // for pfp generation
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,9 +32,59 @@ public class GuideService {
 
     private final GuideRepository guideRepository;
 
-    public GuideService(GuideRepository guideRepository) {
+    private final TourRepository tourRepository;
+    private final GuideMapper guideMapper;
+
+    public GuideService(GuideRepository guideRepository, TourRepository tourRepository, GuideMapper guideMapper) {
         this.guideRepository = guideRepository;
+        this.tourRepository = tourRepository;
+        this.guideMapper = guideMapper;
     }
+
+    public List<GuideResponseDTO> findAllDTOs() {
+        return guideMapper.toDTOs(guideRepository.findAll());
+    }
+
+    public GuideResponseDTO findDTOById(Long id) {
+        Guide guide = guideRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Guide not found with id: " + id));
+        return guideMapper.toDTO(guide);
+    }
+
+    @Transactional
+    public GuideResponseDTO create(GuideRequestDTO dto) {
+        Guide guide = guideMapper.toDomain(dto);
+
+        if (dto.tourId() != null) {
+            Tour tour = tourRepository.findById(dto.tourId())
+                    .orElseThrow(() -> new EntityNotFoundException("Tour not found: " + dto.tourId()));
+            guide.setTour(tour);
+        }
+
+        return guideMapper.toDTO(guideRepository.save(guide));
+    }
+
+
+    @Transactional
+    public GuideResponseDTO replace(Long id, GuideRequestDTO dto) {
+        Guide existing = guideRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Guide not found: " + id));
+
+        // Actualización manual para mantener coherencia con TourService
+        existing.setName(dto.name());
+        existing.setLastName(dto.lastName());
+        existing.setPrice(dto.price());
+        existing.setEnabled(dto.enabled());
+
+        if (dto.tourId() != null) {
+            Tour tour = tourRepository.findById(dto.tourId())
+                    .orElseThrow(() -> new EntityNotFoundException("Tour not found: " + dto.tourId()));
+            existing.setTour(tour);
+        }
+
+        return guideMapper.toDTO(guideRepository.save(existing));
+    }
+
 
     public List<Guide> getGuidesByTour(Long tourId) {
         return guideRepository.findByTourId(tourId);
