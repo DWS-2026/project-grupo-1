@@ -13,12 +13,15 @@ import es.codeurjc.daw.library.service.TourService;
 import es.codeurjc.daw.library.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
 import java.net.URI;
@@ -51,19 +54,21 @@ public class TourRestController {
     // =========================================================
 
     @GetMapping("")
-    public ResponseEntity<List<TourResponseDTO>> getAllTours() {
+    public ResponseEntity<Page<TourResponseDTO>> getAllTours(@PageableDefault(size = 10) Pageable pageable) {
 
         User user = userService.getLoggedUser();
-        List<TourResponseDTO> tours;
+        Page<Tour> toursPage;
 
         // Broken Access Control
         if (user != null && userService.isAdmin(user)) {
-            tours = tourMapper.toDTOs(tourService.findAll());
+            toursPage = tourService.findAll(pageable);
         } else {
-            tours = tourMapper.toDTOs(tourService.findByHiddenFalse());
+            toursPage = tourService.findByHiddenFalse(pageable);
         }
 
-        return ResponseEntity.ok(tours);
+        Page<TourResponseDTO> dtoPage = toursPage.map(tourMapper::toDTO);
+
+        return ResponseEntity.ok(dtoPage);
     }
 
     @GetMapping("/{id}")

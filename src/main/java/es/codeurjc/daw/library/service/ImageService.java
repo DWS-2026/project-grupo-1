@@ -2,18 +2,30 @@ package es.codeurjc.daw.library.service;
 
 import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.repository.ImageRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Service
 public class ImageService {
 
     @Autowired
     private ImageRepository imageRepository;
+
+    public List<Image> getAllImages() {
+        return imageRepository.findAll();
+    }
+
+    public Page<Image> getAllImages(Pageable pageable) {
+        return imageRepository.findAll(pageable);
+    }
 
     public Image getImage(long id) {
         return imageRepository.findById(id)

@@ -3,16 +3,15 @@ package es.codeurjc.daw.library.controller.rest;
 import es.codeurjc.daw.library.dto.ImageDTO;
 import es.codeurjc.daw.library.dto.ImageMapper;
 import es.codeurjc.daw.library.model.Image;
-import es.codeurjc.daw.library.model.User;
 import es.codeurjc.daw.library.service.ImageService;
-import es.codeurjc.daw.library.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,8 +28,12 @@ public class ImageRestController {
     @Autowired
     private ImageMapper imageMapper;
 
-    @Autowired
-    private UserService userService;
+
+    @GetMapping("")
+    public ResponseEntity<Page<ImageDTO>> getAllImages(@PageableDefault(size = 10) Pageable pageable) {
+        Page<Image> imagesPage = imageService.getAllImages(pageable);
+        return ResponseEntity.ok(imagesPage.map(imageMapper::toDTO));
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<ImageDTO> getImage(@PathVariable long id) {
@@ -66,7 +69,7 @@ public class ImageRestController {
         Image image = imageService.createImage(imageFile);
 
         URI location = fromCurrentContextPath()
-                .path("/api/images/{id}/media")
+                .path("/api/v1/images/{id}/media")
                 .buildAndExpand(image.getId())
                 .toUri();
 
@@ -78,12 +81,6 @@ public class ImageRestController {
             @PathVariable long id,
             @RequestParam MultipartFile imageFile) throws IOException {
 
-        // Broken Access Control
-        User user = userService.getLoggedUser();
-
-        if (!userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
 
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -96,12 +93,6 @@ public class ImageRestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ImageDTO> deleteImage(@PathVariable long id) {
 
-        // Broken Access Control
-        User user = userService.getLoggedUser();
-
-        if (!userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
 
         Image image = imageService.deleteImage(id);
         return ResponseEntity.ok(imageMapper.toDTO(image));

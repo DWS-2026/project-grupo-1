@@ -15,12 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TourService {
-
-    private final GuideInitializer guideInitializer;
 
     @Autowired
     private TourRepository tourRepository;
@@ -30,10 +27,6 @@ public class TourService {
 
     @Autowired
     private TourMapper tourMapper;
-
-    TourService(GuideInitializer guideInitializer) {
-        this.guideInitializer = guideInitializer;
-    }
 
     public List<Tour> findAll() {
         return tourRepository.findAll();

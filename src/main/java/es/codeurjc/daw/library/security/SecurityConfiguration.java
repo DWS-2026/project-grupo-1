@@ -9,12 +9,10 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -88,9 +86,11 @@ public class SecurityConfiguration {
         http.authorizeHttpRequests(auth -> auth
                 // PRIVATE ENDPOINTS
                 // IMAGES
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/images/**").hasRole("ADMIN")
+
                 // TOURS
                 .requestMatchers(HttpMethod.POST, "/api/v1/tours").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*").hasRole("ADMIN")
@@ -100,8 +100,6 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
 
                 // PUBLIC ENDPOINTS
-                // IMAGES
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
                 // TOURS
                 .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
 
