@@ -12,6 +12,7 @@ import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ImageService;
 import es.apexexpeditions.library.service.NotificationService;
 import es.apexexpeditions.library.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -116,7 +117,7 @@ public class UserRestController {
     // region 1. updateMyPassword
     // allows the user to change their password
     @PutMapping("/me/password")
-    public ResponseEntity<Void> updateMyPassword (@RequestBody PasswordUpdateDTO passwords) {
+    public ResponseEntity<Void> updateMyPassword (@Valid @RequestBody PasswordUpdateDTO passwords) {
         User user = userService.getLoggedUser();
         if (user == null) return ResponseEntity.status (HttpStatus.UNAUTHORIZED).build();
 
@@ -152,7 +153,7 @@ public class UserRestController {
     // region 3. updateMyProfile
     // allows user to update itself (on non-restricted fields)
     @PutMapping("/me")
-    public ResponseEntity<UserFullResponseDTO> updateMyProfile(@RequestBody UserUpdateDTO updateData) {
+    public ResponseEntity<UserFullResponseDTO> updateMyProfile(@Valid @RequestBody UserUpdateDTO updateData) {
         User user = userService.getLoggedUser();
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
@@ -171,6 +172,7 @@ public class UserRestController {
     // admin endpoint to modify any info on any user
     @PutMapping("/{id}")
     public ResponseEntity<UserFullResponseDTO> updateUser(
+            @Valid
             @PathVariable Long id,
             @RequestBody UserUpdateDTO updateData) {
 
@@ -217,7 +219,7 @@ public class UserRestController {
     // region =========== PostMapping =================
     // region 1. createUser
     @PostMapping({"", "/"})
-    public ResponseEntity<UserFullResponseDTO> createUser(@RequestBody UserRequestDTO req) {
+    public ResponseEntity<UserFullResponseDTO> createUser(@Valid @RequestBody UserRequestDTO req) {
         User user = new User(req.name(), req.lastName(), req.email(),
                 passwordEncoder.encode(req.password()), req.mainPhone(), req.secondaryPhone());
 
@@ -239,6 +241,7 @@ public class UserRestController {
     // region 2. registerUser
     @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerUser(
+            @Valid
             @RequestPart("userData") UserRegisterDTO req,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
