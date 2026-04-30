@@ -6,6 +6,8 @@ package es.codeurjc.daw.library.service;
 
 
 // region =========== imports =================
+import es.codeurjc.daw.library.model.Image;   // before awt for priority, to avoid image name issues
+
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.awt.*;
@@ -80,7 +82,7 @@ public class UserInitializer implements CommandLineRunner {
 
         // if user, pfp bg is blue
         byte[] avatar = userService.generateDefaultAvatar ("Usuario", name, new Color(13, 110, 253));
-        user.setProfilePicture (avatar);
+        user.setProfilePicture (new Image(avatar));
 
         user.setRoles (Arrays.asList("USER"));
         userRepository.save (user);
@@ -96,7 +98,7 @@ public class UserInitializer implements CommandLineRunner {
 
         // if admin, pfp bg is black
         byte[] avatar = userService.generateDefaultAvatar ("Admin", name, new Color(0, 0, 0));
-        admin.setProfilePicture (avatar);
+        admin.setProfilePicture (new Image (avatar));
 
         admin.setRoles (Arrays.asList("USER", "ADMIN"));
         userRepository.save (admin);

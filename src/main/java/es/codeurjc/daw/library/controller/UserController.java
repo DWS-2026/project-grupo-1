@@ -6,6 +6,7 @@ package es.codeurjc.daw.library.controller;
 
 
 // region =========== imports =================
+import es.codeurjc.daw.library.model.Image;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
 import org.springframework.stereotype.Controller; // to define class as controller
@@ -175,7 +176,7 @@ public class UserController {
         }
         // set pfp
         if (imageFile != null && !imageFile.isEmpty()) {
-            updatedUser.setProfilePicture (imageFile.getBytes());
+            updatedUser.setProfilePicture (new Image (imageFile.getBytes()));
         }
 
         userService.save (updatedUser);
@@ -258,13 +259,13 @@ public class UserController {
         // if an image is added, store it too
         if (imageFile != null && !imageFile.isEmpty()) {
             byte[] imageBytes = imageFile.getBytes();
-            newUser.setProfilePicture(imageBytes);
+            newUser.setProfilePicture (new Image (imageBytes));
         }
 
         else {
             // if no picture, generate default
             byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
-            newUser.setProfilePicture(avatar);
+            newUser.setProfilePicture (new Image (avatar));
         }
 
         userService.save (newUser);

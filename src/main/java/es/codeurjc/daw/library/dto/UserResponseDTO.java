@@ -19,5 +19,6 @@ public record UserResponseDTO (
         String name,
         String lastName,
         String email,
-        List<String> roles
+        List<String> roles,
+        Long imageId   // id for URL /api/v1/images/{id}/media
 ) {}

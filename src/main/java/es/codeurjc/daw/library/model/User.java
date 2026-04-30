@@ -35,10 +35,9 @@ public class User {
     private String mainPhone;
     private String secondaryPhone;
 
-    @Lob // for image
-    @Basic(fetch = FetchType.LAZY) // to avoid loading the image unless explicitly required
-    @Column(name = "profile_picture", columnDefinition = "LONGBLOB") // explicitly define as longblob for mysql
-    private byte[] profilePicture;
+    @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn (name = "profile_picture_id")
+    private Image profilePicture;
 
     // account and security credentials
     @NotBlank(message = "El email es obligatorio")
@@ -102,7 +101,6 @@ public class User {
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
@@ -111,7 +109,6 @@ public class User {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -120,7 +117,6 @@ public class User {
     public String getLastName() {
         return lastName;
     }
-
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
@@ -129,7 +125,6 @@ public class User {
     public String getMainPhone() {
         return mainPhone;
     }
-
     public void setMainPhone(String mainPhone) {
         this.mainPhone = mainPhone;
     }
@@ -138,17 +133,15 @@ public class User {
     public String getSecondaryPhone() {
         return secondaryPhone;
     }
-
     public void setSecondaryPhone(String secondaryPhone) {
         this.secondaryPhone = secondaryPhone;
     }
 
     // pfp
-    public byte[] getProfilePicture() {
+    public Image getProfilePicture() {
         return profilePicture;
     }
-
-    public void setProfilePicture(byte[] profilePicture) {
+    public void setProfilePicture (Image profilePicture) {
         this.profilePicture = profilePicture;
     }
 
@@ -156,7 +149,6 @@ public class User {
     public String getEmail() {
         return email;
     }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -165,7 +157,6 @@ public class User {
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
@@ -174,7 +165,6 @@ public class User {
     public List<String> getRoles() {
         return roles;
     }
-
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
@@ -183,7 +173,6 @@ public class User {
     public boolean isEnabled() {
         return enabled;
     }
-
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
@@ -192,7 +181,6 @@ public class User {
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
-
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
@@ -227,7 +215,9 @@ public class User {
 
     // region =========== aux methods =================
     public boolean isHasProfilePicture() {
-        return this.profilePicture != null && this.profilePicture.length > 0;
+        return this.profilePicture != null &&
+                this.profilePicture.getImageFile() != null &&
+                this.profilePicture.getImageFile().length > 0;
     }
     // endregion
 }

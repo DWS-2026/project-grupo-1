@@ -9,7 +9,9 @@ package es.codeurjc.daw.library.controller.rest;
 import es.codeurjc.daw.library.dto.UserMapper;
 import es.codeurjc.daw.library.dto.UserRequestDTO;
 import es.codeurjc.daw.library.dto.UserResponseDTO;
+import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.service.ImageService;
 import es.codeurjc.daw.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
@@ -27,6 +29,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 import java.awt.Color;
+
+import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 // endregion
 
 
@@ -46,6 +50,9 @@ public class UserRestController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private ImageService imageService;
     // endregion
 
 
@@ -65,10 +72,9 @@ public class UserRestController {
     public ResponseEntity<Object> downloadImage(@PathVariable Long id) {
         User user = userService.findById(id);
         if (user != null && user.isHasProfilePicture()) {
-            Resource file = new ByteArrayResource(user.getProfilePicture());
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "image/png") // Adjust if needed
-                    .body(file);
+                    .body(user.getProfilePicture().getImageFile());
         }
         return ResponseEntity.notFound().build();
     }
@@ -96,34 +102,23 @@ public class UserRestController {
     // region 1. createUser
     // combines json and file to allow creation of user with pfp (optional)
     @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<UserResponseDTO> createUser (
-            @RequestPart("user") UserRequestDTO request,  // text fields
-            // image
+    public ResponseEntity<UserResponseDTO> createUser(
+            @RequestPart("user") UserRequestDTO request,
             @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
 
-        User user = new User(
-                request.name(), request.lastName(), request.email(),
-                passwordEncoder.encode(request.password()),
-                request.mainPhone(), null
-        );
+        User user = new User(request.name(), request.lastName(), request.email(),
+                passwordEncoder.encode(request.password()), request.mainPhone(), null);
         user.setRoles(request.roles());
 
-        // case image attached
         if (imageFile != null && !imageFile.isEmpty()) {
-            user.setProfilePicture(imageFile.getBytes());
-        } else {
-            // otherwise: set default pfp
+            user.setProfilePicture(imageService.createImage(imageFile));   // store image
+        } else {   // generate avatar and store in image entity
             byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new Color(13, 110, 253));
-            user.setProfilePicture(avatar);
+            user.setProfilePicture(new Image (avatar));
         }
 
         userService.save(user);
-
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getId())
-                .toUri();
-
+        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(location).body(userMapper.toDTO(user));
     }
     // endregion
@@ -154,23 +149,19 @@ public class UserRestController {
 
     // region 2. uploadImage
     @PutMapping("/{id}/image")
-    public ResponseEntity<Object> uploadImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) {
+    public ResponseEntity<Void> updateImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
         User user = userService.findById(id);
-        if (user != null) {
-            try {
-                if (imageFile != null && !imageFile.isEmpty()) {
-                    // convert multipart to byte[] and store it
-                    user.setProfilePicture(imageFile.getBytes());
-                    userService.save(user);
-                    return ResponseEntity.noContent().build(); // 204 no content
-                } else {
-                    return ResponseEntity.badRequest().build(); // 400 bad request (if empty)
-                }
-            } catch (Exception e) {
-                return ResponseEntity.internalServerError().build(); // 500 (if conversion fails)
-            }
+        if (user == null) return ResponseEntity.notFound().build();
+
+        if (user.getProfilePicture() != null) {
+            // Reemplazamos los bytes en la imagen existente
+            imageService.replaceImageFile(user.getProfilePicture().getId(), imageFile);
+        } else {
+            // Si no tenía, creamos una nueva
+            user.setProfilePicture(imageService.createImage(imageFile));
+            userService.save(user);
         }
-        return ResponseEntity.notFound().build(); // 404 (if user doesnt exist)
+        return ResponseEntity.noContent().build();
     }
     // endregion
     // endregion

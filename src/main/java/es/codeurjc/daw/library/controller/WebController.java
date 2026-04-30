@@ -7,6 +7,7 @@ import es.codeurjc.daw.library.model.Review;
 import es.codeurjc.daw.library.model.Tour;
 import es.codeurjc.daw.library.service.*;
 import es.codeurjc.daw.library.model.User;
+import es.codeurjc.daw.library.model.Image;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -600,10 +601,11 @@ public class WebController {
     @GetMapping("/user/{id}/image")
     public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
         User user = userService.findById(id);
-        if (user != null && user.getProfilePicture() != null) {
+        if (user != null && user.getProfilePicture() != null) {   // check user exists and has image
+            byte[] imageBytes = user.getProfilePicture().getImageFile();   // extract bytes
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "image/png")
-                    .body(user.getProfilePicture());
+                    .body(imageBytes);
         }
         return ResponseEntity.notFound().build();
     }
@@ -684,18 +686,18 @@ public class WebController {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 // if image was attached, store it2
-                newUser.setProfilePicture(imageFile.getBytes());
+                newUser.setProfilePicture(new Image (imageFile.getBytes()));
             } else {
                 // if no image attached, generate default
                 byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(),
                         new Color(13, 110, 253));
-                newUser.setProfilePicture(avatar);
+                newUser.setProfilePicture (new Image (avatar));
             }
         } catch (IOException e) {
             // if error reading file, set default
             e.printStackTrace();
             byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
-            newUser.setProfilePicture(avatar);
+            newUser.setProfilePicture (new Image (avatar));
         }
 
         userService.save(newUser); // save user
@@ -796,7 +798,7 @@ public class WebController {
 
         // process new image (if uploaded)
         if (!imageFile.isEmpty()) {
-            user.setProfilePicture(imageFile.getBytes());
+            user.setProfilePicture(new Image (imageFile.getBytes()));
         }
 
         // save changes
