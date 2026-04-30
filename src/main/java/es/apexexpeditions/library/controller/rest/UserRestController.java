@@ -185,9 +185,8 @@ public class UserRestController {
     // admin endpoint to modify any info on any user
     @PutMapping("/{id}")
     public ResponseEntity<UserFullResponseDTO> updateUser(
-            @Valid
             @PathVariable Long id,
-            @RequestBody UserUpdateDTO updateData) {
+            @Valid @RequestBody UserUpdateDTO updateData) {
 
         User user = userService.findById(id);
         if (user == null) return ResponseEntity.notFound().build();
