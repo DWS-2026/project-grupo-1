@@ -1,38 +1,50 @@
 package es.codeurjc.daw.library.model;
 
+
+// region =========== imports =================
 import jakarta.persistence.*;
+// endregion
+
+
+
 
 @Entity
 @Table(name = "images")
 public class Image {
-
+    // region =========== id =================
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    // endregion
 
+    // region =========== attributes =================
     @Lob
-    private String imageFile;
+    @Basic(fetch = FetchType.LAZY)   // wont load until explicitly required
+    private byte[] imageFile;
+    // endregion
 
-    public Image() {
-    }
-
-    public Image(String imageFile) {
+    // region =========== constructors =================
+    public Image() {}
+    public Image(byte[] imageFile) {
         this.imageFile = imageFile;
     }
+    // endregion
 
+    // region =========== getters and setters =================
+    // id
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
 
-    public String getImageFile() {
+    // imageFile
+    public byte[] getImageFile() {
         return imageFile;
     }
-
-    public void setImageFile(String imageFile) {
+    public void setImageFile(byte[] imageFile) {
         this.imageFile = imageFile;
     }
+    // endregion
 }

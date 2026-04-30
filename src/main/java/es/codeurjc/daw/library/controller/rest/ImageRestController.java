@@ -1,5 +1,7 @@
 package es.codeurjc.daw.library.controller.rest;
 
+
+// region =========== imports =================
 import es.codeurjc.daw.library.dto.ImageDTO;
 import es.codeurjc.daw.library.dto.ImageMapper;
 import es.codeurjc.daw.library.model.Image;
@@ -17,16 +19,19 @@ import java.io.IOException;
 import java.net.URI;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
+// endregion
+
+
 
 @RestController
-@RequestMapping("/api/v1/images")
+@RequestMapping ("/api/v1/images")
 public class ImageRestController {
-
+    // region =========== autowired =================
     @Autowired
     private ImageService imageService;
-
     @Autowired
     private ImageMapper imageMapper;
+    // endregion
 
 
     @GetMapping("")
@@ -43,19 +48,16 @@ public class ImageRestController {
 
     @GetMapping("/{id}/media")
     public ResponseEntity<byte[]> getImageFile(@PathVariable long id) {
+        Image image = imageService.getImage(id);
 
-        String base64 = imageService.getImageFile(id);
-
-        if (base64 == null) {
+        if (image.getImageFile() == null) {
             return ResponseEntity.notFound().build();
         }
-
-        byte[] imageBytes = java.util.Base64.getDecoder().decode(base64);
 
         return ResponseEntity
                 .ok()
                 .header("Content-Type", "image/jpeg")
-                .body(imageBytes);
+                .body(image.getImageFile());
     }
 
     @PostMapping("/")
