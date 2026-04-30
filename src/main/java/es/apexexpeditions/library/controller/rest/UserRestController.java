@@ -6,9 +6,9 @@ package es.apexexpeditions.library.controller.rest;
 
 
 // region =========== imports =================
-import es.apexexpeditions.library.dto.UserMapper;
-import es.apexexpeditions.library.dto.UserRequestDTO;
-import es.apexexpeditions.library.dto.UserResponseDTO;
+import es.apexexpeditions.library.dto.user.UserMapper;
+import es.apexexpeditions.library.dto.user.UserRequestDTO;
+import es.apexexpeditions.library.dto.user.UserResponseDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ImageService;
