@@ -1,0 +1,66 @@
+package es.apexexpeditions.library.service;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+import es.apexexpeditions.library.model.Review;
+import es.apexexpeditions.library.model.Tour;
+import es.apexexpeditions.library.model.User;
+import es.apexexpeditions.library.repository.ReviewRepository;
+import es.apexexpeditions.library.repository.TourRepository;
+import es.apexexpeditions.library.repository.UserRepository;
+
+@Component
+@Order(4)
+public class ReviewInitializer implements CommandLineRunner {
+
+    @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TourRepository tourRepository;
+
+    @Override
+    public void run(String... args) {
+
+        // Skips seeding if reviews already exist in the database.
+        if (reviewRepository.count() != 0) return;
+
+        // Reuses the first available user and tour to create sample reviews.
+        User user = userRepository.findAll().get(0);
+        Tour tour = tourRepository.findAll().get(0);
+
+        createReview(user, tour, 3, "Una experiencia increíble");
+        createReview(user, tour, 5, "   Una locura ");
+        createReview(user, tour, 2, " locura ");
+
+
+
+
+
+
+
+
+        System.out.println(">>> Reviews initialized");
+    }
+
+    private void createReview(User user, Tour tour,
+                              int rating, String description) {
+
+        // Builds and persists one sample review entry.
+        Review review = new Review();
+        review.setUser(user);
+        review.setTour(tour);
+        review.setRating(rating);
+        review.setDescription(description);
+
+        reviewRepository.save(review);
+    }
+}
+
