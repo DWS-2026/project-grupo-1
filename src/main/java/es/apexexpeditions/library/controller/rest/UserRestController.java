@@ -33,7 +33,23 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 
 
-
+/**
+ * API REST v1 - User and Profile Management
+ * Based on specifications from funcionalidades_api.txt:
+ * * --- ADMINISTRATOR FUNCTIONALITIES ---
+ * - GET    /api/v1/users            : retrieve paginated user list (Summary view: name, last names, email, main phone, status, imageId).
+ * - GET    /api/v1/users/{id}       : retrieve full details of a specific user (Includes secondary phone, registration date, money spent, and roles).
+ * - POST   /api/v1/users/           : create a new user (Allows defining status, phone numbers, money, and roles. Generates a default avatar).
+ * - PUT    /api/v1/users/{id}/image : update/Upload profile image for any user via their ID.
+ * - PUT    /api/v1/users/me         : update own profile (name, lastName, phones)
+ * - DELETE /api/v1/users/{id}       : remove a user from the system.
+ * * --- USER FUNCTIONALITIES (SELF) ---
+ * - GET    /api/v1/users/me          : view full profile of the currently authenticated user (Name, phone, image, etc.).
+ * - PUT    /api/v1/users/{id}        : admin update of any user (all fields, including email and status)
+ * - PUT    /api/v1/users/me/password : update password (Requires old password validation and new password confirmation).
+ * * Note: all responses including image return an 'imageId'.
+ * The binary resource is retrieved via: GET /api/v1/images/{imageId}/media
+ */
 @RestController
 @RequestMapping ("/api/v1/users")
 public class UserRestController {
@@ -116,6 +132,51 @@ public class UserRestController {
             userService.save(user);
         }
         return ResponseEntity.noContent().build();
+    }
+    // endregion
+
+    // region 3. updateMyProfile
+    // allows user to update itself (on non restricted fields)
+    @PutMapping("/me")
+    public ResponseEntity<UserFullResponseDTO> updateMyProfile(@RequestBody UserUpdateDTO updateData) {
+        User user = userService.getLoggedUser();
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        // filter out restricted files
+        if (updateData.name() != null) user.setName(updateData.name());
+        if (updateData.lastName() != null) user.setLastName(updateData.lastName());
+        if (updateData.mainPhone() != null) user.setMainPhone(updateData.mainPhone());
+        if (updateData.secondaryPhone() != null) user.setSecondaryPhone(updateData.secondaryPhone());
+
+        userService.save(user);
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
+    }
+    // endregion
+
+    // region 4. updateUser
+    // admin endpoint to modify any info on any user
+    @PutMapping("/{id}")
+    public ResponseEntity<UserFullResponseDTO> updateUser(
+            @PathVariable Long id,
+            @RequestBody UserUpdateDTO updateData) {
+
+        User user = userService.findById(id);
+        if (user == null) return ResponseEntity.notFound().build();
+
+        // admin-editing exclusive attributes
+        if (updateData.email() != null) user.setEmail(updateData.email());
+        if (updateData.enabled() != null) user.setEnabled(updateData.enabled());
+
+        // non exclusive attributes
+        if (updateData.name() != null) user.setName(updateData.name());
+        if (updateData.lastName() != null) user.setLastName(updateData.lastName());
+        if (updateData.mainPhone() != null) user.setMainPhone(updateData.mainPhone());
+        if (updateData.secondaryPhone() != null) user.setSecondaryPhone(updateData.secondaryPhone());
+        if (updateData.moneySpent() != null) user.setMoneySpent(updateData.moneySpent());
+        if (updateData.roles() != null) user.setRoles(updateData.roles());
+
+        userService.save(user);
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
     // endregion
