@@ -10,6 +10,7 @@ import es.apexexpeditions.library.dto.user.*;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ImageService;
+import es.apexexpeditions.library.service.NotificationService;
 import es.apexexpeditions.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,6 +60,8 @@ public class UserRestController {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private NotificationService notificationService;
     // endregion
 
 
@@ -187,6 +190,7 @@ public class UserRestController {
         if (updateData.roles() != null) user.setRoles(updateData.roles());
 
         userService.save(user);
+        notificationService.notify ("Usuario actualizado por admin: " + user.getName(), "fas fa-user-edit", "bg-info");
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
@@ -226,12 +230,13 @@ public class UserRestController {
         user.setProfilePicture(new Image(avatar));
 
         userService.save(user);
+        notificationService.notify ("Admin ha creado al usuario: " + user.getName(), "fas fa-user-plus", "bg-success");
         return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
     }
     // endregion
 
 
-    // 2. registerUser
+    // region 2. registerUser
     @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerUser(
             @RequestPart("userData") UserRegisterDTO req,
@@ -279,6 +284,7 @@ public class UserRestController {
 
         // saving
         userService.save(user);
+        notificationService.notify ("Nuevo registro: " + user.getName(), "fas fa-user-plus", "bg-success");
         return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
     }
     // endregion
@@ -299,6 +305,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         userService.delete(targetUser);  // allow deletion of standard users
+        notificationService.notify ("Admin ha eliminado al usuario: " + targetUser.getName(), "fas fa-user-minus", "bg-warning");
         return ResponseEntity.noContent().build();
     }
     // endregion
@@ -313,6 +320,7 @@ public class UserRestController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         userService.delete(loggedUser);
+        notificationService.notify ("El usuario " + loggedUser.getName() + " ha eliminado su propia cuenta", "fas fa-user-minus", "bg-warning");
         return ResponseEntity.noContent().build();
     }
     // endregion
