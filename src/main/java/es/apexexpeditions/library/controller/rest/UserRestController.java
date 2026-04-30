@@ -179,6 +179,22 @@ public class UserRestController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
+
+    // region 5. updateMyImage
+    // allows users to update their own pfp
+    public ResponseEntity<Void> updateMyImage(@RequestParam MultipartFile imageFile) throws IOException {
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (loggedUser.getProfilePicture() != null) {
+            imageService.replaceImageFile(loggedUser.getProfilePicture().getId(), imageFile);
+        } else {
+            loggedUser.setProfilePicture(imageService.createImage(imageFile));
+            userService.save(loggedUser);
+        }
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
     // endregion
 
 
@@ -207,15 +223,51 @@ public class UserRestController {
 
 
     // region =========== DeleteMapping =================
-    // deleteUser
+    // region 1. deleteUser
+    // used by admins to delete any non-user admin
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        User user = userService.findById(id);
-        if (user != null) {
-            userService.delete(user);
-            return ResponseEntity.noContent().build();
+        User targetUser = userService.findById(id);
+        if (targetUser == null) {   // check user exists
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        if (userService.isAdmin(targetUser)) {   // prevent deletion of admins
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        userService.delete(targetUser);  // allow deletion of standard users
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
+
+    // region 2. deleteMyAccount
+    // used by non-admins to delete their own account
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMyAccount() {
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        if (userService.isAdmin(loggedUser)) {   // prevent admin self-deletion
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        userService.delete(loggedUser);
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
+
+    // region 3. deleteMyImage
+    // allows users to delete their own pfp
+    @DeleteMapping ("/me/image")
+    public ResponseEntity<Void> deleteMyImage() {
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        if (loggedUser.getProfilePicture() != null) {
+            long imageId = loggedUser.getProfilePicture().getId();
+            loggedUser.setProfilePicture(null);
+            userService.save(loggedUser); // save user first to break foreign key relationship
+            imageService.deleteImage(imageId); // physically delete image entity
+        }
+
+        return ResponseEntity.noContent().build();
     }
     // endregion
     // endregion
