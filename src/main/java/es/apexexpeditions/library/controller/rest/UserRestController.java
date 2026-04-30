@@ -368,13 +368,18 @@ public class UserRestController {
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> toggleUserStatus(@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
-        User targetUser = userService.findById(id);
 
+        // case: non-admin
+        if (loggedUser == null || !loggedUser.getRoles().contains("ADMIN")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        User targetUser = userService.findById(id);
         if (targetUser == null) {
             return ResponseEntity.notFound().build();
         }
 
-        // Prevent admin from disabling themselves (avoids accidental lockouts)
+        // prevent admin from disabling themselves (shouldnt be a possibility)
         if (loggedUser != null && loggedUser.getId().equals(targetUser.getId())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
