@@ -34,14 +34,14 @@ import es.codeurjc.daw.library.security.jwt.UnauthorizedHandlerJwt;
 public class SecurityConfiguration {
 
     // region =========== autowired =================
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    /* @Autowired DISABLED
+    private JwtTokenProvider jwtTokenProvider; */
 
     @Autowired
     public RepositoryUserDetailsService userDetailService;
 
-    @Autowired
-    private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
+    /* @Autowired DISABLED
+    private UnauthorizedHandlerJwt unauthorizedHandlerJwt; */
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -74,13 +74,16 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+        // ADDED TO WORK W DISABLED THINGS
+        http.securityMatcher("/api/**");
 
         http.authenticationProvider(authenticationProvider());
 
+        /*
         http
                 .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
-
+         DISABLED */
         // error management for api
 
         http.authorizeHttpRequests(auth -> auth
@@ -118,8 +121,9 @@ public class SecurityConfiguration {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Add JWT Token filter
+        /* DISABLED
         http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
+                UsernamePasswordAuthenticationFilter.class); */
 
         return http.build();
     }

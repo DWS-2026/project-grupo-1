@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Base64;
 
 import es.codeurjc.daw.library.model.Image;
 import es.codeurjc.daw.library.model.Tour;
@@ -55,18 +54,14 @@ public class TourInitializer implements CommandLineRunner {
 
         try {
             byte[] bytes = Files.readAllBytes(
-                    Paths.get("src/main/resources/static/images/" + imagePath)
+                    Paths.get ("src/main/resources/static/images/" + imagePath)
             );
-
-            // Convertimos a Base64
-            String base64 = Base64.getEncoder().encodeToString(bytes);
-            Image tour_image = new Image(base64);
-            // Guardamos como String
-            tour.setTourImage(tour_image);
-
+            Image tour_image = new Image(bytes);
+            tour.setTourImage (tour_image);
         } catch (Exception e) {
-            e.printStackTrace();
-            tour.setTourImage(null);
+            System.err.println ("Error cargando la imagen para el tour: " + name);
+            e.printStackTrace ();
+            tour.setTourImage (null);
         }
 
         tour.setDescription(description);

@@ -15,7 +15,7 @@ import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
-@Component
+// @Component DISABLED
 public class JwtTokenProvider {
 
 	private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build();

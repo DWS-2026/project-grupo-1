@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Service
+// @Service DISABLED
 public class UserLoginService {
 
 	private static final Logger log = LoggerFactory.getLogger(UserLoginService.class);

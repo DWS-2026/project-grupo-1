@@ -16,7 +16,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@Component
+// @Component DISABLED
 public class JwtRequestFilter extends OncePerRequestFilter {
 	
 	private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);

@@ -185,13 +185,7 @@ public class TourRestController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
 
-        String base64 = imageService.getImageFile(image.getId());
-
-        if (base64 == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        byte[] imageBytes = java.util.Base64.getDecoder().decode(base64);
+        byte[] imageBytes = imageService.getImageFile(image.getId());
 
         return ResponseEntity
                 .ok()
