@@ -14,6 +14,8 @@ import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.repository.TourRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 // for pfp generation
@@ -41,9 +43,10 @@ public class GuideService {
         this.guideMapper = guideMapper;
     }
 
-    public List<GuideResponseDTO> findAllDTOs() {
-        return guideMapper.toDTOs(guideRepository.findAll());
-    }
+public Page<GuideResponseDTO> findAllDTOs(Pageable pageable) {
+    return guideRepository.findAll(pageable)
+            .map(guide -> guideMapper.toDTO(guide));
+}
 
     public GuideResponseDTO findDTOById(Long id) {
         Guide guide = guideRepository.findById(id)
