@@ -80,9 +80,22 @@ public class UserRestController {
     // full details of a single user
     @GetMapping ("/{id}")
     public ResponseEntity<UserFullResponseDTO> getUser (@PathVariable Long id) {
-        User user = userService.findById (id);
-        if (user == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok (userMapper.toFullDTO (user));
+        User loggedUser = userService.getLoggedUser();
+        User targetUser = userService.findById(id);
+
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // AO1 vuln prevention: check if admin or owner of the account (the user itself)
+        boolean isAdmin = loggedUser != null && loggedUser.getRoles().contains("ADMIN");
+        boolean isOwner = loggedUser != null && loggedUser.getId().equals(id);
+
+        if (!isAdmin && !isOwner) {   // 403 if check fails
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return ResponseEntity.ok(userMapper.toFullDTO(targetUser));
     }
     // endregion
 
@@ -199,7 +212,8 @@ public class UserRestController {
 
     // region 5. updateMyImage
     // allows users to update their own pfp
-    public ResponseEntity<Void> updateMyImage(@RequestParam MultipartFile imageFile) throws IOException {
+    @PutMapping ("/me/image")
+    public ResponseEntity<Void> updateMyImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         User loggedUser = userService.getLoggedUser();
         if (loggedUser == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
