@@ -94,6 +94,20 @@ public class UserRestController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
+
+    // 4. stats
+    // admin endpoint to get general user statistics
+    @GetMapping("/stats")
+    public ResponseEntity<UserStatsDTO> getUserStats() {
+        User loggedUser = userService.getLoggedUser();
+
+        if (loggedUser == null || !userService.isAdmin(loggedUser)) {   // check auth
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return ResponseEntity.ok(userService.getUserStats());
+    }
+    // endregion
     // endregion
 
 
@@ -266,6 +280,32 @@ public class UserRestController {
             userService.save(loggedUser); // save user first to break foreign key relationship
             imageService.deleteImage(imageId); // physically delete image entity
         }
+
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
+    // endregion
+
+    // region =========== PatchMapping =================
+    // region 1. toggleUserStatus
+    // admin endpoint to quickly enable/disable user without sending a full DTO
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> toggleUserStatus(@PathVariable Long id) {
+        User loggedUser = userService.getLoggedUser();
+        User targetUser = userService.findById(id);
+
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        // Prevent admin from disabling themselves (avoids accidental lockouts)
+        if (loggedUser != null && loggedUser.getId().equals(targetUser.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        // flip the status
+        targetUser.setEnabled(!targetUser.isEnabled());
+        userService.save(targetUser);
 
         return ResponseEntity.noContent().build();
     }

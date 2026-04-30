@@ -1,6 +1,12 @@
 package es.apexexpeditions.library.service;
 
+
+
+
+
+
 // region =========== imports =================
+import es.apexexpeditions.library.dto.user.UserStatsDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +30,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 // endregion
 
+
+
+
+
+
 /**
  * service layer class that handles business logic related to users
  * acts as intermediary between WebController and UserRepository
@@ -34,6 +45,8 @@ public class UserService {
     @Autowired // repository injection for db access
     private UserRepository userRepository;
     // endregion
+
+
 
     // region =========== derived query methods =================
     // search user by email
@@ -83,7 +96,10 @@ public class UserService {
     }
     // endregion
 
-    // region =========== method: generateDefaultAvatar =================
+
+
+    // region =========== methods =================
+    // region 1. generateDefaultAvatar
     /**
      * generates default pfp
      * 
@@ -134,7 +150,9 @@ public class UserService {
             return null;
         }
     }
+    // endregion
 
+    // region 2. getLoggedUser
     public User getLoggedUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         Object principal = auth.getPrincipal();
@@ -146,10 +164,27 @@ public class UserService {
 
         return null;
     }
+    // endregion
 
+    // region 3. isAdmin
     public boolean isAdmin(User user) {
         return user != null && user.getRoles().contains("ADMIN");
     }
+    // endregion
 
+    // region 4. getUserStats
+    public UserStatsDTO getUserStats() {
+        List<User> users = userRepository.findAll();
+
+        long totalUsers = users.size();
+        long activeUsers = users.stream().filter(User::isEnabled).count();
+        long disabledUsers = totalUsers - activeUsers;
+        double totalMoneySpent = users.stream().mapToDouble(User::getMoneySpent).sum();
+
+        return new es.apexexpeditions.library.dto.user.UserStatsDTO(
+                totalUsers, activeUsers, disabledUsers, totalMoneySpent
+        );
+    }
+    // endregion
     // endregion
 }
