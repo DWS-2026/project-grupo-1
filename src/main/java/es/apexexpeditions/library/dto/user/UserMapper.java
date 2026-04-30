@@ -17,10 +17,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
-    public UserResponseDTO toDTO (User user) {
+    // =========== 1. toBasicDTO =================
+    public UserBasicResponseDTO toBasicDTO(User user) {
         Long imgId = (user.getProfilePicture() != null) ? user.getProfilePicture().getId() : null;
-        return new UserResponseDTO(
-                user.getId(), user.getName(), user.getLastName(), user.getEmail(), user.getRoles(), imgId
+        return new UserBasicResponseDTO(
+                user.getId(), user.getName(), user.getLastName(),
+                user.getEmail(), user.getMainPhone(), user.isEnabled(), imgId
         );
     }
+    // endregion
+
+
+    // =========== 2. toFullDTO =================
+    public UserFullResponseDTO toFullDTO(User user) {
+        Long imgId = (user.getProfilePicture() != null) ? user.getProfilePicture().getId() : null;
+        return new UserFullResponseDTO(
+                user.getId(), user.getName(), user.getLastName(), user.getEmail(),
+                user.getMainPhone(), user.getSecondaryPhone(), user.isEnabled(),
+                user.getFormattedCreationDate(),
+                user.getMoneySpent(), user.getRoles(), imgId
+        );
+    }
+    // endregion
 }

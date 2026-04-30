@@ -18,7 +18,10 @@ public record UserRequestDTO (
         String name,
         String lastName,
         String email,
-        String password, // Solo para entrada
+        String password,
         String mainPhone,
+        String secondaryPhone,
+        Boolean enabled,
+        Double moneySpent,
         List<String> roles
 ) {}

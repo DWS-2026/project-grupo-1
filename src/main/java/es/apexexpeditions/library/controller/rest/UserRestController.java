@@ -6,15 +6,14 @@ package es.apexexpeditions.library.controller.rest;
 
 
 // region =========== imports =================
-import es.apexexpeditions.library.dto.user.UserMapper;
-import es.apexexpeditions.library.dto.user.UserRequestDTO;
-import es.apexexpeditions.library.dto.user.UserResponseDTO;
+import es.apexexpeditions.library.dto.user.*;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ImageService;
 import es.apexexpeditions.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,120 +40,78 @@ public class UserRestController {
     // region =========== autowired =================
     @Autowired
     private UserService userService;
-
     @Autowired
     private UserMapper userMapper;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private ImageService imageService;
     // endregion
 
 
 
-
     // region =========== GetMapping =================
-    // region 1. "/api/v1/users"
-    // retrieve all users
-    @GetMapping
-    public ResponseEntity<Page<UserResponseDTO>> getUsers(Pageable pageable) {
-        return ResponseEntity.ok(userService.findAll(pageable).map(userMapper::toDTO));
-    }
-
-    // region 2. "/{id}/image"
-    // download a pfp
-    @GetMapping("/{id}/image")
-    public ResponseEntity<Object> downloadImage(@PathVariable Long id) {
-        User user = userService.findById(id);
-        if (user != null && user.isHasProfilePicture()) {
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_TYPE, "image/png") // Adjust if needed
-                    .body(user.getProfilePicture().getImageFile());
-        }
-        return ResponseEntity.notFound().build();
+    // region 1. getUsers
+    // overview of all users
+    @GetMapping ({"", "/"})
+    public Page<UserBasicResponseDTO> getUsers (Pageable pageable) {
+        return userService.findAll(pageable).map (userMapper::toBasicDTO);
     }
     // endregion
+
+    // region 2. getUser
+    // full details of a single user
+    @GetMapping ("/{id}")
+    public ResponseEntity<UserFullResponseDTO> getUser (@PathVariable Long id) {
+        User user = userService.findById (id);
+        if (user == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok (userMapper.toFullDTO (user));
+    }
     // endregion
 
-
-    // region 2. "/{id}"
-    // retrieve user by id
-    @GetMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> getUser(@PathVariable Long id) {
-        User user = userService.findById(id);
-        if (user != null) {
-            return ResponseEntity.ok(userMapper.toDTO(user));
-        }
-        return ResponseEntity.notFound().build();
+    // region 3. getMyProfile
+    // shows the users profile page info
+    @GetMapping("/me")
+    public ResponseEntity<UserFullResponseDTO> getMyProfile() {
+        User user = userService.getLoggedUser();
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
     // endregion
-
-
-
-
-    // region =========== PostMapping =================
-    // region 1. createUser
-    // combines json and file to allow creation of user with pfp (optional)
-    @PostMapping(consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<UserResponseDTO> createUser(
-            @RequestPart("user") UserRequestDTO request,
-            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-
-        User user = new User(request.name(), request.lastName(), request.email(),
-                passwordEncoder.encode(request.password()), request.mainPhone(), null);
-        user.setRoles(request.roles());
-
-        if (imageFile != null && !imageFile.isEmpty()) {
-            user.setProfilePicture(imageService.createImage(imageFile));   // store image
-        } else {   // generate avatar and store in image entity
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new Color(13, 110, 253));
-            user.setProfilePicture(new Image (avatar));
-        }
-
-        userService.save(user);
-        URI location = fromCurrentRequest().path("/{id}").buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(location).body(userMapper.toDTO(user));
-    }
-    // endregion
-    // endregion
-
 
 
 
     // region =========== PutMapping =================
-    // region 1. updateUser
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO updatedUserDTO) {
-        User user = userService.findById(id);
-        if (user != null) {
-            // Update basic fields
-            user.setName(updatedUserDTO.name());
-            user.setLastName(updatedUserDTO.lastName());
-            user.setEmail(updatedUserDTO.email());
-            if (updatedUserDTO.password() != null && !updatedUserDTO.password().isEmpty()) {
-                user.setPassword(passwordEncoder.encode(updatedUserDTO.password()));
-            }
-            userService.save(user);
-            return ResponseEntity.ok(userMapper.toDTO(user));
+    // region 1. updateMyPassword
+    // allows the user to change their password
+    @PutMapping("/me/password")
+    public ResponseEntity<Void> updateMyPassword (@RequestBody PasswordUpdateDTO passwords) {
+        User user = userService.getLoggedUser();
+        if (user == null) return ResponseEntity.status (HttpStatus.UNAUTHORIZED).build();
+
+        if (!passwords.newPassword().equals (passwords.confirmPassword())) {
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.notFound().build();
+        if (!passwordEncoder.matches (passwords.oldPassword(), user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        user.setPassword (passwordEncoder.encode (passwords.newPassword()));
+        userService.save (user);
+        return ResponseEntity.noContent().build();
     }
     // endregion
 
-    // region 2. uploadImage
+    // region 2. updateImage
     @PutMapping("/{id}/image")
     public ResponseEntity<Void> updateImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
         User user = userService.findById(id);
         if (user == null) return ResponseEntity.notFound().build();
 
         if (user.getProfilePicture() != null) {
-            // Reemplazamos los bytes en la imagen existente
             imageService.replaceImageFile(user.getProfilePicture().getId(), imageFile);
         } else {
-            // Si no tenía, creamos una nueva
             user.setProfilePicture(imageService.createImage(imageFile));
             userService.save(user);
         }
@@ -165,15 +122,37 @@ public class UserRestController {
 
 
 
+    // region =========== PostMapping =================
+    // region 1. createUser
+    @PostMapping({"", "/"})
+    public ResponseEntity<UserFullResponseDTO> createUser(@RequestBody UserRequestDTO req) {
+        User user = new User(req.name(), req.lastName(), req.email(),
+                passwordEncoder.encode(req.password()), req.mainPhone(), req.secondaryPhone());
+
+        user.setRoles(req.roles());
+        if (req.enabled() != null) user.setEnabled(req.enabled());
+        if (req.moneySpent() != null) user.setMoneySpent(req.moneySpent());
+
+        // Generar avatar por defecto (el admin podrá subir imagen luego por el PUT de imagen)
+        byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new Color(13, 110, 253));
+        user.setProfilePicture(new Image(avatar));
+
+        userService.save(user);
+        return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
+    }
+    // endregion
+    // endregion
+
+
 
     // region =========== DeleteMapping =================
-    // region 1. "/{id}"
+    // deleteUser
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         User user = userService.findById(id);
         if (user != null) {
             userService.delete(user);
-            return ResponseEntity.noContent().build(); // 204
+            return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
     }
