@@ -12,7 +12,6 @@ import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ImageService;
 import es.apexexpeditions.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,8 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URI;
 import java.awt.Color;
-
-import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 // endregion
 
 
@@ -150,7 +147,7 @@ public class UserRestController {
     // endregion
 
     // region 3. updateMyProfile
-    // allows user to update itself (on non restricted fields)
+    // allows user to update itself (on non-restricted fields)
     @PutMapping("/me")
     public ResponseEntity<UserFullResponseDTO> updateMyProfile(@RequestBody UserUpdateDTO updateData) {
         User user = userService.getLoggedUser();
@@ -232,6 +229,59 @@ public class UserRestController {
         return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
     }
     // endregion
+
+
+    // 2. registerUser
+    @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> registerUser(
+            @RequestPart("userData") UserRegisterDTO req,
+            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
+
+        // terms and conditions check
+        if (!req.termsAccepted()) {
+            return ResponseEntity.badRequest().body("Debes aceptar los términos y condiciones.");
+        }
+
+        // email and phones validation
+        if (userService.emailExists(req.email())) {
+            return ResponseEntity.badRequest().body("El correo electrónico ya está registrado.");
+        }
+        if (userService.phoneExists(req.mainPhone())) {
+            return ResponseEntity.badRequest().body("El teléfono principal ya está en uso.");
+        }
+        if (req.secondaryPhone() != null && !req.secondaryPhone().trim().isEmpty()) {
+            if (userService.phoneExists(req.secondaryPhone())) {
+                return ResponseEntity.badRequest().body("El teléfono secundario ya está en uso.");
+            }
+        }
+
+        // creation of user
+        User user = new User(
+                req.name(),
+                req.lastName(),
+                req.email(),
+                passwordEncoder.encode(req.password()),
+                req.mainPhone(),
+                req.secondaryPhone()
+        );
+
+        // role setting and enabling
+        user.setRoles(java.util.Arrays.asList("USER"));
+        user.setEnabled(true);
+
+        // check whether pfp was attached or the default one needs to be generated
+        if (imageFile != null && !imageFile.isEmpty()) {   // case: pfp attached
+            user.setProfilePicture(new Image(imageFile.getBytes()));
+        } else {   // case: default generation
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new java.awt.Color(13, 110, 253));
+            user.setProfilePicture(new Image(avatar));
+        }
+
+        // saving
+        userService.save(user);
+        return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
+    }
+    // endregion
     // endregion
 
 
@@ -285,6 +335,8 @@ public class UserRestController {
     }
     // endregion
     // endregion
+
+
 
     // region =========== PatchMapping =================
     // region 1. toggleUserStatus
