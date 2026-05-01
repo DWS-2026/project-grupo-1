@@ -14,6 +14,7 @@ import es.apexexpeditions.library.service.NotificationService;
 import es.apexexpeditions.library.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -70,9 +71,14 @@ public class UserRestController {
     // region =========== GetMapping =================
     // region 1. getUsers
     // overview of all users
-    @GetMapping ({"", "/"})
-    public Page<UserBasicResponseDTO> getUsers (Pageable pageable) {
-        return userService.findAll(pageable).map (userMapper::toBasicDTO);
+    @GetMapping
+    public ResponseEntity<Page<UserBasicResponseDTO>> getUsers(@PageableDefault(size = 10) Pageable pageable) {
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser == null || !loggedUser.getRoles().contains("ADMIN")) {   // bac fix
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+        Page<User> users = userService.findAll(pageable);
+        return ResponseEntity.ok(users.map(userMapper::toBasicDTO));
     }
     // endregion
 
@@ -194,14 +200,15 @@ public class UserRestController {
         // admin-editing exclusive attributes
         if (updateData.email() != null) user.setEmail(updateData.email());
         if (updateData.enabled() != null) user.setEnabled(updateData.enabled());
+        if (updateData.roles() != null) user.setRoles(updateData.roles());
+        if (updateData.moneySpent() != null) user.setMoneySpent(updateData.moneySpent());
+
 
         // non exclusive attributes
         if (updateData.name() != null) user.setName(updateData.name());
         if (updateData.lastName() != null) user.setLastName(updateData.lastName());
         if (updateData.mainPhone() != null) user.setMainPhone(updateData.mainPhone());
         if (updateData.secondaryPhone() != null) user.setSecondaryPhone(updateData.secondaryPhone());
-        if (updateData.moneySpent() != null) user.setMoneySpent(updateData.moneySpent());
-        if (updateData.roles() != null) user.setRoles(updateData.roles());
 
         userService.save(user);
         notificationService.notify ("Usuario actualizado por admin: " + user.getName(), "fas fa-user-edit", "bg-info");
