@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.boot.webmvc.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.ui.Model; // used for isadminattempt flag
 // endregion
 
@@ -33,7 +34,15 @@ public class CustomErrorController implements ErrorController {
      * @param request current HTTP request containing error details
      * @return path to mustache template to be rendered
      */
-    @RequestMapping("/error")
+    @RequestMapping(value = "/error", method = {
+            RequestMethod.GET,
+            RequestMethod.POST,
+            RequestMethod.PUT,
+            RequestMethod.DELETE,
+            RequestMethod.PATCH,
+            RequestMethod.HEAD,
+            RequestMethod.OPTIONS
+    })
     public String handleError(HttpServletRequest request, Model model) {
         // retrieve HTTP status code (e.g., 404, 403, 500) from request attributes
         Object status = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
