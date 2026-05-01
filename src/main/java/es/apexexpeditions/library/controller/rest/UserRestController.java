@@ -338,15 +338,26 @@ public class UserRestController {
     // used by admins to delete any non-user admin
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        User loggedUser = userService.getLoggedUser();
         User targetUser = userService.findById(id);
-        if (targetUser == null) {   // check user exists
-            return ResponseEntity.notFound().build();
-        }
-        if (userService.isAdmin(targetUser)) {   // prevent deletion of admins
+
+        if (targetUser == null) return ResponseEntity.notFound().build();
+
+        boolean isAdmin = loggedUser != null && loggedUser.getRoles().contains("ADMIN");
+        boolean isOwner = loggedUser != null && loggedUser.getId().equals(id);
+
+        if (!isAdmin && !isOwner) {   // case: unauthorized deletion request (neither admin nor account owner)
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-        userService.delete(targetUser);  // allow deletion of standard users
-        notificationService.notify ("Admin ha eliminado al usuario: " + targetUser.getName(), "fas fa-user-minus", "bg-warning");
+
+        if (isAdmin && isOwner) {   // fix and case: admin cant delete himself
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        String emailDeleted = targetUser.getEmail();
+        userService.delete (targetUser);   // object isntead of id (service doesnt have delete by id implemented)
+        notificationService.notify("User deleted: " + emailDeleted, "fas fa-user-minus", "bg-warning");
+
         return ResponseEntity.noContent().build();
     }
     // endregion
