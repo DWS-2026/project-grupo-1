@@ -8,8 +8,11 @@ package es.apexexpeditions.library.controller.rest;
 // region =========== imports =================
 import es.apexexpeditions.library.dto.notification.NotificationDTO;
 import es.apexexpeditions.library.model.Notification;
+import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.NotificationService;
+import es.apexexpeditions.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +31,19 @@ public class NotificationRestController {
     // region =========== autowired =================
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private UserService userService;
+    // endregion
+
+
+    // region =========== helpers =================
+    // region isNotAdmin
+    // BAC vuln fix
+    private boolean isNotAdmin() {
+        User loggedUser = userService.getLoggedUser();
+        return loggedUser == null || !loggedUser.getRoles().contains("ADMIN");
+    }
+    // endregion
     // endregion
 
 
@@ -36,6 +52,7 @@ public class NotificationRestController {
     // returns 10 most recent notifications
     @GetMapping
     public ResponseEntity<List<NotificationDTO>> getRecent() {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
         List<Notification> notifications = notificationService.getRecent10();
         return ResponseEntity.ok(notifications.stream()
                 .map(n -> new NotificationDTO(n.getId(), n.getMessage(), n.getIcon(),
@@ -49,6 +66,7 @@ public class NotificationRestController {
     // returns number of unread messages
     @GetMapping("/unread-count")
     public ResponseEntity<Long> getUnreadCount() {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
         return ResponseEntity.ok(notificationService.getUnreadCount());
     }
     // endregion
@@ -60,6 +78,7 @@ public class NotificationRestController {
     // removes notification from system
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
         notificationService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -72,6 +91,7 @@ public class NotificationRestController {
     // marks notification as read
     @PatchMapping("/{id}/read")
     public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
         notificationService.markAsRead(id);
         return ResponseEntity.noContent().build();
     }
