@@ -6,6 +6,7 @@ package es.apexexpeditions.library.controller;
 
 
 // region =========== imports =================
+import es.apexexpeditions.library.dto.user.AdminUserCreateDTO;
 import es.apexexpeditions.library.model.Image;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
@@ -198,10 +199,8 @@ public class UserController {
         // if user exists, delete him
         if (user != null) {
             userService.delete (user);
+            notificationService.notify("Admin ha eliminado al usuario: " + user.getName(), "fas fa-user-minus", "bg-warning");
         }
-
-        // notification: user deletion via admin (delete button in users page)
-        notificationService.notify("Admin ha eliminado al usuario: " + user.getName(), "fas fa-user-minus", "bg-warning");
 
 
         // redirect to users
@@ -217,7 +216,7 @@ public class UserController {
      * ensures password is encrypted and handles default avatar generation if no image is uploaded
      */
     @PostMapping ("/add")
-    public String saveUser (@Valid @ModelAttribute User newUser,
+    public String saveUser (@Valid @ModelAttribute AdminUserCreateDTO newUser,
                             BindingResult result,
                             @RequestParam(required = false) MultipartFile imageFile,
                             Model model) throws IOException {
@@ -228,50 +227,59 @@ public class UserController {
         }
 
         // check email in use
-        if (userService.emailExists (newUser.getEmail())) {
+        if (userService.emailExists (newUser.email())) {
             model.addAttribute ("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
             return "admin/user-add";
         }
 
         // check main phone in use
-        if (userService.phoneExists (newUser.getMainPhone())) {
+        if (userService.phoneExists (newUser.mainPhone())) {
             model.addAttribute ("errorMessage", "El teléfono principal ya está en uso.");
             return "admin/user-add";
         }
 
         // check secondary phone (if sent) is used
-        if (newUser.getSecondaryPhone() != null && !newUser.getSecondaryPhone().trim().isEmpty()) {
-            if (userService.phoneExists (newUser.getSecondaryPhone())) {
+        if (newUser.secondaryPhone() != null && !newUser.secondaryPhone().trim().isEmpty()) {
+            if (userService.phoneExists (newUser.secondaryPhone())) {
                 model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
                 return "admin/user-add";
             }
             // check main and secondary arent same
-            if (newUser.getMainPhone().equals (newUser.getSecondaryPhone())) {
+            if (newUser.mainPhone().equals (newUser.secondaryPhone())) {
                 model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
                 return "admin/user-add";
             }
         }
 
+        User user = new User();
+        user.setName (newUser.name());
+        user.setLastName (newUser.lastName());
+        user.setEmail (newUser.email());
+        user.setMainPhone (newUser.mainPhone());
+        user.setSecondaryPhone (newUser.secondaryPhone());
+        user.setMoneySpent (newUser.moneySpent());
+        user.setEnabled (newUser.enabled());
+
         // if no repetitions, apply protection
-        newUser.setRoles (java.util.Arrays.asList("USER"));
-        newUser.setPassword (passwordEncoder.encode(newUser.getPassword()));
+        user.setRoles (java.util.List.of("USER"));
+        user.setPassword (passwordEncoder.encode(newUser.password()));
 
         // if an image is added, store it too
         if (imageFile != null && !imageFile.isEmpty()) {
             byte[] imageBytes = imageFile.getBytes();
-            newUser.setProfilePicture (new Image (imageBytes));
+            user.setProfilePicture (new Image (imageBytes));
         }
 
         else {
             // if no picture, generate default
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
-            newUser.setProfilePicture (new Image (avatar));
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.name(), new Color(13, 110, 253));
+            user.setProfilePicture (new Image (avatar));
         }
 
-        userService.save (newUser);
+        userService.save (user);
 
         // notificaction: user creation via admin (user-add page)
-        notificationService.notify ("Admin ha creado al usuario: " + newUser.getName(), "fas fa-user-plus", "bg-success");
+        notificationService.notify ("Admin ha creado al usuario: " + user.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/admin/users";
     }
