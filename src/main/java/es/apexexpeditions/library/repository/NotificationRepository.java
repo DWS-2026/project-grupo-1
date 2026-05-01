@@ -21,4 +21,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findFirst10ByOrderByDateDesc();
     // count unread notifications
     long countByReadStatusFalse();
+    // to mark all as read
+    List<Notification> findByReadStatusFalse();
 }

@@ -83,16 +83,34 @@ public class NotificationRestController {
         return ResponseEntity.noContent().build();
     }
     // endregion
+
+    // region 2. deleteAllNotifications
+    @DeleteMapping
+    public ResponseEntity<Void> deleteAllNotifications() {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        notificationService.deleteAll();
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
     // endregion
 
 
     // region =========== PatchMapping =================
     // region 1. markAsRead
-    // marks notification as read
+    // marks single notification as read
     @PatchMapping("/{id}/read")
     public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
         if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
         notificationService.markAsRead(id);
+        return ResponseEntity.noContent().build();
+    }
+    // endregion
+
+    // region 2. markAllAsRead
+    @PatchMapping("/read")
+    public ResponseEntity<Void> markAllAsRead() {
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        notificationService.markAllAsRead();
         return ResponseEntity.noContent().build();
     }
     // endregion

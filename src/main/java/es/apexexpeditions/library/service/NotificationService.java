@@ -3,8 +3,6 @@ package es.apexexpeditions.library.service;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.model.Notification;
 import es.apexexpeditions.library.repository.NotificationRepository;
@@ -18,16 +16,12 @@ import java.util.List;
 
 
 
-
-
 @Service
 public class NotificationService {
     // region =========== autowired =================
     @Autowired
     private NotificationRepository repository;
     // endregion
-
-
 
 
 
@@ -53,7 +47,7 @@ public class NotificationService {
 
 
 
-    // mark notification as read
+    // mark single notification as read
     public void markAsRead (Long id) {
         repository.findById(id).ifPresent(n -> {
             n.setReadStatus (true);
@@ -63,9 +57,25 @@ public class NotificationService {
 
 
 
-    // delete notification
+    // mark all notifications as read
+    public void markAllAsRead() {
+        List<Notification> unread = repository.findByReadStatusFalse();
+        unread.forEach(n -> n.setReadStatus(true));
+        repository.saveAll(unread);
+    }
+
+
+
+    // delete single notification
     public void delete (Long id) {
         repository.deleteById(id);
+    }
+
+
+
+    // delete all notifications
+    public void deleteAll() {
+        repository.deleteAll();
     }
     // endregion
 }
