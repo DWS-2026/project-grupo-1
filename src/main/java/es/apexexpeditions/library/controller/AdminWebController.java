@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -42,15 +41,7 @@ import es.apexexpeditions.library.service.ReviewService;
 public class AdminWebController {
     // region =========== attributes =================
     private final ReviewService reviewService;
-    // endregion
-
-
-
-
-
-    // region =========== autowired =================
-    @Autowired
-    private TourService tourService;
+    private final TourService tourService;
     // endregion
 
 
@@ -58,8 +49,9 @@ public class AdminWebController {
 
 
     // region =========== constructor =================
-    AdminWebController(ReviewService reviewService) {
+    AdminWebController(ReviewService reviewService, TourService tourService) {
         this.reviewService = reviewService;
+        this.tourService = tourService;
     }
     // endregion
 
