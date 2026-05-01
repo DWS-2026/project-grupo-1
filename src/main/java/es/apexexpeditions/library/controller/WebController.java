@@ -1,6 +1,7 @@
 package es.apexexpeditions.library.controller;
 
 // region =========== imports =================
+import es.apexexpeditions.library.dto.user.UserRegisterDTO;
 import es.apexexpeditions.library.model.Guide;
 import es.apexexpeditions.library.model.Booking;
 import es.apexexpeditions.library.model.Review;
@@ -638,7 +639,7 @@ public class WebController {
      * Handles new user registration via the public sign-up form.
      */
     @PostMapping("/register")
-    public String registerUser(@Valid @ModelAttribute User newUser,
+    public String registerUser(@Valid @ModelAttribute UserRegisterDTO newUser,
             BindingResult result,
             @RequestParam(required = false) MultipartFile imageFile, // pfp
             Model model) throws IOException {
@@ -649,61 +650,68 @@ public class WebController {
         }
 
         // check email in use
-        if (userService.emailExists(newUser.getEmail())) {
+        if (userService.emailExists(newUser.email())) {
             model.addAttribute("errorMessage", "El correo electrónico ya está registrado en otra cuenta.");
             return "user/register";
         }
 
         // check main phone in use
-        if (userService.phoneExists(newUser.getMainPhone())) {
+        if (userService.phoneExists(newUser.mainPhone())) {
             model.addAttribute("errorMessage", "El teléfono principal ya está en uso.");
             return "user/register";
         }
 
         // check secondary phone (if sent) is used
-        String secondaryPhone = newUser.getSecondaryPhone();
+        String secondaryPhone = newUser.secondaryPhone();
         if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
             if (userService.phoneExists(secondaryPhone)) {
                 model.addAttribute("errorMessage", "El teléfono secundario ya está en uso por otra cuenta.");
                 return "user/register";
             }
             // check main and secondary arent same
-            if (newUser.getMainPhone().equals(secondaryPhone)) {
+            if (newUser.mainPhone().equals(secondaryPhone)) {
                 model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
                 return "user/register";
             }
         }
 
+        User user = new User();
+        user.setName(newUser.name());
+        user.setLastName(newUser.lastName());
+        user.setEmail(newUser.email());
+        user.setMainPhone(newUser.mainPhone());
+        user.setSecondaryPhone(secondaryPhone);
+
         // encode password
-        newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setPassword(passwordEncoder.encode(newUser.password()));
 
         // fill other fields
-        newUser.setRoles(java.util.Arrays.asList("USER"));
-        newUser.setEnabled(true);
-        newUser.setMoneySpent(0.0);
+        user.setRoles(java.util.List.of("USER"));
+        user.setEnabled(true);
+        user.setMoneySpent(0.0);
 
         // pfp logic
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 // if image was attached, store it2
-                newUser.setProfilePicture(new Image (imageFile.getBytes()));
+                user.setProfilePicture(new Image (imageFile.getBytes()));
             } else {
                 // if no image attached, generate default
-                byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(),
+                byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.name(),
                         new Color(13, 110, 253));
-                newUser.setProfilePicture (new Image (avatar));
+                user.setProfilePicture (new Image (avatar));
             }
         } catch (IOException e) {
             // if error reading file, set default
             e.printStackTrace();
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.getName(), new Color(13, 110, 253));
-            newUser.setProfilePicture (new Image (avatar));
+            byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.name(), new Color(13, 110, 253));
+            user.setProfilePicture (new Image (avatar));
         }
 
-        userService.save(newUser); // save user
+        userService.save(user); // save user
 
         // notificaction: user creation via user (registration page)
-        notificationService.notify("Nuevo usuario registrado: " + newUser.getName(), "fas fa-user-plus", "bg-success");
+        notificationService.notify("Nuevo usuario registrado: " + user.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/login"; // go login
     }
