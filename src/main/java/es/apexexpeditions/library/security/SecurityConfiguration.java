@@ -105,7 +105,13 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
                 // TOURS
                 .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
+                // LOGIN
+                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
+                // REGISTRATION
+                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
 
+
+                // REST OF ENDPOINTS
                 .anyRequest().authenticated());
 
         // Disable Form login Authentication
