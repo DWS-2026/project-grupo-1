@@ -25,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 
+import es.apexexpeditions.library.dto.tour.TourRequestDTO;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.model.Review;
 import es.apexexpeditions.library.service.TourService;
@@ -61,6 +62,15 @@ public class AdminWebController {
         this.reviewService = reviewService;
     }
     // endregion
+
+    private static void updateTourFromDto(Tour tour, TourRequestDTO tourData) {
+        tour.setName(tourData.name());
+        tour.setPrice(tourData.price());
+        tour.setDescription(tourData.description());
+        tour.setDuration(tourData.duration());
+        tour.setNumPeople(tourData.numPeople());
+        tour.setHotelIncluded(tourData.hotelIncluded());
+    }
 
 
 
@@ -283,11 +293,11 @@ public class AdminWebController {
 
     // region 3. "/tour-add"
     @PostMapping("/tour-add")
-    public String addTour(@ModelAttribute Tour tour,
+    public String addTour(@ModelAttribute TourRequestDTO tour,
             @RequestParam(required = false) MultipartFile imageFile) {
 
         try {
-            tourService.save(tour, imageFile);
+            tourService.createTour(tour, imageFile);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -300,7 +310,7 @@ public class AdminWebController {
 
     // region 4. "/tour-edit/{id}"
     @PostMapping("/tour-edit/{id}")
-    public String updateTour(@PathVariable Long id, @ModelAttribute Tour tourData,
+    public String updateTour(@PathVariable Long id, @ModelAttribute TourRequestDTO tourData,
             @RequestParam(required = false) MultipartFile imageFile) {
         Tour tour = tourService.findById(id);
 
@@ -308,13 +318,7 @@ public class AdminWebController {
             return "redirect:/admin/tours";
         }
 
-        // Update fields
-        tour.setName(tourData.getName());
-        tour.setPrice(tourData.getPrice());
-        tour.setDescription(tourData.getDescription());
-        tour.setDuration(tourData.getDuration());
-        tour.setNumPeople(tourData.getNumPeople());
-        tour.setHotelIncluded(tourData.isHotelIncluded());
+        updateTourFromDto(tour, tourData);
 
         try {
             tourService.save(tour, imageFile);
