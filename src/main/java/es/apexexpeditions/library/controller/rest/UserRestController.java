@@ -190,29 +190,47 @@ public class UserRestController {
     // region 4. updateUser
     // admin endpoint to modify any info on any user
     @PutMapping("/{id}")
-    public ResponseEntity<UserFullResponseDTO> updateUser(
+    public ResponseEntity<UserFullResponseDTO> updateUser (
             @PathVariable Long id,
             @Valid @RequestBody UserUpdateDTO updateData) {
 
-        User user = userService.findById(id);
-        if (user == null) return ResponseEntity.notFound().build();
+        User loggedUser = userService.getLoggedUser();
+        User targetUser = userService.findById(id);
 
-        // admin-editing exclusive attributes
-        if (updateData.email() != null) user.setEmail(updateData.email());
-        if (updateData.enabled() != null) user.setEnabled(updateData.enabled());
-        if (updateData.roles() != null) user.setRoles(updateData.roles());
-        if (updateData.moneySpent() != null) user.setMoneySpent(updateData.moneySpent());
+        if (targetUser == null) {   // case: error retrieving user
+            return ResponseEntity.notFound().build();
+        }
 
+        boolean isAdmin = loggedUser != null && loggedUser.getRoles().contains("ADMIN");
+        boolean isOwner = loggedUser != null && loggedUser.getId().equals(id);
 
-        // non exclusive attributes
-        if (updateData.name() != null) user.setName(updateData.name());
-        if (updateData.lastName() != null) user.setLastName(updateData.lastName());
-        if (updateData.mainPhone() != null) user.setMainPhone(updateData.mainPhone());
-        if (updateData.secondaryPhone() != null) user.setSecondaryPhone(updateData.secondaryPhone());
+        if (!isAdmin && !isOwner) {   // case: neither admin or owner of the account
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
-        userService.save(user);
-        notificationService.notify ("Usuario actualizado por admin: " + user.getName(), "fas fa-user-edit", "bg-info");
-        return ResponseEntity.ok(userMapper.toFullDTO(user));
+        // a01 vuln fix
+        if (isAdmin) {   // all fields
+            if (updateData.name() != null) targetUser.setName(updateData.name());
+            if (updateData.lastName() != null) targetUser.setLastName(updateData.lastName());
+            if (updateData.email() != null) targetUser.setEmail(updateData.email());
+            if (updateData.mainPhone() != null) targetUser.setMainPhone(updateData.mainPhone());
+            if (updateData.secondaryPhone() != null) targetUser.setSecondaryPhone(updateData.secondaryPhone());
+            if (updateData.enabled() != null) targetUser.setEnabled(updateData.enabled());
+            if (updateData.moneySpent() != null) targetUser.setMoneySpent(updateData.moneySpent());
+            if (updateData.roles() != null && !updateData.roles().isEmpty()) {
+                targetUser.setRoles(updateData.roles());
+            }
+        } else {   // only basic fields
+            if (updateData.name() != null) targetUser.setName(updateData.name());
+            if (updateData.lastName() != null) targetUser.setLastName(updateData.lastName());
+            if (updateData.mainPhone() != null) targetUser.setMainPhone(updateData.mainPhone());
+            if (updateData.secondaryPhone() != null) targetUser.setSecondaryPhone(updateData.secondaryPhone());
+        }
+
+        userService.save(targetUser);
+        notificationService.notify("Profile updated: " + targetUser.getEmail(), "fas fa-user-edit", "bg-info");
+
+        return ResponseEntity.ok(userMapper.toFullDTO(targetUser));
     }
     // endregion
 
