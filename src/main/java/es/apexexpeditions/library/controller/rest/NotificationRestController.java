@@ -78,7 +78,13 @@ public class NotificationRestController {
     // removes notification from system
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteNotification(@PathVariable Long id) {
-        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
+        if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        // check if notification exists
+        if (notificationService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         notificationService.delete(id);
         return ResponseEntity.noContent().build();
     }
@@ -101,6 +107,12 @@ public class NotificationRestController {
     @PatchMapping("/{id}/read")
     public ResponseEntity<Void> markAsRead(@PathVariable Long id) {
         if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
+
+        // check if notification exists
+        if (notificationService.findById(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
         notificationService.markAsRead(id);
         return ResponseEntity.noContent().build();
     }

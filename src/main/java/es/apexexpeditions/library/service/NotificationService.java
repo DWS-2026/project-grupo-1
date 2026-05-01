@@ -10,7 +10,9 @@ import es.apexexpeditions.library.repository.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 // endregion
 
 
@@ -76,6 +78,11 @@ public class NotificationService {
     // delete all notifications
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    // search for notfication by id (for api single notification operations: delete and mark)
+    public Optional<Notification> findById(Long id) {
+        return repository.findById(id);
     }
     // endregion
 }
