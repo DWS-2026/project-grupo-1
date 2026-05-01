@@ -3,8 +3,6 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.dto.resterror.RestErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -17,8 +15,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 // endregion
-
-
 
 
 
@@ -84,7 +80,7 @@ public class GlobalRestExceptionHandler {
 
     // region handleAccessDenied
     @ExceptionHandler (AccessDeniedException.class)
-    public ResponseEntity<RestErrorDTO> handleAccessDenied(Exception ex) {
+    public ResponseEntity<RestErrorDTO> handleAccessDenied (AccessDeniedException ex) {
         RestErrorDTO error = new RestErrorDTO(
                 getUtcTimestamp(),
                 HttpStatus.FORBIDDEN.value(),
@@ -95,8 +91,8 @@ public class GlobalRestExceptionHandler {
     }
     // endregion
 
+
     // region handleValidation
-    // endregion
     // catches @Valid failures in dtos and returns 400
     @ExceptionHandler (MethodArgumentNotValidException.class)
     public ResponseEntity<RestErrorDTO> handleValidation(MethodArgumentNotValidException ex) {
@@ -113,4 +109,5 @@ public class GlobalRestExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    // endregion
 }
