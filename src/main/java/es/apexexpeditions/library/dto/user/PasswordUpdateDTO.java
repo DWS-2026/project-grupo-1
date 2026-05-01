@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Size;
 
 // equivalent to the fuctionality available in profile page
 public record PasswordUpdateDTO (
-        @NotBlank String oldPassword,
-        @NotBlank @Size (min = 8, message = "New password must be at least 8 characters") String newPassword,
-        @NotBlank String confirmPassword
+        @NotBlank @Size(max = 255) String oldPassword,
+        @NotBlank @Size(min = 8, max = 255, message = "New password must be at least 8 characters") String newPassword,
+        @NotBlank @Size(max = 255) String confirmPassword
 ) {}

@@ -15,10 +15,10 @@ import java.util.List;
 public record UserUpdateDTO (
         @Size(max = 50) String name,
         @Size(max = 50) String lastName,
-        @Email String email,          // admin exclusive
-        String mainPhone,
-        String secondaryPhone,
-        Boolean enabled,       // admin exclusive
-        @PositiveOrZero Double moneySpent,     // admin exclusive
-        List<String> roles     // admin exclusive
+        @Email @Size(max = 255) String email,          // admin exclusive
+        @Size(min = 9, max = 20) String mainPhone,
+        @Size(max = 20) String secondaryPhone,
+        Boolean enabled,                               // admin exclusive
+        @PositiveOrZero Double moneySpent,             // admin exclusive
+        List<String> roles                             // admin exclusive
 ) {}
