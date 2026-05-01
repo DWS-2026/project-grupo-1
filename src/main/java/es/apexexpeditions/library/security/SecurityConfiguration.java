@@ -100,6 +100,13 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*/image/media").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
 
+                // REVIEWS
+                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/hidden").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/api/v1/reviews/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/api/v1/reviews").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+
                 // PUBLIC ENDPOINTS
                 // IMAGES
                 .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
@@ -109,7 +116,9 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                 // REGISTRATION
                 .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
-
+                // REVIEWS
+                .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
 
                 // REST OF ENDPOINTS
                 .anyRequest().authenticated());

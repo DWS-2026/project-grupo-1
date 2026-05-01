@@ -6,10 +6,13 @@ import es.apexexpeditions.library.dto.review.ReviewResponseDTO;
 import es.apexexpeditions.library.dto.review.ReviewUpdateDTO;
 import es.apexexpeditions.library.dto.review.ReviewVisibilityDTO;
 import es.apexexpeditions.library.model.Review;
+import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.ReviewService;
+import es.apexexpeditions.library.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -30,10 +33,13 @@ public class ReviewRestController {
     @Autowired
     private ReviewMapper reviewMapper;
 
-    // Returns all reviews stored in the database.
+    @Autowired
+    private UserService userService;
+
+    // Returns all visible reviews stored in the database.
     @GetMapping
     public ResponseEntity<Collection<ReviewResponseDTO>> listarReviews() {
-        List<Review> reviews = reviewService.findAll();
+        List<Review> reviews = reviewService.findVisible();
         return ResponseEntity.ok(toDTOs(reviews));
     }
 
@@ -53,33 +59,57 @@ public class ReviewRestController {
             return ResponseEntity.notFound().build();
         }
 
-        return ResponseEntity.ok(toDTO(review.get()));
+        Review foundReview = review.get();
+
+        if (foundReview.isHidden()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(toDTO(foundReview));
     }
 
-    // Returns all reviews written for a specific tour.
+    // Returns all visible reviews written for a specific tour.
     @GetMapping("/tour/{tourId}")
     public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorTour(@PathVariable Long tourId) {
-        List<Review> reviews = reviewService.findByTourId(tourId);
+        List<Review> reviews = reviewService.findByTourIdAndHiddenFalse(tourId);
         return ResponseEntity.ok(toDTOs(reviews));
     }
 
-    // Returns all reviews written by a specific user.
+    // Returns all visible reviews written by a specific user.
     @GetMapping("/user/{userId}")
     public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorUsuario(@PathVariable Long userId) {
-        List<Review> reviews = reviewService.findByUserId(userId);
+        List<Review> reviews = reviewService.findByUserId(userId).stream()
+                .filter(review -> !review.isHidden())
+                .toList();
         return ResponseEntity.ok(toDTOs(reviews));
     }
 
-    // Creates a new review linked to an existing tour and user.
+    // Creates a new review linked to an existing tour and the authenticated user.
     @PostMapping
-    public ResponseEntity<ReviewResponseDTO> createReview(@Valid @RequestBody ReviewRequestDTO request) {
+    public ResponseEntity<ReviewResponseDTO> createReview(@Valid @RequestBody ReviewRequestDTO request,
+                                                          Principal principal) {
+        if (principal == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        User loggedUser = userService.findByEmail(principal.getName());
+
+        if (loggedUser == null) {
+            return ResponseEntity.status(401).build();
+        }
+
+        if (!isAdmin(loggedUser) && !loggedUser.getId().equals(request.userId())) {
+            return ResponseEntity.status(403).build();
+        }
+
+        Long reviewUserId = isAdmin(loggedUser) ? request.userId() : loggedUser.getId();
         Optional<Review> savedReview;
         Review reviewRequest = toDomain(request);
 
         try {
             savedReview = reviewService.createReview(
                     request.tourId(),
-                    request.userId(),
+                    reviewUserId,
                     reviewRequest.getRating(),
                     reviewRequest.getDescription()
             );
@@ -100,23 +130,8 @@ public class ReviewRestController {
 
     // Deletes one review by its id, or returns 404 if it does not exist.
     @DeleteMapping("/{id}")
-    public ResponseEntity<ReviewResponseDTO> deleteReview(@PathVariable Long id) {
-        Optional<Review> review = reviewService.findById(id);
-
-        if (review.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        ReviewResponseDTO deletedReview = toDTO(review.get());
-        reviewService.deleteById(id);
-        return ResponseEntity.ok(deletedReview);
-    }
-
-    // Updates only the editable fields of a review: rating and description.
-    @PutMapping("/{id}")
-    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long id,
-                                                          @Valid @RequestBody ReviewUpdateDTO updatedReview,
-                                                          Principal principal) {
+    public ResponseEntity<ReviewResponseDTO> deleteReview(@PathVariable Long id,
+                                                          Authentication authentication) {
         Optional<Review> review = reviewService.findById(id);
 
         if (review.isEmpty()) {
@@ -125,11 +140,33 @@ public class ReviewRestController {
 
         Review existingReview = review.get();
 
-        if (principal == null) {
+        if (!canManageReview(existingReview, authentication)) {
+            return ResponseEntity.status(403).build();
+        }
+
+        ReviewResponseDTO deletedReview = toDTO(existingReview);
+        reviewService.deleteById(id);
+        return ResponseEntity.ok(deletedReview);
+    }
+
+    // Updates only the editable fields of a review: rating and description.
+    @PutMapping("/{id}")
+    public ResponseEntity<ReviewResponseDTO> updateReview(@PathVariable Long id,
+                                                          @Valid @RequestBody ReviewUpdateDTO updatedReview,
+                                                          Authentication authentication) {
+        Optional<Review> review = reviewService.findById(id);
+
+        if (review.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Review existingReview = review.get();
+
+        if (authentication == null) {
             return ResponseEntity.status(401).build();
         }
 
-        if (!existingReview.getUser().getEmail().equals(principal.getName())) {
+        if (!canManageReview(existingReview, authentication)) {
             return ResponseEntity.status(403).build();
         }
 
@@ -171,5 +208,22 @@ public class ReviewRestController {
 
     private Collection<ReviewResponseDTO> toDTOs(Collection<Review> reviews) {
         return reviewMapper.toDTOs(reviews);
+    }
+
+    private boolean canManageReview(Review review, Authentication authentication) {
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return false;
+        }
+
+        if (authentication.getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+            return true;
+        }
+
+        return review.getUser().getEmail().equals(authentication.getName());
+    }
+
+    private boolean isAdmin(User user) {
+        return user.getRoles() != null && user.getRoles().contains("ADMIN");
     }
 }
