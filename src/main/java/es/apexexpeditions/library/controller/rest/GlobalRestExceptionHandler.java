@@ -10,10 +10,12 @@ import es.apexexpeditions.library.dto.resterror.RestErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 // endregion
 
 
@@ -92,4 +94,23 @@ public class GlobalRestExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
     // endregion
+
+    // region handleValidation
+    // endregion
+    // catches @Valid failures in dtos and returns 400
+    @ExceptionHandler (MethodArgumentNotValidException.class)
+    public ResponseEntity<RestErrorDTO> handleValidation(MethodArgumentNotValidException ex) {
+        // Collect all validation error messages into a single string
+        String details = ex.getBindingResult().getFieldErrors().stream()
+                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        RestErrorDTO error = new RestErrorDTO(
+                getUtcTimestamp(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Validation Failed",
+                details
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
 }
