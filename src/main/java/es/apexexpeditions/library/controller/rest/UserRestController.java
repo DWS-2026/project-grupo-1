@@ -140,8 +140,8 @@ public class UserRestController {
         User user = userService.getLoggedUser();
         if (user == null) return ResponseEntity.status (HttpStatus.UNAUTHORIZED).build();
 
-        if (!passwords.newPassword().equals (passwords.confirmPassword())) {
-            return ResponseEntity.badRequest().build();
+        if (!passwords.newPassword().equals(passwords.confirmPassword())) {
+            throw new IllegalArgumentException ("Passwords do not match.");
         }
         if (!passwordEncoder.matches (passwords.oldPassword(), user.getPassword())) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
