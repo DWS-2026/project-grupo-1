@@ -42,7 +42,7 @@ public class GlobalRestExceptionHandler {
                 getUtcTimestamp(),
                 HttpStatus.NOT_FOUND.value(),
                 "Not Found",
-                "El recurso solicitado no existe."
+                "The requested resource was not found."
         );
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
@@ -74,7 +74,7 @@ public class GlobalRestExceptionHandler {
                 getUtcTimestamp(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
-                "Se ha producido un error interno. Por favor, contacte con el administrador."
+                "An internal server error occurred. Please contact the administrator."
         );
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -89,7 +89,7 @@ public class GlobalRestExceptionHandler {
                 getUtcTimestamp(),
                 HttpStatus.FORBIDDEN.value(),
                 "Forbidden",
-                "No tienes permisos suficientes para realizar esta acción."
+                "You do not have sufficient permissions to perform this action."
         );
         return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
     }
