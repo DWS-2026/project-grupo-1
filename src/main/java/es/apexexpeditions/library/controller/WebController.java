@@ -282,7 +282,7 @@ public class WebController {
     public String profile(Model model,
             Principal principal,
             HttpServletRequest request,
-            @RequestParam(required = false) boolean showLogout) {
+            @RequestParam(required = false) Boolean showLogout) {
 
         if (principal != null) {
             User user = userService.findByEmail(principal.getName());
@@ -294,7 +294,7 @@ public class WebController {
             }
 
             // if a param showLogout is received, set flag
-            if (showLogout) {
+            if (Boolean.TRUE.equals(showLogout)) {
                 model.addAttribute("openLogoutModal", true);
             }
 
