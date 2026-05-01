@@ -12,9 +12,10 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.http.Cookie;
+import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletRequest;
 
-// @Component DISABLED
+@Component
 public class JwtTokenProvider {
 
 	private final SecretKey jwtSecret = Jwts.SIG.HS256.key().build();

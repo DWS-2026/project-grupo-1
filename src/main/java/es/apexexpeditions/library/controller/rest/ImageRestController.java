@@ -1,9 +1,8 @@
 package es.apexexpeditions.library.controller.rest;
 
 
-// region =========== imports =================
-import es.apexexpeditions.library.dto.ImageDTO;
-import es.apexexpeditions.library.dto.ImageMapper;
+import es.apexexpeditions.library.dto.image.ImageDTO;
+import es.apexexpeditions.library.dto.image.ImageMapper;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.service.ImageService;
 

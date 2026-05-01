@@ -1,10 +1,10 @@
 package es.apexexpeditions.library.controller.rest;
 
-import es.apexexpeditions.library.dto.ImageDTO;
-import es.apexexpeditions.library.dto.ImageMapper;
-import es.apexexpeditions.library.dto.TourResponseDTO;
-import es.apexexpeditions.library.dto.TourMapper;
-import es.apexexpeditions.library.dto.TourRequestDTO;
+import es.apexexpeditions.library.dto.image.ImageDTO;
+import es.apexexpeditions.library.dto.image.ImageMapper;
+import es.apexexpeditions.library.dto.tour.TourMapper;
+import es.apexexpeditions.library.dto.tour.TourRequestDTO;
+import es.apexexpeditions.library.dto.tour.TourResponseDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.model.User;

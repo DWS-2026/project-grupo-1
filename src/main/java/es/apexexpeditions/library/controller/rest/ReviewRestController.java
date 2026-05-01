@@ -1,10 +1,10 @@
 package es.apexexpeditions.library.controller.rest;
 
-import es.apexexpeditions.library.dto.ReviewMapper;
-import es.apexexpeditions.library.dto.ReviewRequestDTO;
-import es.apexexpeditions.library.dto.ReviewResponseDTO;
-import es.apexexpeditions.library.dto.ReviewUpdateDTO;
-import es.apexexpeditions.library.dto.ReviewVisibilityDTO;
+import es.apexexpeditions.library.dto.review.ReviewMapper;
+import es.apexexpeditions.library.dto.review.ReviewRequestDTO;
+import es.apexexpeditions.library.dto.review.ReviewResponseDTO;
+import es.apexexpeditions.library.dto.review.ReviewUpdateDTO;
+import es.apexexpeditions.library.dto.review.ReviewVisibilityDTO;
 import es.apexexpeditions.library.model.Review;
 import es.apexexpeditions.library.service.ReviewService;
 import jakarta.validation.Valid;

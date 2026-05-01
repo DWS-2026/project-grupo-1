@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.guide;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

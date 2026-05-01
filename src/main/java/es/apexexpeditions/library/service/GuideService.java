@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-import es.apexexpeditions.library.dto.GuideMapper;
-import es.apexexpeditions.library.dto.GuideRequestDTO;
-import es.apexexpeditions.library.dto.GuideResponseDTO;
+import es.apexexpeditions.library.dto.guide.GuideMapper;
+import es.apexexpeditions.library.dto.guide.GuideRequestDTO;
+import es.apexexpeditions.library.dto.guide.GuideResponseDTO;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.repository.TourRepository;
 import jakarta.persistence.EntityNotFoundException;

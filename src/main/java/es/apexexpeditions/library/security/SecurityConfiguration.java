@@ -1,5 +1,6 @@
 package es.apexexpeditions.library.security;
 
+
 // region =========== imports =================
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,21 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 // endregion
+
+import es.apexexpeditions.library.security.jwt.JwtRequestFilter;
+import es.apexexpeditions.library.security.jwt.JwtTokenProvider;
+import es.apexexpeditions.library.security.jwt.UnauthorizedHandlerJwt;
 
 /**
  * Dual security configuration:
@@ -29,14 +37,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     // region =========== autowired =================
-    /* @Autowired DISABLED
-    private JwtTokenProvider jwtTokenProvider; */
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     public RepositoryUserDetailsService userDetailService;
 
-    /* @Autowired DISABLED
-    private UnauthorizedHandlerJwt unauthorizedHandlerJwt; */
+    @Autowired
+    private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -69,26 +77,21 @@ public class SecurityConfiguration {
     @Bean
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
-        // ADDED TO WORK W DISABLED THINGS
-        http.securityMatcher("/api/**");
 
         http.authenticationProvider(authenticationProvider());
 
-        /*
         http
                 .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
-         DISABLED */
+
         // error management for api
 
         http.authorizeHttpRequests(auth -> auth
                 // PRIVATE ENDPOINTS
                 // IMAGES
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/images/**").hasRole("ADMIN")
-
                 // TOURS
                 .requestMatchers(HttpMethod.POST, "/api/v1/tours").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*").hasRole("ADMIN")
@@ -98,6 +101,8 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
 
                 // PUBLIC ENDPOINTS
+                // IMAGES
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
                 // TOURS
                 .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
 
@@ -116,9 +121,8 @@ public class SecurityConfiguration {
         http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // Add JWT Token filter
-        /* DISABLED
         http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class); */
+                UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

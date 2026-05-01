@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.guide;
 
 public record GuideResponseDTO(
     Long id,

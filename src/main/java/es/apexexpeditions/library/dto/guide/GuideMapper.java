@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.guide;
 
 import es.apexexpeditions.library.model.Guide;
 import org.mapstruct.Mapper;

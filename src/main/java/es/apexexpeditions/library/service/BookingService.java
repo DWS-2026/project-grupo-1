@@ -1,13 +1,13 @@
 package es.apexexpeditions.library.service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import es.apexexpeditions.library.model.Booking;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.repository.BookingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
@@ -88,4 +88,6 @@ public class BookingService {
     public Optional<Booking> findLastClosedBookingByUser(User user) {
         return bookingRepository.findFirstByUserAndCloseTrueOrderByIdDesc(user);
     }
+
+   
 }

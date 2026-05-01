@@ -1,7 +1,7 @@
 package es.apexexpeditions.library.controller.rest;
 
-import es.apexexpeditions.library.dto.GuideRequestDTO;
-import es.apexexpeditions.library.dto.GuideResponseDTO;
+import es.apexexpeditions.library.dto.guide.GuideRequestDTO;
+import es.apexexpeditions.library.dto.guide.GuideResponseDTO;
 import es.apexexpeditions.library.service.GuideService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

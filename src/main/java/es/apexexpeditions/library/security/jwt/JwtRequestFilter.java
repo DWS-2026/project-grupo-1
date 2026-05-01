@@ -13,9 +13,10 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.stereotype.Component;
 import jakarta.servlet.http.HttpServletResponse;
 
-// @Component DISABLED
+@Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 	
 	private static final Logger log = LoggerFactory.getLogger(JwtRequestFilter.class);

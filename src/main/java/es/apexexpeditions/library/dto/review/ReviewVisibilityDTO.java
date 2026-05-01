@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.review;
 
 import jakarta.validation.constraints.NotNull;
 

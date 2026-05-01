@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.review;
 
 import es.apexexpeditions.library.model.Review;
 import org.mapstruct.Mapper;

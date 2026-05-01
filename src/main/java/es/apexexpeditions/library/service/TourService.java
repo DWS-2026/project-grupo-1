@@ -1,7 +1,7 @@
 package es.apexexpeditions.library.service;
 
-import es.apexexpeditions.library.dto.TourMapper;
-import es.apexexpeditions.library.dto.TourRequestDTO;
+import es.apexexpeditions.library.dto.tour.TourMapper;
+import es.apexexpeditions.library.dto.tour.TourRequestDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.repository.TourRepository;

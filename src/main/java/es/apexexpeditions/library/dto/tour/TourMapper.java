@@ -1,10 +1,12 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.tour;
 
 import java.util.List;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import es.apexexpeditions.library.dto.image.ImageMapper;
+import es.apexexpeditions.library.dto.review.ReviewMapper;
 import es.apexexpeditions.library.model.Guide;
 import es.apexexpeditions.library.model.Tour;
 

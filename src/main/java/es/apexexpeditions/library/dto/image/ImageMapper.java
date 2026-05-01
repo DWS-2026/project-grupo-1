@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.image;
 
 
 import es.apexexpeditions.library.model.Image;

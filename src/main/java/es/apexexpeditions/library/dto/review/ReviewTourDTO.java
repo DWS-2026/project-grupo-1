@@ -1,4 +1,4 @@
-package es.apexexpeditions.library.dto;
+package es.apexexpeditions.library.dto.review;
 
 public record ReviewTourDTO(
     Long id,
