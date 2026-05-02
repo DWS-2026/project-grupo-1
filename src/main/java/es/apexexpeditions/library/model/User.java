@@ -1,5 +1,8 @@
 package es.apexexpeditions.library.model;
 
+
+
+
 // region =========== imports =================
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -13,6 +16,9 @@ import java.time.format.DateTimeFormatter; // to format creation timestamp
 import java.util.ArrayList;
 import java.util.List; // for role lists
 // endregion
+
+
+
 
 @Entity // represents user in app
 @Table(name = "users") // map to users table in db (user is reserved SQL keyword)
