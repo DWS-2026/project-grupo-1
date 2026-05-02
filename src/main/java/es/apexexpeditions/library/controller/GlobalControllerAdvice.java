@@ -14,7 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import java.security.Principal;
 // endregion
 
@@ -95,6 +99,30 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
 
         // flag
         model.addAttribute ("hasNotifications", unreadCount > 0);
+    }
+    // endregion
+    // endregion
+
+
+
+
+    // region =========== ExceptionHandler =================
+    // region 1. handleTypeMismatch (false positive sql injection related)
+    // capture errores when sending letters or symbols in boolean or numeral parameters (avoids leaking stack trace in 500)
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public String handleTypeMismatch (MethodArgumentTypeMismatchException ex, HttpServletRequest request, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute ("errorMessage", "Data sent in an invalid format.");
+        // redirect user to previous page or home (if no previous page)
+        String referer = request.getHeader ("Referer");
+        return "redirect:" + (referer != null ? referer : "/");
+    }
+    // endregion
+
+    // region 2. handleAllExceptions (stack leak protection)
+    // capture any unmanaged internal error and redirect in order to avoid leaking info
+    @ExceptionHandler (Exception.class)
+    public String handleAllExceptions (Exception ex) {
+        return "redirect:/admin/404";
     }
     // endregion
     // endregion
