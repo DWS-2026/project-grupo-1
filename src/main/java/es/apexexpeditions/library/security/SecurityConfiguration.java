@@ -155,9 +155,9 @@ public class SecurityConfiguration {
     @Bean
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
-        // csp header: xss and data injection mitigation on web routes
         http.headers(headers -> headers
+
+                // CSP patch: mitigates xss and data injection
                 .contentSecurityPolicy(csp -> csp
                         .policyDirectives("default-src 'self'; " +
                                 // Added kit.fontawesome.com for FontAwesome Kits
@@ -173,6 +173,13 @@ public class SecurityConfiguration {
                                 "img-src 'self' data: blob:; " +
                                 "frame-ancestors 'none'; " +
                                 "form-action 'self';")
+                )
+
+                // HSTS patch: forces https
+                .httpStrictTransportSecurity (hsts -> hsts
+                        .maxAgeInSeconds (31536000) // 1 year
+                        .includeSubDomains (true)
+                        .preload (true)
                 )
         );
 
