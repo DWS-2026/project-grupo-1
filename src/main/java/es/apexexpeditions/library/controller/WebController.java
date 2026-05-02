@@ -2,6 +2,7 @@ package es.apexexpeditions.library.controller;
 
 // region =========== imports =================
 import es.apexexpeditions.library.dto.user.UserRegisterDTO;
+import es.apexexpeditions.library.dto.user.UserUpdateDTO;
 import es.apexexpeditions.library.model.Guide;
 import es.apexexpeditions.library.model.Booking;
 import es.apexexpeditions.library.model.Review;
@@ -719,106 +720,112 @@ public class WebController {
 
     // region 2. "/profile/update"
     /**
-     * Processes profile updates initiated by the user.
+     * processes profile updates initiated by user
      */
     @PostMapping("/profile/update")
-    public String updateProfile(Principal principal,
-            HttpServletRequest request,
-            @RequestParam String name,
-            @RequestParam String lastName,
-            @RequestParam String mainPhone,
-            @RequestParam(required = false) String secondaryPhone,
-            @RequestParam(required = false) String oldPassword, // not in user, so requested separately
-            @RequestParam(required = false) String newPassword,
-            @RequestParam(required = false) String confirmPassword,
-            @RequestParam(required = false) MultipartFile imageFile,
-            @RequestParam String clickaction,
-            Model model) throws IOException, ServletException {
+    public String updateProfile (Principal principal,
+                                HttpServletRequest request,
+                                @Valid @ModelAttribute("updateData") UserUpdateDTO updateData, // Validación vía DTO
+                                BindingResult bindingResult,
+                                @RequestParam(required = false) String oldPassword,
+                                @RequestParam(required = false) String newPassword,
+                                @RequestParam(required = false) String confirmPassword,
+                                @RequestParam(required = false) MultipartFile imageFile,
+                                @RequestParam String clickaction,
+                                Model model) {
 
-        // get user logged in
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.findByEmail(principal.getName());   // retrieve user
 
-        // flag for password change
-        boolean passwordChanged = false;
-
-        // process user deletion
-        if ("delete".equals(clickaction)) {
-            userService.delete(user);
-            // notification: user deletion via admin (delete button in users page)
-            notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus",
-                    "bg-warning");
-            return "redirect:/login";
-        }
-
-        // clean invisible spaces
-        mainPhone = mainPhone != null ? mainPhone.trim() : "";
-        secondaryPhone = secondaryPhone != null ? secondaryPhone.trim() : "";
-
-        // check if main phone repeated
-        if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
-            model.addAttribute("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
-            model.addAttribute("currentUser", user);
+        // a03: prevent massive payloads
+        if (bindingResult.hasErrors()) {
+            model.addAttribute ("errorMessage", "Invalid data: check characters limit.");
+            model.addAttribute ("currentUser", user);
+            model.addAttribute ("isAdmin", user.getRoles().contains("ADMIN"));
             return "user/profile";
         }
 
-        // check if secondary phone repeated
-        if (!secondaryPhone.isEmpty()) {
-            if (!secondaryPhone.equals(user.getSecondaryPhone()) && userService.phoneExists(secondaryPhone)) {
-                model.addAttribute("errorMessage", "El teléfono secundario ya está en uso.");
-                model.addAttribute("currentUser", user);
-                return "user/profile";
+        try {
+            // process account deletion
+            if ("delete".equals(clickaction)) {
+                userService.delete(user);
+                notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus", "bg-warning");
+                return "redirect:/login";
             }
-            // case: main == secondary
-            if (mainPhone.equals(secondaryPhone)) {
-                model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser iguales.");
-                model.addAttribute("currentUser", user);
-                return "user/profile";
-            }
-        }
 
-        // password validation
-        if (newPassword != null && !newPassword.trim().isEmpty()) {
-            // old password matches
-            if (oldPassword == null || oldPassword.isEmpty()
-                    || !passwordEncoder.matches(oldPassword, user.getPassword())) {
-                model.addAttribute("errorMessage", "La contraseña antigua es incorrecta.");
+            // clean and validate phone
+            String mainPhone = updateData.mainPhone() != null ? updateData.mainPhone().trim() : "";
+            String secondaryPhone = updateData.secondaryPhone() != null ? updateData.secondaryPhone().trim() : "";
+
+            // check main phone
+            if (!mainPhone.equals(user.getMainPhone()) && userService.phoneExists(mainPhone)) {
+                model.addAttribute("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
                 model.addAttribute("currentUser", user);
                 return "user/profile";
             }
 
-            // new and confirmation match
-            if (!newPassword.equals(confirmPassword)) {
-                model.addAttribute("errorMessage", "Las nuevas contraseñas no coinciden.");
-                model.addAttribute("currentUser", user);
-                return "user/profile";
+            // check secondary phone
+            if (!secondaryPhone.isEmpty()) {
+                if (!secondaryPhone.equals(user.getSecondaryPhone()) && userService.phoneExists(secondaryPhone)) {
+                    model.addAttribute("errorMessage", "El teléfono secundario ya está en uso.");
+                    model.addAttribute("currentUser", user);
+                    return "user/profile";
+                }
+                if (mainPhone.equals(secondaryPhone)) {
+                    model.addAttribute("errorMessage", "El teléfono principal y secundario no pueden ser iguales.");
+                    model.addAttribute("currentUser", user);
+                    return "user/profile";
+                }
             }
 
-            // encrypt and store
-            user.setPassword(passwordEncoder.encode(newPassword));
-            passwordChanged = true;
+            // password update logic
+            boolean passwordChanged = false;
+            if (newPassword != null && !newPassword.trim().isEmpty()) {
+                if (oldPassword == null || oldPassword.isEmpty() || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+                    model.addAttribute("errorMessage", "La contraseña antigua es incorrecta.");
+                    model.addAttribute("currentUser", user);
+                    return "user/profile";
+                }
+
+                if (!newPassword.equals(confirmPassword)) {
+                    model.addAttribute("errorMessage", "Las nuevas contraseñas no coinciden.");
+                    model.addAttribute("currentUser", user);
+                    return "user/profile";
+                }
+
+                user.setPassword(passwordEncoder.encode(newPassword));
+                passwordChanged = true;
+            }
+
+            // user field update via dto
+            user.setName(updateData.name());
+            user.setLastName(updateData.lastName());
+            user.setMainPhone(mainPhone);
+            user.setSecondaryPhone(secondaryPhone);
+
+            // a03/04 protection
+            if (imageFile != null && !imageFile.isEmpty()) {
+                // conte type validation
+                String contentType = imageFile.getContentType();
+                if (contentType != null && contentType.startsWith("image/")) {
+                    user.setProfilePicture(new Image(imageFile.getBytes())); //
+                }
+            }
+
+            // save changes
+            userService.save(user);
+
+            if (passwordChanged) {
+                request.logout();
+                return "redirect:/login?changed=true";
+            }
+
+        } catch (Exception e) {
+            // a05: avoid stack trace leak
+            model.addAttribute ("errorMessage", "Error interno al procesar la actualización. Inténtelo de nuevo.");
+            model.addAttribute ("currentUser", user);
+            return "user/profile";
         }
 
-        // update info
-        user.setName(name);
-        user.setLastName(lastName);
-        user.setMainPhone(mainPhone);
-        user.setSecondaryPhone(secondaryPhone);
-
-        // process new image (if uploaded)
-        if (!imageFile.isEmpty()) {
-            user.setProfilePicture(new Image (imageFile.getBytes()));
-        }
-
-        // save changes
-        userService.save(user);
-
-        // password was changed, logout and go to login page
-        if (passwordChanged) {
-            request.logout();
-            return "redirect:/login?changed=true";
-        }
-
-        // return to profile page
         return "redirect:/profile";
     }
     // endregion
