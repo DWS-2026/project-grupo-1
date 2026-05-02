@@ -156,6 +156,19 @@ public class SecurityConfiguration {
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
+        // csp header: xss and data injection mitigation on web routes
+        http.headers(headers -> headers
+                .contentSecurityPolicy(csp -> csp
+                        .policyDirectives("default-src 'self'; " +
+                                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://cdnjs.cloudflare.com; " +
+                                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
+                                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " +
+                                "img-src 'self' data: blob:; " +
+                                "frame-ancestors 'none'; " +
+                                "form-action 'self';")
+                )
+        );
+
         http.authenticationProvider(authenticationProvider());
 
         http
