@@ -8,6 +8,7 @@ import es.apexexpeditions.library.security.jwt.AuthResponse;
 import es.apexexpeditions.library.security.jwt.LoginRequest;
 import es.apexexpeditions.library.security.jwt.UserLoginService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,11 +28,12 @@ public class AuthRestController {
 
     // region =========== PostMapping =================
     // 1 . /login
+    // patched for a03/a05 vulns by using valid
     @PostMapping ("/login")
     public ResponseEntity<AuthResponse> login(
             HttpServletResponse response,
-            @RequestBody LoginRequest loginRequest) {
-        return userLoginService.login(response, loginRequest);   // trigger jwt related logic in UserLoginService
+            @Valid @RequestBody LoginRequest loginRequest) {   // intercept massive payloads
+        return userLoginService.login(response, loginRequest);
     }
     // endregion
 
