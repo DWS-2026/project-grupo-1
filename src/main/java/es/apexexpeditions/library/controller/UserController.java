@@ -177,7 +177,13 @@ public class UserController {
         }
         // set pfp
         if (imageFile != null && !imageFile.isEmpty()) {
-            updatedUser.setProfilePicture (new Image (imageFile.getBytes()));
+            String contentType = imageFile.getContentType();
+            if (contentType == null || !contentType.startsWith("image/")) {
+                model.addAttribute ("errorMessage", "The file has to be a valid image.");
+                model.addAttribute ( "user", updatedUser);
+                return "admin/user-edit";
+            }
+            updatedUser.setProfilePicture(new Image(imageFile.getBytes()));
         }
 
         userService.save (updatedUser);
