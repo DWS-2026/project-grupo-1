@@ -7,6 +7,7 @@ package es.apexexpeditions.library.controller;
 
 // region =========== imports =================
 import es.apexexpeditions.library.dto.user.AdminUserCreateDTO;
+import es.apexexpeditions.library.dto.user.UserUpdateDTO;
 import es.apexexpeditions.library.model.Image;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
@@ -113,20 +114,16 @@ public class UserController {
     // region 1. updateUser
     /**
      * processes update request from edit form
-     * imageFile is optional. If provided, converted to base64 to be stored as string in db
+     * imageFile is optional. If provided, stored db
+     * patched for a03 and a 05
      */
     @PostMapping ("/edit/{id}")
     public String updateUser (@PathVariable Long id,
-                             @RequestParam String name,
-                             @RequestParam String lastName,
-                             @RequestParam String email,
-                              @RequestParam String mainPhone,
-                              @RequestParam(required = false) String secondaryPhone,
-                             @RequestParam double moneySpent,
-                             @RequestParam boolean enabled,
+                              @Valid @ModelAttribute("user") UserUpdateDTO updateData,   // use dto
+                              BindingResult bindingResult,
                               @RequestParam(required = false) String newPassword,
-                             @RequestParam(required = false) MultipartFile imageFile,
-                              Model model) throws IOException {
+                              @RequestParam(required = false) MultipartFile imageFile,
+                              Model model) {
 
         // check user exists
         User updatedUser = userService.findById (id);
@@ -134,61 +131,76 @@ public class UserController {
             return "redirect:/admin/users";
         }
 
-        // check email
-        if (!email.equals (updatedUser.getEmail()) && userService.emailExists (email)) {
-            model.addAttribute ("errorMessage", "El correo electrónico ya está registrado por otro usuario.");
+        // block giant texts
+        if (bindingResult.hasErrors()) {
+            model.addAttribute ("errorMessage", "Invalid data: check character limit.");
             model.addAttribute ("user", updatedUser);
             return "admin/user-edit";
         }
 
-        // check main phone
-        if (!mainPhone.equals (updatedUser.getMainPhone()) && userService.phoneExists (mainPhone)) {
-            model.addAttribute ("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
-            model.addAttribute ("user", updatedUser);
+        try {
+            // check email
+            if (!updateData.email().equals(updatedUser.getEmail()) && userService.emailExists(updateData.email())) {
+                model.addAttribute ("errorMessage", "El correo electrónico ya está registrado por otro usuario.");
+                model.addAttribute ("user", updatedUser);
+                return "admin/user-edit";
+            }
+
+            // check main phone
+            if (!updateData.mainPhone().equals(updatedUser.getMainPhone()) && userService.phoneExists(updateData.mainPhone())) {
+                model.addAttribute ("errorMessage", "El teléfono principal ya está en uso por otro usuario.");
+                model.addAttribute ("user", updatedUser);
+                return "admin/user-edit";
+            }
+
+            // check secondary phone
+            if (updateData.secondaryPhone() != null && !updateData.secondaryPhone().trim().isEmpty()) {
+                if (!updateData.secondaryPhone().equals(updatedUser.getSecondaryPhone()) && userService.phoneExists(updateData.secondaryPhone())) {
+                    model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otro usuario.");
+                    model.addAttribute ("user", updatedUser);
+                    return "admin/user-edit";
+                }
+                if (updateData.mainPhone().equals(updateData.secondaryPhone())) {
+                    model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
+                    model.addAttribute ("user", updatedUser);
+                    return "admin/user-edit";
+                }
+            }
+
+            // if no errors, assign validated DTO data
+            updatedUser.setName(updateData.name());
+            updatedUser.setLastName(updateData.lastName());
+            updatedUser.setEmail(updateData.email());
+            updatedUser.setMainPhone(updateData.mainPhone());
+            updatedUser.setSecondaryPhone(updateData.secondaryPhone());
+            updatedUser.setMoneySpent(updateData.moneySpent() != null ? updateData.moneySpent() : 0.0);
+            updatedUser.setEnabled(updateData.enabled() != null ? updateData.enabled() : false);
+
+            // encode password
+            if (newPassword != null && !newPassword.trim().isEmpty()) {
+                updatedUser.setPassword (passwordEncoder.encode(newPassword));
+            }
+
+            // set pfp
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String contentType = imageFile.getContentType();
+                if (contentType == null || !contentType.startsWith("image/")) {
+                    model.addAttribute ("errorMessage", "El archivo debe ser una imagen válida.");
+                    model.addAttribute ( "user", updatedUser);
+                    return "admin/user-edit";
+                }
+                updatedUser.setProfilePicture(new Image(imageFile.getBytes()));
+            }
+
+            userService.save (updatedUser);
+            notificationService.notify ("Usuario actualizado: " + updateData.name(), "fas fa-user-edit", "bg-info");
+
+        } catch (Exception e) {
+            // error capture (prevents zap from detecting server collapse)
+            model.addAttribute("errorMessage", "Error interno al procesar la actualización.");
+            model.addAttribute("user", updatedUser);
             return "admin/user-edit";
         }
-
-        // check secondary phone
-        if (secondaryPhone != null && !secondaryPhone.trim().isEmpty()) {
-            // case already in use
-            if (!secondaryPhone.equals (updatedUser.getSecondaryPhone()) && userService.phoneExists (secondaryPhone)) {
-                model.addAttribute ("errorMessage", "El teléfono secundario ya está en uso por otro usuario.");
-                model.addAttribute ("user", updatedUser);
-                return "admin/user-edit";
-            }
-            // case primary is secondary too
-            if (mainPhone.equals (secondaryPhone)) {
-                model.addAttribute ("errorMessage", "El teléfono principal y secundario no pueden ser el mismo.");
-                model.addAttribute ("user", updatedUser);
-                return "admin/user-edit";
-            }
-        }
-        // if no errors
-        updatedUser.setName(name);
-        updatedUser.setLastName(lastName);
-        updatedUser.setEmail(email);
-        updatedUser.setMainPhone(mainPhone);
-        updatedUser.setSecondaryPhone(secondaryPhone);
-        updatedUser.setMoneySpent(moneySpent);
-        updatedUser.setEnabled(enabled);
-        // encode password
-        if (newPassword != null && !newPassword.trim().isEmpty()) {
-            updatedUser.setPassword (passwordEncoder.encode(newPassword));
-        }
-        // set pfp
-        if (imageFile != null && !imageFile.isEmpty()) {
-            String contentType = imageFile.getContentType();
-            if (contentType == null || !contentType.startsWith("image/")) {
-                model.addAttribute ("errorMessage", "The file has to be a valid image.");
-                model.addAttribute ( "user", updatedUser);
-                return "admin/user-edit";
-            }
-            updatedUser.setProfilePicture(new Image(imageFile.getBytes()));
-        }
-
-        userService.save (updatedUser);
-        notificationService.notify ("Usuario actualizado: " + name, "fas fa-user-edit", "bg-info");
-
         return "redirect:/admin/users";
     }
     // endregion
