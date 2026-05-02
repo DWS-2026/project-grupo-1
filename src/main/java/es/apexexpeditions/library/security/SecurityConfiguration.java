@@ -160,9 +160,16 @@ public class SecurityConfiguration {
         http.headers(headers -> headers
                 .contentSecurityPolicy(csp -> csp
                         .policyDirectives("default-src 'self'; " +
-                                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://cdnjs.cloudflare.com; " +
-                                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
-                                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; " +
+                                // Added kit.fontawesome.com for FontAwesome Kits
+                                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; " +
+
+                                // icon styles
+                                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; " +
+                                // icon fonts
+                                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; " +
+                                // connect-src to allow FontAwesome Kits to fetch SVGs
+                                "connect-src 'self' https://ka-f.fontawesome.com; " +
+
                                 "img-src 'self' data: blob:; " +
                                 "frame-ancestors 'none'; " +
                                 "form-action 'self';")
