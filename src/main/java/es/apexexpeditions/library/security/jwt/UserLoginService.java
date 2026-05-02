@@ -1,5 +1,11 @@
 package es.apexexpeditions.library.security.jwt;
 
+
+
+
+
+
+// region =========== imports =================
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
@@ -14,29 +20,38 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+// endregion
+
+
+
+
+
 
 @Service
 public class UserLoginService {
-
-	private static final Logger log = LoggerFactory.getLogger(UserLoginService.class);
-
+	// region =========== attributes =================
+	private static final Logger log = LoggerFactory.getLogger (UserLoginService.class);
 	private final AuthenticationManager authenticationManager;
 	private final UserDetailsService userDetailsService;
 	private final JwtTokenProvider jwtTokenProvider;
+	// region =========== endregion =================
 
-	public UserLoginService(AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtTokenProvider jwtTokenProvider) {
+
+	// region =========== constructor =================
+	public UserLoginService (AuthenticationManager authenticationManager, UserDetailsService userDetailsService, JwtTokenProvider jwtTokenProvider) {
 		this.authenticationManager = authenticationManager;
 		this.userDetailsService = userDetailsService;
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
+	// endregion
 
-	public ResponseEntity<AuthResponse> login(HttpServletResponse response, LoginRequest loginRequest) {
-		
+
+	// region =========== 1. login =================
+	public ResponseEntity<AuthResponse> login (HttpServletResponse response, LoginRequest loginRequest) {
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-
 		
 		String username = loginRequest.getUsername();
 		UserDetails user = userDetailsService.loadUserByUsername(username);
@@ -52,8 +67,11 @@ public class UserLoginService {
 				"Auth successful. Tokens are created in cookie.");
 		return ResponseEntity.ok().headers(responseHeaders).body(loginResponse);
 	}
+	// endregion
 
-	public ResponseEntity<AuthResponse> refresh(HttpServletResponse response, String refreshToken) {
+
+	// region =========== 1. refresh =================
+	public ResponseEntity<AuthResponse> refresh (HttpServletResponse response, String refreshToken) {
 		try {
 			var claims = jwtTokenProvider.validateToken(refreshToken);
 			UserDetails user = userDetailsService.loadUserByUsername(claims.getSubject());
@@ -72,7 +90,10 @@ public class UserLoginService {
 			return ResponseEntity.ok().body(loginResponse);
 		}
 	}
+	// endregion
 
+
+	// region =========== 3. logout =================
 	public String logout(HttpServletResponse response) {
 		SecurityContextHolder.clearContext();
 		response.addCookie(removeTokenCookie(TokenType.ACCESS));
@@ -80,20 +101,35 @@ public class UserLoginService {
 
 		return "logout successfully";
 	}
+	// endregion
 
-	private Cookie buildTokenCookie(TokenType type, String token) {
+
+	// region =========== 4. buildTokenCookie =================
+	/**
+	 * builds secure http-only cookie for jwt tokens
+	 */
+	private Cookie buildTokenCookie (TokenType type, String token) {
 		Cookie cookie = new Cookie(type.cookieName, token);
-		cookie.setMaxAge((int) type.duration.getSeconds());
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
+		cookie.setMaxAge ((int) type.duration.getSeconds());
+		cookie.setHttpOnly (true);   // prevent js access (xss fix)
+		cookie.setSecure (true);   // prevent transmission over http (mitm fix)
+		cookie.setPath ("/");
 		return cookie;
 	}
+	// endregion
 
-	private Cookie removeTokenCookie(TokenType type){
+
+	// region =========== 5. removeTokenCookie =================
+	/**
+	 * removes hwt cookie by overwriting it with an expired, empty secure cookie
+	 */
+	private Cookie removeTokenCookie (TokenType type){
 		Cookie cookie = new Cookie(type.cookieName, "");
-		cookie.setMaxAge(0);
-		cookie.setHttpOnly(true);
-		cookie.setPath("/");
+		cookie.setMaxAge (0);
+		cookie.setHttpOnly (true);
+		cookie.setSecure (true);   // must match original cookie flags to clear it properly
+		cookie.setPath ("/");
 		return cookie;
 	}
+	// endregion
 }
