@@ -120,8 +120,21 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
 
+                // PUBLIC ENDPOINTS
+                // GUIDES
+                .requestMatchers(HttpMethod.GET, "/api/v1/guides/**").permitAll()
+
+                // PRIVATE ENDPOINTS
+                // GUIDES
+
+                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
+
                 // REST OF ENDPOINTS
                 .anyRequest().authenticated());
+
+                
 
         // Disable Form login Authentication
         http.formLogin(formLogin -> formLogin.disable());
