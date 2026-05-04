@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 /*import org.springframework.http.ResponseEntity;*/
 import org.springframework.http.HttpHeaders;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import es.apexexpeditions.library.service.NotificationService;
 
 import java.io.IOException;
@@ -71,27 +72,47 @@ public class GuideController {
             @RequestParam double price,
             @RequestParam Long tourId,
             @RequestParam(required = false) MultipartFile imageFile,
-            @RequestParam(required = false) Boolean enabled
-    ) throws IOException {
+            @RequestParam(required = false) Boolean enabled,
+            RedirectAttributes redirectAttributes
+    ) {
 
-        Guide guide = guideService.findById(id);    
+        try {
+            // 3. FIX BUFFER OVERFLOW: Comprobar el tamaño (en tu DTO y BD le pusiste max 100)
+            if (name == null || name.length() > 100 || lastName == null || lastName.length() > 100) {
+                redirectAttributes.addFlashAttribute("error", "El nombre o apellido exceden el tamaño permitido (100 caracteres).");
+                return "redirect:/admin/guides/edit/" + id;
+            }
 
-        guide.setName(name);
-        guide.setLastName(lastName);
-        guide.setPrice(price);
+            String safeName = name.replaceAll("[%!]", "");
+            String safeLastName = lastName.replaceAll("[%!]", "");    
 
-        Tour tour = tourService.findById(tourId);
-        guide.setTour(tour);
+            Guide guide = guideService.findById(id);    
 
-        guide.setEnabled(enabled != null);
+            guide.setName(safeName);
+            guide.setLastName(safeLastName);
+            guide.setPrice(price);
 
-        if (imageFile != null && !imageFile.isEmpty()) {
-        guide.setProfilePicture(imageFile.getBytes());
+            Tour tour = tourService.findById(tourId);
+            guide.setTour(tour);
+
+            guide.setEnabled(enabled != null);
+
+            if (imageFile != null && !imageFile.isEmpty()) {
+            guide.setProfilePicture(imageFile.getBytes());
+            }
+
+            guideService.save(guide);
+            redirectAttributes.addFlashAttribute("success", "Guía actualizado correctamente.");
+            return "redirect:/admin/guides";
+
+        } catch (Exception e) {
+            // 5. FIX ERROR 500: Si algo explota, lo capturamos aquí
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al guardar los cambios.");
+            return "redirect:/admin/guides/edit/" + id;
+        
         }
 
-        guideService.save(guide);
-
-        return "redirect:/admin/guides";
+            
     }
 
 
@@ -143,29 +164,54 @@ public class GuideController {
                             @RequestParam String lastName,
                             @RequestParam double price,
                             @RequestParam Long tourId,
-                            @RequestParam(required = false) MultipartFile imageFile) throws IOException {
+                            @RequestParam(required = false) MultipartFile imageFile,
+                            RedirectAttributes redirectAttributes) {
 
-        Guide newGuide = new Guide();
-        newGuide.setName(name);
-        newGuide.setLastName(lastName);
-        newGuide.setPrice(price);
+        try {
+            // 1. FIX BUFFER OVERFLOW: Validar longitudes antes de instanciar nada
+            if (name == null || name.length() > 100 || lastName == null || lastName.length() > 150) {
+                redirectAttributes.addFlashAttribute("error", "El nombre o apellido exceden el tamaño permitido.");
+                return "redirect:/admin/guides/add"; // Redirige de vuelta al formulario
+            }
 
-        // Tour obligatorio
-        Tour tour = tourService.findById(tourId);
-        newGuide.setTour(tour);
+            // 2. FIX FORMAT STRING ERROR: Limpiar caracteres especiales de formato que inyectó ZAP
+            // Evita que símbolos como %s o %n rompan logs o funciones internas
+            String safeName = name.replaceAll("[%!]", "");
+            String safeLastName = lastName.replaceAll("[%!]", "");
 
-        // Imagen opcional
-        if (imageFile != null && !imageFile.isEmpty()) {
-            newGuide.setProfilePicture(imageFile.getBytes());
-        } else {
-            byte[] avatar = guideService.generateDefaultAvatar("Guía", name, new Color(40,167,69));
-            newGuide.setProfilePicture(avatar);
+            Guide newGuide = new Guide();
+            newGuide.setName(safeName);
+            newGuide.setLastName(safeLastName);
+            newGuide.setPrice(price);
+
+            // Tour obligatorio
+            Tour tour = tourService.findById(tourId);
+            newGuide.setTour(tour);
+
+            // Imagen opcional
+            if (imageFile != null && !imageFile.isEmpty()) {
+                newGuide.setProfilePicture(imageFile.getBytes());
+            } else {
+                byte[] avatar = guideService.generateDefaultAvatar("Guía", safeName, new Color(40,167,69));
+                newGuide.setProfilePicture(avatar);
+            }
+
+            guideService.save(newGuide);    
+            
+            // Cuidado aquí: Si notificationService usa String.format() internamente, 
+            // pasarle variables sin limpiar causa Format String Errors.
+            notificationService.notify("Guía creado: " + safeName, "fas fa-user", "bg-success");
+
+            redirectAttributes.addFlashAttribute("success", "Guía creado correctamente.");
+            return "redirect:/admin/guides";
+
+        } catch (Exception e) {
+            // 3. FIX APPLICATION ERROR DISCLOSURE (Error 500)
+            // Capturamos cualquier error (incluyendo IOException del imageFile.getBytes() 
+            // o fallos de base de datos) para que ZAP/el usuario no vean una página de error 500 con código interno.
+            redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al procesar la solicitud.");
+            return "redirect:/admin/guides/add";
         }
-
-        guideService.save(newGuide);    
-        notificationService.notify("Guía creado: " + name, "fas fa-user", "bg-success");
-
-        return "redirect:/admin/guides";
     }
 
     @PostMapping("/delete/{id}")

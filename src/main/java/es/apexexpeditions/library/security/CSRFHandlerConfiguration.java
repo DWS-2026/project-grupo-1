@@ -1,3 +1,4 @@
+/* 
 package es.apexexpeditions.library.security;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,3 +35,4 @@ class CSRFHandlerInterceptor implements HandlerInterceptor {
 		}
 	}
 }
+	*/
