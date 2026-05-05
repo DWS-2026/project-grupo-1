@@ -50,7 +50,6 @@ import java.awt.Color;
  * - DELETE /api/v1/users/{id}       : removes a user. Req: admin or owner (admin cannot delete themselves here)
  *
  * --- USER ENDPOINTS (self-management) ---
- * - POST   /api/v1/users/register   : public self-registration (uses: UserRegisterDTO + optional MultipartFile)
  * - GET    /api/v1/users/me         : retrieves the authenticated user's profile (uses: UserFullResponseDTO)
  * - PUT    /api/v1/users/me         : updates basic data of own profile (Uses: UserUpdateDTO - sensitive fields filtered)
  * - PUT    /api/v1/users/me/password: password change (uses: PasswordUpdateDTO). validates match and old password
@@ -294,62 +293,6 @@ public class UserRestController {
 
         userService.save(user);
         notificationService.notify ("Admin ha creado al usuario: " + user.getName(), "fas fa-user-plus", "bg-success");
-        return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
-    }
-    // endregion
-
-
-    // region 2. registerUser
-    // use: public self-registration via UserRegisterDTO and optional
-    @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerUser(
-            @Valid
-            @RequestPart("userData") UserRegisterDTO req,
-            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-
-        // terms and conditions check
-        if (!req.termsAccepted()) {
-            return ResponseEntity.badRequest().body("Debes aceptar los términos y condiciones.");
-        }
-
-        // email and phones validation
-        if (userService.emailExists(req.email())) {
-            return ResponseEntity.badRequest().body("El correo electrónico ya está registrado.");
-        }
-        if (userService.phoneExists(req.mainPhone())) {
-            return ResponseEntity.badRequest().body("El teléfono principal ya está en uso.");
-        }
-        if (req.secondaryPhone() != null && !req.secondaryPhone().trim().isEmpty()) {
-            if (userService.phoneExists(req.secondaryPhone())) {
-                return ResponseEntity.badRequest().body("El teléfono secundario ya está en uso.");
-            }
-        }
-
-        // creation of user
-        User user = new User(
-                req.name(),
-                req.lastName(),
-                req.email(),
-                passwordEncoder.encode(req.password()),
-                req.mainPhone(),
-                req.secondaryPhone()
-        );
-
-        // role setting and enabling
-        user.setRoles(java.util.Arrays.asList("USER"));
-        user.setEnabled(true);
-
-        // check whether pfp was attached or the default one needs to be generated
-        if (imageFile != null && !imageFile.isEmpty()) {   // case: pfp attached
-            user.setProfilePicture(new Image(imageFile.getBytes()));
-        } else {   // case: default generation
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new java.awt.Color(13, 110, 253));
-            user.setProfilePicture(new Image(avatar));
-        }
-
-        // saving
-        userService.save(user);
-        notificationService.notify ("Nuevo registro: " + user.getName(), "fas fa-user-plus", "bg-success");
         return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
     }
     // endregion

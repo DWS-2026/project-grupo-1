@@ -76,7 +76,7 @@ public class SecurityConfiguration {
      */
     @Bean
     @Order(1)
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiFilterChain (HttpSecurity http) throws Exception {
 
         http.authenticationProvider(authenticationProvider());
 
@@ -115,7 +115,7 @@ public class SecurityConfiguration {
                 // LOGIN
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                 // REGISTRATION
-                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                 // REVIEWS
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
