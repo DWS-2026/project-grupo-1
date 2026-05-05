@@ -3,8 +3,6 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.dto.user.*;
 import es.apexexpeditions.library.model.Image;
@@ -32,23 +30,38 @@ import java.awt.Color;
 
 
 
-
 /**
- * API REST v1 - User and Profile Management
- * Based on specifications from funcionalidades_api.txt:
- * * --- ADMINISTRATOR FUNCTIONALITIES ---
- * - GET    /api/v1/users            : retrieve paginated user list (Summary view: name, last names, email, main phone, status, imageId).
- * - GET    /api/v1/users/{id}       : retrieve full details of a specific user (Includes secondary phone, registration date, money spent, and roles).
- * - POST   /api/v1/users/           : create a new user (Allows defining status, phone numbers, money, and roles. Generates a default avatar).
- * - PUT    /api/v1/users/{id}/image : update/Upload profile image for any user via their ID.
- * - PUT    /api/v1/users/me         : update own profile (name, lastName, phones)
- * - DELETE /api/v1/users/{id}       : remove a user from the system.
- * * --- USER FUNCTIONALITIES (SELF) ---
- * - GET    /api/v1/users/me          : view full profile of the currently authenticated user (Name, phone, image, etc.).
- * - PUT    /api/v1/users/{id}        : admin update of any user (all fields, including email and status)
- * - PUT    /api/v1/users/me/password : update password (Requires old password validation and new password confirmation).
- * * Note: all responses including image return an 'imageId'.
- * The binary resource is retrieved via: GET /api/v1/images/{imageId}/media
+ * API REST v1: user management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: full management access, statistics, and modification of sensitive fields
+ * - OWNER: access to their own information and limited profile editing
+ * - PUBLIC: new user registration
+ *
+ * --- ADMINISTRATOR ENDPOINTS (third-party management) ---
+ * - GET    /api/v1/users            : paginated user list (uses: UserBasicResponseDTO)
+ * - GET    /api/v1/users/{id}       : full user details (uses: UserFullResponseDTO). Req: admin or owner
+ * - GET    /api/v1/users/stats      : global system statistics (uses: UserStatsDTO). Req: admin
+ * - POST   /api/v1/users/           : manual user creation (uses: UserRequestDTO). Req: admin. Generates default avatar
+ * - PUT    /api/v1/users/{id}       : user update (uses: UserUpdateDTO)
+ *   - If admin: modifies all fields (email, roles, moneySpent, enabled)
+ *   - If owner: only basic fields (name, lastName, phones)
+ * - PUT    /api/v1/users/{id}/image : updates any user's profile image via MultipartFile
+ * - PATCH  /api/v1/users/{id}/status: toggles a user's status (enabled). Req: admin (self-toggle prohibited)
+ * - DELETE /api/v1/users/{id}       : removes a user. Req: admin or owner (admin cannot delete themselves here)
+ *
+ * --- USER ENDPOINTS (self-management) ---
+ * - POST   /api/v1/users/register   : public self-registration (uses: UserRegisterDTO + optional MultipartFile)
+ * - GET    /api/v1/users/me         : retrieves the authenticated user's profile (uses: UserFullResponseDTO)
+ * - PUT    /api/v1/users/me         : updates basic data of own profile (Uses: UserUpdateDTO - sensitive fields filtered)
+ * - PUT    /api/v1/users/me/password: password change (uses: PasswordUpdateDTO). validates match and old password
+ * - PUT    /api/v1/users/me/image   : uploads or updates own profile picture (MultipartFile)
+ * - DELETE /api/v1/users/me/image   : deletes own profile picture and the physical resource
+ * - DELETE /api/v1/users/me         : account deletion by the user. Req: must not be an admin
+ *
+ * --- TECHNICAL NOTES ---
+ * - All responses including images return an 'imageId'. Binary resources are retrieved at: GET /api/v1/images/{imageId}/media
+ * - 'UserMapper' is used to convert entities to response DTOs
+ * - Integrated with 'NotificationService' to log critical system actions
  */
 @RestController
 @RequestMapping ("/api/v1/users")
@@ -70,7 +83,8 @@ public class UserRestController {
 
     // region =========== GetMapping =================
     // region 1. getUsers
-    // overview of all users
+    // use: retrieve paginated list of users as UserBasicResponseDTO
+    // req: admin
     @GetMapping
     public ResponseEntity<Page<UserBasicResponseDTO>> getUsers(@PageableDefault(size = 10) Pageable pageable) {
         if (userService.isLoggedUserNotAdmin()) {   // filter out users
@@ -82,7 +96,8 @@ public class UserRestController {
     // endregion
 
     // region 2. getUser
-    // full details of a single user
+    // use: retrieve full details of specific user as UserFullResponseDTO
+    // req: admin or account owner
     @GetMapping ("/{id}")
     public ResponseEntity<UserFullResponseDTO> getUser (@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
@@ -105,7 +120,7 @@ public class UserRestController {
     // endregion
 
     // region 3. getMyProfile
-    // shows the users profile page info
+    // use: retrieve full profile details of currently authenticated user as UserFullResponseDTO
     @GetMapping("/me")
     public ResponseEntity<UserFullResponseDTO> getMyProfile() {
         User user = userService.getLoggedUser();
@@ -115,7 +130,8 @@ public class UserRestController {
     // endregion
 
     // 4. stats
-    // admin endpoint to get general user statistics
+    // retrieve global system statistics as UserStatsDTO
+    // req: admin
     @GetMapping("/stats")
     public ResponseEntity<UserStatsDTO> getUserStats() {
         User loggedUser = userService.getLoggedUser();
@@ -133,7 +149,7 @@ public class UserRestController {
 
     // region =========== PutMapping =================
     // region 1. updateMyPassword
-    // allows the user to change their password
+    // use: update authenticated user's password using PasswordUpdateDTO with old password validation
     @PutMapping("/me/password")
     public ResponseEntity<Void> updateMyPassword (@Valid @RequestBody PasswordUpdateDTO passwords) {
         User user = userService.getLoggedUser();
@@ -153,6 +169,7 @@ public class UserRestController {
     // endregion
 
     // region 2. updateImage
+    // use: update or upload a profile image for a specific user via MultipartFile
     @PutMapping("/{id}/image")
     public ResponseEntity<Void> updateImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
         User user = userService.findById(id);
@@ -169,7 +186,7 @@ public class UserRestController {
     // endregion
 
     // region 3. updateMyProfile
-    // allows user to update itself (on non-restricted fields)
+    // use: update basic profile fields (name, lastName, and phones) for the authenticated user using UserUpdateDTO
     @PutMapping("/me")
     public ResponseEntity<UserFullResponseDTO> updateMyProfile(@Valid @RequestBody UserUpdateDTO updateData) {
         User user = userService.getLoggedUser();
@@ -187,7 +204,9 @@ public class UserRestController {
     // endregion
 
     // region 4. updateUser
-    // admin endpoint to modify any info on any user
+    // use: update specific user via UserUpdateDTO
+    // admin: can edit all fields (roles, status, email)
+    // owner: restricted to basic info.
     @PutMapping("/{id}")
     public ResponseEntity<UserFullResponseDTO> updateUser (
             @PathVariable Long id,
@@ -234,7 +253,7 @@ public class UserRestController {
     // endregion
 
     // region 5. updateMyImage
-    // allows users to update their own pfp
+    // upload or replace the profile picture for the currently authenticated user using a MultipartFile
     @PutMapping ("/me/image")
     public ResponseEntity<Void> updateMyImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         User loggedUser = userService.getLoggedUser();
@@ -255,6 +274,7 @@ public class UserRestController {
 
     // region =========== PostMapping =================
     // region 1. createUser
+    // manually create a new user with specific roles, status, and a generated default avatar via UserRequestDTO; restricted to Admin
     @PostMapping({"", "/"})
     public ResponseEntity<UserFullResponseDTO> createUser(@Valid @RequestBody UserRequestDTO req) {
         if (userService.isLoggedUserNotAdmin()) {   // filter out users
@@ -280,6 +300,7 @@ public class UserRestController {
 
 
     // region 2. registerUser
+    // use: public self-registration via UserRegisterDTO and optional
     @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerUser(
             @Valid
@@ -338,7 +359,8 @@ public class UserRestController {
 
     // region =========== DeleteMapping =================
     // region 1. deleteUser
-    // used by admins to delete any non-user admin
+    // use: remove user from the system
+    // req: admin (excluding self-deletion) or owner
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
@@ -366,7 +388,7 @@ public class UserRestController {
     // endregion
 
     // region 2. deleteMyAccount
-    // used by non-admins to delete their own account
+    // allow non-admin user to delete their own account from the system
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteMyAccount() {
         User loggedUser = userService.getLoggedUser();
@@ -381,7 +403,7 @@ public class UserRestController {
     // endregion
 
     // region 3. deleteMyImage
-    // allows users to delete their own pfp
+    // use: remove the profile picture from the authenticated user's account and delete the physical image entity
     @DeleteMapping ("/me/image")
     public ResponseEntity<Void> deleteMyImage() {
         User loggedUser = userService.getLoggedUser();
@@ -403,7 +425,8 @@ public class UserRestController {
 
     // region =========== PatchMapping =================
     // region 1. toggleUserStatus
-    // admin endpoint to quickly enable/disable user without sending a full DTO
+    // use: quickly enable or disable a user account
+    // req: admin (prevents admin from disabling themselves)
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> toggleUserStatus(@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
