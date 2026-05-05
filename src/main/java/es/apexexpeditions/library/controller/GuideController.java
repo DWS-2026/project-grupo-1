@@ -77,7 +77,7 @@ public class GuideController {
     ) {
 
         try {
-            // 3. FIX BUFFER OVERFLOW: Comprobar el tamaño (en tu DTO y BD le pusiste max 100)
+            // 3. FIX BUFFER OVERFLOW: checks sizes before doing anything
             if (name == null || name.length() > 100 || lastName == null || lastName.length() > 100) {
                 redirectAttributes.addFlashAttribute("error", "El nombre o apellido exceden el tamaño permitido (100 caracteres).");
                 return "redirect:/admin/guides/edit/" + id;
@@ -106,7 +106,7 @@ public class GuideController {
             return "redirect:/admin/guides";
 
         } catch (Exception e) {
-            // 5. FIX ERROR 500: Si algo explota, lo capturamos aquí
+            // 5. FIX ERROR 500 DISCLOSURE: Catches any error (including IOException from imageFile.getBytes() or DB errors) to avoid showing a 500 error page with internal code to ZAP/the user.
             redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al guardar los cambios.");
             return "redirect:/admin/guides/edit/" + id;
         
@@ -168,14 +168,14 @@ public class GuideController {
                             RedirectAttributes redirectAttributes) {
 
         try {
-            // 1. FIX BUFFER OVERFLOW: Validar longitudes antes de instanciar nada
+            // 1. FIX BUFFER OVERFLOW: Check sizes before doing anything.
             if (name == null || name.length() > 100 || lastName == null || lastName.length() > 150) {
                 redirectAttributes.addFlashAttribute("error", "El nombre o apellido exceden el tamaño permitido.");
                 return "redirect:/admin/guides/add"; // Redirige de vuelta al formulario
             }
 
-            // 2. FIX FORMAT STRING ERROR: Limpiar caracteres especiales de formato que inyectó ZAP
-            // Evita que símbolos como %s o %n rompan logs o funciones internas
+            // 2. FIX FORMAT STRING ERROR: Sanitize inputs that might be used in logs
+            // Avoid letting symbols like %s or %n break logs or internal functions.
             String safeName = name.replaceAll("[%!]", "");
             String safeLastName = lastName.replaceAll("[%!]", "");
 
@@ -184,11 +184,11 @@ public class GuideController {
             newGuide.setLastName(safeLastName);
             newGuide.setPrice(price);
 
-            // Tour obligatorio
+            // tour is required, so we can directly fetch it without null checks. If the ID is invalid, it will throw an exception that we catch below.
             Tour tour = tourService.findById(tourId);
             newGuide.setTour(tour);
 
-            // Imagen opcional
+            // Optional image
             if (imageFile != null && !imageFile.isEmpty()) {
                 newGuide.setProfilePicture(imageFile.getBytes());
             } else {
@@ -198,8 +198,8 @@ public class GuideController {
 
             guideService.save(newGuide);    
             
-            // Cuidado aquí: Si notificationService usa String.format() internamente, 
-            // pasarle variables sin limpiar causa Format String Errors.
+            // Careful here: If notificationService uses String.format() internally,
+            // passing unsanitized variables can cause Format String Errors.
             notificationService.notify("Guía creado: " + safeName, "fas fa-user", "bg-success");
 
             redirectAttributes.addFlashAttribute("success", "Guía creado correctamente.");
@@ -207,8 +207,8 @@ public class GuideController {
 
         } catch (Exception e) {
             // 3. FIX APPLICATION ERROR DISCLOSURE (Error 500)
-            // Capturamos cualquier error (incluyendo IOException del imageFile.getBytes() 
-            // o fallos de base de datos) para que ZAP/el usuario no vean una página de error 500 con código interno.
+            // We catch any error (including IOException from imageFile.getBytes()
+            // or database failures) so that ZAP/the user doesn’t see a 500 error page with internal code.
             redirectAttributes.addFlashAttribute("error", "Ocurrió un error inesperado al procesar la solicitud.");
             return "redirect:/admin/guides/add";
         }
