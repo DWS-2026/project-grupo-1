@@ -6,7 +6,7 @@ package es.apexexpeditions.library.controller;
 
 
 // region =========== imports =================
-import es.apexexpeditions.library.dto.user.AdminUserCreateDTO;
+import es.apexexpeditions.library.dto.user.UserRequestDTO;
 import es.apexexpeditions.library.dto.user.UserUpdateDTO;
 import es.apexexpeditions.library.model.Image;
 import jakarta.validation.Valid;
@@ -234,7 +234,7 @@ public class UserController {
      * ensures password is encrypted and handles default avatar generation if no image is uploaded
      */
     @PostMapping ("/add")
-    public String saveUser (@Valid @ModelAttribute AdminUserCreateDTO newUser,
+    public String saveUser (@Valid @ModelAttribute UserRequestDTO newUser,
                             BindingResult result,
                             @RequestParam(required = false) MultipartFile imageFile,
                             Model model) throws IOException {
