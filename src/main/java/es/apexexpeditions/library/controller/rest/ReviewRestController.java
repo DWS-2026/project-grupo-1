@@ -21,6 +21,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 @RestController
@@ -106,12 +109,17 @@ public class ReviewRestController {
         Optional<Review> savedReview;
         Review reviewRequest = toDomain(request);
 
+       // 1. Sanitizamos el HTML de la descripción
+        String cleanDescription = Jsoup.clean(request.description(), Safelist.relaxed());
+
         try {
+            // 2. Llamamos al servicio con los 4 parámetros estándar,
+            // pero le enviamos directamente la descripción LIMPIA (cleanDescription)
             savedReview = reviewService.createReview(
                     request.tourId(),
                     reviewUserId,
-                    reviewRequest.getRating(),
-                    reviewRequest.getDescription()
+                    request.rating(),
+                    cleanDescription // <-- Le pasamos la versión segura en el campo description
             );
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
@@ -172,7 +180,8 @@ public class ReviewRestController {
 
         try {
             existingReview.setRating(updatedReview.rating());
-            existingReview.setDescription(updatedReview.description());
+            String cleanDescription = Jsoup.clean(updatedReview.description(), Safelist.relaxed());
+            existingReview.setDescription(cleanDescription); 
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
         }
