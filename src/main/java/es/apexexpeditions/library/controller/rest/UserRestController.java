@@ -73,8 +73,7 @@ public class UserRestController {
     // overview of all users
     @GetMapping
     public ResponseEntity<Page<UserBasicResponseDTO>> getUsers(@PageableDefault(size = 10) Pageable pageable) {
-        User loggedUser = userService.getLoggedUser();
-        if (loggedUser == null || !loggedUser.getRoles().contains("ADMIN")) {   // bac fix
+        if (userService.isLoggedUserNotAdmin()) {   // filter out users
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Page<User> users = userService.findAll(pageable);
@@ -258,6 +257,10 @@ public class UserRestController {
     // region 1. createUser
     @PostMapping({"", "/"})
     public ResponseEntity<UserFullResponseDTO> createUser(@Valid @RequestBody UserRequestDTO req) {
+        if (userService.isLoggedUserNotAdmin()) {   // filter out users
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         User user = new User(req.name(), req.lastName(), req.email(),
                 passwordEncoder.encode(req.password()), req.mainPhone(), req.secondaryPhone());
 

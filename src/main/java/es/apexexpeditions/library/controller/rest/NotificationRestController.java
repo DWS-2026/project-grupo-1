@@ -3,8 +3,6 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.dto.notification.NotificationDTO;
 import es.apexexpeditions.library.model.Notification;
@@ -19,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 // endregion
-
-
 
 
 
