@@ -1,7 +1,10 @@
 package es.apexexpeditions.library.dto.user;
 
 
-// simple summary of the aggregation all instances of user entity
+
+
+// use: show simple summary of the aggregation all instances of user entity
+// role req: admin
 public record UserStatsDTO (
         long totalUsers,
         long activeUsers,

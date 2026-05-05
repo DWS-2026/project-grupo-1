@@ -2,7 +2,9 @@ package es.apexexpeditions.library.dto.user;
 
 
 
-// equivalent to the admin modal that shows a brief preview
+
+// use: show brief summary of key user info
+// role req: admin
 public record UserBasicResponseDTO (
         Long id,
         String name,
