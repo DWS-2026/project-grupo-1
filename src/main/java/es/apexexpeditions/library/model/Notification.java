@@ -3,11 +3,18 @@ package es.apexexpeditions.library.model;
 
 
 
+
+
 // region =========== imports =================
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 // endregion
+
+
 
 
 
@@ -18,6 +25,11 @@ import java.time.format.DateTimeFormatter;
  *  - deleted: by user (profile.html) or admin (delete button on users.html): icon fas fa-user-minus and bg-warning
  */
 
+// indexes increase query performance
+@Table(name = "notifications", indexes = {
+        @Index (name = "idx_notification_date", columnList = "date"),
+        @Index (name = "idx_notification_read", columnList = "readStatus")
+})
 @Entity
 public class Notification {
     // region =========== id =================
@@ -28,9 +40,17 @@ public class Notification {
 
 
     // region =========== attributes =================
+    @NotBlank
+    @Size (max = 500)
     private String message;
-    private String icon;  // eg "fas fa-user", "fas fa-map-marked-alt"
-    private String color; // eg "bg-primary", "bg-danger"
+
+    @NotBlank
+    @Size (max = 50)
+    private String icon;   // eg "fas fa-user", "fas fa-map-marked-alt"
+
+    @NotBlank
+    @Size(max = 50)
+    private String color;   // eg "bg-primary", "bg-danger"
     private LocalDateTime date = LocalDateTime.now();
     private boolean readStatus = false;
     // endregion
@@ -70,7 +90,7 @@ public class Notification {
 
 
     // region =========== setters =================
-    public void setReadStatus(boolean readStatus) {
+    public void setReadStatus (boolean readStatus) {
         this.readStatus = readStatus;
     }
     // endregion
