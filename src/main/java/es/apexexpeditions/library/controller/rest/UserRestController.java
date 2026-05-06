@@ -3,8 +3,6 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.dto.user.*;
 import es.apexexpeditions.library.model.Image;
@@ -24,6 +22,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.io.IOException;
 import java.net.URI;
 import java.awt.Color;
@@ -32,26 +37,41 @@ import java.awt.Color;
 
 
 
-
 /**
- * API REST v1 - User and Profile Management
- * Based on specifications from funcionalidades_api.txt:
- * * --- ADMINISTRATOR FUNCTIONALITIES ---
- * - GET    /api/v1/users            : retrieve paginated user list (Summary view: name, last names, email, main phone, status, imageId).
- * - GET    /api/v1/users/{id}       : retrieve full details of a specific user (Includes secondary phone, registration date, money spent, and roles).
- * - POST   /api/v1/users/           : create a new user (Allows defining status, phone numbers, money, and roles. Generates a default avatar).
- * - PUT    /api/v1/users/{id}/image : update/Upload profile image for any user via their ID.
- * - PUT    /api/v1/users/me         : update own profile (name, lastName, phones)
- * - DELETE /api/v1/users/{id}       : remove a user from the system.
- * * --- USER FUNCTIONALITIES (SELF) ---
- * - GET    /api/v1/users/me          : view full profile of the currently authenticated user (Name, phone, image, etc.).
- * - PUT    /api/v1/users/{id}        : admin update of any user (all fields, including email and status)
- * - PUT    /api/v1/users/me/password : update password (Requires old password validation and new password confirmation).
- * * Note: all responses including image return an 'imageId'.
- * The binary resource is retrieved via: GET /api/v1/images/{imageId}/media
+ * API REST v1: user management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: full management access, statistics, and modification of sensitive fields
+ * - OWNER: access to their own information and limited profile editing
+ * - PUBLIC: new user registration
+ *
+ * --- ADMINISTRATOR ENDPOINTS (third-party management) ---
+ * - GET    /api/v1/users            : paginated user list (uses: UserBasicResponseDTO)
+ * - GET    /api/v1/users/{id}       : full user details (uses: UserFullResponseDTO). Req: admin or owner
+ * - GET    /api/v1/users/stats      : global system statistics (uses: UserStatsDTO). Req: admin
+ * - POST   /api/v1/users/           : manual user creation (uses: UserRequestDTO). Req: admin. Generates default avatar
+ * - PUT    /api/v1/users/{id}       : user update (uses: UserUpdateDTO)
+ *   - If admin: modifies all fields (email, roles, moneySpent, enabled)
+ *   - If owner: only basic fields (name, lastName, phones)
+ * - PUT    /api/v1/users/{id}/image : updates any user's profile image via MultipartFile
+ * - PATCH  /api/v1/users/{id}/status: toggles a user's status (enabled). Req: admin (self-toggle prohibited)
+ * - DELETE /api/v1/users/{id}       : removes a user. Req: admin or owner (admin cannot delete themselves here)
+ *
+ * --- USER ENDPOINTS (self-management) ---
+ * - GET    /api/v1/users/me         : retrieves the authenticated user's profile (uses: UserFullResponseDTO)
+ * - PUT    /api/v1/users/me         : updates basic data of own profile (Uses: UserUpdateDTO - sensitive fields filtered)
+ * - PUT    /api/v1/users/me/password: password change (uses: PasswordUpdateDTO). validates match and old password
+ * - PUT    /api/v1/users/me/image   : uploads or updates own profile picture (MultipartFile)
+ * - DELETE /api/v1/users/me/image   : deletes own profile picture and the physical resource
+ * - DELETE /api/v1/users/me         : account deletion by the user. Req: must not be an admin
+ *
+ * --- TECHNICAL NOTES ---
+ * - All responses including images return an 'imageId'. Binary resources are retrieved at: GET /api/v1/images/{imageId}/media
+ * - 'UserMapper' is used to convert entities to response DTOs
+ * - Integrated with 'NotificationService' to log critical system actions
  */
 @RestController
 @RequestMapping ("/api/v1/users")
+@Tag(name = "Usuarios", description = "Gestión de perfiles, permisos, edición y estadísticas del sistema")
 public class UserRestController {
     // region =========== autowired =================
     @Autowired
@@ -70,11 +90,16 @@ public class UserRestController {
 
     // region =========== GetMapping =================
     // region 1. getUsers
-    // overview of all users
+    // use: retrieve paginated list of users as UserBasicResponseDTO
+    // req: admin
+    @Operation(summary = "Listado paginado general", description = "Muestra todos los usuarios (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Listado correcto"),
+        @ApiResponse(responseCode = "403", description = "No autorizado", content = @Content)
+    })
     @GetMapping
     public ResponseEntity<Page<UserBasicResponseDTO>> getUsers(@PageableDefault(size = 10) Pageable pageable) {
-        User loggedUser = userService.getLoggedUser();
-        if (loggedUser == null || !loggedUser.getRoles().contains("ADMIN")) {   // bac fix
+        if (userService.isLoggedUserNotAdmin()) {   // filter out users
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         Page<User> users = userService.findAll(pageable);
@@ -83,7 +108,14 @@ public class UserRestController {
     // endregion
 
     // region 2. getUser
-    // full details of a single user
+    // use: retrieve full details of specific user as UserFullResponseDTO
+    // req: admin or account owner
+    @Operation(summary = "Detalle de perfil específico", description = "Muestra información de un usuario concreto (Requiere ser el dueño de la cuenta o ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Perfil recuperado", content = @Content(schema = @Schema(implementation = UserFullResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Ataque detectado (AO1 previsor)", content = @Content),
+        @ApiResponse(responseCode = "404", description = "El usuario no existe", content = @Content)
+    })
     @GetMapping ("/{id}")
     public ResponseEntity<UserFullResponseDTO> getUser (@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
@@ -106,7 +138,12 @@ public class UserRestController {
     // endregion
 
     // region 3. getMyProfile
-    // shows the users profile page info
+    // use: retrieve full profile details of currently authenticated user as UserFullResponseDTO
+    @Operation(summary = "Obtener mi propio perfil", description = "Saca los datos asociados al usuario actual según su token de sesión.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Datos correctos", content = @Content(schema = @Schema(implementation = UserFullResponseDTO.class))),
+        @ApiResponse(responseCode = "401", description = "Debes iniciar sesión", content = @Content)
+    })
     @GetMapping("/me")
     public ResponseEntity<UserFullResponseDTO> getMyProfile() {
         User user = userService.getLoggedUser();
@@ -116,7 +153,13 @@ public class UserRestController {
     // endregion
 
     // 4. stats
-    // admin endpoint to get general user statistics
+    // retrieve global system statistics as UserStatsDTO
+    // req: admin
+    @Operation(summary = "Estadísticas de usuarios", description = "Datos genéricos sobre base de usuarios del sistema (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Métricas entregadas", content = @Content(schema = @Schema(implementation = UserStatsDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
+    })
     @GetMapping("/stats")
     public ResponseEntity<UserStatsDTO> getUserStats() {
         User loggedUser = userService.getLoggedUser();
@@ -134,7 +177,14 @@ public class UserRestController {
 
     // region =========== PutMapping =================
     // region 1. updateMyPassword
-    // allows the user to change their password
+    // use: update authenticated user's password using PasswordUpdateDTO with old password validation
+    @Operation(summary = "Actualizar contraseña", description = "Cambio de la clave personal validando primero la anterior.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Contraseña cambiada"),
+        @ApiResponse(responseCode = "400", description = "Claves mal formadas o no coinciden", content = @Content),
+        @ApiResponse(responseCode = "401", description = "No autenticado", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Contraseña antigua errónea", content = @Content)
+    })
     @PutMapping("/me/password")
     public ResponseEntity<Void> updateMyPassword (@Valid @RequestBody PasswordUpdateDTO passwords) {
         User user = userService.getLoggedUser();
@@ -154,6 +204,12 @@ public class UserRestController {
     // endregion
 
     // region 2. updateImage
+    // use: update or upload a profile image for a specific user via MultipartFile
+    @Operation(summary = "Actualizar foto de perfil", description = "Sustituye la foto de perfil de cualquier persona. (Normalmente invocado por ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Foto de perfil modificada"),
+        @ApiResponse(responseCode = "404", description = "Usuario destino no localizado", content = @Content)
+    })
     @PutMapping("/{id}/image")
     public ResponseEntity<Void> updateImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
         User user = userService.findById(id);
@@ -170,7 +226,12 @@ public class UserRestController {
     // endregion
 
     // region 3. updateMyProfile
-    // allows user to update itself (on non-restricted fields)
+    // use: update basic profile fields (name, lastName, and phones) for the authenticated user using UserUpdateDTO
+    @Operation(summary = "Editar mi perfil", description = "Actualiza los campos básicos del usuario autenticado de forma segura (sin roles ni dinero).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Cambios guardados", content = @Content(schema = @Schema(implementation = UserFullResponseDTO.class))),
+        @ApiResponse(responseCode = "401", description = "Falta sesión", content = @Content)
+    })
     @PutMapping("/me")
     public ResponseEntity<UserFullResponseDTO> updateMyProfile(@Valid @RequestBody UserUpdateDTO updateData) {
         User user = userService.getLoggedUser();
@@ -188,7 +249,15 @@ public class UserRestController {
     // endregion
 
     // region 4. updateUser
-    // admin endpoint to modify any info on any user
+    // use: update specific user via UserUpdateDTO
+    // admin: can edit all fields (roles, status, email)
+    // owner: restricted to basic info.
+    @Operation(summary = "Edición general de cuenta", description = "Si eres dueño edita campos base. Si eres ADMIN tienes permisos de edición de cuenta total (Baneo, Modificar saldo, etc).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Modificado"),
+        @ApiResponse(responseCode = "403", description = "Intento ilegal de modificación a cuenta ajena", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Usuario no detectado", content = @Content)
+    })
     @PutMapping("/{id}")
     public ResponseEntity<UserFullResponseDTO> updateUser (
             @PathVariable Long id,
@@ -235,7 +304,12 @@ public class UserRestController {
     // endregion
 
     // region 5. updateMyImage
-    // allows users to update their own pfp
+    // upload or replace the profile picture for the currently authenticated user using a MultipartFile
+    @Operation(summary = "Cambiar mi foto", description = "Petición multipart para cambiar la foto de perfil de mi cuenta personal.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Foto asignada"),
+        @ApiResponse(responseCode = "401", description = "Error de sesión", content = @Content)
+    })
     @PutMapping ("/me/image")
     public ResponseEntity<Void> updateMyImage(@RequestParam("image") MultipartFile imageFile) throws IOException {
         User loggedUser = userService.getLoggedUser();
@@ -256,8 +330,18 @@ public class UserRestController {
 
     // region =========== PostMapping =================
     // region 1. createUser
+    // manually create a new user with specific roles, status, and a generated default avatar via UserRequestDTO; restricted to Admin
+    @Operation(summary = "Creación de usuario por administrador", description = "Manual override: Fuerza la creación de cuenta, roles y dinero gastado inicial. (Requiere ADMIN)")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Usuario Creado", content = @Content(schema = @Schema(implementation = UserFullResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Privilegios insuficientes", content = @Content)
+    })
     @PostMapping({"", "/"})
     public ResponseEntity<UserFullResponseDTO> createUser(@Valid @RequestBody UserRequestDTO req) {
+        if (userService.isLoggedUserNotAdmin()) {   // filter out users
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
         User user = new User(req.name(), req.lastName(), req.email(),
                 passwordEncoder.encode(req.password()), req.mainPhone(), req.secondaryPhone());
 
@@ -274,68 +358,20 @@ public class UserRestController {
         return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
     }
     // endregion
-
-
-    // region 2. registerUser
-    @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> registerUser(
-            @Valid
-            @RequestPart("userData") UserRegisterDTO req,
-            @RequestPart(value = "imageFile", required = false) MultipartFile imageFile) throws IOException {
-
-        // terms and conditions check
-        if (!req.termsAccepted()) {
-            return ResponseEntity.badRequest().body("Debes aceptar los términos y condiciones.");
-        }
-
-        // email and phones validation
-        if (userService.emailExists(req.email())) {
-            return ResponseEntity.badRequest().body("El correo electrónico ya está registrado.");
-        }
-        if (userService.phoneExists(req.mainPhone())) {
-            return ResponseEntity.badRequest().body("El teléfono principal ya está en uso.");
-        }
-        if (req.secondaryPhone() != null && !req.secondaryPhone().trim().isEmpty()) {
-            if (userService.phoneExists(req.secondaryPhone())) {
-                return ResponseEntity.badRequest().body("El teléfono secundario ya está en uso.");
-            }
-        }
-
-        // creation of user
-        User user = new User(
-                req.name(),
-                req.lastName(),
-                req.email(),
-                passwordEncoder.encode(req.password()),
-                req.mainPhone(),
-                req.secondaryPhone()
-        );
-
-        // role setting and enabling
-        user.setRoles(java.util.Arrays.asList("USER"));
-        user.setEnabled(true);
-
-        // check whether pfp was attached or the default one needs to be generated
-        if (imageFile != null && !imageFile.isEmpty()) {   // case: pfp attached
-            user.setProfilePicture(new Image(imageFile.getBytes()));
-        } else {   // case: default generation
-            byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new java.awt.Color(13, 110, 253));
-            user.setProfilePicture(new Image(avatar));
-        }
-
-        // saving
-        userService.save(user);
-        notificationService.notify ("Nuevo registro: " + user.getName(), "fas fa-user-plus", "bg-success");
-        return ResponseEntity.created(URI.create("/api/v1/users/" + user.getId())).body(userMapper.toFullDTO(user));
-    }
-    // endregion
     // endregion
 
 
 
     // region =========== DeleteMapping =================
     // region 1. deleteUser
-    // used by admins to delete any non-user admin
+    // use: remove user from the system
+    // req: admin (excluding self-deletion) or owner
+    @Operation(summary = "Eliminar cuenta", description = "Borra físicamente a un usuario del sistema (Requiere ADMIN). NOTA: Los admin no pueden autoeliminarse por este endpoint.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Cuenta borrada"),
+        @ApiResponse(responseCode = "403", description = "Faltan permisos o prevención de auto-borrado ADMIN", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Cuenta no encontrada", content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();
@@ -363,7 +399,13 @@ public class UserRestController {
     // endregion
 
     // region 2. deleteMyAccount
-    // used by non-admins to delete their own account
+    // allow non-admin user to delete their own account from the system
+    @Operation(summary = "Eliminación de cuenta (por usuario)", description = "Permite a un usuario normal eliminar su propia cuenta de la base de datos.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Baja finalizada"),
+        @ApiResponse(responseCode = "401", description = "No has iniciado sesión", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Los ADMINS deben darse de baja por base de datos directa para seguridad", content = @Content)
+    })
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteMyAccount() {
         User loggedUser = userService.getLoggedUser();
@@ -378,7 +420,12 @@ public class UserRestController {
     // endregion
 
     // region 3. deleteMyImage
-    // allows users to delete their own pfp
+    // use: remove the profile picture from the authenticated user's account and delete the physical image entity
+    @Operation(summary = "Borrar mi foto de perfil", description = "Quita la foto de perfil y elimina su blob en BDD, regresando al avatar por defecto visualmente.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Imagen destruida"),
+        @ApiResponse(responseCode = "401", description = "Sin sesión", content = @Content)
+    })
     @DeleteMapping ("/me/image")
     public ResponseEntity<Void> deleteMyImage() {
         User loggedUser = userService.getLoggedUser();
@@ -400,7 +447,14 @@ public class UserRestController {
 
     // region =========== PatchMapping =================
     // region 1. toggleUserStatus
-    // admin endpoint to quickly enable/disable user without sending a full DTO
+    // use: quickly enable or disable a user account
+    // req: admin (prevents admin from disabling themselves)
+    @Operation(summary = "Suspender/Reactivar usuario", description = "Invierte el campo enabled (banea o desbanea del inicio de sesión) (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "204", description = "Estado volcado exitosamente"),
+        @ApiResponse(responseCode = "403", description = "Intento no administrador o prevención de suicidio digital", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Objetivo a banear no hallado", content = @Content)
+    })
     @PatchMapping("/{id}/status")
     public ResponseEntity<Void> toggleUserStatus(@PathVariable Long id) {
         User loggedUser = userService.getLoggedUser();

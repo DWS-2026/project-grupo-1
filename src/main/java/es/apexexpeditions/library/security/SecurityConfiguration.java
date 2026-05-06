@@ -76,7 +76,7 @@ public class SecurityConfiguration {
      */
     @Bean
     @Order(1)
-    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain apiFilterChain (HttpSecurity http) throws Exception {
 
         http.authenticationProvider(authenticationProvider());
 
@@ -130,6 +130,11 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
 
+                // GUIDES
+                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
+
                 // PUBLIC ENDPOINTS
                 // IMAGES
                 // TOURS
@@ -137,21 +142,14 @@ public class SecurityConfiguration {
                 // LOGIN
                 .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                 // REGISTRATION
-                .requestMatchers(HttpMethod.POST, "/api/v1/users/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                 // REVIEWS
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
-
-                // PUBLIC ENDPOINTS
                 // GUIDES
                 .requestMatchers(HttpMethod.GET, "/api/v1/guides/**").permitAll()
 
-                // PRIVATE ENDPOINTS
-                // GUIDES
 
-                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
 
                 // REST OF ENDPOINTS
                 .anyRequest().authenticated());

@@ -17,6 +17,8 @@
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
 
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" rel="stylesheet" />
+
     <style>
         /* Custom tweaks for the details page */
         .tour-price-box {
@@ -277,9 +279,10 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="reviewText" class="form-label">Comentario</label>
-                                    <textarea class="form-control" id="reviewText" name="description" rows="5"
-                                              placeholder="Escribe tu opinión aquí..." required></textarea>
+                                    <label class="form-label fw-bold">Comentario</label>
+                                    <input type="hidden" id="reviewText" name="description" required>
+
+                                    <div id="editor-container" style="height: 200px; background-color: #fff; border-radius: 5px;"></div>
                                 </div>
 
                                 <div class="d-grid">
@@ -363,6 +366,36 @@
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+
+            <script>
+                const quill = new Quill('#editor-container', {
+                    theme: 'snow',
+                    placeholder: 'Danos tu opinión sobre el tour.',
+                    modules: {
+                        toolbar: [
+                            [{ 'header': [1, 2, false] }],
+                            ['bold', 'italic', 'underline', 'strike'],
+                            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                            ['clean'] 
+                        ]
+                    }
+                });
+
+                const form = document.querySelector('form[action^="/tour-details/"]');
+                form.addEventListener('submit', function(e) {
+                    const htmlContent = quill.getSemanticHTML(); 
+                   
+                    if (quill.getText().trim().length === 0) {
+                        alert('Por favor, escribe un comentario para tu reseña.');
+                        e.preventDefault();
+                        return;
+                    }
+
+                    document.getElementById('reviewText').value = htmlContent;
+                });
+            </script>
 
 </body>
 

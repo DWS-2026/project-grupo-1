@@ -27,8 +27,16 @@ import es.apexexpeditions.library.service.BookingService;
 import es.apexexpeditions.library.service.UserService;
 import jakarta.validation.Valid;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/bookings")
+@Tag(name = "Reservas", description = "Gestión de reservas de expediciones y tours")
 public class BookingRestController {
     @Autowired
     private BookingService bookingService;
@@ -42,6 +50,12 @@ public class BookingRestController {
     // =========================================================
     // GET ALL BOOKINGS
     // =========================================================
+    @Operation(summary = "Obtener todas las reservas", 
+               description = "Devuelve una lista paginada de reservas. Si el usuario es ADMIN, obtiene todas; si es cliente, solo obtiene sus propias reservas.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista de reservas obtenida correctamente"),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado o usuario no autenticado", content = @Content)
+    })
     @GetMapping("")
     public ResponseEntity<Page<BookingResponseDTO>> getAllBookings(
             @PageableDefault(size = 10) Pageable pageable) {
@@ -63,6 +77,15 @@ public class BookingRestController {
     // =========================================================
     // GET SINGLE BOOKING
     // =========================================================
+    @Operation(summary = "Obtener una reserva por ID", 
+               description = "Permite recuperar los detalles de una reserva concreta si el usuario es el propietario o un administrador.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Reserva encontrada",
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = BookingResponseDTO.class)) }),
+        @ApiResponse(responseCode = "403", description = "No tienes permiso para ver esta reserva", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada", content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<BookingResponseDTO> getBooking(@PathVariable long id) {
 

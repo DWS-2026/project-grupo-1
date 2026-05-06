@@ -186,5 +186,17 @@ public class UserService {
         );
     }
     // endregion
+
+    // region 5. isLoggedUserAdmin
+    public boolean isLoggedUserAdmin() {
+        User loggedUser = this.getLoggedUser();
+        return isAdmin(loggedUser);
+    }
+    // endregion
+
+    // region 6. isLoggedUserNotAdmin
+    public boolean isLoggedUserNotAdmin() {
+        return !isLoggedUserAdmin();
+    }
     // endregion
 }

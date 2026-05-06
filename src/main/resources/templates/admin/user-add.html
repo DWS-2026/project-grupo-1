@@ -94,7 +94,9 @@
 
                             <form action="/admin/users/add" method="post" enctype="multipart/form-data">
                                 <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
-
+                                <!-- so userrequestdto is usable -->
+                                <input type="hidden" name="roles" value="USER" />
+                                <!---->
                                 <div class="row">
 
                                     <!-- text fields start -->

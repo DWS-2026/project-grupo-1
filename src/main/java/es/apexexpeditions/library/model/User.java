@@ -3,6 +3,8 @@ package es.apexexpeditions.library.model;
 
 
 
+
+
 // region =========== imports =================
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -20,6 +22,8 @@ import java.util.List; // for role lists
 
 
 
+
+
 @Entity // represents user in app
 @Table(name = "users") // map to users table in db (user is reserved SQL keyword)
 public class User {
@@ -30,15 +34,23 @@ public class User {
     private Long id; // unique identifier for each user in db
     // endregion
 
+
+
     // region =========== attributes =================
     // personal info
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank (message = "El nombre no puede estar vacío")
+    @Size (max = 50)
     private String name;
-    @NotBlank(message = "Los apellidos no pueden estar vacíos")
+
+    @NotBlank (message = "Los apellidos no pueden estar vacíos")
+    @Size (max = 50)
     private String lastName;
-    @NotBlank(message = "El teléfono principal es obligatorio")
-    @Size(min = 9, message = "El teléfono principal debe tener al menos 9 caracteres")
+
+    @NotBlank (message = "El teléfono principal es obligatorio")
+    @Size (min = 9, max = 20, message = "El teléfono principal debe tener entre 9 y 20 caracteres")
     private String mainPhone;
+
+    @Size (max = 20)
     private String secondaryPhone;
 
     @OneToOne (cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,14 +58,16 @@ public class User {
     private Image profilePicture;
 
     // account and security credentials
-    @NotBlank(message = "El email es obligatorio")
-    @Email(message = "Debe proporcionar un formato de email válido")
-    @Column(unique = true) // unique email used as username for auth
+    @NotBlank (message = "El email es obligatorio")
+    @Email (message = "Debe proporcionar un formato de email válido")
+    @Size (max = 255)
+    @Column (unique = true) // unique email used as username for auth
     private String email;
 
+    @Size (max = 255)
     private String password; // hashed password
 
-    @ElementCollection(fetch = FetchType.EAGER) // eager ensures roles loaded immediatly with user (for security checks)
+    @ElementCollection (fetch = FetchType.EAGER) // eager ensures roles loaded immediatly with user (for security checks)
     private List<String> roles; // list user roles
 
     private boolean enabled = true; // flag to enable/disable account (without deleting it)
@@ -63,19 +77,23 @@ public class User {
     private double moneySpent = 0.0;
     // endregion
 
+
+
     // region =========== relationships =================
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference("user-reviews")
+    @OneToMany (mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference ("user-reviews")
     private List<Review> reviews = new ArrayList<>();
     // endregion
 
+
+
     // region =========== constructors =================
-    public User() {
+    public User () {
     } // default empty constructor required by jpa
 
     // client constructor (has attributes for client metrics: money, enabled and
     // date)
-    public User(String name, String lastName, String email, String password,
+    public User (String name, String lastName, String email, String password,
             String mainPhone, String secondaryPhone,
             double moneySpent, boolean enabled, LocalDateTime creationDate) {
         this.name = name;
@@ -90,7 +108,7 @@ public class User {
     }
 
     // admin constructor (no client metrics)
-    public User(String name, String lastName, String email, String password,
+    public User (String name, String lastName, String email, String password,
             String mainPhone, String secondaryPhone) {
         this.name = name;
         this.lastName = lastName;
@@ -102,25 +120,27 @@ public class User {
     // ===== CONSTRUCTORS END
     // endregion
 
+
+
     // region =========== getters and setters =================
     // id
-    public Long getId() {
+    public Long getId () {
         return id;
     }
-    public void setId(Long id) {
+    public void setId (Long id) {
         this.id = id;
     }
 
     // name
-    public String getName() {
+    public String getName () {
         return name;
     }
-    public void setName(String name) {
+    public void setName (String name) {
         this.name = name;
     }
 
     // last name
-    public String getLastName() {
+    public String getLastName () {
         return lastName;
     }
     public void setLastName(String lastName) {
@@ -131,20 +151,20 @@ public class User {
     public String getMainPhone() {
         return mainPhone;
     }
-    public void setMainPhone(String mainPhone) {
+    public void setMainPhone (String mainPhone) {
         this.mainPhone = mainPhone;
     }
 
     // secondary phone
-    public String getSecondaryPhone() {
+    public String getSecondaryPhone () {
         return secondaryPhone;
     }
-    public void setSecondaryPhone(String secondaryPhone) {
+    public void setSecondaryPhone (String secondaryPhone) {
         this.secondaryPhone = secondaryPhone;
     }
 
     // pfp
-    public Image getProfilePicture() {
+    public Image getProfilePicture () {
         return profilePicture;
     }
     public void setProfilePicture (Image profilePicture) {
@@ -155,7 +175,7 @@ public class User {
     public String getEmail() {
         return email;
     }
-    public void setEmail(String email) {
+    public void setEmail (String email) {
         this.email = email;
     }
 
@@ -163,7 +183,7 @@ public class User {
     public String getPassword() {
         return password;
     }
-    public void setPassword(String password) {
+    public void setPassword (String password) {
         this.password = password;
     }
 
@@ -171,7 +191,7 @@ public class User {
     public List<String> getRoles() {
         return roles;
     }
-    public void setRoles(List<String> roles) {
+    public void setRoles (List<String> roles) {
         this.roles = roles;
     }
 
@@ -179,7 +199,7 @@ public class User {
     public boolean isEnabled() {
         return enabled;
     }
-    public void setEnabled(boolean enabled) {
+    public void setEnabled (boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -187,7 +207,7 @@ public class User {
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(LocalDateTime creationDate) {
+    public void setCreationDate (LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -209,15 +229,16 @@ public class User {
     public double getMoneySpent() {
         return moneySpent;
     }
-
-    public void setMoneySpent(double moneySpent) {
+    public void setMoneySpent (double moneySpent) {
         this.moneySpent = moneySpent;
     }
-
-     public void addMoneySpent(double moneySpent) {
+     public void addMoneySpent (double moneySpent) {
         this.moneySpent = this.moneySpent + moneySpent;
     }
     // endregion
+
+
+
 
     // region =========== aux methods =================
     public boolean isHasProfilePicture() {

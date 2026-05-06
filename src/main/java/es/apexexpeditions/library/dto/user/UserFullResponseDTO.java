@@ -2,13 +2,16 @@ package es.apexexpeditions.library.dto.user;
 
 
 
+
 // region =========== imports =================
 import java.util.List;
 // endregion
 
 
 
-// equivalent to viewing all the info as admin either via the summary table or edit page
+
+// use: show all stored user info on a specific user
+// role req: admin
 public record UserFullResponseDTO (
         Long id,
         String name,

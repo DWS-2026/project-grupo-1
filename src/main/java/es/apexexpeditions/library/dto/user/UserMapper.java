@@ -3,8 +3,6 @@ package es.apexexpeditions.library.dto.user;
 
 
 
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.model.User;
 import org.springframework.stereotype.Component;
@@ -13,14 +11,13 @@ import org.springframework.stereotype.Component;
 
 
 
-
-
 @Component
 public class UserMapper {
     // =========== 1. toBasicDTO =================
-    public UserBasicResponseDTO toBasicDTO(User user) {
+    // show brief summary of key user info
+    public UserBasicResponseDTO toBasicDTO (User user) {
         Long imgId = (user.getProfilePicture() != null) ? user.getProfilePicture().getId() : null;
-        return new UserBasicResponseDTO(
+        return new UserBasicResponseDTO (
                 user.getId(), user.getName(), user.getLastName(),
                 user.getEmail(), user.getMainPhone(), user.isEnabled(), imgId
         );
@@ -29,9 +26,10 @@ public class UserMapper {
 
 
     // =========== 2. toFullDTO =================
-    public UserFullResponseDTO toFullDTO(User user) {
+    // show all stored user info on a specific user
+    public UserFullResponseDTO toFullDTO (User user) {
         Long imgId = (user.getProfilePicture() != null) ? user.getProfilePicture().getId() : null;
-        return new UserFullResponseDTO(
+        return new UserFullResponseDTO (
                 user.getId(), user.getName(), user.getLastName(), user.getEmail(),
                 user.getMainPhone(), user.getSecondaryPhone(), user.isEnabled(),
                 user.getFormattedCreationDate(),
