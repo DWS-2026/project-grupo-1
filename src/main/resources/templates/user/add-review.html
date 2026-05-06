@@ -370,26 +370,23 @@
             <script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
 
             <script>
-                // Inicializar Quill con las opciones básicas de formato
                 const quill = new Quill('#editor-container', {
                     theme: 'snow',
-                    placeholder: 'Escribe tu opinión aquí utilizando texto enriquecido...',
+                    placeholder: 'Danos tu opinión sobre el tour.',
                     modules: {
                         toolbar: [
                             [{ 'header': [1, 2, false] }],
                             ['bold', 'italic', 'underline', 'strike'],
                             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                            ['clean'] // Eliminar formato
+                            ['clean'] 
                         ]
                     }
                 });
 
-                // Antes de enviar el formulario, pasamos el HTML del editor al input oculto
                 const form = document.querySelector('form[action^="/tour-details/"]');
                 form.addEventListener('submit', function(e) {
-                    const htmlContent = quill.getSemanticHTML(); // Quill 2.0 estándar para extraer HTML limpio
-
-                    // Si el editor está vacío (solo contiene espacios o saltos de línea vacíos)
+                    const htmlContent = quill.getSemanticHTML(); 
+                   
                     if (quill.getText().trim().length === 0) {
                         alert('Por favor, escribe un comentario para tu reseña.');
                         e.preventDefault();
