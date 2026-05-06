@@ -23,6 +23,13 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.io.IOException;
 import java.net.URI;
 import java.util.NoSuchElementException;
@@ -31,6 +38,7 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 @RestController
 @RequestMapping("/api/v1/tours")
+@Tag(name = "Tours", description = "Gestión del catálogo de expediciones")
 public class TourRestController {
 
     @Autowired
@@ -52,6 +60,8 @@ public class TourRestController {
     // CRUD TOURS
     // =========================================================
 
+    @Operation(summary = "Obtener catálogo de tours", description = "Devuelve una página de tours. Los clientes ven solo los tours visibles, los administradores los ven todos.")
+    @ApiResponse(responseCode = "200", description = "Catálogo obtenido exitosamente")
     @GetMapping("")
     public ResponseEntity<Page<TourResponseDTO>> getAllTours(@PageableDefault(size = 10) Pageable pageable) {
 
@@ -70,6 +80,12 @@ public class TourRestController {
         return ResponseEntity.ok(dtoPage);
     }
 
+    @Operation(summary = "Obtener un tour por ID", description = "Obtiene los detalles de un tour. Si es oculto, requiere permisos ADMIN.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Tour encontrado", content = @Content(schema = @Schema(implementation = TourResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado a un tour oculto", content = @Content),
+        @ApiResponse(responseCode = "404", description = "No encontrado", content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<TourResponseDTO> getTour(@PathVariable long id) {
 
@@ -84,6 +100,12 @@ public class TourRestController {
         return ResponseEntity.ok(tourMapper.toDTO(tour));
     }
 
+    @Operation(summary = "Crear expedición", description = "Crea un nuevo tour en base de datos. Exclusivo para administradores.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Tour creado", content = @Content(schema = @Schema(implementation = TourResponseDTO.class))),
+        @ApiResponse(responseCode = "400", description = "Falta imagen o datos malformados", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Requiere rol ADMIN", content = @Content)
+    })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<TourResponseDTO> createTour(
             @ModelAttribute TourRequestDTO tourDTO, @ModelAttribute MultipartFile imageFile) throws Exception {
@@ -110,6 +132,12 @@ public class TourRestController {
                 .body(tourMapper.toDTO(saved));
     }
 
+    @Operation(summary = "Reemplazar expedición", description = "Actualiza todos los datos de un tour, incluida la foto. (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Actualizado correctamente", content = @Content(schema = @Schema(implementation = TourResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Requiere rol ADMIN", content = @Content),
+        @ApiResponse(responseCode = "404", description = "Tour no encontrado", content = @Content)
+    })
     @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<TourResponseDTO> replaceTour(
             @PathVariable long id,
@@ -132,6 +160,11 @@ public class TourRestController {
         return ResponseEntity.ok(tourMapper.toDTO(updated));
     }
 
+    @Operation(summary = "Eliminar tour", description = "Borra físicamente una expedición. (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Tour eliminado", content = @Content(schema = @Schema(implementation = TourResponseDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<TourResponseDTO> deleteTour(@PathVariable long id) {
 
@@ -150,6 +183,12 @@ public class TourRestController {
     // TOUR IMAGE
     // =========================================================
 
+    @Operation(summary = "Datos imagen del tour", description = "Obtiene los metadatos de la imagen asignada al tour.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagen encontrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Tour oculto (acceso denegado)", content = @Content),
+        @ApiResponse(responseCode = "404", description = "No tiene imagen", content = @Content)
+    })
     @GetMapping("/{id}/image")
     public ResponseEntity<ImageDTO> getTourImage(@PathVariable long id) {
         Tour tour = tourService.findById(id);
@@ -168,6 +207,12 @@ public class TourRestController {
         return ResponseEntity.ok(imageMapper.toDTO(image));
     }
 
+    @Operation(summary = "Descargar binario de la foto del tour", description = "Devuelve los bytes JPEG para renderizar la cabecera del tour.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Archivo recuperado", content = @Content(mediaType = "image/jpeg")),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado a archivo privado", content = @Content),
+        @ApiResponse(responseCode = "404", description = "No hay archivo vinculado", content = @Content)
+    })
     @GetMapping("/{id}/image/media")
     public ResponseEntity<byte[]> getTourImageFile(@PathVariable long id) {
 
@@ -192,6 +237,12 @@ public class TourRestController {
                 .body(imageBytes);
     }
 
+    @Operation(summary = "Actualizar/Subir foto del tour", description = "Reemplaza el archivo JPEG del tour (Requiere ADMIN).")
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Imagen vinculada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
+        @ApiResponse(responseCode = "400", description = "El archivo enviado está vacío", content = @Content),
+        @ApiResponse(responseCode = "403", description = "Requiere permisos ADMIN", content = @Content)
+    })
     @PutMapping("/{id}/image/media")
     public ResponseEntity<ImageDTO> uploadTourImage(
             @PathVariable long id,
@@ -224,6 +275,12 @@ public class TourRestController {
         return ResponseEntity.created(location).body(imageMapper.toDTO(tourService.findById(id).getTourImage()));
     }
 
+    @Operation(summary = "Desvincular y eliminar imagen", description = "Quita la foto del tour y elimina el recurso físico.")
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Borrada con éxito", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
+        @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content),
+        @ApiResponse(responseCode = "404", description = "El tour no tiene imagen", content = @Content)
+    })
     @DeleteMapping("/{id}/image")
     public ResponseEntity<ImageDTO> deleteTourImage(@PathVariable long id) {
 

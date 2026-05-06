@@ -24,6 +24,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.io.IOException;
 import java.net.URI;
 // endregion
@@ -45,6 +52,7 @@ import java.net.URI;
  */
 @RestController
 @RequestMapping ("/api/v1/auth")
+@Tag(name = "Autenticación", description = "Endpoints públicos para el registro de usuarios, inicio de sesión y gestión de tokens de seguridad")
 public class AuthRestController {
     // region =========== autowired =================
     @Autowired
@@ -66,6 +74,15 @@ public class AuthRestController {
     // region 1. /register
     // use: self-register a new user in the system with optional profile picture
     // req: none
+    @Operation(summary = "Registrar un nuevo usuario", 
+               description = "Permite crear una nueva cuenta de usuario en el sistema. Se puede adjuntar de forma opcional una imagen de perfil.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Usuario registrado con éxito",
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = es.apexexpeditions.library.dto.user.UserFullResponseDTO.class)) }), // <- Apunta al DTO de respuesta real
+        @ApiResponse(responseCode = "400", description = "Datos de registro inválidos (formato de correo incorrecto, contraseñas débiles o campos obligatorios vacíos)", 
+            content = @Content)
+    })
     @PostMapping (value = "/register", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> registerUser(
             @Valid
@@ -122,6 +139,15 @@ public class AuthRestController {
     // region 2 . /login
     // use: authenticate user credentials and receive jwt access and refresh tokens
     // req: none previously (but knowing user credentials to proceed)
+    @Operation(summary = "Iniciar sesión", 
+               description = "Autentica las credenciales del usuario (email y contraseña). Si son válidas, establece las cookies seguras y devuelve los tokens JWT de acceso y refresco.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Autenticación exitosa",
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = AuthResponse.class)) }),
+        @ApiResponse(responseCode = "400", description = "Credenciales incorrectas o payload de inicio de sesión corrupto", 
+            content = @Content)
+    })
     @PostMapping ("/login")
     public ResponseEntity<AuthResponse> login(
             HttpServletResponse response,
@@ -133,6 +159,16 @@ public class AuthRestController {
     // region 3. /refresh
     // use: renew an expired access token using the RefreshToken stored in a secure cookie
     // req: none (but having a valid RefreshToken cookie)
+    @Operation(summary = "Refrescar token de acceso", 
+               description = "Renueva un token de acceso JWT expirado utilizando la Cookie segura 'RefreshToken' que tiene almacenada el navegador del usuario.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Token renovado con éxito",
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = AuthResponse.class)) }),
+        @ApiResponse(responseCode = "401", description = "Token de refresco inválido o expirado", 
+            content = @Content)
+    })
+    
     @PostMapping ("/refresh")
     public ResponseEntity<AuthResponse> refresh(
             HttpServletResponse response,
@@ -145,6 +181,12 @@ public class AuthRestController {
     // region 4. /logout
     // use: invalidate the current session and clear authentication cookies
     // req: none
+    @Operation(summary = "Cerrar sesión", 
+               description = "Invalida la sesión actual del usuario y limpia las cookies HTTP-only de autenticación almacenadas en el navegador.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Sesión cerrada correctamente",
+            content = { @Content(mediaType = "text/plain") })
+    })
     @PostMapping ("/logout")
     public ResponseEntity<String> logout(HttpServletResponse response) {
         return ResponseEntity.ok(userLoginService.logout(response));

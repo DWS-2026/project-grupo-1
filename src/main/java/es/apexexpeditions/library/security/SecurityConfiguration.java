@@ -107,6 +107,11 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
 
+                // GUIDES
+                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
+
                 // PUBLIC ENDPOINTS
                 // IMAGES
                 .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
@@ -119,17 +124,10 @@ public class SecurityConfiguration {
                 // REVIEWS
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
-
-                // PUBLIC ENDPOINTS
                 // GUIDES
                 .requestMatchers(HttpMethod.GET, "/api/v1/guides/**").permitAll()
 
-                // PRIVATE ENDPOINTS
-                // GUIDES
 
-                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
 
                 // REST OF ENDPOINTS
                 .anyRequest().authenticated());
