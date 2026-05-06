@@ -16,6 +16,8 @@ public interface TourMapper {
     @Mapping(target = "guideIds", source = "guides")
     TourResponseDTO toDTO(Tour tour);
 
+    TourBookingDTO tourBookingDTO(Tour tour);
+
     default TourStatsDTO toStatsDTO(List<Tour> tours) {
 
         if (tours == null || tours.isEmpty()) {

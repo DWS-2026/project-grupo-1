@@ -33,9 +33,10 @@ import org.springframework.data.web.PageableDefault;
 import java.util.ArrayList;
 import java.awt.*;
 import java.io.IOException;
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
+
+import javax.imageio.ImageIO;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -71,15 +72,16 @@ public class WebController {
      * @return The number of tours in the open booking, or 0 if none.
      */
     @ModelAttribute("cartSize")
-    public int getCartSize(Principal principal) {
-        if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
-            if (bookingOpt.isPresent()) {
-                return bookingOpt.get().getTours().size();
-            }
+    public int getCartSize() {
+        User user = userService.getLoggedUser();
+
+        if (user == null) {
+            return 0;
         }
-        return 0; // triggered if: user has no bookings or isnt logged in
+
+        Booking booking = bookingService.getOrCreateOpenBooking(user);
+
+        return booking.getTours().size();
     }
     // endregion
 
@@ -157,30 +159,23 @@ public class WebController {
      * Adds a specific tour to the user's active booking/cart.
      */
     @GetMapping("/cart/add/{id}")
-    public String addToCart(@PathVariable Long id, Principal principal, RedirectAttributes data) {
-        if (principal == null) {
-            return "redirect:/login"; // forces login if to do booking
-        }
+    public String addToCart(@PathVariable Long id, RedirectAttributes data) {
 
-        User user = userService.findByEmail(principal.getName());
+        User user = userService.getLoggedUser();
+
         Tour tour = tourService.findById(id);
 
-        if (tour != null) {
-            // if user has no booking existing, create it
-            Booking booking = bookingService.findOpenBookingByUser(user)
-                    .orElseGet(() -> new Booking(user));
+        Booking added = bookingService.addTour(user, tour);
 
-            // avoid having 2 instances of same tour in 1 booking
-            if (!booking.getTours().contains(tour)) {
-                booking.getTours().add(tour);
-                bookingService.save(booking); // save to db
-                data.addFlashAttribute("showSuccess", true);
-            } else {
-                data.addFlashAttribute("showError", true);
-                data.addFlashAttribute("tourName", tour.getName());
-            }
+        if (added !=null) {
+            data.addFlashAttribute("showSuccess", true);
+        } else {
+            data.addFlashAttribute("showError", true);
+
+            data.addFlashAttribute("tourName", tour.getName());
         }
         return "redirect:/cart";
+
     }
     // endregion
 
@@ -189,20 +184,11 @@ public class WebController {
      * Removes a tour from the user's active booking/cart.
      */
     @GetMapping("/cart/remove/{id}")
-    public String removeFromCart(@PathVariable Long id, Principal principal) {
-        if (principal == null)
-            return "redirect:/login";
+    public String removeFromCart(@PathVariable Long id) {
 
-        User user = userService.findByEmail(principal.getName());
-        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+        User user = userService.getLoggedUser();
 
-        if (bookingOpt.isPresent()) {
-            Booking booking = bookingOpt.get();
-            booking.getTours().removeIf(t -> t.getId().equals(id));
-
-            // store to db
-            bookingService.save(booking);
-        }
+        bookingService.removeTour(user, tourService.findById(id));
 
         // redirect
         return "redirect:/cart?removed=true";
@@ -214,28 +200,26 @@ public class WebController {
      * Displays the user's shopping cart contents.
      */
     @GetMapping("/cart")
-    public String cart(Model model, Principal principal) {
+    public String cart(Model model) {
+
+        User user = userService.getLoggedUser();
+
         model.addAttribute("cart", true);
         // initialize default vars
         model.addAttribute("cartItems", new ArrayList<Tour>());
         model.addAttribute("total", "0.00");
         model.addAttribute("isEmpty", true);
 
-        if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+        Booking booking = bookingService.getOrCreateOpenBooking(user);
 
-            if (bookingOpt.isPresent()) {
-                Booking booking = bookingOpt.get();
-                List<Tour> tours = booking.getTours();
+        List<Tour> tours = booking.getTours();
 
-                if (!tours.isEmpty()) {
-                    model.addAttribute("cartItems", tours);
-                    model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
-                    model.addAttribute("isEmpty", false);
-                }
-            }
+        if (!tours.isEmpty()) {
+            model.addAttribute("cartItems", tours);
+            model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
+            model.addAttribute("isEmpty", false);
         }
+
         return "user/cart";
     }
     // endregion
@@ -281,37 +265,32 @@ public class WebController {
      */
     @GetMapping("/profile")
     public String profile(Model model,
-            Principal principal,
             HttpServletRequest request,
             @RequestParam(required = false) Boolean showLogout) {
 
-        if (principal != null) {
-            User user = userService.findByEmail(principal.getName());
-            model.addAttribute("user", user);
+        User user = userService.getLoggedUser();
 
-            // if user doesnt exist in db, return
-            if (user == null) {
-                return "redirect:/logout";
-            }
+        model.addAttribute("user", user);
 
-            // if a param showLogout is received, set flag
-            if (Boolean.TRUE.equals(showLogout)) {
-                model.addAttribute("openLogoutModal", true);
-            }
-
-            model.addAttribute("currentUser", user);
-
-            // check if user admin, and set flag accordingly
-            boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
-            model.addAttribute("isAdmin", isAdmin);
+        // if a param showLogout is received, set flag
+        if (Boolean.TRUE.equals(showLogout)) {
+            model.addAttribute("openLogoutModal", true);
         }
+
+        model.addAttribute("currentUser", user);
+
+        // check if user admin, and set flag accordingly
+        boolean isAdmin = user.getRoles().contains("ADMIN") || request.isUserInRole("ADMIN");
+        model.addAttribute("isAdmin", isAdmin);
+
         return "user/profile";
     }
     // endregion
 
     // region 10. "tour-details/"
     /**
-     * Displays detailed information about a specific tour, including its paginated reviews.
+     * Displays detailed information about a specific tour, including its paginated
+     * reviews.
      */
     @GetMapping("/tour-details/{id}")
     public String showDetails(@PathVariable Long id,
@@ -370,16 +349,15 @@ public class WebController {
      * Renders the checkout page for completing a purchase.
      */
     @GetMapping("/checkout")
-    public String checkout(Model model, Principal principal) {
-        if (principal == null)
-            return "redirect:/login";
+    public String checkout(Model model) {
 
-        User user = userService.findByEmail(principal.getName());
-        Optional<Booking> bookingOpt = bookingService.findOpenBookingByUser(user);
+        User user = userService.getLoggedUser();
 
-        if (bookingOpt.isPresent() && !bookingOpt.get().getTours().isEmpty()) {
-            Booking booking = bookingOpt.get();
-            model.addAttribute("cartItems", booking.getTours());
+        Booking booking = bookingService.getOrCreateOpenBooking(user);
+
+        List<Tour> tours = booking.getTours();
+        if (!tours.isEmpty()) {
+            model.addAttribute("cartItems", tours);
             model.addAttribute("total", String.format("%.2f", booking.getTotalPrice()));
             return "user/checkout";
         }
@@ -393,21 +371,15 @@ public class WebController {
      * Processes a completed booking and displays the generated invoice.
      */
     @GetMapping("/invoice")
-    public String invoice(Model model, Principal principal) {
-        if (principal == null) {
-            return "redirect:/login";
-        }
+    public String invoice(Model model) {
 
-        User user = userService.findByEmail(principal.getName());
-        Optional<Booking> openBookingOpt = bookingService.findOpenBookingByUser(user);
+        User user = userService.getLoggedUser();
 
-        if (openBookingOpt.isPresent() && !openBookingOpt.get().getTours().isEmpty()) {
-            Booking openBooking = openBookingOpt.get();
+        Booking openbooking = bookingService.getOrCreateOpenBooking(user);
+
+        if (!openbooking.getTours().isEmpty()) {
             // close reserve (empty cart)
-            openBooking.setClose(true);
-            bookingService.save(openBooking);
-            user.addMoneySpent(openBooking.getTotalPrice());
-            userService.save(user);
+            bookingService.closeBooking(user);
         }
 
         Optional<Booking> lastClosedOpt = bookingService.findLastClosedBookingByUser(user);
@@ -480,18 +452,11 @@ public class WebController {
      * Displays a paginated view of all reviews authored by the current user.
      */
     @GetMapping("/review-user")
-    public String myReviews(Principal principal,
+    public String myReviews(
             @RequestParam(defaultValue = "0") int page,
             Model model) {
 
-        if (principal == null) {
-            return "redirect:/login";
-        }
-
-        User user = userService.findByEmail(principal.getName());
-        if (user == null) {
-            return "redirect:/";
-        }
+        User user = userService.getLoggedUser();
 
         Page<Review> reviewPage = reviewService.findPagedByUserId(user.getId(), page);
 
@@ -513,16 +478,9 @@ public class WebController {
      * Displays the form to modify an existing review.
      */
     @GetMapping("/mis-reviews/{id}/edit-review")
-    public String editReview(@PathVariable Long id, Principal principal, Model model) {
+    public String editReview(@PathVariable Long id, Model model) {
 
-        if (principal == null) {
-            return "redirect:/login";
-        }
-
-        User user = userService.findByEmail(principal.getName());
-        if (user == null) {
-            return "redirect:/";
-        }
+        User user = userService.getLoggedUser();
 
         Optional<Review> optionalReview = reviewService.findById(id);
 
@@ -547,20 +505,13 @@ public class WebController {
      * Retrieves the past closed bookings for the user.
      */
     @GetMapping("/booking-user")
-    public String myBookings(Principal principal,
+    public String myBookings(
             @PageableDefault(size = 10) Pageable pageable,
             Model model) {
 
-        if (principal == null) {
-            return "redirect:/login";
-        }
+        User user = userService.getLoggedUser();
 
-        User user = userService.findByEmail(principal.getName());
-        if (user == null) {
-            return "redirect:/";
-        }
-
-        Page<Booking> bookingPage = bookingService.findClosedBookingsByUser(user, pageable);
+        Page<Booking> bookingPage = bookingService.findByUserAndCloseTrue(user, pageable);
 
         model.addAttribute("bookings", bookingPage.getContent());
         model.addAttribute("size", pageable.getPageSize());
@@ -603,8 +554,8 @@ public class WebController {
     @GetMapping("/user/{id}/image")
     public ResponseEntity<byte[]> getUserImage(@PathVariable Long id) {
         User user = userService.findById(id);
-        if (user != null && user.getProfilePicture() != null) {   // check user exists and has image
-            byte[] imageBytes = user.getProfilePicture().getImageFile();   // extract bytes
+        if (user != null && user.getProfilePicture() != null) { // check user exists and has image
+            byte[] imageBytes = user.getProfilePicture().getImageFile(); // extract bytes
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_TYPE, "image/png")
                     .body(imageBytes);
@@ -695,18 +646,18 @@ public class WebController {
         try {
             if (imageFile != null && !imageFile.isEmpty()) {
                 // if image was attached, store it2
-                user.setProfilePicture(new Image (imageFile.getBytes()));
+                user.setProfilePicture(new Image(imageFile.getBytes()));
             } else {
                 // if no image attached, generate default
                 byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.name(),
                         new Color(13, 110, 253));
-                user.setProfilePicture (new Image (avatar));
+                user.setProfilePicture(new Image(avatar));
             }
         } catch (IOException e) {
             // if error reading file, set default
             e.printStackTrace();
             byte[] avatar = userService.generateDefaultAvatar("Usuario", newUser.name(), new Color(13, 110, 253));
-            user.setProfilePicture (new Image (avatar));
+            user.setProfilePicture(new Image(avatar));
         }
 
         userService.save(user); // save user
@@ -723,37 +674,39 @@ public class WebController {
      * processes profile updates initiated by user
      */
     @PostMapping("/profile/update")
-    public String updateProfile (Principal principal,
-                                HttpServletRequest request,
-                                @Valid @ModelAttribute("updateData") UserUpdateDTO updateData, // Validación vía DTO
-                                BindingResult bindingResult,
-                                @RequestParam(required = false) String oldPassword,
-                                @RequestParam(required = false) String newPassword,
-                                @RequestParam(required = false) String confirmPassword,
-                                @RequestParam(required = false) MultipartFile imageFile,
-                                @RequestParam String clickaction,
-                                Model model) {
+    public String updateProfile(
+            HttpServletRequest request,
+            @Valid @ModelAttribute("updateData") UserUpdateDTO updateData, // Validación vía DTO
+            BindingResult bindingResult,
+            @RequestParam(required = false) String oldPassword,
+            @RequestParam(required = false) String newPassword,
+            @RequestParam(required = false) String confirmPassword,
+            @RequestParam(required = false) MultipartFile imageFile,
+            @RequestParam String clickaction,
+            Model model) {
 
-        User user = userService.findByEmail(principal.getName());   // retrieve user
+        User user = userService.getLoggedUser();
 
         // a03: prevent massive payloads
         if (bindingResult.hasErrors()) {
-            model.addAttribute ("errorMessage", "Invalid data: check characters limit.");
-            model.addAttribute ("currentUser", user);
-            model.addAttribute ("isAdmin", user.getRoles().contains("ADMIN"));
+            model.addAttribute("errorMessage", "Invalid data: check characters limit.");
+            model.addAttribute("currentUser", user);
+            model.addAttribute("isAdmin", user.getRoles().contains("ADMIN"));
             return "user/profile";
         }
 
         try {
             // process account deletion
             if ("delete".equals(clickaction)) {
+                request.logout();
                 userService.delete(user);
-                notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus", "bg-warning");
+                notificationService.notify("Usuario " + user.getName() + " ha eliminado su cuenta", "fas fa-user-minus",
+                        "bg-warning");
                 return "redirect:/login";
             }
 
             // clean and validate phone
-            String mainPhone = updateData.mainPhone() != null ? updateData.mainPhone().trim() : "";
+            String mainPhone = updateData.mainPhone() != null ? updateData.mainPhone().trim() : "";               
             String secondaryPhone = updateData.secondaryPhone() != null ? updateData.secondaryPhone().trim() : "";
 
             // check main phone
@@ -780,7 +733,8 @@ public class WebController {
             // password update logic
             boolean passwordChanged = false;
             if (newPassword != null && !newPassword.trim().isEmpty()) {
-                if (oldPassword == null || oldPassword.isEmpty() || !passwordEncoder.matches(oldPassword, user.getPassword())) {
+                if (oldPassword == null || oldPassword.isEmpty()
+                        || !passwordEncoder.matches(oldPassword, user.getPassword())) {
                     model.addAttribute("errorMessage", "La contraseña antigua es incorrecta.");
                     model.addAttribute("currentUser", user);
                     return "user/profile";
@@ -804,9 +758,7 @@ public class WebController {
 
             // a03/04 protection
             if (imageFile != null && !imageFile.isEmpty()) {
-                // conte type validation
-                String contentType = imageFile.getContentType();
-                if (contentType != null && contentType.startsWith("image/")) {
+                if (ImageIO.read(imageFile.getInputStream()) != null && imageFile.getSize() <= 2_000_000) {
                     user.setProfilePicture(new Image(imageFile.getBytes())); //
                 }
             }
@@ -821,8 +773,8 @@ public class WebController {
 
         } catch (Exception e) {
             // a05: avoid stack trace leak
-            model.addAttribute ("errorMessage", "Error interno al procesar la actualización. Inténtelo de nuevo.");
-            model.addAttribute ("currentUser", user);
+            model.addAttribute("errorMessage", "Error interno al procesar la actualización. Inténtelo de nuevo.");
+            model.addAttribute("currentUser", user);
             return "user/profile";
         }
 

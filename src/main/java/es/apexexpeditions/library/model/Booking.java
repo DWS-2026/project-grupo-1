@@ -1,6 +1,8 @@
 package es.apexexpeditions.library.model;
 
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,14 +16,19 @@ public class Booking {
     @ManyToOne
     private User user;
 
-   @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<Tour> tours = new ArrayList<>();
 
     private boolean close = false;
 
-    public Booking() {}
+    private LocalDateTime closedAt;
+
+    public Booking() {
+    }
 
     public Booking(User user) {
+        this.tours = new ArrayList<>();
+        this.close = false;
         this.user = user;
     }
 
@@ -29,15 +36,44 @@ public class Booking {
         return tours.stream().mapToDouble(Tour::getPrice).sum();
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public User getUser() { return user; }
-    public void setUser(User user) { this.user = user; }
-    
-    public List<Tour> getTours() { return tours; }
-    public void setTours(List<Tour> tours) { this.tours = tours; }
-    
-    public boolean isClose() { return close; }
-    public void setClose(boolean close) { this.close = close; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Tour> getTours() {
+        return tours;
+    }
+
+    public void setTours(List<Tour> tours) {
+        this.tours = tours;
+    }
+
+    public boolean isClose() {
+        return close;
+    }
+
+    public void setClose(boolean close) {
+        this.close = close;
+    }
+
+    public LocalDateTime getClosedAt() {
+        return this.closedAt;
+    }
+
+    public void setClosedAt(LocalDateTime closedAt) {
+        this.closedAt = closedAt;
+    }
+
 }

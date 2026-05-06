@@ -135,6 +135,9 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
 
+                // BOOKINGS
+                .requestMatchers(HttpMethod.DELETE, "/api/v1/bookings/*").hasRole("ADMIN")
+
                 // PUBLIC ENDPOINTS
                 // IMAGES
                 // TOURS
@@ -254,7 +257,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
                         // User private paths (require either USER or ADMIN roles)
-                        .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**")
+                        .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**", "/user/*/image")
                         .hasAnyRole("USER", "ADMIN")
 
                         // Any other paths that do not exist are permitted so the custom error
