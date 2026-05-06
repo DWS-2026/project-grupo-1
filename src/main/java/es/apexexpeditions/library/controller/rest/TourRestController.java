@@ -5,6 +5,7 @@ import es.apexexpeditions.library.dto.image.ImageMapper;
 import es.apexexpeditions.library.dto.tour.TourMapper;
 import es.apexexpeditions.library.dto.tour.TourRequestDTO;
 import es.apexexpeditions.library.dto.tour.TourResponseDTO;
+import es.apexexpeditions.library.dto.tour.TourStatsDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.model.User;
@@ -72,7 +73,6 @@ public class TourRestController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TourResponseDTO> getTour(@PathVariable long id) {
-
         Tour tour = tourService.findById(id);
         User user = userService.getLoggedUser();
 
@@ -88,14 +88,7 @@ public class TourRestController {
     public ResponseEntity<TourResponseDTO> createTour(
             @ModelAttribute TourRequestDTO tourDTO, @ModelAttribute MultipartFile imageFile) throws Exception {
 
-        User user = userService.getLoggedUser();
-
-        // Broken Access Control
-        if (user == null || !userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        if (imageFile.isEmpty()) {
+        if (imageFile == null || imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -114,17 +107,14 @@ public class TourRestController {
     public ResponseEntity<TourResponseDTO> replaceTour(
             @PathVariable long id,
             @ModelAttribute TourRequestDTO tourDTO,
-            @RequestParam MultipartFile imageFile) throws Exception {
+            @RequestParam(required = false) MultipartFile imageFile) throws Exception {
 
         if (!tourService.existsById(id)) {
             throw new NoSuchElementException("Tour not found");
         }
 
-        // Broken Access Control
-        User user = userService.getLoggedUser();
-
-        if (user == null || !userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        if (imageFile == null || imageFile.isEmpty()) {
+            return ResponseEntity.badRequest().build();
         }
 
         Tour updated = tourService.replaceTour(id, tourDTO, imageFile);
@@ -134,13 +124,6 @@ public class TourRestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TourResponseDTO> deleteTour(@PathVariable long id) {
-
-        User user = userService.getLoggedUser();
-
-        // Broken Access Control
-        if (user == null || !userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
 
         Tour tour = tourService.deleteById(id);
         return ResponseEntity.ok(tourMapper.toDTO(tour));
@@ -197,14 +180,7 @@ public class TourRestController {
             @PathVariable long id,
             @RequestParam MultipartFile imageFile) throws IOException {
 
-        // Broken Access Control
-        User user = userService.getLoggedUser();
-
-        if (user == null || !userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
-        if (imageFile.isEmpty()) {
+        if (imageFile == null || imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -227,13 +203,6 @@ public class TourRestController {
     @DeleteMapping("/{id}/image")
     public ResponseEntity<ImageDTO> deleteTourImage(@PathVariable long id) {
 
-        // Broken Access Control
-        User user = userService.getLoggedUser();
-
-        if (user == null || !userService.isAdmin(user)) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
-        }
-
         Tour tour = tourService.findById(id);
         Image image = tour.getTourImage();
 
@@ -245,5 +214,16 @@ public class TourRestController {
         imageService.deleteImage(image.getId());
 
         return ResponseEntity.ok(imageMapper.toDTO(image));
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<TourStatsDTO> getTourStats() {
+        User loggedUser = userService.getLoggedUser();
+
+        if (loggedUser == null || !userService.isAdmin(loggedUser)) {   // check auth
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        return ResponseEntity.ok(tourService.getTourStats());
     }
 }

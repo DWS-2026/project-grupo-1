@@ -16,6 +16,44 @@ public interface TourMapper {
     @Mapping(target = "guideIds", source = "guides")
     TourResponseDTO toDTO(Tour tour);
 
+    default TourStatsDTO toStatsDTO(List<Tour> tours) {
+
+        if (tours == null || tours.isEmpty()) {
+            return new TourStatsDTO(0, 0, 0, 0, 0, 0, 0);
+        }
+
+        long totalTours = tours.size();
+        long activeTours = 0;
+
+        double maxPrice = Double.NEGATIVE_INFINITY;
+        double minPrice = Double.POSITIVE_INFINITY;
+        double totalRating = 0;
+        double totalDuration = 0;
+
+        for (Tour t : tours) {
+            if (!t.isHidden())
+                activeTours++;
+
+            double price = t.getPrice();
+            maxPrice = Math.max(maxPrice, price);
+            minPrice = Math.min(minPrice, price);
+
+            totalRating += t.getAverageRating();
+            totalDuration += t.getDuration();
+        }
+
+        long disabledTours = totalTours - activeTours;
+
+        return new TourStatsDTO(
+                totalTours,
+                activeTours,
+                disabledTours,
+                maxPrice,
+                minPrice,
+                totalRating / totalTours,
+                totalDuration / totalTours);
+    }
+
     List<TourResponseDTO> toDTOs(List<Tour> tours);
 
     @Mapping(target = "id", ignore = true)

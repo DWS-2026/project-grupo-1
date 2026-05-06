@@ -1,6 +1,5 @@
 package es.apexexpeditions.library.security;
 
-
 // region =========== imports =================
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import es.apexexpeditions.library.security.jwt.JwtRequestFilter;
 import es.apexexpeditions.library.security.jwt.JwtTokenProvider;
 import es.apexexpeditions.library.security.jwt.UnauthorizedHandlerJwt;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Dual security configuration:
@@ -84,6 +84,27 @@ public class SecurityConfiguration {
                 .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
 
+        // to respond with json
+        /**
+         * .exceptionHandling(handling -> handling
+         * .authenticationEntryPoint((request, response, ex) -> {
+         * response.setContentType("application/json");
+         * response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+         * response.getWriter().write("""
+         * {"error":"Unauthorized"}
+         * """);
+         * })
+         * .accessDeniedHandler((request, response, ex) -> {
+         * response.setContentType("application/json");
+         * response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+         * response.getWriter().write("""
+         * {"error":"Forbidden"}
+         * """);
+         * }));
+         */
+
+
+    
         // error management for api
 
         http.authorizeHttpRequests(auth -> auth
@@ -92,10 +113,12 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/images/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/images/**").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").hasRole("ADMIN")
                 // TOURS
                 .requestMatchers(HttpMethod.POST, "/api/v1/tours").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/tours/stats").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*/image/media").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
@@ -109,7 +132,6 @@ public class SecurityConfiguration {
 
                 // PUBLIC ENDPOINTS
                 // IMAGES
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").permitAll()
                 // TOURS
                 .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
                 // LOGIN
@@ -133,8 +155,6 @@ public class SecurityConfiguration {
 
                 // REST OF ENDPOINTS
                 .anyRequest().authenticated());
-
-                
 
         // Disable Form login Authentication
         http.formLogin(formLogin -> formLogin.disable());
@@ -173,28 +193,28 @@ public class SecurityConfiguration {
                 // CSP patch: mitigates xss and data injection
                 .contentSecurityPolicy(csp -> csp
                         .policyDirectives("default-src 'self'; " +
-                                // Added kit.fontawesome.com for FontAwesome Kits
-                                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; " +
+                        // Added kit.fontawesome.com for FontAwesome Kits
+                                "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://ajax.googleapis.com https://cdnjs.cloudflare.com https://kit.fontawesome.com; "
+                                +
 
                                 // icon styles
-                                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; " +
+                                "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; "
+                                +
                                 // icon fonts
-                                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; " +
+                                "font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://ka-f.fontawesome.com https://use.fontawesome.com; "
+                                +
                                 // connect-src to allow FontAwesome Kits to fetch SVGs
                                 "connect-src 'self' https://ka-f.fontawesome.com; " +
 
                                 "img-src 'self' data: blob:; " +
                                 "frame-ancestors 'none'; " +
-                                "form-action 'self';")
-                )
+                                "form-action 'self';"))
 
                 // HSTS patch: forces https
-                .httpStrictTransportSecurity (hsts -> hsts
-                        .maxAgeInSeconds (31536000) // 1 year
-                        .includeSubDomains (true)
-                        .preload (true)
-                )
-        );
+                .httpStrictTransportSecurity(hsts -> hsts
+                        .maxAgeInSeconds(31536000) // 1 year
+                        .includeSubDomains(true)
+                        .preload(true)));
 
         http.authenticationProvider(authenticationProvider());
 

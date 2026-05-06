@@ -2,6 +2,8 @@ package es.apexexpeditions.library.service;
 
 import es.apexexpeditions.library.dto.tour.TourMapper;
 import es.apexexpeditions.library.dto.tour.TourRequestDTO;
+import es.apexexpeditions.library.dto.tour.TourStatsDTO;
+import es.apexexpeditions.library.dto.user.UserStatsDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.repository.TourRepository;
@@ -50,7 +52,8 @@ public class TourService {
     }
 
     public Tour findByIdAndHiddenFalse(Long id) {
-        return tourRepository.findByIdAndHiddenFalse(id).orElse(null);
+        return tourRepository.findByIdAndHiddenFalse(id)
+                .orElseThrow(() -> new EntityNotFoundException("Tour not found: " + id));
     }
 
     public Tour save(Tour tour, MultipartFile file) throws Exception {
@@ -68,8 +71,7 @@ public class TourService {
     }
 
     public Tour deleteById(Long id) {
-        Tour tour = tourRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Tour not found with id " + id));
+        Tour tour = this.findById(id);
         if (tour.getTourImage() != null) {
             imageService.deleteImage(tour.getTourImage().getId());
         }
@@ -83,16 +85,14 @@ public class TourService {
 
     public Tour setTourImage(long id, MultipartFile imageFile) throws IOException {
         Image image = imageService.createImage(imageFile);
-        Tour tour = tourRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tour not found: " + id));
+        Tour tour = this.findById(id);
         tour.setTourImage(image);
         tourRepository.save(tour);
         return tour;
     }
 
     public Tour removeTourImage(long id) {
-        Tour tour = tourRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tour not found: " + id));
+        Tour tour = this.findById(id);
         tour.setTourImage(null);
         tourRepository.save(tour);
         return tour;
@@ -100,8 +100,7 @@ public class TourService {
 
     public Tour replaceTour(long id, TourRequestDTO dto, MultipartFile file) throws Exception {
 
-        Tour existing = tourRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Tour not found"));
+        Tour existing = this.findById(id);
 
         existing.setName(dto.name());
         existing.setDescription(dto.description());
@@ -137,6 +136,12 @@ public class TourService {
 
     public boolean existsById(long id) {
         return tourRepository.existsById(id);
+    }
+
+    public TourStatsDTO getTourStats() {
+        List<Tour> tours = tourRepository.findAll();
+
+        return tourMapper.toStatsDTO(tours);
     }
 
 }
