@@ -856,9 +856,9 @@ flowchart LR
 
 | Rol | Usuario | Contraseña |
 |:---|:---|:---|
-| Administrador | admin | admin123 |
-| Usuario Registrado | user1 | user123 |
-| Usuario Registrado | user2 | user123 |
+| Administrador | admin@apexexpeditions.com | 1234 |
+| Usuario Registrado | luis@email.com | 1234 |
+| Usuario Registrado | ana@email.com | 1234 |
 
 ### **Participación de Miembros en la Práctica 3**
 
@@ -876,17 +876,21 @@ flowchart LR
 
 ---
 
-#### **Alumno 2 - [Nombre Completo]**
+#### **Alumno 2 - [Javier Hernández Campano]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Durante la fase 3 me he encargado principalmente de evolucionar la API REST de reviews y reforzar la seguridad de la aplicación. Mi trabajo ha incluido la creación y mejora de endpoints para consultar, crear, editar, ocultar y filtrar reseñas por tour y usuario, además de adaptar el uso de DTOs, validaciones y mappers para separar mejor los datos expuestos por la API de las entidades internas.
+
+También he trabajado en mejoras de control de permisos, como impedir que un usuario edite reseñas que no le pertenecen y proteger la edición de imágenes de usuario para que solo pueda realizarla el propietario o un administrador. Además, he reforzado el saneado del contenido de las reviews para reducir riesgos de XSS, he añadido paginación en reviews y notificaciones, he ajustado la configuración de seguridad y he realizado mejoras en controladores, servicios y repositorios.
+
+De forma complementaria, he corregido la visualización de imágenes de tours desde el endpoint de media en distintas plantillas, he incorporado DTOs en formularios de registro, alta de usuarios desde administración y formularios de tours, y he realizado ajustes de mantenimiento como el controlador de errores, la restricción de métodos HTTP, el uso de inyección por constructor y pequeñas correcciones en parámetros opcionales y configuración de la aplicación.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Implementación de DTOs y mapper para la API REST de reviews](https://github.com/DWS-2026/project-grupo-1/commit/b2761d0)  | [ReviewRestController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/controller/rest/ReviewRestController.java)<br>[ReviewMapper.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/dto/ReviewMapper.java)<br>[ReviewRequestDTO.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/dto/ReviewRequestDTO.java)<br>[ReviewResponseDTO.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/dto/ReviewResponseDTO.java)<br>[ReviewUpdateDTO.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/dto/ReviewUpdateDTO.java)<br>[ReviewVisibilityDTO.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/dto/ReviewVisibilityDTO.java)   |
+|2| [Creación del controlador REST de reviews con operaciones CRUD y consultas](https://github.com/DWS-2026/project-grupo-1/commit/c74efd7)  | [ReviewRestController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/controller/rest/ReviewRestController.java)<br>[ReviewRepository.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/repository/ReviewRepository.java)<br>[ReviewService.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/service/ReviewService.java)   |
+|3| [Restricción para que solo el dueño pueda editar su review](https://github.com/DWS-2026/project-grupo-1/commit/4df4970)  | [ReviewRestController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/codeurjc/daw/library/controller/rest/ReviewRestController.java)   |
+|4| [Endurecimiento del saneado de reviews contra XSS](https://github.com/DWS-2026/project-grupo-1/commit/9fcd393)  | [ReviewController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/apexexpeditions/library/controller/ReviewController.java)<br>[ReviewRestController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/apexexpeditions/library/controller/rest/ReviewRestController.java)<br>[ReviewService.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/apexexpeditions/library/service/ReviewService.java)   |
+|5| [Protección de edición de imagen de usuario por dueño o admin](https://github.com/DWS-2026/project-grupo-1/commit/4db6990)  | [UserRestController.java](https://github.com/DWS-2026/project-grupo-1/blob/main/src/main/java/es/apexexpeditions/library/controller/rest/UserRestController.java)   |
 
 ---
 
