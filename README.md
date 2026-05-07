@@ -335,8 +335,22 @@ flowchart LR
         ABO["Gestion Reservas (NUEVO)"]
   end
 
-    NAV <--> I & G & SV & AB & CT & P & CART
-    P <-- Leer mas --> TD
+    NAV --> I
+    NAV --> G
+    NAV --> SV
+    NAV --> AB
+    NAV --> CT
+    NAV --> P
+    NAV --> CART
+    I --> NAV
+    G --> NAV
+    SV --> NAV
+    AB --> NAV
+    CT --> NAV
+    P --> NAV
+    CART --> NAV
+    P -- Leer mas --> TD
+    TD -- Volver a tours --> P
     TD -- Anadir opinion --> AR
     AR -- Enviar opinion --> TD
     TD -- Anadir al carrito --> CART
@@ -352,10 +366,14 @@ flowchart LR
     L -- Acceso admin --> AL
     AL -- Login OK --> AD
     
-    AD --- U & T & RV & APRO
+    AD --- U
+    AD --- T
+    AD --- RV
+    AD --- APRO
     
     %% Conexiones de las nuevas funcionalidades de la Entrega 2
-    AD --- AG & ABO
+    AD --- AG
+    AD --- ABO
     PRC --- NOTIF
     
     U -- Ver perfil --> UP
@@ -375,7 +393,7 @@ flowchart LR
     style AG fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
     style ABO fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
     style NOTIF fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
-   ```
+```
 
 #### **Capturas de Pantalla Actualizadas**
 
@@ -659,7 +677,180 @@ Además de la gestión de estas dos entidades, llevé a cabo diversas mejoras a 
 
 Diagrama actualizado incluyendo los @RestController y su relación con los @Service compartidos:
 
-![Diagrama de Clases Actualizado](images/complete-classes-diagram.png)
+```mermaid
+flowchart LR
+  subgraph Templates["Templates web"]
+    USER_TPL["user/*.html"]
+    ADMIN_TPL["admin/*.html"]
+    ERROR_TPL["error/*.html"]
+    PARTIALS["partials/*.html"]
+  end
+
+  subgraph WebControllers["Controladores web"]
+    WC["WebController"]
+    UC["UserController"]
+    RC["ReviewController"]
+    GC["GuideController"]
+    GPC["GuidePublicController"]
+    AWC["AdminWebController"]
+    GCA["GlobalControllerAdvice"]
+    CEC["CustomErrorController"]
+  end
+
+  subgraph RestControllers["REST API /api/v1"]
+    AUTH["AuthRestController"]
+    USERS["UserRestController"]
+    TOURS["TourRestController"]
+    REVIEWS["ReviewRestController"]
+    BOOKINGS["BookingRestController"]
+    GUIDES["GuideRestController"]
+    IMAGES["ImageRestController"]
+    NOTIFS["NotificationRestController"]
+    REST_ERRORS["GlobalRestExceptionHandler"]
+  end
+
+  subgraph DTOs["DTOs REST"]
+    USER_DTO["User DTOs"]
+    TOUR_DTO["Tour DTOs"]
+    REVIEW_DTO["Review DTOs"]
+    BOOKING_DTO["Booking DTOs"]
+    GUIDE_DTO["Guide DTOs"]
+    IMAGE_DTO["Image DTOs"]
+    NOTIF_DTO["NotificationDTO"]
+    ERROR_DTO["RestErrorDTO"]
+  end
+
+  subgraph Services["Servicios compartidos"]
+    US["UserService"]
+    TS["TourService"]
+    RS["ReviewService"]
+    BS["BookingService"]
+    GS["GuideService"]
+    IS["ImageService"]
+    NS["NotificationService"]
+    LOGIN["UserLoginService"]
+  end
+
+  subgraph Repositories["Repositorios"]
+    UR["UserRepository"]
+    TR["TourRepository"]
+    RR["ReviewRepository"]
+    BR["BookingRepository"]
+    GR["GuideRepository"]
+    IR["ImageRepository"]
+    NR["NotificationRepository"]
+  end
+
+  subgraph Domain["Entidades"]
+    USER["User"]
+    TOUR["Tour"]
+    REVIEW["Review"]
+    BOOKING["Booking"]
+    GUIDE["Guide"]
+    IMAGE["Image"]
+    NOTIF["Notification"]
+  end
+
+  subgraph Security["Seguridad"]
+    SC["SecurityConfiguration"]
+    JWT_FILTER["JwtRequestFilter"]
+    JWT_PROVIDER["JwtTokenProvider"]
+    USER_DETAILS["RepositoryUserDetailsService"]
+    UNAUTH["UnauthorizedHandlerJwt"]
+  end
+
+  USER_TPL --> WC
+  USER_TPL --> UC
+  USER_TPL --> RC
+  USER_TPL --> GPC
+  ADMIN_TPL --> AWC
+  ADMIN_TPL --> GC
+  ERROR_TPL --> CEC
+  PARTIALS --> GCA
+
+  AUTH --> LOGIN
+  USERS --> US
+  TOURS --> TS
+  TOURS --> IS
+  REVIEWS --> RS
+  REVIEWS --> US
+  BOOKINGS --> BS
+  BOOKINGS --> US
+  BOOKINGS --> TS
+  GUIDES --> GS
+  IMAGES --> IS
+  NOTIFS --> NS
+  REST_ERRORS --> ERROR_DTO
+
+  WC --> US
+  WC --> TS
+  WC --> BS
+  WC --> GS
+  WC --> NS
+  UC --> US
+  RC --> RS
+  RC --> NS
+  GC --> GS
+  GPC --> GS
+  AWC --> TS
+  AWC --> RS
+
+  USERS --> USER_DTO
+  TOURS --> TOUR_DTO
+  REVIEWS --> REVIEW_DTO
+  BOOKINGS --> BOOKING_DTO
+  GUIDES --> GUIDE_DTO
+  IMAGES --> IMAGE_DTO
+  NOTIFS --> NOTIF_DTO
+
+  US --> UR
+  TS --> TR
+  RS --> RR
+  RS --> TR
+  RS --> UR
+  BS --> BR
+  GS --> GR
+  GS --> TR
+  IS --> IR
+  NS --> NR
+  LOGIN --> USER_DETAILS
+  LOGIN --> JWT_PROVIDER
+  USER_DETAILS --> UR
+
+  UR --> USER
+  TR --> TOUR
+  RR --> REVIEW
+  BR --> BOOKING
+  GR --> GUIDE
+  IR --> IMAGE
+  NR --> NOTIF
+
+  USER --> REVIEW
+  TOUR --> REVIEW
+  USER --> BOOKING
+  BOOKING --> TOUR
+  TOUR --> IMAGE
+  USER --> IMAGE
+  GUIDE --> TOUR
+
+  SC --> JWT_FILTER
+  SC --> UNAUTH
+  JWT_FILTER --> JWT_PROVIDER
+  JWT_FILTER --> USER_DETAILS
+  AUTH --> SC
+  USERS --> SC
+  TOURS --> SC
+  REVIEWS --> SC
+  BOOKINGS --> SC
+  GUIDES --> SC
+  IMAGES --> SC
+  NOTIFS --> SC
+
+  style RestControllers fill:#add8e6,color:#000,stroke:#0056b3,stroke-width:2px
+  style DTOs fill:#e6f2ff,color:#000,stroke:#0056b3,stroke-width:1px
+  style Services fill:#ffe0e0,color:#000,stroke:#b30000,stroke-width:1px
+  style WebControllers fill:#d8f0d2,color:#000,stroke:#2f7d32,stroke-width:1px
+```
 
 #### **Credenciales de Usuarios de Ejemplo**
 
