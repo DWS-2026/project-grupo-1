@@ -16,6 +16,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     // Returns only visible reviews for a tour.
     List<Review> findByTourIdAndHiddenFalse(Long tourId);
 
+    // Returns only visible reviews linked to both a tour and a user.
+    List<Review> findByTourIdAndUserIdAndHiddenFalse(Long tourId, Long userId);
+
     // Returns every review that is not marked as hidden.
     List<Review> findByHiddenFalse();
 

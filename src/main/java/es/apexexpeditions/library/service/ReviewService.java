@@ -48,6 +48,10 @@ public class ReviewService {
         return reviewRepository.findByTourIdAndHiddenFalse(tourId);
     }
 
+    public List<Review> findByTourIdAndUserIdAndHiddenFalse(Long tourId, Long userId) {
+        return reviewRepository.findByTourIdAndUserIdAndHiddenFalse(tourId, userId);
+    }
+
     public List<Review> findVisible() {
         return reviewRepository.findByHiddenFalse();
     }

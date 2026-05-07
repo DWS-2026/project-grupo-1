@@ -97,6 +97,14 @@ public class ReviewRestController {
         return ResponseEntity.ok(toDTOs(reviews));
     }
 
+    // Returns all visible reviews written by a specific user for a specific tour.
+    @GetMapping("/tour/{tourId}/user/{userId}")
+    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorTourYUsuario(@PathVariable Long tourId,
+                                                                                      @PathVariable Long userId) {
+        List<Review> reviews = reviewService.findByTourIdAndUserIdAndHiddenFalse(tourId, userId);
+        return ResponseEntity.ok(toDTOs(reviews));
+    }
+
     // Returns all visible reviews written by a specific user.
     @Operation(summary = "Reviews de un usuario", description = "Obtiene las reviews visibles escritas por un usuario concreto.")
     @ApiResponse(responseCode = "200", description = "Operación exitosa")
