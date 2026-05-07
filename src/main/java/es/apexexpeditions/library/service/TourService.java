@@ -3,17 +3,17 @@ package es.apexexpeditions.library.service;
 import es.apexexpeditions.library.dto.tour.TourMapper;
 import es.apexexpeditions.library.dto.tour.TourRequestDTO;
 import es.apexexpeditions.library.dto.tour.TourStatsDTO;
-import es.apexexpeditions.library.dto.user.UserStatsDTO;
 import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.repository.TourRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +40,7 @@ public class TourService {
 
     public Tour findById(Long id) {
         return tourRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Tour not found: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found: " + id));
     }
 
     public List<Tour> findByHiddenFalse() {
@@ -53,7 +53,7 @@ public class TourService {
 
     public Tour findByIdAndHiddenFalse(Long id) {
         return tourRepository.findByIdAndHiddenFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException("Tour not found: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Tour not found: " + id));
     }
 
     public Tour save(Tour tour, MultipartFile file) throws Exception {
@@ -142,6 +142,11 @@ public class TourService {
         List<Tour> tours = tourRepository.findAll();
 
         return tourMapper.toStatsDTO(tours);
+    }
+
+    public List<Tour> findByTourImage(Image image) {
+        
+        return tourRepository.findByTourImage(image);
     }
 
 }

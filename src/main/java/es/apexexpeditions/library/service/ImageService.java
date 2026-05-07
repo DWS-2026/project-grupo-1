@@ -8,8 +8,10 @@ import es.apexexpeditions.library.repository.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,7 +36,7 @@ public class ImageService {
 
     public Image getImage (long id) {
         return imageRepository.findById (id)
-                .orElseThrow(() -> new RuntimeException ("Image not found: " + id));
+                .orElseThrow(() ->  new ResponseStatusException(HttpStatus.NOT_FOUND, "Image not found: " + id));
     }
 
     public Image createImage (MultipartFile file) throws IOException {
@@ -48,10 +50,8 @@ public class ImageService {
         imageRepository.save (image);
     }
 
-    public Image deleteImage (long id) {
-        Image image = getImage (id);
-        imageRepository.delete (image);
-        return image;
+    public void deleteImage (long id) {
+        imageRepository.deleteById (id);
     }
     // endregion
 

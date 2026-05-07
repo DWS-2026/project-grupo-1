@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired; // to inject repo
 import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service; // to define service
+
+import es.apexexpeditions.library.model.Image;
 import es.apexexpeditions.library.model.User; // to work with users
 import es.apexexpeditions.library.repository.UserRepository; // to search by email
 
@@ -199,4 +201,8 @@ public class UserService {
         return !isLoggedUserAdmin();
     }
     // endregion
+
+    public List<User> findByProfilePicture(Image image) {
+        return userRepository.findByProfilePicture(image);
+    }
 }

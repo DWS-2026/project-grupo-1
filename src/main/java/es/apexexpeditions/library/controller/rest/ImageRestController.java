@@ -1,15 +1,15 @@
 package es.apexexpeditions.library.controller.rest;
 
-
-
-
-
-
 // region =========== imports =================
 import es.apexexpeditions.library.dto.image.ImageDTO;
 import es.apexexpeditions.library.dto.image.ImageMapper;
 import es.apexexpeditions.library.model.Image;
+import es.apexexpeditions.library.model.Tour;
+import es.apexexpeditions.library.model.User;
+import es.apexexpeditions.library.service.GuideService;
 import es.apexexpeditions.library.service.ImageService;
+import es.apexexpeditions.library.service.TourService;
+import es.apexexpeditions.library.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,19 +25,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.transaction.Transactional;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 // endregion
 
-
-
-
-
 @RestController
-@RequestMapping ("/api/v1/images")
+@RequestMapping("/api/v1/images")
 @Tag(name = "Imágenes", description = "Servicio de almacenamiento y recuperación de archivos de imagen")
 public class ImageRestController {
     // region =========== autowired =================
@@ -45,10 +43,14 @@ public class ImageRestController {
     private ImageService imageService;
     @Autowired
     private ImageMapper imageMapper;
+    @Autowired
+    private TourService tourService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private GuideService guideService;
+
     // endregion
-
-
-
 
     // region =========== GetMapping =================
     // region 1. getAllImages
@@ -61,12 +63,11 @@ public class ImageRestController {
     }
     // endregion
 
-
     // region 2. getImage
     @Operation(summary = "Obtener datos de una imagen", description = "Devuelve los metadatos de una imagen específica por su ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Imagen encontrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
-        @ApiResponse(responseCode = "404", description = "Imagen no encontrada", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Imagen encontrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada", content = @Content)
     })
     @GetMapping("/{id}")
     public ResponseEntity<ImageDTO> getImage(@PathVariable long id) {
@@ -75,12 +76,11 @@ public class ImageRestController {
     }
     // endregion
 
-
     // region 3. getImageFile
     @Operation(summary = "Descargar archivo binario", description = "Devuelve directamente el archivo binario (blob) de la imagen JPEG para renderizarla.")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "Archivo devuelto correctamente", content = @Content(mediaType = "image/jpeg")),
-        @ApiResponse(responseCode = "404", description = "Imagen no encontrada o vacía", content = @Content)
+            @ApiResponse(responseCode = "200", description = "Archivo devuelto correctamente", content = @Content(mediaType = "image/jpeg")),
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada o vacía", content = @Content)
     })
     @GetMapping("/{id}/media")
     public ResponseEntity<byte[]> getImageFile(@PathVariable long id) {
@@ -98,15 +98,12 @@ public class ImageRestController {
     // endregion
     // endregion
 
-
-
-
     // region =========== PostMapping =================
     // region 1. createImage
     @Operation(summary = "Subir una nueva imagen", description = "Permite subir un archivo de imagen al sistema.")
     @ApiResponses({
-        @ApiResponse(responseCode = "201", description = "Imagen subida y registrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
-        @ApiResponse(responseCode = "400", description = "Archivo vacío o inválido", content = @Content)
+            @ApiResponse(responseCode = "201", description = "Imagen subida y registrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
+            @ApiResponse(responseCode = "400", description = "Archivo vacío o inválido", content = @Content)
     })
     @PostMapping("/")
     public ResponseEntity<ImageDTO> createImage(
@@ -126,24 +123,20 @@ public class ImageRestController {
         return ResponseEntity.created(location).body(imageMapper.toDTO(image));
     }
     // endregion
-    //  endregion
-
-
-
+    // endregion
 
     // region =========== PutMapping =================
     // region 1. replaceImageFile
     @Operation(summary = "Reemplazar un archivo de imagen", description = "Sustituye el contenido binario de una imagen conservando su ID.")
     @ApiResponses({
-        @ApiResponse(responseCode = "204", description = "Archivo reemplazado correctamente"),
-        @ApiResponse(responseCode = "400", description = "Archivo vacío", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Imagen no encontrada", content = @Content)
+            @ApiResponse(responseCode = "204", description = "Archivo reemplazado correctamente"),
+            @ApiResponse(responseCode = "400", description = "Archivo vacío", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Imagen no encontrada", content = @Content)
     })
     @PutMapping("/{id}/media")
     public ResponseEntity<Void> replaceImageFile(
             @PathVariable long id,
             @RequestParam MultipartFile imageFile) throws IOException {
-
 
         if (imageFile.isEmpty()) {
             return ResponseEntity.badRequest().build();
@@ -155,19 +148,31 @@ public class ImageRestController {
     // endregion
     // endregion
 
-
-
-
     // region =========== DeleteMapping =================
     // region 1. deleteImage
     @Operation(summary = "Eliminar una imagen", description = "Borra físicamente una imagen del sistema.")
     @ApiResponse(responseCode = "200", description = "Imagen eliminada", content = @Content(schema = @Schema(implementation = ImageDTO.class)))
     @DeleteMapping("/{id}")
-    public ResponseEntity<ImageDTO> deleteImage(@PathVariable long id) {
+    @Transactional
+    public ImageDTO deleteImage(@PathVariable Long id) {
+        Image image = imageService.getImage(id);
+        ImageDTO dto = imageMapper.toDTO(image);
 
+        List<User> users = userService.findByProfilePicture(image);
+        for (User user : users) {
+            user.setProfilePicture(null);
+            userService.save(user);
+        }
 
-        Image image = imageService.deleteImage(id);
-        return ResponseEntity.ok(imageMapper.toDTO(image));
+        List<Tour> tours = tourService.findByTourImage(image);
+        for (Tour tour : tours) {
+            tour.setTourImage(null);
+            tourService.save(tour);
+        }
+
+        imageService.deleteImage(id);
+
+        return dto;
     }
     // endregion
     // endregion
