@@ -21,6 +21,24 @@ import java.net.URI;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
+
+
+
+
+
+/**
+ * API REST v1: guide management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: full control to create, replace or delete guides
+ * - PUBLIC: view guides list and details
+ *
+ * --- GUIDE ENDPOINTS ---
+ * - GET    /api/v1/guides       : paginated list of all guides (uses: GuideResponseDTO)
+ * - GET    /api/v1/guides/{id}  : details of a specific guide (uses: GuideResponseDTO)
+ * - POST   /api/v1/guides       : creates a new guide (uses: GuideRequestDTO)
+ * - PUT    /api/v1/guides/{id}  : replaces all data of an existing guide
+ * - DELETE /api/v1/guides/{id}  : permanently deletes a guide from the system
+ */
 @RestController
 @RequestMapping("/api/v1/guides")
 @Tag(name = "Guías", description = "Gestión de los guías de expedición")

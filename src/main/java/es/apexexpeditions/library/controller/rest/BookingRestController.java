@@ -1,5 +1,11 @@
 package es.apexexpeditions.library.controller.rest;
 
+
+
+
+
+
+// region =========== imports =================
 import java.util.List;
 import java.util.Optional;
 
@@ -27,24 +33,50 @@ import es.apexexpeditions.library.service.BookingService;
 import es.apexexpeditions.library.service.TourService;
 import es.apexexpeditions.library.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+// endregion
 
+
+
+
+
+/**
+ * API REST v1: booking management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: view all closed bookings, access statistics, and delete bookings
+ * - USER: manage their open cart (booking), checkout, and view their own closed bookings
+ *
+ * --- OPEN BOOKING ENDPOINTS (cart management) ---
+ * - GET    /api/v1/bookings/me             : retrieves the authenticated user's current open booking
+ * - POST   /api/v1/bookings/me/checkout    : closes the open booking
+ * - POST   /api/v1/bookings/tours/{tourId} : adds a tour to the user's open booking
+ * - DELETE /api/v1/bookings/tours/{tourId} : removes a tour from the user's open booking
+ *
+ * --- CLOSED BOOKING ENDPOINTS ---
+ * - GET    /api/v1/bookings                : paginated list of closed bookings (all for admin, own for user)
+ * - GET    /api/v1/bookings/{id}           : details of a closed booking. req: admin or owner
+ * - DELETE /api/v1/bookings/{bookingId}    : permanently deletes a closed booking
+ *
+ * --- STATISTICS ENDPOINTS ---
+ * - GET    /api/v1/bookings/stats          : returns global booking statistics
+ */
 @RestController
 @RequestMapping("/api/v1/bookings")
 @Tag(name = "Reservas", description = "Gestión de reservas de expediciones y tours")
 public class BookingRestController {
-
+    // region =========== autowired =================
     @Autowired
     private BookingService bookingService;
-
     @Autowired
     private BookingMapper bookingMapper;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private TourService tourService;
+    // endregion
 
+
+
+    // region =========== GetMapping =================
     // =========================================================
     // GET ALL BOOKINGS
     // =========================================================
@@ -99,7 +131,24 @@ public class BookingRestController {
         return ResponseEntity.ok(bookingMapper.toDTO(booking));
     }
 
+    // =========================================================
+    // BOOKING STATS
+    // =========================================================
+    @GetMapping("/stats")
+    public ResponseEntity<BookingStatsDTO> getBookingStats() {
 
+        List<Booking> bookings;
+
+        bookings = bookingService.findAllByCloseTrue();
+
+        return ResponseEntity.ok(bookingMapper.toStatsDto(bookings));
+    }
+    // endregion
+
+
+
+
+    // region =========== PostMapping =================
     // =========================================================
     // CLOSE (CHECKOUT) OPEN BOOKING
     // =========================================================
@@ -135,7 +184,12 @@ public class BookingRestController {
                 .status(HttpStatus.CREATED)
                 .body(bookingMapper.toDTO(booking));
     }
+    // endregion
 
+
+
+
+    // region =========== DeleteMapping =================
     // =========================================================
     // REMOVE TOUR FROM OPEN BOOKING
     // =========================================================
@@ -152,19 +206,6 @@ public class BookingRestController {
     }
 
     // =========================================================
-    // BOOKING STATS
-    // =========================================================
-    @GetMapping("/stats")
-    public ResponseEntity<BookingStatsDTO> getBookingStats() {
-
-        List<Booking> bookings;
-
-        bookings = bookingService.findAllByCloseTrue();
-
-        return ResponseEntity.ok(bookingMapper.toStatsDto(bookings));
-    }
-
-    // =========================================================
     // DELETE A CLOSED BOOKING
     // =========================================================
     @DeleteMapping("/{bookingId}")
@@ -172,11 +213,11 @@ public class BookingRestController {
         Booking booking = bookingService.findByIdAndCloseTrue(bookingId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
 
-        BookingResponseDTO dto = bookingMapper.toDTO(booking); 
+        BookingResponseDTO dto = bookingMapper.toDTO(booking);
 
         bookingService.deleteById(bookingId);
 
         return ResponseEntity.ok(dto);
     }
-
+    // endregion
 }

@@ -37,6 +37,33 @@ import java.util.NoSuchElementException;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
+
+
+
+
+
+/**
+ * API REST v1: tour catalog management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: full access to create, modify, delete tours, view hidden tours, and access statistics
+ * - PUBLIC: view visible tours and their images
+ *
+ * --- TOUR ENDPOINTS ---
+ * - GET    /api/v1/tours                  : paginated list of tours (visible for public, all for admin)
+ * - GET    /api/v1/tours/{id}             : details of a specific tour. req: admin if hidden
+ * - POST   /api/v1/tours                  : creates a new tour with an image. req: admin
+ * - PUT    /api/v1/tours/{id}             : replaces a tour's data and image. req: admin
+ * - DELETE /api/v1/tours/{id}             : removes a tour from the system
+ *
+ * --- TOUR IMAGE ENDPOINTS ---
+ * - GET    /api/v1/tours/{id}/image       : retrieves the tour's image metadata
+ * - GET    /api/v1/tours/{id}/image/media : downloads the binary jpeg file of the tour
+ * - PUT    /api/v1/tours/{id}/image/media : uploads or replaces the tour's image
+ * - DELETE /api/v1/tours/{id}/image       : unlinks and deletes the tour's image
+ *
+ * --- STATISTICS ENDPOINTS ---
+ * - GET    /api/v1/tours/stats            : returns tour global statistics. req: admin
+ */
 @RestController
 @RequestMapping("/api/v1/tours")
 @Tag(name = "Tours", description = "Gestión del catálogo de expediciones")

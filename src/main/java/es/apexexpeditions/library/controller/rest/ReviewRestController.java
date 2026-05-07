@@ -32,6 +32,30 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
+
+
+
+
+
+/**
+ * API REST v1: review management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: view hidden reviews, manage visibility, delete or edit any review
+ * - OWNER: create, edit, or delete their own reviews
+ * - PUBLIC: read visible reviews for tours or users
+ *
+ * --- REVIEW ENDPOINTS ---
+ * - GET    /api/v1/reviews                            : paginated list of all visible reviews
+ * - GET    /api/v1/reviews/hidden                     : paginated list of hidden reviews. req: admin
+ * - GET    /api/v1/reviews/{id}                       : specific review details
+ * - GET    /api/v1/reviews/tour/{tourId}              : visible reviews for a specific tour
+ * - GET    /api/v1/reviews/tour/{tourId}/user/{userId}: visible reviews by a specific user on a specific tour
+ * - GET    /api/v1/reviews/user/{userId}              : visible reviews written by a specific user
+ * - POST   /api/v1/reviews                            : creates a new review. req: authenticated
+ * - PUT    /api/v1/reviews/{id}                       : updates rating and description. req: owner or admin
+ * - PATCH  /api/v1/reviews/{id}/visibility            : toggles the hidden state. req: admin
+ * - DELETE /api/v1/reviews/{id}                       : removes a review. req: owner or admin
+ */
 @RestController
 @RequestMapping("/api/v1/reviews")
 @Tag(name = "Reviews", description = "Gestión de comentarios y valoraciones de los tours")

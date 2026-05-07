@@ -13,6 +13,21 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
+
+
+
+
+
+/**
+ * API REST v1: medical certificate management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - USER: upload and download their own medical certificate
+ * - ADMIN: forbidden from using these self-management endpoints
+ *
+ * --- CERTIFICATE ENDPOINTS ---
+ * - GET    /api/v1/users/me/certificate : downloads the authenticated user's pdf certificate
+ * - POST   /api/v1/users/me/certificate : uploads a pdf certificate for the authenticated user
+ */
 @RestController
 @RequestMapping("/api/v1/users/me/certificate")
 @Tag(name = "Certificados", description = "Gestión de ficheros PDF en disco")

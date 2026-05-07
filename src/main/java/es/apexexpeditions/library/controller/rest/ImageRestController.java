@@ -34,6 +34,25 @@ import java.util.List;
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentContextPath;
 // endregion
 
+
+
+
+
+
+/**
+ * API REST v1: image management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - PUBLIC: retrieve image metadata and binary files
+ * - ADMIN: upload, replace, or delete images
+ *
+ * --- IMAGE ENDPOINTS ---
+ * - GET    /api/v1/images           : paginated list of all image metadata (uses: ImageDTO)
+ * - GET    /api/v1/images/{id}      : specific image metadata (uses: ImageDTO)
+ * - GET    /api/v1/images/{id}/media: retrieves the binary jpeg file
+ * - POST   /api/v1/images/          : uploads a new image file (multipart)
+ * - PUT    /api/v1/images/{id}/media: replaces the binary content of an existing image
+ * - DELETE /api/v1/images/{id}      : removes an image and unlinks it from users and tours
+ */
 @RestController
 @RequestMapping("/api/v1/images")
 @Tag(name = "Imágenes", description = "Servicio de almacenamiento y recuperación de archivos de imagen")

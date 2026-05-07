@@ -32,6 +32,19 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 
 
+/**
+ * API REST v1: notification management
+ * * --- SECURITY AND ACCESS STRUCTURE ---
+ * - ADMIN: full access to view, count, manage, and delete system notifications
+ *
+ * --- NOTIFICATION ENDPOINTS ---
+ * - GET    /api/v1/notifications             : paginated list of recent notifications (uses: NotificationDTO)
+ * - GET    /api/v1/notifications/unread-count: returns the number of unread messages
+ * - PATCH  /api/v1/notifications/{id}/read   : marks a specific notification as read
+ * - PATCH  /api/v1/notifications/read        : marks all notifications as read
+ * - DELETE /api/v1/notifications/{id}        : removes a specific notification
+ * - DELETE /api/v1/notifications             : deletes all notifications from the system
+ */
 @RestController
 @RequestMapping("/api/v1/notifications")
 @Tag(name = "Notificaciones", description = "Gestión de alertas del sistema (Privado - Solo ADMIN)")
