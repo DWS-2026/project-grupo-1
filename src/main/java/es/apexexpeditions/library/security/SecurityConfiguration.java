@@ -50,6 +50,8 @@ public class SecurityConfiguration {
     // endregion
 
 
+
+
     // region =========== bean =================
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -84,19 +86,11 @@ public class SecurityConfiguration {
     @Order(1)
     public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**")
                 .authenticationProvider(authenticationProvider())
+                .securityMatcher("/api/**")
                 .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt))
 
-                // disable traditional web protections (stateless, csrf, form login)
-                .csrf(csrf -> csrf.disable())
-                .formLogin(formLogin -> formLogin.disable())
-                .httpBasic(httpBasic -> httpBasic.disable())
-                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-                // add JWT filter
-                .addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
-
+                
                 // configure route authorization
                 .authorizeHttpRequests(auth -> auth
                         // 1. PUBLIC ENDPOINTS
@@ -136,7 +130,16 @@ public class SecurityConfiguration {
 
                         // 4. REST OF THE API (Requires authentication - Zero Trust)
                         .anyRequest().authenticated()
-                );
+                )
+                // disable traditional web protections (stateless, csrf, form login)
+                .formLogin(formLogin -> formLogin.disable())
+                .csrf(csrf -> csrf.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+                // add JWT filter
+                .addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+
 
         return http.build();
     }
@@ -229,11 +232,10 @@ public class SecurityConfiguration {
 
                         // User private paths (require either USER or ADMIN roles)
                         .requestMatchers("/cart/**", "/checkout/**", "/invoice/**", "/profile/**", "/review-user/**", "/user/*/image")
-                        .hasAnyRole("USER", "ADMIN")
+                        .authenticated()
 
-                        // Any other paths that do not exist are permitted so the custom error
                         // controller can throw a 404
-                        .anyRequest().permitAll())
+                        .anyRequest().authenticated())
 
                 // Configure form-based login
                 .formLogin((form) -> form
