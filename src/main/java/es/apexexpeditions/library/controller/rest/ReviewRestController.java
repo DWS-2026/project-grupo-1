@@ -174,14 +174,13 @@ public class ReviewRestController {
         Optional<Review> savedReview;
         Review reviewRequest = toDomain(request);
 
-        String cleanDescription = reviewService.sanitizeReviewDescription(request.description());
 
         try {
             savedReview = reviewService.createReview(
                     request.tourId(),
                     reviewUserId,
                     request.rating(),
-                    cleanDescription
+                    reviewRequest.getDescription()
             );
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
@@ -256,8 +255,7 @@ public class ReviewRestController {
 
         try {
             existingReview.setRating(updatedReview.rating());
-            String cleanDescription = reviewService.sanitizeReviewDescription(updatedReview.description());
-            existingReview.setDescription(cleanDescription); 
+            existingReview.setDescription(updatedReview.description()); 
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
         }

@@ -80,6 +80,7 @@ public class SecurityConfiguration {
 
                                 // configure route authorization
                                 .authorizeHttpRequests(auth -> auth
+
                                                 // BLOCK sensible files
                                                 .requestMatchers(
                                                                 "/.git/**",
@@ -135,6 +136,7 @@ public class SecurityConfiguration {
                                                 .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**")
                                                 .hasAnyRole("USER", "ADMIN")
                                                 .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**")
+
                                                 .hasAnyRole("USER", "ADMIN")
 
                                                 // 4. REST OF THE API (Requires authentication - Zero Trust)
@@ -199,6 +201,12 @@ public class SecurityConfiguration {
 
                 http
                                 .authorizeHttpRequests((requests) -> requests
+
+                                                .requestMatchers(
+                                                                "/swagger-ui/**",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger-ui.html")
+                                                .permitAll()
 
                                                 // BLOCK sensible files
                                                 .requestMatchers(

@@ -47,9 +47,8 @@ public class ReviewController {
             return "redirect:/login";
         }
 
-        String cleanDescription = reviewService.sanitizeReviewDescription(description);
 
-        reviewService.addReview(tourId, principal.getName(), rating, cleanDescription);
+        reviewService.addReview(tourId, principal.getName(), rating, description);
 
         String tourName = tourService.findById(tourId).getName();
 
@@ -118,8 +117,7 @@ public class ReviewController {
 
         review.setRating(rating);
 
-        String cleanDescription = reviewService.sanitizeReviewDescription(description);
-        review.setDescription(cleanDescription);
+        review.setDescription(description);
 
         reviewRepository.save(review);
 
