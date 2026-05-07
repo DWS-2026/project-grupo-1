@@ -104,12 +104,13 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET,
                                 "/api/v1/tours/**",
                                 "/api/v1/reviews/**",
-                                "/api/v1/guides/**"
+                                "/api/v1/guides/**",
+                                "/api/v1/images/**"
                         ).permitAll()
 
                         // 2. ADMIN-EXCLUSIVE ENDPOINTS (grouped by HTTP method to reduce code)
                         .requestMatchers(HttpMethod.GET,
-                                "/api/v1/tours/stats", "/api/v1/reviews/hidden", "/api/v1/images/**", "/api/v1/users/stats"
+                                "/api/v1/tours/stats", "/api/v1/reviews/hidden", "/api/v1/users/stats"
                         ).hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.POST,
