@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Size;
 
 
 
-// use: self registe
+// use: self register
 // role req: user
 public record UserRegisterDTO (
         @NotBlank (message = "Name is required") @Size (max = 50) String name,

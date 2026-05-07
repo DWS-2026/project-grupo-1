@@ -3,6 +3,8 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
+
+
 // region =========== imports =================
 import es.apexexpeditions.library.dto.notification.NotificationDTO;
 import es.apexexpeditions.library.model.Notification;
@@ -23,8 +25,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 // endregion
+
+
 
 
 
@@ -41,15 +44,34 @@ public class NotificationRestController {
     // endregion
 
 
+
+
     // region =========== helpers =================
-    // region isNotAdmin
+    // region 1. isNotAdmin
     // BAC vuln fix
     private boolean isNotAdmin() {
         User loggedUser = userService.getLoggedUser();
         return loggedUser == null || !loggedUser.getRoles().contains("ADMIN");
     }
     // endregion
+
+
+    // region 2. toDTO
+    private NotificationDTO toDTO(Notification notification) {
+        return new NotificationDTO(
+                notification.getId(),
+                notification.getMessage(),
+                notification.getIcon(),
+                notification.getColor(),
+                notification.getFormattedDate(),
+                notification.isReadStatus()
+        );
+    }
+
     // endregion
+    // endregion
+
+
 
 
     // region =========== GetMapping =================
@@ -69,17 +91,6 @@ public class NotificationRestController {
     }
     // endregion
 
-    private NotificationDTO toDTO(Notification notification) {
-        return new NotificationDTO(
-                notification.getId(),
-                notification.getMessage(),
-                notification.getIcon(),
-                notification.getColor(),
-                notification.getFormattedDate(),
-                notification.isReadStatus()
-        );
-    }
-
 
     // region 2. getUnreadCount
     // returns number of unread messages
@@ -95,6 +106,8 @@ public class NotificationRestController {
     }
     // endregion
     // endregion
+
+
 
 
     // region =========== DeleteMapping =================
@@ -120,6 +133,7 @@ public class NotificationRestController {
     }
     // endregion
 
+
     // region 2. deleteAllNotifications
     @Operation(summary = "Limpiar buzón", description = "Elimina de golpe todas las notificaciones del sistema.")
     @ApiResponses({
@@ -134,6 +148,8 @@ public class NotificationRestController {
     }
     // endregion
     // endregion
+
+
 
 
     // region =========== PatchMapping =================
@@ -158,6 +174,7 @@ public class NotificationRestController {
         return ResponseEntity.noContent().build();
     }
     // endregion
+
 
     // region 2. markAllAsRead
     @Operation(summary = "Marcar todas como leídas", description = "Pone a 'leída' todas las notificaciones actuales del buzón.")

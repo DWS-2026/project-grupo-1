@@ -3,6 +3,8 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
+
+
 // region =========== imports =================
 import es.apexexpeditions.library.dto.resterror.RestErrorDTO;
 import org.springframework.http.HttpStatus;
@@ -19,18 +21,25 @@ import java.util.stream.Collectors;
 
 
 
+
+
 @RestControllerAdvice
 public class GlobalRestExceptionHandler {
-    // region getUtcTimestamp
+    // region =========== aux =================
+    // region 1. getUtcTimestamp
     // helper that calculates UTC timestamp string
     private String getUtcTimestamp() {
         return java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC)
                 .format(java.time.format.DateTimeFormatter.ISO_INSTANT);
     }
     // endregion
+    // endregion
 
 
-    // region handleNotFound
+
+
+    // region =========== ExceptionHandler =================
+    // region  1. handleNotFound
     // manages 404 cases
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<RestErrorDTO> handleNotFound(NoSuchElementException ex) {
@@ -45,7 +54,7 @@ public class GlobalRestExceptionHandler {
     // endregion
 
 
-    // region handleBadRequest
+    // region 2. handleBadRequest
     // manages 400 cases
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<RestErrorDTO> handleBadRequest(IllegalArgumentException ex) {
@@ -60,7 +69,7 @@ public class GlobalRestExceptionHandler {
     // endregion
 
 
-    // region handleGlobal
+    // region 3. handleGlobal
     // manages 500 cases
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestErrorDTO> handleGlobal(Exception ex) {
@@ -78,7 +87,7 @@ public class GlobalRestExceptionHandler {
     // endregion
 
 
-    // region handleAccessDenied
+    // region 4. handleAccessDenied
     @ExceptionHandler (AccessDeniedException.class)
     public ResponseEntity<RestErrorDTO> handleAccessDenied (AccessDeniedException ex) {
         RestErrorDTO error = new RestErrorDTO(
@@ -92,7 +101,7 @@ public class GlobalRestExceptionHandler {
     // endregion
 
 
-    // region handleValidation
+    // region 5. handleValidation
     // catches @Valid failures in dtos and returns 400
     @ExceptionHandler (MethodArgumentNotValidException.class)
     public ResponseEntity<RestErrorDTO> handleValidation(MethodArgumentNotValidException ex) {
@@ -109,5 +118,6 @@ public class GlobalRestExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+    // endregion
     // endregion
 }

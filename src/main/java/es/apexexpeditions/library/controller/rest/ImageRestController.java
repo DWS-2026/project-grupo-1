@@ -1,6 +1,11 @@
 package es.apexexpeditions.library.controller.rest;
 
 
+
+
+
+
+// region =========== imports =================
 import es.apexexpeditions.library.dto.image.ImageDTO;
 import es.apexexpeditions.library.dto.image.ImageMapper;
 import es.apexexpeditions.library.model.Image;
@@ -29,6 +34,8 @@ import static org.springframework.web.servlet.support.ServletUriComponentsBuilde
 
 
 
+
+
 @RestController
 @RequestMapping ("/api/v1/images")
 @Tag(name = "Imágenes", description = "Servicio de almacenamiento y recuperación de archivos de imagen")
@@ -40,6 +47,11 @@ public class ImageRestController {
     private ImageMapper imageMapper;
     // endregion
 
+
+
+
+    // region =========== GetMapping =================
+    // region 1. getAllImages
     @Operation(summary = "Obtener todas las imágenes", description = "Devuelve una página con los metadatos (DTOs) de todas las imágenes registradas.")
     @ApiResponse(responseCode = "200", description = "Operación exitosa")
     @GetMapping("")
@@ -47,7 +59,10 @@ public class ImageRestController {
         Page<Image> imagesPage = imageService.getAllImages(pageable);
         return ResponseEntity.ok(imagesPage.map(imageMapper::toDTO));
     }
+    // endregion
 
+
+    // region 2. getImage
     @Operation(summary = "Obtener datos de una imagen", description = "Devuelve los metadatos de una imagen específica por su ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Imagen encontrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
@@ -58,7 +73,10 @@ public class ImageRestController {
         Image image = imageService.getImage(id);
         return ResponseEntity.ok(imageMapper.toDTO(image));
     }
+    // endregion
 
+
+    // region 3. getImageFile
     @Operation(summary = "Descargar archivo binario", description = "Devuelve directamente el archivo binario (blob) de la imagen JPEG para renderizarla.")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Archivo devuelto correctamente", content = @Content(mediaType = "image/jpeg")),
@@ -77,7 +95,14 @@ public class ImageRestController {
                 .header("Content-Type", "image/jpeg")
                 .body(image.getImageFile());
     }
+    // endregion
+    // endregion
 
+
+
+
+    // region =========== PostMapping =================
+    // region 1. createImage
     @Operation(summary = "Subir una nueva imagen", description = "Permite subir un archivo de imagen al sistema.")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Imagen subida y registrada", content = @Content(schema = @Schema(implementation = ImageDTO.class))),
@@ -100,7 +125,14 @@ public class ImageRestController {
 
         return ResponseEntity.created(location).body(imageMapper.toDTO(image));
     }
+    // endregion
+    //  endregion
 
+
+
+
+    // region =========== PutMapping =================
+    // region 1. replaceImageFile
     @Operation(summary = "Reemplazar un archivo de imagen", description = "Sustituye el contenido binario de una imagen conservando su ID.")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Archivo reemplazado correctamente"),
@@ -120,7 +152,14 @@ public class ImageRestController {
         imageService.replaceImageFile(id, imageFile);
         return ResponseEntity.noContent().build();
     }
+    // endregion
+    // endregion
 
+
+
+
+    // region =========== DeleteMapping =================
+    // region 1. deleteImage
     @Operation(summary = "Eliminar una imagen", description = "Borra físicamente una imagen del sistema.")
     @ApiResponse(responseCode = "200", description = "Imagen eliminada", content = @Content(schema = @Schema(implementation = ImageDTO.class)))
     @DeleteMapping("/{id}")
@@ -130,4 +169,6 @@ public class ImageRestController {
         Image image = imageService.deleteImage(id);
         return ResponseEntity.ok(imageMapper.toDTO(image));
     }
+    // endregion
+    // endregion
 }

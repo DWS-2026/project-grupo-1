@@ -136,6 +136,9 @@ public class AuthRestController {
     }
     // endregion
 
+
+
+
     // region 2 . /login
     // use: authenticate user credentials and receive jwt access and refresh tokens
     // req: none previously (but knowing user credentials to proceed)
@@ -155,6 +158,9 @@ public class AuthRestController {
         return userLoginService.login(response, loginRequest);
     }
     // endregion
+
+
+
 
     // region 3. /refresh
     // use: renew an expired access token using the RefreshToken stored in a secure cookie
@@ -176,6 +182,8 @@ public class AuthRestController {
         return userLoginService.refresh(response, refreshToken);
     }
     // endregion
+
+
 
 
     // region 4. /logout

@@ -3,6 +3,8 @@ package es.apexexpeditions.library.controller.rest;
 
 
 
+
+
 // region =========== imports =================
 import es.apexexpeditions.library.dto.user.*;
 import es.apexexpeditions.library.model.Image;
@@ -14,7 +16,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.awt.Color;
 // endregion
+
+
 
 
 
@@ -88,6 +91,7 @@ public class UserRestController {
 
 
 
+
     // region =========== GetMapping =================
     // region 1. getUsers
     // use: retrieve paginated list of users as UserBasicResponseDTO
@@ -106,6 +110,7 @@ public class UserRestController {
         return ResponseEntity.ok(users.map(userMapper::toBasicDTO));
     }
     // endregion
+
 
     // region 2. getUser
     // use: retrieve full details of specific user as UserFullResponseDTO
@@ -137,6 +142,7 @@ public class UserRestController {
     }
     // endregion
 
+
     // region 3. getMyProfile
     // use: retrieve full profile details of currently authenticated user as UserFullResponseDTO
     @Operation(summary = "Obtener mi propio perfil", description = "Saca los datos asociados al usuario actual según su token de sesión.")
@@ -152,7 +158,8 @@ public class UserRestController {
     }
     // endregion
 
-    // 4. stats
+
+    // region 4. stats
     // retrieve global system statistics as UserStatsDTO
     // req: admin
     @Operation(summary = "Estadísticas de usuarios", description = "Datos genéricos sobre base de usuarios del sistema (Requiere ADMIN).")
@@ -172,6 +179,7 @@ public class UserRestController {
     }
     // endregion
     // endregion
+
 
 
 
@@ -203,6 +211,7 @@ public class UserRestController {
     }
     // endregion
 
+
     // region 2. updateImage
     // use: update or upload a profile image for a specific user via MultipartFile
     @Operation(summary = "Actualizar foto de perfil", description = "Sustituye la foto de perfil de cualquier persona. (Normalmente invocado por ADMIN).")
@@ -233,6 +242,7 @@ public class UserRestController {
     }
     // endregion
 
+
     // region 3. updateMyProfile
     // use: update basic profile fields (name, lastName, and phones) for the authenticated user using UserUpdateDTO
     @Operation(summary = "Editar mi perfil", description = "Actualiza los campos básicos del usuario autenticado de forma segura (sin roles ni dinero).")
@@ -255,6 +265,7 @@ public class UserRestController {
         return ResponseEntity.ok(userMapper.toFullDTO(user));
     }
     // endregion
+
 
     // region 4. updateUser
     // use: update specific user via UserUpdateDTO
@@ -309,6 +320,7 @@ public class UserRestController {
     }
     // endregion
 
+
     // region 5. updateMyImage
     // upload or replace the profile picture for the currently authenticated user using a MultipartFile
     @Operation(summary = "Cambiar mi foto", description = "Petición multipart para cambiar la foto de perfil de mi cuenta personal.")
@@ -331,6 +343,7 @@ public class UserRestController {
     }
     // endregion
     // endregion
+
 
 
 
@@ -365,6 +378,7 @@ public class UserRestController {
     }
     // endregion
     // endregion
+
 
 
 
@@ -404,6 +418,7 @@ public class UserRestController {
     }
     // endregion
 
+
     // region 2. deleteMyAccount
     // allow non-admin user to delete their own account from the system
     @Operation(summary = "Eliminación de cuenta (por usuario)", description = "Permite a un usuario normal eliminar su propia cuenta de la base de datos.")
@@ -424,6 +439,7 @@ public class UserRestController {
         return ResponseEntity.noContent().build();
     }
     // endregion
+
 
     // region 3. deleteMyImage
     // use: remove the profile picture from the authenticated user's account and delete the physical image entity
@@ -448,6 +464,7 @@ public class UserRestController {
     }
     // endregion
     // endregion
+
 
 
 
