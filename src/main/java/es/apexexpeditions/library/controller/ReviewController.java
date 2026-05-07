@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Safelist;
-
 import es.apexexpeditions.library.model.Review;
 import es.apexexpeditions.library.repository.ReviewRepository;
 import es.apexexpeditions.library.service.ReviewService;
@@ -50,7 +47,7 @@ public class ReviewController {
             return "redirect:/login";
         }
 
-        String cleanDescription = Jsoup.clean(description, Safelist.relaxed());
+        String cleanDescription = reviewService.sanitizeReviewDescription(description);
 
         reviewService.addReview(tourId, principal.getName(), rating, cleanDescription);
 
@@ -121,7 +118,7 @@ public class ReviewController {
 
         review.setRating(rating);
 
-        String cleanDescription = Jsoup.clean(description, Safelist.relaxed());
+        String cleanDescription = reviewService.sanitizeReviewDescription(description);
         review.setDescription(cleanDescription);
 
         reviewRepository.save(review);

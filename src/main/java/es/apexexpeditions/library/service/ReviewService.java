@@ -6,6 +6,8 @@ import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.repository.ReviewRepository;
 import es.apexexpeditions.library.repository.TourRepository;
 import es.apexexpeditions.library.repository.UserRepository;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -124,7 +126,7 @@ public class ReviewService {
         }
 
         // Builds the domain object with linked user and tour before saving it.
-        Review review = new Review(user, tour, rating, description);
+        Review review = new Review(user, tour, rating, sanitizeReviewDescription(description));
         reviewRepository.save(review);
     }
 
@@ -136,7 +138,7 @@ public class ReviewService {
             return Optional.empty();
         }
 
-        Review review = new Review(user, tour, rating, description);
+        Review review = new Review(user, tour, rating, sanitizeReviewDescription(description));
         return Optional.of(reviewRepository.save(review));
     }
 
@@ -151,5 +153,18 @@ public class ReviewService {
     public Page<Review> findPagedByUserId(Long userId, int page) {
         // Uses a larger page size for the user's personal review list.
         return reviewRepository.findByUserIdOrderByCreationDateDesc(userId, PageRequest.of(page, 5));
+    }
+
+    public String sanitizeReviewDescription(String description) {
+        if (description == null) {
+            return "";
+        }
+
+        Safelist reviewSafelist = Safelist.relaxed()
+                .removeTags("img")
+                .addProtocols("a", "href", "http", "https", "mailto")
+                .addEnforcedAttribute("a", "rel", "nofollow noopener noreferrer");
+
+        return Jsoup.clean(description, reviewSafelist);
     }
 }

@@ -23,9 +23,6 @@ import java.net.URI;
 import java.security.Principal;
 import java.util.Optional;
 
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Safelist;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -153,17 +150,14 @@ public class ReviewRestController {
         Optional<Review> savedReview;
         Review reviewRequest = toDomain(request);
 
-       // 1. Sanitizamos el HTML de la descripción
-        String cleanDescription = Jsoup.clean(request.description(), Safelist.relaxed());
+        String cleanDescription = reviewService.sanitizeReviewDescription(request.description());
 
         try {
-            // 2. Llamamos al servicio con los 4 parámetros estándar,
-            // pero le enviamos directamente la descripción LIMPIA (cleanDescription)
             savedReview = reviewService.createReview(
                     request.tourId(),
                     reviewUserId,
                     request.rating(),
-                    cleanDescription // <-- Le pasamos la versión segura en el campo description
+                    cleanDescription
             );
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
@@ -238,7 +232,7 @@ public class ReviewRestController {
 
         try {
             existingReview.setRating(updatedReview.rating());
-            String cleanDescription = Jsoup.clean(updatedReview.description(), Safelist.relaxed());
+            String cleanDescription = reviewService.sanitizeReviewDescription(updatedReview.description());
             existingReview.setDescription(cleanDescription); 
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
