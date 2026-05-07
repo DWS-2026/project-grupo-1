@@ -666,7 +666,7 @@ Además de la gestión de estas dos entidades, llevé a cabo diversas mejoras a 
 ### **Documentación de la API REST**
 
 #### **Especificación OpenAPI**
-📄 **[Especificación OpenAPI (YAML)](/api-docs/api-docs.yaml)**
+📄 **[Especificación OpenAPI (YAML)](api-docs/api-docs.yaml)**
 
 #### **Documentación HTML**
 📖 **[Documentación API REST (HTML)](https://raw.githack.com/[usuario]/[repositorio]/main/api-docs/api-docs.html)**
@@ -882,7 +882,7 @@ Durante la fase 3 me he encargado principalmente de evolucionar la API REST de r
 
 También he trabajado en mejoras de control de permisos, como impedir que un usuario edite reseñas que no le pertenecen y proteger la edición de imágenes de usuario para que solo pueda realizarla el propietario o un administrador. Además, he reforzado el saneado del contenido de las reviews para reducir riesgos de XSS, he añadido paginación en reviews y notificaciones, he ajustado la configuración de seguridad y he realizado mejoras en controladores, servicios y repositorios.
 
-De forma complementaria, he corregido la visualización de imágenes de tours desde el endpoint de media en distintas plantillas, he incorporado DTOs en formularios de registro, alta de usuarios desde administración y formularios de tours, y he realizado ajustes de mantenimiento como el controlador de errores, la restricción de métodos HTTP, el uso de inyección por constructor y pequeñas correcciones en parámetros opcionales y configuración de la aplicación.
+De forma complementaria, he corregido la visualización de imágenes de tours desde el endpoint de media en distintas plantillas, he incorporado DTOs en formularios de registro, alta de usuarios desde administración y formularios de tours, y he realizado ajustes de mantenimiento como el controlador de errores, la restricción de métodos HTTP, el uso de inyección por constructor y pequeñas correcciones en parámetros opcionales y configuración de la aplicación. También he añadido la especificación OpenAPI generada al proyecto y la he enlazado desde el README para documentar la API REST.
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|

@@ -48,11 +48,13 @@
 			<artifactId>mapstruct</artifactId>
 			<version>1.5.5.Final</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springdoc</groupId>
 			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
 			<version>3.0.2</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webmvc</artifactId>
@@ -156,7 +158,7 @@
 			</execution>
 		</executions>
 		<configuration>
-			<apiDocsUrl>http://localhost:8080/v3/api-docs.yaml</apiDocsUrl>
+			<apiDocsUrl>http://localhost:8443/v1/api-docs.yaml</apiDocsUrl>
 			<outputFileName>api-docs.yaml</outputFileName>
 			<outputDir>${project.basedir}/api-docs</outputDir>
 		</configuration>

@@ -1,0 +1,2239 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- url: https://localhost:8443
+  description: Generated server url
+tags:
+- name: Tours
+  description: Gestión del catálogo de expediciones
+- name: Guías
+  description: Gestión de los guías de expedición
+- name: Imágenes
+  description: Servicio de almacenamiento y recuperación de archivos de imagen
+- name: Autenticación
+  description: "Endpoints públicos para el registro de usuarios, inicio de sesión\
+    \ y gestión de tokens de seguridad"
+- name: Usuarios
+  description: "Gestión de perfiles, permisos, edición y estadísticas del sistema"
+- name: Reservas
+  description: Gestión de reservas de expediciones y tours
+- name: Notificaciones
+  description: Gestión de alertas del sistema (Privado - Solo ADMIN)
+- name: Reviews
+  description: Gestión de comentarios y valoraciones de los tours
+paths:
+  /api/v1/users/{id}:
+    get:
+      tags:
+      - Usuarios
+      summary: Detalle de perfil específico
+      description: Muestra información de un usuario concreto (Requiere ser el dueño
+        de la cuenta o ADMIN).
+      operationId: getUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Perfil recuperado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "403":
+          description: Ataque detectado (AO1 previsor)
+        "404":
+          description: El usuario no existe
+    put:
+      tags:
+      - Usuarios
+      summary: Edición general de cuenta
+      description: "Si eres dueño edita campos base. Si eres ADMIN tienes permisos\
+        \ de edición de cuenta total (Baneo, Modificar saldo, etc)."
+      operationId: updateUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: Modificado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "403":
+          description: Intento ilegal de modificación a cuenta ajena
+        "404":
+          description: Usuario no detectado
+    delete:
+      tags:
+      - Usuarios
+      summary: Eliminar cuenta
+      description: "Borra físicamente a un usuario del sistema (Requiere ADMIN). NOTA:\
+        \ Los admin no pueden autoeliminarse por este endpoint."
+      operationId: deleteUser
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Cuenta borrada
+        "403":
+          description: Faltan permisos o prevención de auto-borrado ADMIN
+        "404":
+          description: Cuenta no encontrada
+  /api/v1/users/{id}/image:
+    put:
+      tags:
+      - Usuarios
+      summary: Actualizar foto de perfil
+      description: Sustituye la foto de perfil de cualquier persona. (Normalmente
+        invocado por ADMIN).
+      operationId: updateImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "204":
+          description: Foto de perfil modificada
+        "404":
+          description: Usuario destino no localizado
+  /api/v1/users/me:
+    get:
+      tags:
+      - Usuarios
+      summary: Obtener mi propio perfil
+      description: Saca los datos asociados al usuario actual según su token de sesión.
+      operationId: getMyProfile
+      responses:
+        "200":
+          description: Datos correctos
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "401":
+          description: Debes iniciar sesión
+    put:
+      tags:
+      - Usuarios
+      summary: Editar mi perfil
+      description: Actualiza los campos básicos del usuario autenticado de forma segura
+        (sin roles ni dinero).
+      operationId: updateMyProfile
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: Cambios guardados
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "401":
+          description: Falta sesión
+    delete:
+      tags:
+      - Usuarios
+      summary: Eliminación de cuenta (por usuario)
+      description: Permite a un usuario normal eliminar su propia cuenta de la base
+        de datos.
+      operationId: deleteMyAccount
+      responses:
+        "204":
+          description: Baja finalizada
+        "401":
+          description: No has iniciado sesión
+        "403":
+          description: Los ADMINS deben darse de baja por base de datos directa para
+            seguridad
+  /api/v1/users/me/password:
+    put:
+      tags:
+      - Usuarios
+      summary: Actualizar contraseña
+      description: Cambio de la clave personal validando primero la anterior.
+      operationId: updateMyPassword
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PasswordUpdateDTO"
+        required: true
+      responses:
+        "204":
+          description: Contraseña cambiada
+        "400":
+          description: Claves mal formadas o no coinciden
+        "401":
+          description: No autenticado
+        "403":
+          description: Contraseña antigua errónea
+  /api/v1/users/me/image:
+    put:
+      tags:
+      - Usuarios
+      summary: Cambiar mi foto
+      description: Petición multipart para cambiar la foto de perfil de mi cuenta
+        personal.
+      operationId: updateMyImage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+              required:
+              - image
+      responses:
+        "204":
+          description: Foto asignada
+        "401":
+          description: Error de sesión
+    delete:
+      tags:
+      - Usuarios
+      summary: Borrar mi foto de perfil
+      description: "Quita la foto de perfil y elimina su blob en BDD, regresando al\
+        \ avatar por defecto visualmente."
+      operationId: deleteMyImage
+      responses:
+        "204":
+          description: Imagen destruida
+        "401":
+          description: Sin sesión
+  /api/v1/tours/{id}:
+    get:
+      tags:
+      - Tours
+      summary: Obtener un tour por ID
+      description: "Obtiene los detalles de un tour. Si es oculto, requiere permisos\
+        \ ADMIN."
+      operationId: getTour
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Tour encontrado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TourResponseDTO"
+        "403":
+          description: Acceso denegado a un tour oculto
+        "404":
+          description: No encontrado
+    put:
+      tags:
+      - Tours
+      summary: Reemplazar expedición
+      description: "Actualiza todos los datos de un tour, incluida la foto. (Requiere\
+        \ ADMIN)."
+      operationId: replaceTour
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/TourRequestDTO"
+      responses:
+        "404":
+          description: Tour no encontrado
+          content: {}
+        "200":
+          description: Actualizado correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TourResponseDTO"
+        "403":
+          description: Requiere rol ADMIN
+    delete:
+      tags:
+      - Tours
+      summary: Eliminar tour
+      description: Borra físicamente una expedición. (Requiere ADMIN).
+      operationId: deleteTour
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Tour eliminado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TourResponseDTO"
+        "403":
+          description: Acceso denegado
+  /api/v1/tours/{id}/image/media:
+    get:
+      tags:
+      - Tours
+      summary: Descargar binario de la foto del tour
+      description: Devuelve los bytes JPEG para renderizar la cabecera del tour.
+      operationId: getTourImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Archivo recuperado
+          content:
+            image/jpeg: {}
+        "403":
+          description: Acceso denegado a archivo privado
+        "404":
+          description: No hay archivo vinculado
+    put:
+      tags:
+      - Tours
+      summary: Actualizar/Subir foto del tour
+      description: Reemplaza el archivo JPEG del tour (Requiere ADMIN).
+      operationId: uploadTourImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "201":
+          description: Imagen vinculada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+        "400":
+          description: El archivo enviado está vacío
+        "403":
+          description: Requiere permisos ADMIN
+  /api/v1/reviews/{id}:
+    get:
+      tags:
+      - Reviews
+      summary: Obtener review por ID
+      description: Busca una review específica. Da 404 si no existe o está oculta.
+      operationId: obtenerReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: review encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewResponseDTO"
+        "404":
+          description: No existe o está oculta
+    put:
+      tags:
+      - Reviews
+      summary: Actualizar review
+      description: Modifica estrellas o descripción saneando el contenido (Requiere
+        ser autor o ADMIN).
+      operationId: updateReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewUpdateDTO"
+        required: true
+      responses:
+        "200":
+          description: Actualizada correctamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewResponseDTO"
+        "400":
+          description: Datos no válidos
+        "401":
+          description: No autenticado
+        "403":
+          description: Sin permisos suficientes
+        "404":
+          description: review no encontrada
+    delete:
+      tags:
+      - Reviews
+      summary: Eliminar review
+      description: Borra la review. Requiere ser el autor o ADMIN.
+      operationId: deleteReview
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Eliminada con éxito
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewResponseDTO"
+        "403":
+          description: Sin permisos para gestionar esta review
+        "404":
+          description: Review no encontrada
+  /api/v1/images/{id}/media:
+    get:
+      tags:
+      - Imágenes
+      summary: Descargar archivo binario
+      description: Devuelve directamente el archivo binario (blob) de la imagen JPEG
+        para renderizarla.
+      operationId: getImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Archivo devuelto correctamente
+          content:
+            image/jpeg: {}
+        "404":
+          description: Imagen no encontrada o vacía
+    put:
+      tags:
+      - Imágenes
+      summary: Reemplazar un archivo de imagen
+      description: Sustituye el contenido binario de una imagen conservando su ID.
+      operationId: replaceImageFile
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "204":
+          description: Archivo reemplazado correctamente
+        "400":
+          description: Archivo vacío
+        "404":
+          description: Imagen no encontrada
+  /api/v1/guides/{id}:
+    get:
+      tags:
+      - Guías
+      summary: Obtener una guía por su ID
+      operationId: getGuide
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Guía encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuideResponseDTO"
+        "404":
+          description: Guía no encontrada
+    put:
+      tags:
+      - Guías
+      summary: Actualizar una guía existente
+      description: Sustituye todos los datos de una guía identificada por su ID con
+        la información proporcionada.
+      operationId: replaceGuide
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GuideRequestDTO"
+        required: true
+      responses:
+        "200":
+          description: Guía actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GuideResponseDTO"
+        "400":
+          description: Datos de entrada inválidos o error en la validación
+        "404":
+          description: No se encontró ninguna guía con el ID proporcionada
+    delete:
+      tags:
+      - Guías
+      summary: Eliminar una guía
+      description: Elimina de forma permanente una guía del sistema mediante su identificador
+        único.
+      operationId: deleteGuide
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Guía eliminada correctamente
+        "404":
+          description: La guía que se intenta eliminar no existe
+  /api/v1/users/:
+    post:
+      tags:
+      - Usuarios
+      summary: Creación de usuario por administrador
+      description: "Manual override: Fuerza la creación de cuenta, roles y dinero\
+        \ gastado inicial. (Requiere ADMIN)"
+      operationId: createUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Usuario Creado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "403":
+          description: Privilegios insuficientes
+  /api/v1/users:
+    get:
+      tags:
+      - Usuarios
+      summary: Listado paginado general
+      description: Muestra todos los usuarios (Requiere ADMIN).
+      operationId: getUsers
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Listado correcto
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageUserBasicResponseDTO"
+        "403":
+          description: No autorizado
+    post:
+      tags:
+      - Usuarios
+      summary: Creación de usuario por administrador
+      description: "Manual override: Fuerza la creación de cuenta, roles y dinero\
+        \ gastado inicial. (Requiere ADMIN)"
+      operationId: createUser_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Usuario Creado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "403":
+          description: Privilegios insuficientes
+  /api/v1/tours:
+    get:
+      tags:
+      - Tours
+      summary: Obtener catálogo de tours
+      description: "Devuelve una página de tours. Los clientes ven solo los tours\
+        \ visibles, los administradores los ven todos."
+      operationId: getAllTours
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Catálogo obtenido exitosamente
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageTourResponseDTO"
+    post:
+      tags:
+      - Tours
+      summary: Crear expedición
+      description: Crea un nuevo tour en base de datos. Exclusivo para administradores.
+      operationId: createTour
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/TourRequestDTO"
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                type: object
+        "201":
+          description: Tour creado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TourResponseDTO"
+        "400":
+          description: Falta imagen o datos malformados
+        "403":
+          description: Requiere rol ADMIN
+  /api/v1/reviews:
+    get:
+      tags:
+      - Reviews
+      summary: Listar reviews visibles
+      description: Devuelve todas las reviews almacenadas que no están ocultas.
+      operationId: listarReviews
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Lista recuperada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewResponseDTO"
+    post:
+      tags:
+      - Reviews
+      summary: Crear nueva review
+      description: Crea y sanea (evitando XSS) una review vinculada al usuario autenticado.
+      operationId: createReview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: review publicada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewResponseDTO"
+        "400":
+          description: Datos de entrada incorrectos
+        "401":
+          description: Usuario no autenticado
+        "403":
+          description: Intento de publicar en nombre de otro
+  /api/v1/images/:
+    post:
+      tags:
+      - Imágenes
+      summary: Subir una nueva imagen
+      description: Permite subir un archivo de imagen al sistema.
+      operationId: createImage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - imageFile
+      responses:
+        "201":
+          description: Imagen subida y registrada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+        "400":
+          description: Archivo vacío o inválido
+  /api/v1/guides:
+    get:
+      tags:
+      - Guías
+      summary: Obtener todas las guías paginadas
+      operationId: getGuides
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Lista de guías recuperada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageGuideResponseDTO"
+    post:
+      tags:
+      - Guías
+      summary: Crear una nueva guía
+      operationId: createGuide
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GuideRequestDTO"
+        required: true
+      responses:
+        "201":
+          description: Guía creada con éxito
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GuideResponseDTO"
+        "400":
+          description: Datos de entrada inválidos
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/GuideResponseDTO"
+  /api/v1/bookings/tours/{tourId}:
+    post:
+      tags:
+      - Reservas
+      operationId: addTour
+      parameters:
+      - name: tourId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+    delete:
+      tags:
+      - Reservas
+      operationId: removeTour
+      parameters:
+      - name: tourId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+  /api/v1/bookings/me/checkout:
+    post:
+      tags:
+      - Reservas
+      operationId: checkout
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+  /api/v1/auth/register:
+    post:
+      tags:
+      - Autenticación
+      summary: Registrar un nuevo usuario
+      description: Permite crear una nueva cuenta de usuario en el sistema. Se puede
+        adjuntar de forma opcional una imagen de perfil.
+      operationId: registerUser
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                userData:
+                  $ref: "#/components/schemas/UserRegisterDTO"
+                imageFile:
+                  type: string
+                  format: binary
+              required:
+              - userData
+      responses:
+        "201":
+          description: Usuario registrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFullResponseDTO"
+        "400":
+          description: "Datos de registro inválidos (formato de correo incorrecto,\
+            \ contraseñas débiles o campos obligatorios vacíos)"
+  /api/v1/auth/refresh:
+    post:
+      tags:
+      - Autenticación
+      summary: Refrescar token de acceso
+      description: Renueva un token de acceso JWT expirado utilizando la Cookie segura
+        'RefreshToken' que tiene almacenada el navegador del usuario.
+      operationId: refresh
+      parameters:
+      - name: RefreshToken
+        in: cookie
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Token renovado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Token de refresco inválido o expirado
+  /api/v1/auth/logout:
+    post:
+      tags:
+      - Autenticación
+      summary: Cerrar sesión
+      description: Invalida la sesión actual del usuario y limpia las cookies HTTP-only
+        de autenticación almacenadas en el navegador.
+      operationId: logout
+      responses:
+        "200":
+          description: Sesión cerrada correctamente
+          content:
+            text/plain: {}
+  /api/v1/auth/login:
+    post:
+      tags:
+      - Autenticación
+      summary: Iniciar sesión
+      description: "Autentica las credenciales del usuario (email y contraseña). Si\
+        \ son válidas, establece las cookies seguras y devuelve los tokens JWT de\
+        \ acceso y refresco."
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Credenciales incorrectas o payload de inicio de sesión corrupto
+  /api/v1/users/{id}/status:
+    patch:
+      tags:
+      - Usuarios
+      summary: Suspender/Reactivar usuario
+      description: Invierte el campo enabled (banea o desbanea del inicio de sesión)
+        (Requiere ADMIN).
+      operationId: toggleUserStatus
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Estado volcado exitosamente
+        "403":
+          description: Intento no administrador o prevención de suicidio digital
+        "404":
+          description: Objetivo a banear no hallado
+  /api/v1/reviews/{id}/visibility:
+    patch:
+      tags:
+      - Reviews
+      summary: Cambiar estado de visibilidad
+      description: Oculta o muestra una review por decisión de moderación (Patch).
+      operationId: updateReviewVisibility
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReviewVisibilityDTO"
+        required: true
+      responses:
+        "200":
+          description: Estado cambiado
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ReviewResponseDTO"
+        "404":
+          description: Review no encontrada
+  /api/v1/notifications/{id}/read:
+    patch:
+      tags:
+      - Notificaciones
+      summary: Marcar como leída
+      description: Cambia el estado de una notificación específica a 'leída'.
+      operationId: markAsRead
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Estado modificado
+        "403":
+          description: Acceso denegado
+        "404":
+          description: Notificación no encontrada
+  /api/v1/notifications/read:
+    patch:
+      tags:
+      - Notificaciones
+      summary: Marcar todas como leídas
+      description: Pone a 'leída' todas las notificaciones actuales del buzón.
+      operationId: markAllAsRead
+      responses:
+        "204":
+          description: Estado general modificado
+        "403":
+          description: Acceso denegado
+  /guides/{id}/image:
+    get:
+      tags:
+      - guide-public-controller
+      operationId: getGuideImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/users/stats:
+    get:
+      tags:
+      - Usuarios
+      summary: Estadísticas de usuarios
+      description: Datos genéricos sobre base de usuarios del sistema (Requiere ADMIN).
+      operationId: getUserStats
+      responses:
+        "200":
+          description: Métricas entregadas
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UserStatsDTO"
+        "403":
+          description: Acceso denegado
+  /api/v1/tours/{id}/image:
+    get:
+      tags:
+      - Tours
+      summary: Datos imagen del tour
+      description: Obtiene los metadatos de la imagen asignada al tour.
+      operationId: getTourImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Imagen encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+        "403":
+          description: Tour oculto (acceso denegado)
+        "404":
+          description: No tiene imagen
+    delete:
+      tags:
+      - Tours
+      summary: Desvincular y eliminar imagen
+      description: Quita la foto del tour y elimina el recurso físico.
+      operationId: deleteTourImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Borrada con éxito
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+        "403":
+          description: Acceso denegado
+        "404":
+          description: El tour no tiene imagen
+  /api/v1/tours/stats:
+    get:
+      tags:
+      - Tours
+      operationId: getTourStats
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/TourStatsDTO"
+  /api/v1/reviews/user/{userId}:
+    get:
+      tags:
+      - Reviews
+      summary: Reviews de un usuario
+      description: Obtiene las reviews visibles escritas por un usuario concreto.
+      operationId: listarReviewsPorUsuario
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Operación exitosa
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewResponseDTO"
+  /api/v1/reviews/tour/{tourId}:
+    get:
+      tags:
+      - Reviews
+      summary: Reviews de un tour
+      description: Obtiene las reviews visibles asignadas a una expedición concreta.
+      operationId: listarReviewsPorTour
+      parameters:
+      - name: tourId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Operación exitosa
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewResponseDTO"
+  /api/v1/reviews/tour/{tourId}/user/{userId}:
+    get:
+      tags:
+      - Reviews
+      operationId: listarReviewsPorTourYUsuario
+      parameters:
+      - name: tourId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewResponseDTO"
+  /api/v1/reviews/hidden:
+    get:
+      tags:
+      - Reviews
+      summary: Listar reviews ocultas
+      description: Devuelve todas las reviews marcadas como ocultas (por moderación).
+      operationId: listarReviewsOcultas
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Lista recuperada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReviewResponseDTO"
+  /api/v1/notifications:
+    get:
+      tags:
+      - Notificaciones
+      summary: Obtener notificaciones recientes
+      description: Devuelve una lista con las 10 notificaciones más recientes (Requiere
+        ADMIN).
+      operationId: getNotifications
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Lista obtenida
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageNotificationDTO"
+        "403":
+          description: Acceso denegado
+    delete:
+      tags:
+      - Notificaciones
+      summary: Limpiar buzón
+      description: Elimina de golpe todas las notificaciones del sistema.
+      operationId: deleteAllNotifications
+      responses:
+        "204":
+          description: Buzón vaciado con éxito
+        "403":
+          description: Acceso denegado
+  /api/v1/notifications/unread-count:
+    get:
+      tags:
+      - Notificaciones
+      summary: Contar notificaciones no leídas
+      description: Devuelve el número de mensajes sin leer en el sistema (Requiere
+        ADMIN).
+      operationId: getUnreadCount
+      responses:
+        "200":
+          description: Conteo devuelto exitosamente
+          content:
+            '*/*':
+              schema:
+                type: integer
+                format: int64
+        "403":
+          description: Acceso denegado
+  /api/v1/images:
+    get:
+      tags:
+      - Imágenes
+      summary: Obtener todas las imágenes
+      description: Devuelve una página con los metadatos (DTOs) de todas las imágenes
+        registradas.
+      operationId: getAllImages
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: Operación exitosa
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageImageDTO"
+  /api/v1/images/{id}:
+    get:
+      tags:
+      - Imágenes
+      summary: Obtener datos de una imagen
+      description: Devuelve los metadatos de una imagen específica por su ID.
+      operationId: getImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Imagen encontrada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+        "404":
+          description: Imagen no encontrada
+    delete:
+      tags:
+      - Imágenes
+      summary: Eliminar una imagen
+      description: Borra físicamente una imagen del sistema.
+      operationId: deleteImage
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Imagen eliminada
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ImageDTO"
+  /api/v1/bookings:
+    get:
+      tags:
+      - Reservas
+      operationId: getAllBookings
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageBookingResponseDTO"
+  /api/v1/bookings/{id}:
+    get:
+      tags:
+      - Reservas
+      operationId: getBooking
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+  /api/v1/bookings/stats:
+    get:
+      tags:
+      - Reservas
+      operationId: getBookingStats
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingStatsDTO"
+  /api/v1/bookings/me:
+    get:
+      tags:
+      - Reservas
+      operationId: getMyOpenBooking
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+  /admin/guides/guides/{id}/image:
+    get:
+      tags:
+      - guide-controller
+      operationId: getGuideImage_1
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+                format: byte
+  /api/v1/notifications/{id}:
+    delete:
+      tags:
+      - Notificaciones
+      summary: Eliminar notificación
+      description: Borra una notificación específica mediante su ID.
+      operationId: deleteNotification
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "204":
+          description: Eliminada con éxito
+        "403":
+          description: Acceso denegado
+        "404":
+          description: Notificación no encontrada
+  /api/v1/bookings/{bookingId}:
+    delete:
+      tags:
+      - Reservas
+      operationId: removeBooking
+      parameters:
+      - name: bookingId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/BookingResponseDTO"
+components:
+  schemas:
+    UserUpdateDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type: string
+          maxLength: 50
+          minLength: 0
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          minLength: 0
+        mainPhone:
+          type: string
+          maxLength: 20
+          minLength: 9
+        secondaryPhone:
+          type: string
+          maxLength: 20
+          minLength: 0
+        enabled:
+          type: boolean
+        moneySpent:
+          type: number
+          format: double
+        roles:
+          type: array
+          items:
+            type: string
+    UserFullResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        mainPhone:
+          type: string
+        secondaryPhone:
+          type: string
+        enabled:
+          type: boolean
+        creationDate:
+          type: string
+        moneySpent:
+          type: number
+          format: double
+        roles:
+          type: array
+          items:
+            type: string
+        imageId:
+          type: integer
+          format: int64
+    PasswordUpdateDTO:
+      type: object
+      properties:
+        oldPassword:
+          type: string
+          maxLength: 255
+          minLength: 0
+        newPassword:
+          type: string
+          maxLength: 255
+          minLength: 8
+        confirmPassword:
+          type: string
+          maxLength: 255
+          minLength: 0
+      required:
+      - confirmPassword
+      - newPassword
+      - oldPassword
+    TourRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        duration:
+          type: integer
+          format: int32
+        numPeople:
+          type: integer
+          format: int32
+        hotelIncluded:
+          type: boolean
+        hidden:
+          type: boolean
+    ImageDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    ReviewTourDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        rating:
+          type: integer
+          format: int32
+        description:
+          type: string
+        creationDate:
+          type: string
+    TourResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        tourImage:
+          $ref: "#/components/schemas/ImageDTO"
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+        duration:
+          type: integer
+          format: int32
+        numPeople:
+          type: integer
+          format: int32
+        hotelIncluded:
+          type: boolean
+        hidden:
+          type: boolean
+        averageRating:
+          type: number
+          format: double
+        guideIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        reviews:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReviewTourDTO"
+    ReviewUpdateDTO:
+      type: object
+      properties:
+        rating:
+          type: integer
+          format: int32
+          maximum: 5
+          minimum: 1
+        description:
+          type: string
+          minLength: 1
+      required:
+      - description
+    ReviewResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        tourId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        rating:
+          type: integer
+          format: int32
+        description:
+          type: string
+        hidden:
+          type: boolean
+        creationDate:
+          type: string
+          format: date-time
+    GuideRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 100
+          minLength: 0
+        lastName:
+          type: string
+          maxLength: 100
+          minLength: 0
+        price:
+          type: number
+          format: double
+        tourId:
+          type: integer
+          format: int64
+        enabled:
+          type: boolean
+      required:
+      - lastName
+      - name
+    GuideResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        price:
+          type: number
+          format: double
+        enabled:
+          type: boolean
+        tourId:
+          type: integer
+          format: int64
+        tourName:
+          type: string
+    UserRequestDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type: string
+          maxLength: 50
+          minLength: 0
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          minLength: 0
+        password:
+          type: string
+          maxLength: 255
+          minLength: 8
+        mainPhone:
+          type: string
+          maxLength: 20
+          minLength: 9
+        secondaryPhone:
+          type: string
+          maxLength: 20
+          minLength: 0
+        enabled:
+          type: boolean
+        moneySpent:
+          type: number
+          format: double
+        roles:
+          type: array
+          items:
+            type: string
+          minItems: 1
+      required:
+      - email
+      - lastName
+      - mainPhone
+      - name
+      - password
+      - roles
+    ReviewRequestDTO:
+      type: object
+      properties:
+        tourId:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        rating:
+          type: integer
+          format: int32
+          maximum: 5
+          minimum: 1
+        description:
+          type: string
+          minLength: 1
+      required:
+      - description
+      - tourId
+      - userId
+    BookingResponseDTO:
+      type: object
+      properties:
+        bookingId:
+          type: integer
+          format: int64
+        user:
+          $ref: "#/components/schemas/UserBasicResponseDTO"
+        tours:
+          type: array
+          items:
+            $ref: "#/components/schemas/TourBookingDTO"
+        totalPrice:
+          type: number
+          format: double
+    TourBookingDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: double
+    UserBasicResponseDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        mainPhone:
+          type: string
+        enabled:
+          type: boolean
+        imageId:
+          type: integer
+          format: int64
+    UserRegisterDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 50
+          minLength: 0
+        lastName:
+          type: string
+          maxLength: 50
+          minLength: 0
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          minLength: 0
+        password:
+          type: string
+          maxLength: 255
+          minLength: 8
+        mainPhone:
+          type: string
+          maxLength: 20
+          minLength: 9
+        secondaryPhone:
+          type: string
+          maxLength: 20
+          minLength: 0
+        termsAccepted:
+          type: boolean
+      required:
+      - email
+      - lastName
+      - mainPhone
+      - name
+      - password
+    AuthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+          - SUCCESS
+          - FAILURE
+        message:
+          type: string
+        error:
+          type: string
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          maxLength: 255
+          minLength: 0
+        password:
+          type: string
+          maxLength: 255
+          minLength: 0
+      required:
+      - password
+      - username
+    ReviewVisibilityDTO:
+      type: object
+      properties:
+        hidden:
+          type: boolean
+      required:
+      - hidden
+    Pageable:
+      type: object
+      properties:
+        page:
+          type: integer
+          format: int32
+          minimum: 0
+        size:
+          type: integer
+          format: int32
+          minimum: 1
+        sort:
+          type: array
+          items:
+            type: string
+    PageUserBasicResponseDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserBasicResponseDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        paged:
+          type: boolean
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        empty:
+          type: boolean
+        sorted:
+          type: boolean
+        unsorted:
+          type: boolean
+    UserStatsDTO:
+      type: object
+      properties:
+        totalUsers:
+          type: integer
+          format: int64
+        activeUsers:
+          type: integer
+          format: int64
+        disabledUsers:
+          type: integer
+          format: int64
+        totalMoneySpent:
+          type: number
+          format: double
+    PageTourResponseDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/TourResponseDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    TourStatsDTO:
+      type: object
+      properties:
+        totalTours:
+          type: integer
+          format: int64
+        activeTours:
+          type: integer
+          format: int64
+        disabledTours:
+          type: integer
+          format: int64
+        maxPrice:
+          type: number
+          format: double
+        minPrice:
+          type: number
+          format: double
+        averageRating:
+          type: number
+          format: double
+        averageDuration:
+          type: number
+          format: double
+    PageReviewResponseDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReviewResponseDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    NotificationDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        message:
+          type: string
+        icon:
+          type: string
+        color:
+          type: string
+        formattedDate:
+          type: string
+        readStatus:
+          type: boolean
+    PageNotificationDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/NotificationDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    PageImageDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ImageDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    PageGuideResponseDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/GuideResponseDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    PageBookingResponseDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/BookingResponseDTO"
+        number:
+          type: integer
+          format: int32
+        first:
+          type: boolean
+        last:
+          type: boolean
+        numberOfElements:
+          type: integer
+          format: int32
+        sort:
+          $ref: "#/components/schemas/SortObject"
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        empty:
+          type: boolean
+    BookingStatsDTO:
+      type: object
+      properties:
+        totalBookings:
+          type: integer
+          format: int64
+        openBookings:
+          type: integer
+          format: int64
+        closedBookings:
+          type: integer
+          format: int64
+        averageBookingPrice:
+          type: number
+          format: double
+        averageToursPerBooking:
+          type: number
+          format: double
