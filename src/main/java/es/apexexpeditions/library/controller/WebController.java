@@ -676,7 +676,7 @@ public class WebController {
     @PostMapping("/profile/update")
     public String updateProfile(
             HttpServletRequest request,
-            @Valid @ModelAttribute("updateData") UserUpdateDTO updateData, // Validación vía DTO
+            @Valid @ModelAttribute("updateData") UserUpdateDTO updateData, // validation via DTO
             BindingResult bindingResult,
             @RequestParam(required = false) String oldPassword,
             @RequestParam(required = false) String newPassword,

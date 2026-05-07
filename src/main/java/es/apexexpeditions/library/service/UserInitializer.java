@@ -60,7 +60,7 @@ public class UserInitializer implements CommandLineRunner {
         createUser ("Carlos", "López", "carlos@email.com", "1234", "622333444", "922333444",
                 0.0, true, LocalDateTime.now().minusDays(1));
         createUser ("Marta", "Sánchez", "marta@email.com", "1234", "633444555", "933444555",
-                89.90, false, LocalDateTime.now().minusYears(1)); // Usuario con cuenta deshabilitada
+                89.90, false, LocalDateTime.now().minusYears(1)); // user with disabled access / banned
         createUser ("David", "Martín", "david@email.com", "1234", "644555666", null,
                 1500.00, true, LocalDateTime.now().minusMonths(6));
         System.out.println (">>> Users initialized");

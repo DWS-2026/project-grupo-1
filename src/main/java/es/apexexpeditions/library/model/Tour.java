@@ -27,11 +27,11 @@ public class Tour {
     private double price;
     private int duration;
 
-    // Nueva propiedad
+    // new property
     private int numPeople;
 
-    // Nueva propiedad
-    private boolean hotelIncluded; // true = Incluido, false = No incluido
+    // new property
+    private boolean hotelIncluded; // true = included, false = not included
 
     private boolean hidden = false;
 
