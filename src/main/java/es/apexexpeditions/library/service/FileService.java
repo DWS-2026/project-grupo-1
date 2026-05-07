@@ -16,7 +16,6 @@ public class FileService {
 
     public String savePdf(MultipartFile file, Long userId) throws IOException {
         init();
-        // RÚBRICA: Guardamos fichero físico ligado a entidad con su nombre original
         String originalName = file.getOriginalFilename();
         String fileName = userId + "_" + originalName;
         
