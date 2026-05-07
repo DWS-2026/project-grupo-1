@@ -33,7 +33,7 @@ public class UserMapper {
                 user.getId(), user.getName(), user.getLastName(), user.getEmail(),
                 user.getMainPhone(), user.getSecondaryPhone(), user.isEnabled(),
                 user.getFormattedCreationDate(),
-                user.getMoneySpent(), user.getRoles(), imgId
+                user.getMoneySpent(), user.getRoles(), imgId, user.getMedicalCertificateName()
         );
     }
     // endregion

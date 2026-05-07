@@ -233,6 +233,12 @@ public class User {
      public void addMoneySpent (double moneySpent) {
         this.moneySpent = this.moneySpent + moneySpent;
     }
+
+    private String medicalCertificateName;
+
+    public String getMedicalCertificateName() { return medicalCertificateName; }
+    public void setMedicalCertificateName(String medicalCertificateName) { this.medicalCertificateName = medicalCertificateName; }
+
     // endregion
 
 

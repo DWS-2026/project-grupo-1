@@ -11,6 +11,7 @@ import es.apexexpeditions.library.dto.user.UserUpdateDTO;
 import es.apexexpeditions.library.model.Image;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired; // to inject user service
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller; // to define class as controller
 import org.springframework.ui.Model; // to pass data from controller to mustache view template
 import org.springframework.validation.BindingResult;
@@ -301,6 +302,26 @@ public class UserController {
 
         return "redirect:/admin/users";
     }
+
+    @Autowired
+    private es.apexexpeditions.library.service.FileService fileService;
+
+    // region 4. ver certificado (Admin)
+    @GetMapping("/{id}/certificate")
+    public ResponseEntity<byte[]> adminViewCertificate(@PathVariable Long id) {
+        User target = userService.findById(id);
+        if (target == null || target.getMedicalCertificateName() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        try {
+            return ResponseEntity.ok()
+                .contentType(org.springframework.http.MediaType.APPLICATION_PDF)
+                .body(fileService.getPdf(target.getMedicalCertificateName()));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+    // endregion
     // endregion
     // endregion
 }

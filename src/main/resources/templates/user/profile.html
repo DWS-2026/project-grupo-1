@@ -291,6 +291,34 @@
                     <!-- bottom buttons end -->
 
                 </form>
+                </form> {{^isAdmin}}
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="bg-secondary-soft px-4 py-5 rounded">
+                            <h4 class="mb-4 mt-0">Certificado Médico</h4>
+                            <p class="text-muted">Adjunta tu documento médico en formato PDF.</p>
+
+                            {{#currentUser.medicalCertificateName}}
+                            <div class="alert alert-success d-flex align-items-center mb-4">
+                                <i class="fas fa-file-pdf me-3 fs-4"></i>
+                                <div>
+                                    <strong>Documento subido:</strong> {{currentUser.medicalCertificateName}}
+                                </div>
+                                <a href="/profile/certificate/view" target="_blank" class="btn btn-sm btn-outline-success ms-auto">Abrir PDF</a>
+                            </div>
+                            {{/currentUser.medicalCertificateName}}
+
+                            <form action="/profile/certificate/upload" method="post" enctype="multipart/form-data">
+                                <input type="hidden" name="_csrf" value="{{_csrf.token}}" />
+                                <div class="input-group mb-3" style="max-width: 500px;">
+                                    <input type="file" class="form-control" name="file" accept="application/pdf" required>
+                                    <button class="btn btn-primary" type="submit">Guardar en disco</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {{/isAdmin}}
             </div>
         </div>
     </div>

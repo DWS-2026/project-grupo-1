@@ -23,5 +23,6 @@ public record UserFullResponseDTO (
         String creationDate,
         double moneySpent,
         List<String> roles,
-        Long imageId
+        Long imageId,
+        String medicalCertificateName
 ) {}
