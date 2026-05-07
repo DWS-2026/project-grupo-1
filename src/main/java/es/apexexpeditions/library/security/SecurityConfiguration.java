@@ -1,7 +1,11 @@
 package es.apexexpeditions.library.security;
 
-// region =========== imports =================
 
+
+
+
+
+// region =========== imports =================
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +21,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-// endregion
-
 import es.apexexpeditions.library.security.jwt.JwtRequestFilter;
 import es.apexexpeditions.library.security.jwt.JwtTokenProvider;
 import es.apexexpeditions.library.security.jwt.UnauthorizedHandlerJwt;
+// endregion
+
+
+
+
+
 
 /**
  * Dual security configuration:
@@ -32,29 +40,25 @@ import es.apexexpeditions.library.security.jwt.UnauthorizedHandlerJwt;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
-
     // region =========== autowired =================
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
-
     @Autowired
     public RepositoryUserDetailsService userDetailService;
-
     @Autowired
     private UnauthorizedHandlerJwt unauthorizedHandlerJwt;
+    // endregion
 
+
+    // region =========== bean =================
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    // endregion
-
-    // region =========== shared beans =================
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailService);
@@ -64,8 +68,13 @@ public class SecurityConfiguration {
     }
     // endregion
 
-    // region =========== filter chains =================
 
+
+
+
+
+    // region =========== filter chains =================
+    // region 1. apiFilterChain
     /**
      * ── CHAIN 1 · REST API (/api/**) ──────────────────────────────────────────
      * Stateless JWT auth. CSRF, form login and Basic Auth disabled.
@@ -73,107 +82,71 @@ public class SecurityConfiguration {
      */
     @Bean
     @Order(1)
-    public SecurityFilterChain apiFilterChain (HttpSecurity http) throws Exception {
-
-        http.authenticationProvider(authenticationProvider());
-
+    public SecurityFilterChain apiFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/api/**")
-                .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt));
+                .authenticationProvider(authenticationProvider())
+                .exceptionHandling(handling -> handling.authenticationEntryPoint(unauthorizedHandlerJwt))
 
-        // to respond with json
-        /**
-         * .exceptionHandling(handling -> handling
-         * .authenticationEntryPoint((request, response, ex) -> {
-         * response.setContentType("application/json");
-         * response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-         * response.getWriter().write("""
-         * {"error":"Unauthorized"}
-         * """);
-         * })
-         * .accessDeniedHandler((request, response, ex) -> {
-         * response.setContentType("application/json");
-         * response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-         * response.getWriter().write("""
-         * {"error":"Forbidden"}
-         * """);
-         * }));
-         */
+                // disable traditional web protections (stateless, csrf, form login)
+                .csrf(csrf -> csrf.disable())
+                .formLogin(formLogin -> formLogin.disable())
+                .httpBasic(httpBasic -> httpBasic.disable())
+                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
+                // add JWT filter
+                .addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
 
-    
-        // error management for api
+                // configure route authorization
+                .authorizeHttpRequests(auth -> auth
+                        // 1. PUBLIC ENDPOINTS
+                        .requestMatchers("/api/v1/auth/**").permitAll() // Covers login, register, and refresh
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/tours/**",
+                                "/api/v1/reviews/**",
+                                "/api/v1/guides/**"
+                        ).permitAll()
 
-        http.authorizeHttpRequests(auth -> auth
-                // PRIVATE ENDPOINTS
-                // IMAGES
-                .requestMatchers(HttpMethod.POST, "/api/v1/images/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/images/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/images/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/v1/images/**").hasRole("ADMIN")
-                // TOURS
-                .requestMatchers(HttpMethod.POST, "/api/v1/tours").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/api/v1/tours/stats").hasRole("ADMIN")
+                        // 2. ADMIN-EXCLUSIVE ENDPOINTS (grouped by HTTP method to reduce code)
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/v1/tours/stats", "/api/v1/reviews/hidden", "/api/v1/images/**", "/api/v1/users/stats"
+                        ).hasRole("ADMIN")
 
-                .requestMatchers(HttpMethod.PUT, "/api/v1/tours/*/image/media").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/tours/*/image").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/v1/images/**", "/api/v1/tours", "/api/v1/guides"
+                        ).hasRole("ADMIN")
 
-                // REVIEWS
-                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/hidden").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PATCH, "/api/v1/reviews/**").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.POST, "/api/v1/reviews").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/v1/images/**", "/api/v1/tours/*", "/api/v1/tours/*/image/media", "/api/v1/guides/*"
+                        ).hasRole("ADMIN")
 
-                // GUIDES
-                .requestMatchers(HttpMethod.POST, "/api/v1/guides").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.PUT, "/api/v1/guides/*").hasRole("ADMIN")
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/guides/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PATCH,
+                                "/api/v1/reviews/**", "/api/v1/users/*/status"
+                        ).hasRole("ADMIN")
 
-                // BOOKINGS
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/bookings/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/v1/images/**", "/api/v1/tours/*", "/api/v1/tours/*/image", "/api/v1/guides/*", "/api/v1/bookings/*"
+                        ).hasRole("ADMIN")
 
-                // PUBLIC ENDPOINTS
-                // IMAGES
-                // TOURS
-                .requestMatchers(HttpMethod.GET, "/api/v1/tours/**").permitAll()
-                // LOGIN
-                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
-                // REGISTRATION
-                .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
-                // REVIEWS
-                .requestMatchers(HttpMethod.GET, "/api/v1/reviews").permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/v1/reviews/**").permitAll()
-                // GUIDES
-                .requestMatchers(HttpMethod.GET, "/api/v1/guides/**").permitAll()
+                        // 3. ENDPOINTS FOR LOGGED USERS AND ADMINS
+                        .requestMatchers(HttpMethod.POST, "/api/v1/reviews").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/reviews/**").hasAnyRole("USER", "ADMIN")
 
-
-
-                // REST OF ENDPOINTS
-                .anyRequest().authenticated());
-
-        // Disable Form login Authentication
-        http.formLogin(formLogin -> formLogin.disable());
-
-        // Disable CSRF protection (it is difficult to implement in REST APIs)
-        http.csrf(csrf -> csrf.disable());
-
-        // Disable Basic Authentication
-        http.httpBasic(httpBasic -> httpBasic.disable());
-
-        // Stateless session
-        http.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
-        // Add JWT Token filter
-        http.addFilterBefore(new JwtRequestFilter(userDetailService, jwtTokenProvider),
-                UsernamePasswordAuthenticationFilter.class);
+                        // 4. REST OF THE API (Requires authentication - Zero Trust)
+                        .anyRequest().authenticated()
+                );
 
         return http.build();
     }
+    // endregion
 
-    // region 3. filterChain
+
+
+
+
+
+    // region 2. filterChain
     /**
      * Configures the security filter chain.
      * Defines which URLs are public, which require authentication, and how the
