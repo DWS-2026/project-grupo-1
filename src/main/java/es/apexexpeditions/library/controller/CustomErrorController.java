@@ -1,7 +1,11 @@
 package es.apexexpeditions.library.controller;
 
-// region =========== imports =================
 
+
+
+
+
+// region =========== imports =================
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +18,11 @@ import org.springframework.ui.Model;
 import java.util.Map;
 // endregion
 
+
+
+
+
+
 /**
  * custom error controller that overrides default spring boot error handling
  * implements ErrorController to provide specific logic for different HTTP
@@ -21,6 +30,7 @@ import java.util.Map;
  */
 @Controller
 public class CustomErrorController implements ErrorController {
+    // region 1. handleError
     /**
      * main entry point for all errors occurring within app
      * Spring Boot automatically redirects requests to "/error" when exception or
@@ -81,7 +91,10 @@ public class CustomErrorController implements ErrorController {
 
         return "error/404";
     }
+    // endregion
 
+
+    // region 2. getErrorMessage
     private String getErrorMessage(int statusCode) {
         return switch (statusCode) {
             case 404 -> "Resource not found";
@@ -91,4 +104,5 @@ public class CustomErrorController implements ErrorController {
             default -> "Error occurred";
         };
     }
+    // endregion
 }

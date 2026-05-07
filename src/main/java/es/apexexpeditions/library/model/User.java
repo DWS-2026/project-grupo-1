@@ -91,8 +91,7 @@ public class User {
     public User () {
     } // default empty constructor required by jpa
 
-    // client constructor (has attributes for client metrics: money, enabled and
-    // date)
+    // client constructor (has attributes for client metrics: money, enabled and date)
     public User (String name, String lastName, String email, String password,
             String mainPhone, String secondaryPhone,
             double moneySpent, boolean enabled, LocalDateTime creationDate) {
@@ -213,7 +212,6 @@ public class User {
 
     /**
      * formats creation date for better display in mustache templates
-     * 
      * @return string formatted as dd/mm/yyyy (hh:mm:ss)
      */
     public String getFormattedCreationDate() {
@@ -236,7 +234,6 @@ public class User {
         this.moneySpent = this.moneySpent + moneySpent;
     }
     // endregion
-
 
 
 

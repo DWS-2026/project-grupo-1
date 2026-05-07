@@ -296,7 +296,7 @@ public class UserController {
 
         userService.save (user);
 
-        // notificaction: user creation via admin (user-add page)
+        // notification: user creation via admin (user-add page)
         notificationService.notify ("Admin ha creado al usuario: " + user.getName(), "fas fa-user-plus", "bg-success");
 
         return "redirect:/admin/users";
