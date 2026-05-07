@@ -1,6 +1,7 @@
 package es.apexexpeditions.library.controller.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -86,6 +87,19 @@ public class BookingRestController {
     }
 
     // =========================================================
+    // GET OPEN BOOKING
+    // =========================================================
+    @GetMapping("/me")
+    public ResponseEntity<BookingResponseDTO> getMyOpenBooking() {
+
+        User user = userService.getLoggedUser();
+
+        Booking booking = bookingService.getOrCreateOpenBooking(user);
+
+        return ResponseEntity.ok(bookingMapper.toDTO(booking));
+    }
+
+    // =========================================================
     // ADD TOUR TO OPEN BOOKING
     // =========================================================
     @PostMapping("/tours/{tourId}")
@@ -118,7 +132,7 @@ public class BookingRestController {
     }
 
     // =========================================================
-    // DELETE BOOKING
+    // BOOKING STATS
     // =========================================================
     @GetMapping("/stats")
     public ResponseEntity<BookingStatsDTO> getBookingStats() {
@@ -129,4 +143,20 @@ public class BookingRestController {
 
         return ResponseEntity.ok(bookingMapper.toStatsDto(bookings));
     }
+
+    // =========================================================
+    // DELETE A CLOSED BOOKING
+    // =========================================================
+    @DeleteMapping("/{bookingId}")
+    public ResponseEntity<BookingResponseDTO> removeBooking(@PathVariable Long bookingId) {
+        Booking booking = bookingService.findByIdAndCloseTrue(bookingId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Booking not found"));
+
+        BookingResponseDTO dto = bookingMapper.toDTO(booking); 
+
+        bookingService.deleteById(bookingId);
+
+        return ResponseEntity.ok(dto);
+    }
+
 }

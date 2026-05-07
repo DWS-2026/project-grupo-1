@@ -9,6 +9,7 @@ import es.apexexpeditions.library.model.Booking;
 import es.apexexpeditions.library.model.Tour;
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.repository.BookingRepository;
+import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -41,7 +42,7 @@ public class BookingService {
     // Get or create the open booking of a user
     public Booking getOrCreateOpenBooking(User user) {
         return bookingRepository.findByUserAndCloseFalse(user)
-                .orElseGet(() -> new Booking(user));
+                .orElseGet(() -> bookingRepository.save(new Booking(user)));
     }
 
     // Add a tour to the open booking of the user
@@ -64,6 +65,7 @@ public class BookingService {
     }
 
     // Close/confirm the booking
+    @Transactional
     public Booking closeBooking(User user) {
         Booking booking = getOrCreateOpenBooking(user);
         if (!booking.isClose() && !booking.getTours().isEmpty()) {
