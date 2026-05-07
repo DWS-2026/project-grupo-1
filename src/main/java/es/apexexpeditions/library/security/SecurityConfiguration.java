@@ -229,7 +229,8 @@ public class SecurityConfiguration {
                                                                 "/login",
                                                                 "/register",
                                                                 "/admin-login",
-                                                                "/login-check")
+                                                                "/login-check",
+                                                                "/user/*/image")
                                                 .permitAll()
 
                                                 // Static resources
@@ -251,7 +252,7 @@ public class SecurityConfiguration {
 
                                                 // User private paths (require either USER or ADMIN roles)
                                                 .requestMatchers("/cart/**", "/checkout/**", "/invoice/**",
-                                                                "/profile/**", "/review-user/**", "/user/*/image")
+                                                                "/profile/**", "/review-user/**")
                                                 .authenticated()
 
                                                 // controller can throw a 404
