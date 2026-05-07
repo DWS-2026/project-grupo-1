@@ -99,6 +99,26 @@ public class BookingRestController {
         return ResponseEntity.ok(bookingMapper.toDTO(booking));
     }
 
+
+    // =========================================================
+    // CLOSE (CHECKOUT) OPEN BOOKING
+    // =========================================================
+    @PostMapping("/me/checkout")
+    public ResponseEntity<BookingResponseDTO> checkout() {
+
+        User user = userService.getLoggedUser();
+
+        Booking booking = bookingService.getOrCreateOpenBooking(user);
+
+        if (booking.getTours().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No puedes cerrar una reserva sin tours");
+        }
+
+        Booking closedBooking = bookingService.closeBooking(user);
+
+        return ResponseEntity.ok(bookingMapper.toDTO(closedBooking));
+    }
+
     // =========================================================
     // ADD TOUR TO OPEN BOOKING
     // =========================================================
