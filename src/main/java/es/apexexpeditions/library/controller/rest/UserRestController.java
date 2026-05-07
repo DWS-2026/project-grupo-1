@@ -269,7 +269,7 @@ public class UserRestController {
     @PutMapping("/{id}")
     public ResponseEntity<UserFullResponseDTO> updateUser (
             @PathVariable Long id,
-            @Valid @RequestBody UserUpdateDTO updateData) {
+            @Valid @RequestBody UserUpdateDTO dto) {
 
         User loggedUser = userService.getLoggedUser();
         User targetUser = userService.findById(id);
@@ -278,35 +278,33 @@ public class UserRestController {
             return ResponseEntity.notFound().build();
         }
 
-        boolean isAdmin = loggedUser != null && loggedUser.getRoles().contains("ADMIN");
-        boolean isOwner = loggedUser != null && loggedUser.getId().equals(id);
-
-        if (!isAdmin && !isOwner) {   // case: neither admin or owner of the account
+        // rbac check: owner or admin
+        if (!loggedUser.getId().equals(id) && !userService.isAdmin(loggedUser)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        // a01 vuln fix
-        if (isAdmin) {   // all fields
-            if (updateData.name() != null) targetUser.setName(updateData.name());
-            if (updateData.lastName() != null) targetUser.setLastName(updateData.lastName());
-            if (updateData.email() != null) targetUser.setEmail(updateData.email());
-            if (updateData.mainPhone() != null) targetUser.setMainPhone(updateData.mainPhone());
-            if (updateData.secondaryPhone() != null) targetUser.setSecondaryPhone(updateData.secondaryPhone());
-            if (updateData.enabled() != null) targetUser.setEnabled(updateData.enabled());
-            if (updateData.moneySpent() != null) targetUser.setMoneySpent(updateData.moneySpent());
-            if (updateData.roles() != null && !updateData.roles().isEmpty()) {
-                targetUser.setRoles(updateData.roles());
+        // a01: restrict admin exclusive fields
+        if (!userService.isAdmin(loggedUser)) {
+            // 403 case: non-admin trying to change restricted fields
+            if (dto.email() != null || dto.enabled() != null ||
+                    dto.roles() != null || dto.moneySpent() != null) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
-        } else {   // only basic fields
-            if (updateData.name() != null) targetUser.setName(updateData.name());
-            if (updateData.lastName() != null) targetUser.setLastName(updateData.lastName());
-            if (updateData.mainPhone() != null) targetUser.setMainPhone(updateData.mainPhone());
-            if (updateData.secondaryPhone() != null) targetUser.setSecondaryPhone(updateData.secondaryPhone());
+        }
+
+        // change non-restricted fields
+        if (dto.name() != null) targetUser.setName(dto.name());
+        if (dto.lastName() != null) targetUser.setLastName(dto.lastName());
+        if (dto.mainPhone() != null) targetUser.setMainPhone(dto.mainPhone());
+
+        // change admin-exclusive fields
+        if (userService.isAdmin(loggedUser)) {
+            if (dto.email() != null) targetUser.setEmail(dto.email());
+            if (dto.enabled() != null) targetUser.setEnabled(dto.enabled());
+            if (dto.roles() != null) targetUser.setRoles(dto.roles());
         }
 
         userService.save(targetUser);
-        notificationService.notify("Profile updated: " + targetUser.getEmail(), "fas fa-user-edit", "bg-info");
-
         return ResponseEntity.ok(userMapper.toFullDTO(targetUser));
     }
     // endregion
