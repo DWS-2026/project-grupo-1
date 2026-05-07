@@ -11,14 +11,16 @@ import es.apexexpeditions.library.service.ReviewService;
 import es.apexexpeditions.library.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 import org.jsoup.Jsoup;
@@ -51,18 +53,20 @@ public class ReviewRestController {
     @Operation(summary = "Listar reviews visibles", description = "Devuelve todas las reviews almacenadas que no están ocultas.")
     @ApiResponse(responseCode = "200", description = "Lista recuperada")
     @GetMapping
-    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviews() {
-        List<Review> reviews = reviewService.findVisible();
-        return ResponseEntity.ok(toDTOs(reviews));
+    public ResponseEntity<Page<ReviewResponseDTO>> listarReviews(
+            @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Review> reviews = reviewService.findVisible(pageable);
+        return ResponseEntity.ok(reviews.map(this::toDTO));
     }
 
     // Returns all reviews marked as hidden.
     @Operation(summary = "Listar reviews ocultas", description = "Devuelve todas las reviews marcadas como ocultas (por moderación).")
     @ApiResponse(responseCode = "200", description = "Lista recuperada")
     @GetMapping("/hidden")
-    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsOcultas() {
-        List<Review> reviews = reviewService.findHidden();
-        return ResponseEntity.ok(toDTOs(reviews));
+    public ResponseEntity<Page<ReviewResponseDTO>> listarReviewsOcultas(
+            @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Review> reviews = reviewService.findHidden(pageable);
+        return ResponseEntity.ok(reviews.map(this::toDTO));
     }
 
     // Returns one review by its id, or 404 if it does not exist.
@@ -92,28 +96,32 @@ public class ReviewRestController {
     @Operation(summary = "Reviews de un tour", description = "Obtiene las reviews visibles asignadas a una expedición concreta.")
     @ApiResponse(responseCode = "200", description = "Operación exitosa")
     @GetMapping("/tour/{tourId}")
-    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorTour(@PathVariable Long tourId) {
-        List<Review> reviews = reviewService.findByTourIdAndHiddenFalse(tourId);
-        return ResponseEntity.ok(toDTOs(reviews));
+    public ResponseEntity<Page<ReviewResponseDTO>> listarReviewsPorTour(
+            @PathVariable Long tourId,
+            @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Review> reviews = reviewService.findByTourIdAndHiddenFalse(tourId, pageable);
+        return ResponseEntity.ok(reviews.map(this::toDTO));
     }
 
     // Returns all visible reviews written by a specific user for a specific tour.
     @GetMapping("/tour/{tourId}/user/{userId}")
-    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorTourYUsuario(@PathVariable Long tourId,
-                                                                                      @PathVariable Long userId) {
-        List<Review> reviews = reviewService.findByTourIdAndUserIdAndHiddenFalse(tourId, userId);
-        return ResponseEntity.ok(toDTOs(reviews));
+    public ResponseEntity<Page<ReviewResponseDTO>> listarReviewsPorTourYUsuario(
+            @PathVariable Long tourId,
+            @PathVariable Long userId,
+            @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Review> reviews = reviewService.findByTourIdAndUserIdAndHiddenFalse(tourId, userId, pageable);
+        return ResponseEntity.ok(reviews.map(this::toDTO));
     }
 
     // Returns all visible reviews written by a specific user.
     @Operation(summary = "Reviews de un usuario", description = "Obtiene las reviews visibles escritas por un usuario concreto.")
     @ApiResponse(responseCode = "200", description = "Operación exitosa")
     @GetMapping("/user/{userId}")
-    public ResponseEntity<Collection<ReviewResponseDTO>> listarReviewsPorUsuario(@PathVariable Long userId) {
-        List<Review> reviews = reviewService.findByUserId(userId).stream()
-                .filter(review -> !review.isHidden())
-                .toList();
-        return ResponseEntity.ok(toDTOs(reviews));
+    public ResponseEntity<Page<ReviewResponseDTO>> listarReviewsPorUsuario(
+            @PathVariable Long userId,
+            @PageableDefault(size = 10, sort = "creationDate", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Review> reviews = reviewService.findByUserIdAndHiddenFalse(userId, pageable);
+        return ResponseEntity.ok(reviews.map(this::toDTO));
     }
 
     // Creates a new review linked to an existing tour and the authenticated user.
@@ -268,10 +276,6 @@ public class ReviewRestController {
 
     private Review toDomain(ReviewRequestDTO reviewDTO) {
         return reviewMapper.toDomain(reviewDTO);
-    }
-
-    private Collection<ReviewResponseDTO> toDTOs(Collection<Review> reviews) {
-        return reviewMapper.toDTOs(reviews);
     }
 
     private boolean canManageReview(Review review, Authentication authentication) {

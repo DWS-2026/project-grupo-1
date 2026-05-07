@@ -8,6 +8,7 @@ import es.apexexpeditions.library.repository.TourRepository;
 import es.apexexpeditions.library.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,16 +49,32 @@ public class ReviewService {
         return reviewRepository.findByTourIdAndHiddenFalse(tourId);
     }
 
+    public Page<Review> findByTourIdAndHiddenFalse(Long tourId, Pageable pageable) {
+        return reviewRepository.findByTourIdAndHiddenFalse(tourId, pageable);
+    }
+
     public List<Review> findByTourIdAndUserIdAndHiddenFalse(Long tourId, Long userId) {
         return reviewRepository.findByTourIdAndUserIdAndHiddenFalse(tourId, userId);
+    }
+
+    public Page<Review> findByTourIdAndUserIdAndHiddenFalse(Long tourId, Long userId, Pageable pageable) {
+        return reviewRepository.findByTourIdAndUserIdAndHiddenFalse(tourId, userId, pageable);
     }
 
     public List<Review> findVisible() {
         return reviewRepository.findByHiddenFalse();
     }
 
+    public Page<Review> findVisible(Pageable pageable) {
+        return reviewRepository.findByHiddenFalse(pageable);
+    }
+
     public List<Review> findHidden() {
         return reviewRepository.findByHiddenTrue();
+    }
+
+    public Page<Review> findHidden(Pageable pageable) {
+        return reviewRepository.findByHiddenTrue(pageable);
     }
 
     public void deleteById(Long id) {
@@ -125,6 +142,10 @@ public class ReviewService {
 
     public List<Review> findByUserId(Long userId) {
         return reviewRepository.findByUserId(userId);
+    }
+
+    public Page<Review> findByUserIdAndHiddenFalse(Long userId, Pageable pageable) {
+        return reviewRepository.findByUserIdAndHiddenFalse(userId, pageable);
     }
 
     public Page<Review> findPagedByUserId(Long userId, int page) {

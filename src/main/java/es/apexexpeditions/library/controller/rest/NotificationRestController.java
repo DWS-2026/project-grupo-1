@@ -10,6 +10,10 @@ import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.service.NotificationService;
 import es.apexexpeditions.library.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +24,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import java.util.List;
-import java.util.stream.Collectors;
 // endregion
 
 
@@ -59,15 +61,24 @@ public class NotificationRestController {
         @ApiResponse(responseCode = "403", description = "Acceso denegado", content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<NotificationDTO>> getRecent() {
+    public ResponseEntity<Page<NotificationDTO>> getNotifications(
+            @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.DESC) Pageable pageable) {
         if (isNotAdmin()) return ResponseEntity.status(HttpStatus.FORBIDDEN).build();   // case: not admin
-        List<Notification> notifications = notificationService.getRecent10();
-        return ResponseEntity.ok(notifications.stream()
-                .map(n -> new NotificationDTO(n.getId(), n.getMessage(), n.getIcon(),
-                        n.getColor(), n.getFormattedDate(), n.isReadStatus()))
-                .collect(Collectors.toList()));
+        Page<Notification> notifications = notificationService.findAll(pageable);
+        return ResponseEntity.ok(notifications.map(this::toDTO));
     }
     // endregion
+
+    private NotificationDTO toDTO(Notification notification) {
+        return new NotificationDTO(
+                notification.getId(),
+                notification.getMessage(),
+                notification.getIcon(),
+                notification.getColor(),
+                notification.getFormattedDate(),
+                notification.isReadStatus()
+        );
+    }
 
 
     // region 2. getUnreadCount

@@ -8,9 +8,10 @@ import es.apexexpeditions.library.model.Notification;
 import es.apexexpeditions.library.repository.NotificationRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 // endregion
@@ -38,6 +39,11 @@ public class NotificationService {
     // retrieve 10 most recent notificactions
     public List<Notification> getRecent10() {
         return repository.findFirst10ByOrderByDateDesc();
+    }
+
+    // retrieve paginated notifications
+    public Page<Notification> findAll(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
 
