@@ -212,8 +212,16 @@ public class UserRestController {
     })
     @PutMapping("/{id}/image")
     public ResponseEntity<Void> updateImage(@PathVariable Long id, @RequestParam MultipartFile imageFile) throws IOException {
+        User loggedUser = userService.getLoggedUser();
         User user = userService.findById(id);
         if (user == null) return ResponseEntity.notFound().build();
+
+        boolean isAdmin = loggedUser != null && userService.isAdmin(loggedUser);
+        boolean isOwner = loggedUser != null && loggedUser.getId().equals(id);
+
+        if (!isAdmin && !isOwner) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
         if (user.getProfilePicture() != null) {
             imageService.replaceImageFile(user.getProfilePicture().getId(), imageFile);
