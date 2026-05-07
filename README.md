@@ -894,17 +894,36 @@ De forma complementaria, he corregido la visualización de imágenes de tours de
 
 ---
 
-#### **Alumno 3 - [Nombre Completo]**
+#### **Alumno 3 - [Pablo Sánchez Martín]**
 
-[Descripción de las tareas y responsabilidades principales del alumno en el proyecto]
+Durante esta fase del proyecto he asumido la **implementación completa de la API** para las entidades `User` y `Notification`, abarcando desde la definición de los **DTOs y mappers** hasta el desarrollo de los **controladores REST**.  
+Con el objetivo de robustecer la arquitectura y centralizar funciones críticas, me encargué de introducir la lógica de autorización a través del `AuthRestController` y de asegurar una gestión de errores homogénea mediante el `GlobalRestExceptionHandler`.
+
+**1. Infraestructura y refactorización.**  
+Partiendo de la plantilla base que inicialmente copiamos del profesorado, realicé una **reestructuración** para adecuar el proyecto a nuestras necesidades técnicas y temáticas. Esto incluyó el renombrado del proyecto y la reorganización de los paquetes java.  
+Además, **reforcé la arquitectura MVC** para la implementación de `User` en API, desacoplando la lógica de negocio de los controladores y delegándola en capas de **servicio**.  
+Entre otras mejoras técnicas, sustituí el sistema de almacenamiento de imágenes mediante strings codificadas en **base64** por arreglos de **bytes**.
+
+**2. Seguridad y auditoría.**  
+He trabajado en el parcheo de vulnerabilidades en los ficheros mencionados anteriormente y en la configuración de seguridad global.  
+A nivel de auditoría, configuré los ficheros de contexto para **ZAP (Zed Attack Proxy)** e introduje al equipo en el uso de esta herramienta, facilitando la identificación y parcheo de vulnerabilidades.
+
+**3. Contenido audiovisual y documentación.**  
+En cuanto a la elaboración del vídeo del proyecto, me encargué de redactar el resumen sobre **RBAC (Role-Based Access Control)** que se muestra al inicio y de desarrollar el **esqueleto del guion**. Complementariamente, añadí comentarios en diversos ficheros para mejorar la mantenibilidad global del código.
+
+**4. Trabajo no realizado.**  
+Finalmente, cabe señalar que, debido a la priorización de las tareas técnicas y de seguridad mencionadas, no ha sido posible completar la migración (controlador a servicio) de la lógica en la **parte web** según las sugerencias del profesorado.
+
+
+
 
 | Nº    | Commits      | Files      |
 |:------------: |:------------:| :------------:|
-|1| [Descripción commit 1](URL_commit_1)  | [Archivo1](URL_archivo_1)   |
-|2| [Descripción commit 2](URL_commit_2)  | [Archivo2](URL_archivo_2)   |
-|3| [Descripción commit 3](URL_commit_3)  | [Archivo3](URL_archivo_3)   |
-|4| [Descripción commit 4](URL_commit_4)  | [Archivo4](URL_archivo_4)   |
-|5| [Descripción commit 5](URL_commit_5)  | [Archivo5](URL_archivo_5)   |
+|1| [Adición de los contextos de ZAP para el escaneo de api y web al repo. También se incluyen los reportes generados por la misma herramienta (borrado en la actualidad)](https://github.com/DWS-2026/project-grupo-1/commit/7ccf6a2354fb43d1c9794308dcf2d53627c63543)  | [apex-api.context](https://github.com/DWS-2026/project-grupo-1/commit/7ccf6a2354fb43d1c9794308dcf2d53627c63543#diff-b9f1dd2986be48c14456167fa954c12d70ada9f26c81f54f27ea282131d70214) |
+|2| [Implementación de los endpoints relacionados con autorización (posteriormente migrado de controlador REST de User a Auth)](https://github.com/DWS-2026/project-grupo-1/commit/e5b82b0a94769051618ea574e74891e3dda8e12d)  | [UserRestController.java](https://github.com/DWS-2026/project-grupo-1/commit/e5b82b0a94769051618ea574e74891e3dda8e12d#diff-4f07b092469d83e722fc2fe2e8d36bf60b82cbc0589f1c20b444029160a179f6), [UserRegisterDTO](https://github.com/DWS-2026/project-grupo-1/commit/e5b82b0a94769051618ea574e74891e3dda8e12d#diff-508610d0676e44823cb4ad21b79e6b5271d4a2199678e30e0ab43e464f9825ec)   |
+|3| [Cambio almacenamiento de imágenes: de string b64 a array byte](https://github.com/DWS-2026/project-grupo-1/commit/d36d794e4da4f5dbb9f6bf8fa4753d4313aa9c4d)  | [ImageRestController.java](https://github.com/DWS-2026/project-grupo-1/commit/d36d794e4da4f5dbb9f6bf8fa4753d4313aa9c4d#diff-7d9ad69caa2e2cbe84f46c68c2db09ef97ca5d503240268065e7ddd0a22a05f9), [Image.java](https://github.com/DWS-2026/project-grupo-1/commit/d36d794e4da4f5dbb9f6bf8fa4753d4313aa9c4d#diff-d282cc14bf0875a1ff4d90724f74c4ff8f7465ecdb7a5f5db00062128c32749f), [ImageService.java](https://github.com/DWS-2026/project-grupo-1/commit/d36d794e4da4f5dbb9f6bf8fa4753d4313aa9c4d#diff-1403bbd50f9bf3080e98d01fa6a45caaceccf5db06a845988339693ae57ac9d3)   |
+|4| [Adición de funcionalidades clave para User en API](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e)  | [UserRestController.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-4f07b092469d83e722fc2fe2e8d36bf60b82cbc0589f1c20b444029160a179f6), [PasswordUpdateDTO.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-39bc3aaf006f04c361070ecec5ae8c4ce8d7e1bfd349689678e391300594d586), [UserBasicResponseDTO.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-896293dec74563e1aa71f4ecc37304f3ce19804b6db54380431c2edd5906a8ea), [UserFullResponseDTO.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-0136c982f7fc42e082c9e445d91c4d9ba9de19c55c9c29f4153ecc40cea4405b), [UserMapper.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-f72539820e2941a4063345b785ee7cf21a7db513ede521f8d7519325a42e1bea), [UserResponseDTO.java](https://github.com/DWS-2026/project-grupo-1/commit/cb0b1ceaa706784aa0bf3a8cc31566f9e294857e#diff-a2290419dfb3417de13698d3b2401acf12fb2ca957cae217dbce7c275ce51d4b)   |
+|5| [Implementación del controlador de errores](https://github.com/DWS-2026/project-grupo-1/commit/8baa8e05a29e44abab7d4b7f775f1009d3770da6)  | [GlobalRestExceptionHandler.java](https://github.com/DWS-2026/project-grupo-1/commit/8baa8e05a29e44abab7d4b7f775f1009d3770da6#diff-d4edd5a39325976019e18a40348a04044d29599be027fb76a8ed48214d89709f), [RestErrorDTO.java](https://github.com/DWS-2026/project-grupo-1/commit/8baa8e05a29e44abab7d4b7f775f1009d3770da6#diff-8d447fb6e24f630b128dd3e921b80adb674ed324553259bf929f08073b69ba01)   |
 
 ---
 
