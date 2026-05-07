@@ -202,7 +202,10 @@ public class UserService {
     }
     // endregion
 
+    // region 7. findByProfilePicture
     public List<User> findByProfilePicture(Image image) {
         return userRepository.findByProfilePicture(image);
     }
+    // endregion
+    // endregion
 }

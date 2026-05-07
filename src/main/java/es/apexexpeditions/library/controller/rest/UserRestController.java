@@ -368,7 +368,7 @@ public class UserRestController {
         if (req.enabled() != null) user.setEnabled(req.enabled());
         if (req.moneySpent() != null) user.setMoneySpent(req.moneySpent());
 
-        // Generar avatar por defecto (el admin podrá subir imagen luego por el PUT de imagen)
+        // generate default avatar (PUT image allows for later modifications)
         byte[] avatar = userService.generateDefaultAvatar("Usuario", user.getName(), new Color(13, 110, 253));
         user.setProfilePicture(new Image(avatar));
 

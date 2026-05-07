@@ -72,7 +72,7 @@ public Page<GuideResponseDTO> findAllDTOs(Pageable pageable) {
         Guide existing = guideRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Guide not found: " + id));
 
-        // Actualización manual para mantener coherencia con TourService
+        // manual update to be coherent with TourService
         existing.setName(dto.name());
         existing.setLastName(dto.lastName());
         existing.setPrice(dto.price());

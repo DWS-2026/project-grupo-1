@@ -1,5 +1,10 @@
 package es.apexexpeditions.library.controller;
 
+
+
+
+
+
 // region =========== imports =================
 import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.repository.UserRepository;
@@ -21,8 +26,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.HashMap;
-// endregion
 import java.util.Map;
+// endregion
+
+
+
+
+
 
 /**
  * handles common model attributes for all controllers
@@ -34,10 +44,12 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     // region =========== Autowired =================
     @Autowired
     private UserRepository userRepository;
-
     @Autowired // to manage notifications
     private NotificationService notificationService;
     // endregion
+
+
+
 
     // region =========== ModelAttribute =================
     // region 1. "addCommonAttributes"
@@ -81,13 +93,14 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     }
     // endregion
 
+
     // region 2. "addNotifications"
     @ModelAttribute
     public void addNotifications(Model model) {
         // retrieve latest 10 notifications
         model.addAttribute("notifications", notificationService.getRecent10());
 
-        // count unread notifications to update red background counter
+        // count unread notifications to update red background counter (bg unused since its just api)
         long unreadCount = notificationService.getUnreadCount();
         model.addAttribute("unreadCount", unreadCount);
 
@@ -96,6 +109,9 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     }
     // endregion
     // endregion
+
+
+
 
     // region =========== ExceptionHandler =================
     // region 1. handleNotFound
@@ -117,7 +133,7 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     }
     // endregion
 
-    // region =========== ExceptionHandler =================
+
     // region 2. handleTypeMismatch (false positive sql injection related)
     // capture errores when sending letters or symbols in boolean or numeral
     // parameters (avoids leaking stack trace in 500)
@@ -125,7 +141,7 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
     public Object handleTypeMismatch(MethodArgumentTypeMismatchException ex, HttpServletRequest request,
             RedirectAttributes redirectAttributes) {
 
-        // 1. ¿Es una petición de la API?
+        // 1. check bad request
         if (request.getRequestURI().startsWith("/api/")) {
             Map<String, Object> body = new HashMap<>();
             body.put("status", 400);
@@ -136,11 +152,13 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
         }
 
-        // 2. Si no es API, seguimos con tu lógica de redirección Web
+        // 2. if not api, web redirect
         redirectAttributes.addFlashAttribute("errorMessage", "Data sent in an invalid format.");
         String referer = request.getHeader("Referer");
         return "redirect:" + (referer != null ? referer : "/");
     }
+    // endregion
+
 
     // region 3. handleAllExceptions (stack leak protection)
     // capture any unmanaged internal error and redirect in order to avoid leaking
@@ -167,7 +185,6 @@ public class GlobalControllerAdvice { // controller to manage csrf + session
 
         return "error/404";
     }
-
     // endregion
     // endregion
 }
