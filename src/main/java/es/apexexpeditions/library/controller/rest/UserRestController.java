@@ -256,10 +256,31 @@ public class UserRestController {
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
         // filter out restricted files
+        // no uniqueness check required
         if (updateData.name() != null) user.setName(updateData.name());
         if (updateData.lastName() != null) user.setLastName(updateData.lastName());
-        if (updateData.mainPhone() != null) user.setMainPhone(updateData.mainPhone());
-        if (updateData.secondaryPhone() != null) user.setSecondaryPhone(updateData.secondaryPhone());
+
+        // uniqueness validation (just phones)
+        // they are different
+        String finalMain = updateData.mainPhone() != null ? updateData.mainPhone() : user.getMainPhone();
+        String finalSec = updateData.secondaryPhone() != null ? updateData.secondaryPhone() : user.getSecondaryPhone();
+        if (finalMain != null && finalSec != null && finalMain.equals(finalSec)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // mainPhone
+        if (updateData.mainPhone() != null && !updateData.mainPhone().equals(user.getMainPhone())) {
+            if (userService.phoneExists(updateData.mainPhone())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            user.setMainPhone(updateData.mainPhone());
+        }
+        // secondaryPhone
+        if (updateData.secondaryPhone() != null && !updateData.secondaryPhone().equals(user.getSecondaryPhone())) {
+            if (userService.phoneExists(updateData.secondaryPhone())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            user.setSecondaryPhone(updateData.secondaryPhone());
+        }
 
         userService.save(user);
         return ResponseEntity.ok(userMapper.toFullDTO(user));
@@ -304,13 +325,42 @@ public class UserRestController {
         }
 
         // change non-restricted fields
+        // no uniqueness validation required
         if (dto.name() != null) targetUser.setName(dto.name());
         if (dto.lastName() != null) targetUser.setLastName(dto.lastName());
-        if (dto.mainPhone() != null) targetUser.setMainPhone(dto.mainPhone());
+        // uniqueness validation (phones)
+        // they are different
+        String currentMain = dto.mainPhone() != null ? dto.mainPhone() : targetUser.getMainPhone();
+        String currentSec = dto.secondaryPhone() != null ? dto.secondaryPhone() : targetUser.getSecondaryPhone();
+
+        if (currentMain != null && currentSec != null && currentMain.equals(currentSec)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        // mainPhone
+        if (dto.mainPhone() != null && !dto.mainPhone().equals(targetUser.getMainPhone())) {
+            if (userService.phoneExists(dto.mainPhone())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            targetUser.setMainPhone(dto.mainPhone());
+        }
+        // secondaryPhone
+        if (dto.secondaryPhone() != null && !dto.secondaryPhone().equals(targetUser.getSecondaryPhone())) {
+            if (userService.phoneExists(dto.secondaryPhone())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            targetUser.setSecondaryPhone(dto.secondaryPhone());
+        }
 
         // change admin-exclusive fields
         if (userService.isAdmin(loggedUser)) {
-            if (dto.email() != null) targetUser.setEmail(dto.email());
+            // email uniqueness validation
+            if (userService.isAdmin(loggedUser) && dto.email() != null && !dto.email().equals(targetUser.getEmail())) {
+                if (userService.emailExists(dto.email())) {
+                    return ResponseEntity.status(HttpStatus.CONFLICT).build();
+                }
+                targetUser.setEmail(dto.email());
+            }
+            // no uniqueness validation required
             if (dto.enabled() != null) targetUser.setEnabled(dto.enabled());
             if (dto.roles() != null) targetUser.setRoles(dto.roles());
         }
@@ -359,6 +409,28 @@ public class UserRestController {
     public ResponseEntity<UserFullResponseDTO> createUser(@Valid @RequestBody UserRequestDTO req) {
         if (userService.isLoggedUserNotAdmin()) {   // filter out users
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        // check email uniqueness
+        if (userService.emailExists(req.email())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+
+        // check phones uniqueness
+        // mainPhone
+        if (userService.phoneExists(req.mainPhone())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        }
+        // secondaryPhone
+        // different from other secondaries
+        if (req.secondaryPhone() != null && !req.secondaryPhone().isBlank()) {
+            if (userService.phoneExists(req.secondaryPhone())) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            }
+            // different from main
+            if (req.mainPhone().equals(req.secondaryPhone())) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            }
         }
 
         User user = new User(req.name(), req.lastName(), req.email(),
