@@ -17,6 +17,9 @@ import es.apexexpeditions.library.model.User;
 import es.apexexpeditions.library.repository.UserRepository;
 import es.apexexpeditions.library.service.TourService;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
 @Controller
 public class ReviewController {
 
@@ -47,14 +50,8 @@ public class ReviewController {
             return "redirect:/login";
         }
 
-
-        reviewService.addReview(tourId, principal.getName(), rating, description);
-
-        String tourName = tourService.findById(tourId).getName();
-
-        // Sends a success notification with the author and related tour.
-        notificationService.notify("Nueva review creada por: " + principal.getName() + " para el tour "+ tourName, "fas fa-star", "bg-success");
-
+        String cleanDescription = Jsoup.clean(description, Safelist.relaxed());
+        reviewService.addReview(tourId, principal.getName(), rating, cleanDescription);
 
         return "redirect:/tour-details/" + tourId;
     }
@@ -120,6 +117,9 @@ public class ReviewController {
         review.setDescription(description);
 
         reviewRepository.save(review);
+
+        String cleanDescription = Jsoup.clean(description, Safelist.relaxed());
+        review.setDescription(cleanDescription);
 
         return "redirect:/review-user";
     }
