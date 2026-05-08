@@ -30,6 +30,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Safelist;
+
 import static org.springframework.web.servlet.support.ServletUriComponentsBuilder.fromCurrentRequest;
 
 
@@ -171,16 +174,17 @@ public class ReviewRestController {
         }
 
         Long reviewUserId = isAdmin(loggedUser) ? request.userId() : loggedUser.getId();
-        Optional<Review> savedReview;
-        Review reviewRequest = toDomain(request);
 
+        String cleanDescription = Jsoup.clean(request.description(), Safelist.relaxed());
+
+        Optional<Review> savedReview;
 
         try {
             savedReview = reviewService.createReview(
                     request.tourId(),
-                    reviewUserId,
-                    request.rating(),
-                    reviewRequest.getDescription()
+                reviewUserId,
+                request.rating(),
+                cleanDescription
             );
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
@@ -259,9 +263,13 @@ public class ReviewRestController {
         } catch (IllegalArgumentException exception) {
             return ResponseEntity.badRequest().build();
         }
+        String cleanDescription = Jsoup.clean(updatedReview.description(), Safelist.relaxed());
+        existingReview.setDescription(cleanDescription);
 
         Review savedReview = reviewService.save(existingReview);
         return ResponseEntity.ok(toDTO(savedReview));
+
+        
     }
 
     // Updates only the visibility state of a review.
